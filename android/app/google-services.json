@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "235513492044",
+    "project_id": "flash-chat-1d0e6",
+    "storage_bucket": "flash-chat-1d0e6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:235513492044:android:4cb46de0676bd90b9bbae9",
+        "android_client_info": {
+          "package_name": "com.yeyintkyaw.champion_maung"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXMV3twMrp7DlgWhnbw8TRPMIu-JzRJ7s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
