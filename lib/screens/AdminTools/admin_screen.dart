@@ -93,10 +93,10 @@ class _AdminScreenState extends State<AdminScreen> {
                         alignment: Alignment.topLeft,
                         margin: EdgeInsets.only(bottom: w / 30),
                         height: h / 5.5,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: kOnPrimaryContainer,
                           borderRadius:
-                              const BorderRadius.all(Radius.circular(20)),
+                              BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
