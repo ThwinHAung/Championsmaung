@@ -17,7 +17,7 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (Activity Log)',
+          'Activity Log',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
@@ -25,6 +25,7 @@ class _ActivityLogScreenState extends State<ActivityLogScreen> {
           ),
         ),
       ),
+      body: Container(),
     );
   }
 }

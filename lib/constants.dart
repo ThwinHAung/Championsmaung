@@ -20,7 +20,7 @@ const kMessageContainerDecoration = BoxDecoration(
 
 const Color kPrimary = Color.fromARGB(255, 210, 210, 210);
 const Color konPrimary = Color.fromARGB(255, 0, 0, 0);
-const Color kOnPrimaryContainer = Color.fromARGB(255, 210, 210, 210);
+const Color kOnPrimaryContainer = Color.fromARGB(255, 230, 230, 230);
 const Color kSecondary = Color.fromARGB(255, 48, 48, 48);
 
 const Color kError = Color(0xFFFD1F4A);

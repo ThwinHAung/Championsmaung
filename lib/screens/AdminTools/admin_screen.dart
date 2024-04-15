@@ -1,9 +1,8 @@
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/create_user.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_accounts.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_list.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -23,13 +22,6 @@ class _AdminScreenState extends State<AdminScreen> {
     'Downtime Balance',
     'Outstanding Balance',
   ];
-  var listRoutes = [
-    CreateUser.id,
-    UserList.id,
-    UserReport.id,
-    UserDeposit.id,
-    UserAccounts.id,
-  ];
   var drawerList = [
     'Transition Activity Log',
     'Members',
@@ -40,6 +32,10 @@ class _AdminScreenState extends State<AdminScreen> {
   ];
   var drawerRoutes = [
     ActivityLogScreen.id,
+    Members.id,
+    Report.id,
+    Deposit.id,
+    AccountSettings.id,
   ];
   var showValues = [
     000000,
@@ -98,16 +94,10 @@ class _AdminScreenState extends State<AdminScreen> {
                         margin: EdgeInsets.only(bottom: w / 30),
                         height: h / 5.5,
                         decoration: BoxDecoration(
-                            color: kOnPrimaryContainer,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(20)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 20,
-                                spreadRadius: 10,
-                              )
-                            ]),
+                          color: kOnPrimaryContainer,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(20)),
+                        ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
                           child: Row(
@@ -168,10 +158,7 @@ class _AdminScreenState extends State<AdminScreen> {
                   ),
                 ),
                 onTap: () {
-                  // Handle onTap for each item here
-                  Navigator.pop(context); // Close the drawer
-                  // You can perform additional actions based on the tapped item
-                  print('Tapped on ${drawerList[index]}');
+                  Navigator.pushNamed(context, drawerRoutes[index]);
                 },
               );
             },

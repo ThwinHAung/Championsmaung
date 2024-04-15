@@ -1,15 +1,15 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
-class UserReport extends StatefulWidget {
-  static String id = 'user_report_page';
-  const UserReport({super.key});
+class Report extends StatefulWidget {
+  static String id = 'report_page';
+  const Report({super.key});
 
   @override
-  State<UserReport> createState() => _UserReportState();
+  State<Report> createState() => _ReportState();
 }
 
-class _UserReportState extends State<UserReport> {
+class _ReportState extends State<Report> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +17,9 @@ class _UserReportState extends State<UserReport> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (User Report)',
+          'Report',
           style: TextStyle(
-            color: kWhite,
+            color: kBlack,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),

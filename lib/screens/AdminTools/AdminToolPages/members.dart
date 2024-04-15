@@ -1,15 +1,15 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
-class CreateUser extends StatefulWidget {
-  static String id = 'create_user_page';
-  const CreateUser({super.key});
+class Members extends StatefulWidget {
+  static String id = 'member_page';
+  const Members({super.key});
 
   @override
-  State<CreateUser> createState() => _CreateUserState();
+  State<Members> createState() => _MembersState();
 }
 
-class _CreateUserState extends State<CreateUser> {
+class _MembersState extends State<Members> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +17,9 @@ class _CreateUserState extends State<CreateUser> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (Create User)',
+          'Members',
           style: TextStyle(
-            color: kWhite,
+            color: kBlack,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),

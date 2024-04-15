@@ -3,16 +3,18 @@ import 'package:champion_maung/Routes/body_betting.dart';
 import 'package:champion_maung/Routes/match_results.dart';
 import 'package:champion_maung/Routes/maung_betting.dart';
 import 'package:champion_maung/Routes/more.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/create_user.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_accounts.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_list.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/user_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/admin_screen.dart';
 import 'package:champion_maung/screens/agent_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/registration_screen.dart';
+import 'package:champion_maung/screens/splash_screen.dart';
 import 'package:champion_maung/screens/user_home_screen.dart';
+
 import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
@@ -36,14 +38,13 @@ class ChampionMaung extends StatelessWidget {
         More.id: (context) => const More(),
         AgentScreen.id: (context) => const AgentScreen(),
         AdminScreen.id: (context) => const AdminScreen(),
-        CreateUser.id: (context) => const CreateUser(),
-        UserList.id: (context) => const UserList(),
-        UserReport.id: (context) => const UserReport(),
-        UserDeposit.id: (context) => const UserDeposit(),
-        UserAccounts.id: (context) => const UserAccounts(),
+        ActivityLogScreen.id: (context) => const ActivityLogScreen(),
+        Members.id: (context) => const Members(),
+        Report.id: (context) => const Report(),
+        Deposit.id: (context) => const Deposit(),
+        AccountSettings.id: (context) => const AccountSettings(),
       },
-      home: const RegistrationScreen(),
-      //checking
+      home: const SplashScreen(),
     ); //hello
   }
 }

@@ -1,15 +1,15 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
-class UserAccounts extends StatefulWidget {
-  static String id = 'user_accounts';
-  const UserAccounts({super.key});
+class AccountSettings extends StatefulWidget {
+  static String id = 'account_settings_page';
+  const AccountSettings({super.key});
 
   @override
-  State<UserAccounts> createState() => _UserAccountsState();
+  State<AccountSettings> createState() => _AccountSettingsState();
 }
 
-class _UserAccountsState extends State<UserAccounts> {
+class _AccountSettingsState extends State<AccountSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +17,9 @@ class _UserAccountsState extends State<UserAccounts> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (User Accounts)',
+          'Account Settings',
           style: TextStyle(
-            color: kWhite,
+            color: kBlack,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),

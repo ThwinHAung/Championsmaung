@@ -1,15 +1,15 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
-class UserDeposit extends StatefulWidget {
-  static String id = 'user_deposit_page';
-  const UserDeposit({super.key});
+class Deposit extends StatefulWidget {
+  static String id = 'deposit_page';
+  const Deposit({super.key});
 
   @override
-  State<UserDeposit> createState() => _UserDepositState();
+  State<Deposit> createState() => _DepositState();
 }
 
-class _UserDepositState extends State<UserDeposit> {
+class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,9 +17,9 @@ class _UserDepositState extends State<UserDeposit> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (User Deposit)',
+          'Deposit',
           style: TextStyle(
-            color: kWhite,
+            color: kBlack,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),
