@@ -1,8 +1,8 @@
-import 'package:champion_maung/Routes/betting_history.dart';
-import 'package:champion_maung/Routes/body_betting.dart';
-import 'package:champion_maung/Routes/match_results.dart';
-import 'package:champion_maung/Routes/maung_betting.dart';
-import 'package:champion_maung/Routes/more.dart';
+import 'package:champion_maung/Routes/UserRoutes/betting_history.dart';
+import 'package:champion_maung/Routes/UserRoutes/body_betting.dart';
+import 'package:champion_maung/Routes/UserRoutes/match_results.dart';
+import 'package:champion_maung/Routes/UserRoutes/maung_betting.dart';
+import 'package:champion_maung/Routes/UserRoutes/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
@@ -14,7 +14,6 @@ import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/registration_screen.dart';
 import 'package:champion_maung/screens/splash_screen.dart';
 import 'package:champion_maung/screens/user_home_screen.dart';
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
