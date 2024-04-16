@@ -47,7 +47,6 @@ const kButtonTextStyle = TextStyle(
   fontSize: 12.0,
   fontWeight: FontWeight.bold,
   color: kPrimary,
-  letterSpacing: 5.0,
 );
 
 const kTextFieldDecoration = InputDecoration(

@@ -86,7 +86,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 16.0),
                       child: Material(
-                        color: konPrimary,
+                        color: kBlue,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(10.0)),
                         elevation: 5.0,
@@ -125,8 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.body == 'success') {
       setState(() {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const AdminScreen()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const AdminScreen()));
       });
       // Store token securely (e.g., using flutter_secure_storage)
       // Redirect to authenticated page
