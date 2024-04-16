@@ -76,19 +76,22 @@ class _MembersState extends State<Members> {
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      'View Member List',
-                      style: TextStyle(
-                        color: kPrimary,
-                        fontWeight: FontWeight.w500,
+                  Material(
+                    color: kBlue,
+                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+                    elevation: 5.0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        //Implement registration functionality.
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: const Text(
+                        'View Member List',
+                        style: kButtonTextStyle,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: kBlue,
-                    ),
-                  )
+                  ),
                 ],
               ),
             ),
