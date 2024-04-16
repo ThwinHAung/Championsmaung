@@ -68,7 +68,7 @@ class _MembersState extends State<Members> {
                   Expanded(
                     child: Container(
                       child: Text(
-                        'Your account type : ',
+                        'Your account type : ' + 'SSSenior',
                         style: TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
@@ -96,6 +96,7 @@ class _MembersState extends State<Members> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -192,7 +193,14 @@ class _MembersState extends State<Members> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20.0),
+                    SizedBox(height: 40.0),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        'Phone Number',
+                        style: kLabel,
+                      ),
+                    ),
                     TextFormField(
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
@@ -200,6 +208,13 @@ class _MembersState extends State<Members> {
                     ),
                     const SizedBox(
                       height: 10.0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        'Password',
+                        style: kLabel,
+                      ),
                     ),
                     TextFormField(
                       style: kTextFieldActiveStyle,
@@ -210,6 +225,66 @@ class _MembersState extends State<Members> {
                     const SizedBox(
                       height: 10.0,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0),
+                      child: Text(
+                        'Starting Balance',
+                        style: kLabel,
+                      ),
+                    ),
+                    TextFormField(
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter Balance'),
+                    ),
+                    SizedBox(height: 30.0),
+                    Container(
+                      alignment: Alignment.topRight,
+                      child: Material(
+                        color: kBlue,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10.0)),
+                        elevation: 5.0,
+                        child: MaterialButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text(
+                                  'Do you want to create account?',
+                                  style: kLabel,
+                                ),
+                                actions: <Widget>[
+                                  Material(
+                                    color: kBlue,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0)),
+                                    elevation: 5.0,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      minWidth: 200.0,
+                                      height: 42.0,
+                                      child: const Text(
+                                        'Create',
+                                        style: kButtonTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ); //Implement registration functionality.
+                          },
+                          minWidth: 200.0,
+                          height: 42.0,
+                          child: const Text(
+                            'Create Account',
+                            style: kButtonTextStyle,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
