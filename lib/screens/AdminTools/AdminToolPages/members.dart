@@ -76,22 +76,7 @@ class _MembersState extends State<Members> {
                       ),
                     ),
                   ),
-                  Material(
-                    color: kBlue,
-                    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
-                    elevation: 5.0,
-                    child: MaterialButton(
-                      onPressed: () {
-                        //Implement registration functionality.
-                      },
-                      minWidth: 200.0,
-                      height: 42.0,
-                      child: const Text(
-                        'View Member List',
-                        style: kButtonTextStyle,
-                      ),
-                    ),
-                  ),
+                  materialButton(kBlue, 'View Member List'),
                 ],
               ),
             ),
@@ -199,30 +184,17 @@ class _MembersState extends State<Members> {
                     ),
                     SizedBox(height: 40.0),
                     labelText('Phone Number'),
-                    TextFormField(
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter your phone number'),
-                    ),
+                    textForm('Enter your phone number'),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Password'),
-                    TextFormField(
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter password'),
-                      obscureText: true,
-                    ),
+                    passwordForm('Enter password'),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Starting Balance'),
-                    TextFormField(
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter Balance'),
-                    ),
+                    textForm('Enter starting balance'),
                     SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
@@ -253,7 +225,7 @@ class _MembersState extends State<Members> {
                                       minWidth: 100.0,
                                       height: 42.0,
                                       child: const Text(
-                                        'Create',
+                                        'Cancel',
                                         style: kButtonErrorStyle,
                                       ),
                                     ),

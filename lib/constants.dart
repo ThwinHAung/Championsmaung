@@ -90,3 +90,37 @@ Widget labelText(String labelText) {
     ),
   );
 }
+
+Widget textForm(String textItem) {
+  return TextFormField(
+    style: kTextFieldActiveStyle,
+    decoration: kTextFieldDecoration.copyWith(hintText: '$textItem'),
+  );
+}
+
+Widget passwordForm(String passwordItem) {
+  return TextFormField(
+    style: kTextFieldActiveStyle,
+    decoration: kTextFieldDecoration.copyWith(hintText: '$passwordItem'),
+    obscureText: true,
+  );
+}
+
+Widget materialButton(Color buttonColor, String buttonText) {
+  return Material(
+    color: buttonColor,
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    elevation: 5.0,
+    child: MaterialButton(
+      onPressed: () {
+        //Implement registration functionality.
+      },
+      minWidth: 200.0,
+      height: 42.0,
+      child: Text(
+        '$buttonText',
+        style: kButtonTextStyle,
+      ),
+    ),
+  );
+}
