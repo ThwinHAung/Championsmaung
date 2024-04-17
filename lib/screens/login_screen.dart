@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/admin_screen.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 
@@ -19,7 +19,6 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xff252525),
       body: Container(
@@ -125,8 +124,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (response.body == 'success') {
       setState(() {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const AdminScreen()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SSSeniorAdminScreen()));
       });
       // Store token securely (e.g., using flutter_secure_storage)
       // Redirect to authenticated page

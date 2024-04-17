@@ -1,21 +1,22 @@
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class AdminScreen extends StatefulWidget {
-  static String id = 'admin_screen';
-  const AdminScreen({super.key});
+class SeniorAgentAdminScreen extends StatefulWidget {
+  static String id = 'seniorAgent_admin_screen';
+  const SeniorAgentAdminScreen({super.key});
 
   @override
-  State<AdminScreen> createState() => _AdminScreenState();
+  State<SeniorAgentAdminScreen> createState() => _SeniorAgentAdminScreenState();
 }
 
-class _AdminScreenState extends State<AdminScreen> {
+class _SeniorAgentAdminScreenState extends State<SeniorAgentAdminScreen> {
   var list = [
     'Members',
     'Balance',
@@ -32,7 +33,7 @@ class _AdminScreenState extends State<AdminScreen> {
   ];
   var drawerRoutes = [
     ActivityLogScreen.id,
-    Members.id,
+    SeniorAgentMembers.id,
     Report.id,
     Deposit.id,
     AccountSettings.id,
@@ -62,7 +63,7 @@ class _AdminScreenState extends State<AdminScreen> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (Admin)',
+          'CHAMPION MAUNG (Senior Agent)',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,
@@ -95,8 +96,7 @@ class _AdminScreenState extends State<AdminScreen> {
                         height: h / 5.5,
                         decoration: const BoxDecoration(
                           color: kOnPrimaryContainer,
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20)),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
                         ),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),

@@ -2,15 +2,15 @@ import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 
-class Members extends StatefulWidget {
-  static String id = 'member_page';
-  const Members({super.key});
+class SSSeniorMembers extends StatefulWidget {
+  static String id = 'sssenior_member_page';
+  const SSSeniorMembers({super.key});
 
   @override
-  State<Members> createState() => _MembersState();
+  State<SSSeniorMembers> createState() => _SSSeniorMembersState();
 }
 
-class _MembersState extends State<Members> {
+class _SSSeniorMembersState extends State<SSSeniorMembers> {
   final List<String> items = [
     'A',
     'B',
