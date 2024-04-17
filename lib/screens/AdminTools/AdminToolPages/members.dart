@@ -101,6 +101,7 @@ class _MembersState extends State<Members> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    labelText('Select Username'),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(
@@ -197,13 +198,7 @@ class _MembersState extends State<Members> {
                       ),
                     ),
                     SizedBox(height: 40.0),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Text(
-                        'Phone Number',
-                        style: kLabel,
-                      ),
-                    ),
+                    labelText('Phone Number'),
                     TextFormField(
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
@@ -212,13 +207,7 @@ class _MembersState extends State<Members> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Text(
-                        'Password',
-                        style: kLabel,
-                      ),
-                    ),
+                    labelText('Password'),
                     TextFormField(
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
@@ -228,13 +217,7 @@ class _MembersState extends State<Members> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0),
-                      child: Text(
-                        'Starting Balance',
-                        style: kLabel,
-                      ),
-                    ),
+                    labelText('Starting Balance'),
                     TextFormField(
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
@@ -259,6 +242,23 @@ class _MembersState extends State<Members> {
                                 ),
                                 actions: <Widget>[
                                   Material(
+                                    color: kOnPrimaryContainer,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0)),
+                                    elevation: 5.0,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      minWidth: 100.0,
+                                      height: 42.0,
+                                      child: const Text(
+                                        'Create',
+                                        style: kButtonErrorStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Material(
                                     color: kBlue,
                                     borderRadius: const BorderRadius.all(
                                         Radius.circular(10.0)),
@@ -267,7 +267,7 @@ class _MembersState extends State<Members> {
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      minWidth: 200.0,
+                                      minWidth: 100.0,
                                       height: 42.0,
                                       child: const Text(
                                         'Create',

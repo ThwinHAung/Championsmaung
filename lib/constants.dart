@@ -49,6 +49,12 @@ const kButtonTextStyle = TextStyle(
   color: kPrimary,
 );
 
+const kButtonErrorStyle = TextStyle(
+  fontSize: 12.0,
+  fontWeight: FontWeight.bold,
+  color: kError,
+);
+
 const kTextFieldDecoration = InputDecoration(
   filled: true,
   fillColor: kOnPrimaryContainer,
@@ -57,19 +63,30 @@ const kTextFieldDecoration = InputDecoration(
   hintStyle: kTextFieldHintStyle,
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
   ),
   enabledBorder: OutlineInputBorder(
     borderSide: BorderSide(color: kOnPrimaryContainer, width: 0.0),
-    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
   ),
   focusedBorder: OutlineInputBorder(
     borderSide: BorderSide(color: kOnPrimaryContainer, width: 0.0),
-    borderRadius: BorderRadius.all(Radius.circular(50.0)),
+    borderRadius: BorderRadius.all(Radius.circular(10.0)),
   ),
 );
 
 const kLabel = TextStyle(
   color: konPrimary,
+  fontSize: 14,
   fontWeight: FontWeight.w600,
 );
+
+Widget labelText(String labelText) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 15.0),
+    child: Text(
+      '$labelText',
+      style: kLabel,
+    ),
+  );
+}
