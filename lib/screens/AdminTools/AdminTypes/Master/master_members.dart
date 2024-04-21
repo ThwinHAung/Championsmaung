@@ -11,36 +11,6 @@ class MasterMembers extends StatefulWidget {
 }
 
 class _MasterMembersState extends State<MasterMembers> {
-  final List<String> items = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
-  ];
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +94,7 @@ class _MasterMembersState extends State<MasterMembers> {
                                     ),
                                   ],
                                 ),
-                                items: items
+                                items: userDropdownItems
                                     .map((String item) =>
                                         DropdownMenuItem<String>(
                                           value: item,
@@ -215,7 +185,7 @@ class _MasterMembersState extends State<MasterMembers> {
                                     ),
                                   ],
                                 ),
-                                items: items
+                                items: userDropdownItems
                                     .map((String item) =>
                                         DropdownMenuItem<String>(
                                           value: item,

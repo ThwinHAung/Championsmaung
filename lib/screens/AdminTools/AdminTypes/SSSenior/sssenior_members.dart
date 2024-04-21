@@ -11,36 +11,6 @@ class SSSeniorMembers extends StatefulWidget {
 }
 
 class _SSSeniorMembersState extends State<SSSeniorMembers> {
-  final List<String> items = [
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z'
-  ];
-  String? selectedValue;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +87,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                 ),
                               ],
                             ),
-                            items: items
+                            items: userDropdownItems
                                 .map((String item) => DropdownMenuItem<String>(
                                       value: item,
                                       child: Text(
