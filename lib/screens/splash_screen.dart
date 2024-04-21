@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:flutter/material.dart';
 
