@@ -37,8 +37,8 @@ class _AgentMembersState extends State<AgentMembers> {
                 children: [
                   Expanded(
                     child: Container(
-                      child: Text(
-                        'Your account type : ' + 'Agent',
+                      child: const Text(
+                        'Your account type : ' 'Agent',
                         style: TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
@@ -50,9 +50,9 @@ class _AgentMembersState extends State<AgentMembers> {
                 ],
               ),
             ),
-            SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const SizedBox(height: 10.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Text('Username : '),
             ),
             Container(
@@ -148,9 +148,9 @@ class _AgentMembersState extends State<AgentMembers> {
                                   scrollbarTheme: ScrollbarThemeData(
                                     radius: const Radius.circular(40),
                                     thickness:
-                                        MaterialStateProperty.all<double>(6),
+                                        WidgetStateProperty.all<double>(6),
                                     thumbVisibility:
-                                        MaterialStateProperty.all<bool>(true),
+                                        WidgetStateProperty.all<bool>(true),
                                   ),
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
@@ -239,9 +239,9 @@ class _AgentMembersState extends State<AgentMembers> {
                                   scrollbarTheme: ScrollbarThemeData(
                                     radius: const Radius.circular(40),
                                     thickness:
-                                        MaterialStateProperty.all<double>(6),
+                                        WidgetStateProperty.all<double>(6),
                                     thumbVisibility:
-                                        MaterialStateProperty.all<bool>(true),
+                                        WidgetStateProperty.all<bool>(true),
                                   ),
                                 ),
                                 menuItemStyleData: const MenuItemStyleData(
@@ -254,7 +254,7 @@ class _AgentMembersState extends State<AgentMembers> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40.0),
+                    const SizedBox(height: 40.0),
                     labelText('Phone Number'),
                     textForm('Enter your phone number'),
                     const SizedBox(
@@ -267,7 +267,7 @@ class _AgentMembersState extends State<AgentMembers> {
                     ),
                     labelText('Starting Balance'),
                     textForm('Enter starting balance'),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
                       child: Material(

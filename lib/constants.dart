@@ -85,7 +85,7 @@ Widget labelText(String labelText) {
   return Padding(
     padding: const EdgeInsets.only(left: 15.0),
     child: Text(
-      '$labelText',
+      labelText,
       style: kLabel,
     ),
   );
@@ -94,14 +94,14 @@ Widget labelText(String labelText) {
 Widget textForm(String textItem) {
   return TextFormField(
     style: kTextFieldActiveStyle,
-    decoration: kTextFieldDecoration.copyWith(hintText: '$textItem'),
+    decoration: kTextFieldDecoration.copyWith(hintText: textItem),
   );
 }
 
 Widget passwordForm(String passwordItem) {
   return TextFormField(
     style: kTextFieldActiveStyle,
-    decoration: kTextFieldDecoration.copyWith(hintText: '$passwordItem'),
+    decoration: kTextFieldDecoration.copyWith(hintText: passwordItem),
     obscureText: true,
   );
 }
@@ -118,7 +118,7 @@ Widget materialButton(Color buttonColor, String buttonText) {
       minWidth: 200.0,
       height: 42.0,
       child: Text(
-        '$buttonText',
+        buttonText,
         style: kButtonTextStyle,
       ),
     ),

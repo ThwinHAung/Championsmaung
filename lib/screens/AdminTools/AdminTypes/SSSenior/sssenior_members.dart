@@ -37,8 +37,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                 children: [
                   Expanded(
                     child: Container(
-                      child: Text(
-                        'Your account type : ' + 'SSSenior',
+                      child: const Text(
+                        'Your account type : ' 'SSSenior',
                         style: TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
@@ -139,9 +139,9 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                               offset: const Offset(-20, 0),
                               scrollbarTheme: ScrollbarThemeData(
                                 radius: const Radius.circular(40),
-                                thickness: MaterialStateProperty.all<double>(6),
+                                thickness: WidgetStateProperty.all<double>(6),
                                 thumbVisibility:
-                                    MaterialStateProperty.all<bool>(true),
+                                    WidgetStateProperty.all<bool>(true),
                               ),
                             ),
                             menuItemStyleData: const MenuItemStyleData(
@@ -152,7 +152,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 40.0),
+                    const SizedBox(height: 40.0),
                     labelText('Phone Number'),
                     textForm('Enter your phone number'),
                     const SizedBox(
@@ -165,7 +165,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     ),
                     labelText('Starting Balance'),
                     textForm('Enter starting balance'),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
                       child: Material(

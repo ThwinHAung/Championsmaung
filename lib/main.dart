@@ -53,19 +53,19 @@ class ChampionMaung extends StatelessWidget {
         AccountSettings.id: (context) => const AccountSettings(),
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
-        SSeniorMembers.id: (context) => SSeniorMembers(),
+        SSeniorMembers.id: (context) => const SSeniorMembers(),
         //Senior
-        SeniorAdminScreen.id: (context) => SeniorAdminScreen(),
-        SeniorMembers.id: (context) => SeniorMembers(),
+        SeniorAdminScreen.id: (context) => const SeniorAdminScreen(),
+        SeniorMembers.id: (context) => const SeniorMembers(),
         //Master
-        MasterAdminScreen.id: (context) => MasterAdminScreen(),
-        MasterMembers.id: (context) => MasterMembers(),
+        MasterAdminScreen.id: (context) => const MasterAdminScreen(),
+        MasterMembers.id: (context) => const MasterMembers(),
         //SeniorAgent
-        SeniorAgentAdminScreen.id: (context) => SeniorAgentAdminScreen(),
-        SeniorAgentMembers.id: (context) => SeniorAgentMembers(),
+        SeniorAgentAdminScreen.id: (context) => const SeniorAgentAdminScreen(),
+        SeniorAgentMembers.id: (context) => const SeniorAgentMembers(),
         //Agent
-        AgentAdminScreen.id: (context) => AgentAdminScreen(),
-        AgentMembers.id: (context) => AgentMembers(),
+        AgentAdminScreen.id: (context) => const AgentAdminScreen(),
+        AgentMembers.id: (context) => const AgentMembers(),
         //User
       },
       home: const SplashScreen(),
