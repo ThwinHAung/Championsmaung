@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
   static const String id = 'login_screen';
@@ -91,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         elevation: 5.0,
                         child: MaterialButton(
                           onPressed: () {
+                            _login();
                             //Implement registration functionality.
                           },
                           minWidth: 200.0,
@@ -112,7 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     final response = await http.post(
-      Uri.parse('http://localhost/flutter_api/controller/login_controller.php'),
+      Uri.parse('http://127.0.0.1:8000/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -122,13 +123,23 @@ class _LoginScreenState extends State<LoginScreen> {
       }),
     );
 
-    if (response.body == 'success') {
-      setState(() {
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String token = responseData['token'];
+      final String role = responseData['role'];
+
+      // Handle token and role as needed
+      print('Token: $token');
+      print('Role: $role');
+      if (role == 'SSSenior') {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => const SSSeniorAdminScreen()));
-      });
+      }
+      // setState(() {
+
+      // });
       // Store token securely (e.g., using flutter_secure_storage)
       // Redirect to authenticated page
     } else {
