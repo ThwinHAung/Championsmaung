@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -90,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         elevation: 5.0,
                         child: MaterialButton(
                           onPressed: () {
+                            _login();
                             //Implement registration functionality.
                           },
                           minWidth: 200.0,
@@ -129,11 +131,14 @@ class _LoginScreenState extends State<LoginScreen> {
       // Handle token and role as needed
       print('Token: $token');
       print('Role: $role');
+      if (role == 'SSSenior') {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SSSeniorAdminScreen()));
+      }
       // setState(() {
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => const SSSeniorAdminScreen()));
+
       // });
       // Store token securely (e.g., using flutter_secure_storage)
       // Redirect to authenticated page
