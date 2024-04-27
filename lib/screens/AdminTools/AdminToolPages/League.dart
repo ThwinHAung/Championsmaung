@@ -11,6 +11,6 @@ class Deposit extends StatefulWidget {
 class _DepositState extends State<Deposit> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return const Scaffold();
   }
 }
