@@ -267,14 +267,14 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter over,under odds',
                           ),
                         ),
-                        SizedBox(height: 10.0),
-                        Container(
+                        const SizedBox(height: 10.0),
+                        SizedBox(
                           height: 100,
                           child: Row(
                             children: [
                               Expanded(
-                                child: Container(),
                                 flex: 2,
+                                child: Container(),
                               ),
                               Expanded(
                                 flex: 1,

@@ -81,8 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 Row(children: [
                   Expanded(
-                    child: Container(),
                     flex: 2,
+                    child: Container(),
                   ),
                   Expanded(
                     flex: 1,
