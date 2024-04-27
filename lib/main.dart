@@ -67,6 +67,7 @@ class ChampionMaung extends StatelessWidget {
         AgentAdminScreen.id: (context) => const AgentAdminScreen(),
         AgentMembers.id: (context) => const AgentMembers(),
         //User
+        UserHomeScreen.id: (context) => const UserHomeScreen(),
       },
       home: const SplashScreen(),
     ); //hello

@@ -66,8 +66,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             ),
             Row(
               children: [
-                Expanded(child: Container()),
                 Expanded(
+                  child: Container(),
+                  flex: 2,
+                ),
+                Expanded(
+                  flex: 1,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
                     child: Material(
