@@ -29,32 +29,34 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          color: kPrimary,
-          child: AnimationLimiter(
-            child: ListView.builder(
-                padding: EdgeInsets.all(w / 50),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: matchesList.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+      body: Container(
+        color: kPrimary,
+        child: AnimationLimiter(
+          child: ListView.builder(
+              padding: EdgeInsets.all(w / 50),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: matchesList.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Container(),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Container(
+                        child: Text(
+                          matchesList.toString(),
+                        ),
                       ),
                     ),
-                  );
-                }),
-          ),
+                  ),
+                );
+              }),
         ),
       ),
     );
