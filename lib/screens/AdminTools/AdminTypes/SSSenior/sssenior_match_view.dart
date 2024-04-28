@@ -49,14 +49,26 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       curve: Curves.fastLinearToSlowEaseIn,
                       duration: const Duration(milliseconds: 2500),
                       child: Container(
-                        child: Text(
-                          matchesList.toString(),
-                        ),
+                        child: matchCardView(),
                       ),
                     ),
                   ),
                 );
               }),
+        ),
+      ),
+    );
+  }
+
+  Widget matchCardView() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: double.infinity,
+        height: 100,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15),
+          color: kOnPrimaryContainer,
         ),
       ),
     );
