@@ -4,6 +4,9 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SSSeniorMatchView extends StatefulWidget {
   static String id = "sssenior_match_view";
+
+  // constructor for custom radio button widget
+
   const SSSeniorMatchView({super.key});
 
   @override
@@ -12,21 +15,7 @@ class SSSeniorMatchView extends StatefulWidget {
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   List<String> matchesList = ['1', '2'];
-  late String selectedRadio;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    selectedRadio = 'Option 1';
-  }
-
-  setSelectedRadio(String val) {
-    setState(() {
-      selectedRadio = val;
-    });
-  }
-
+  int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -66,14 +55,17 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          width: double.infinity,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: kOnPrimaryContainer,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[],
+                              color: kOnPrimaryContainer,
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                customRadio('Windows', 1),
+                                customRadio('MacOS', 2),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -81,6 +73,32 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 );
               }),
+        ),
+      ),
+    );
+  }
+
+  Widget customRadio(String text, int index) {
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: OutlinedButton(
+          onPressed: () {
+            setState(() {
+              selectedIndex = index;
+            });
+          },
+          style: OutlinedButton.styleFrom(
+            backgroundColor: kOnPrimaryContainer,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          child: Text(
+            text,
+            style: TextStyle(
+              color: (selectedIndex == index) ? kBlue : kGrey,
+            ),
+          ),
         ),
       ),
     );
