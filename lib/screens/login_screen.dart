@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LoginScreen extends StatefulWidget {
@@ -135,6 +136,9 @@ class _LoginScreenState extends State<LoginScreen> {
       // Handle token and role as needed
       print('Token: $token');
       print('Role: $role');
+      final storage = new FlutterSecureStorage();
+      await storage.write(key: 'token', value: token);
+
       if (role == 'SSSenior') {
         Navigator.push(
             context,
