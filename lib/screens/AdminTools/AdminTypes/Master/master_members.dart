@@ -46,7 +46,7 @@ class _MasterMembersState extends State<MasterMembers> {
                       ),
                     ),
                   ),
-                  materialButton(kBlue, 'View Member List'),
+                  materialButton(kBlue, 'View Member List', () {}),
                 ],
               ),
             ),

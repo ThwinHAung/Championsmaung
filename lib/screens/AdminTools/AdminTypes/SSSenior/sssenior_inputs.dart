@@ -1,6 +1,7 @@
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class SSSeniorInputsPage extends StatefulWidget {
   static String id = 'sssenior_input_page';
@@ -148,7 +149,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter home team',
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 8.0),
                         labelText('Away Team'),
                         TextFormField(
                           style: kTextFieldActiveStyle,
@@ -156,7 +157,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter away team',
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 8.0),
                         labelText('Enter Special Odds'),
                         TextFormField(
                           style: kTextFieldActiveStyle,
@@ -164,7 +165,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter Special Odds',
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 15.0),
                         labelText('Select Special Odds team'),
                         Container(
                           alignment: Alignment.topLeft,
@@ -259,7 +260,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                           ),
                         ),
-                        const SizedBox(height: 5.0),
+                        const SizedBox(height: 15.0),
                         labelText('Over,Under odds'),
                         TextFormField(
                           style: kTextFieldActiveStyle,
@@ -267,7 +268,25 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter over,under odds',
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height: 15.0),
+                        labelText('Enter Date & Time'),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 4,
+                              child: materialButton(kBlue,
+                                  'Open date&time picker', _myDateTimeMethod),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: labelText(':'),
+                            ),
+                            Expanded(
+                              flex: 4,
+                              child: labelText('show date time here'),
+                            ),
+                          ],
+                        ),
                         SizedBox(
                           height: 100,
                           child: Row(
@@ -278,7 +297,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: materialButton(kBlue, 'Enter'),
+                                child: materialButton(kBlue, 'Enter', () {}),
                               )
                             ],
                           ),
@@ -293,5 +312,49 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
         ),
       ),
     );
+  }
+
+  void _myDateTimeMethod() async {
+    DateTime? dateTime = await showOmniDateTimePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+      lastDate: DateTime.now().add(
+        const Duration(days: 3652),
+      ),
+      is24HourMode: false,
+      isShowSeconds: false,
+      minutesInterval: 1,
+      secondsInterval: 1,
+      isForce2Digits: true,
+      borderRadius: const BorderRadius.all(Radius.circular(16)),
+      constraints: const BoxConstraints(
+        maxWidth: 350,
+        maxHeight: 650,
+      ),
+      transitionBuilder: (context, anim1, anim2, child) {
+        return FadeTransition(
+          opacity: anim1.drive(
+            Tween(
+              begin: 0,
+              end: 1,
+            ),
+          ),
+          child: child,
+        );
+      },
+      transitionDuration: const Duration(milliseconds: 200),
+      barrierDismissible: true,
+      selectableDayPredicate: (dateTime) {
+        // Disable 25th Feb 2023
+        if (dateTime == DateTime(2023, 2, 25)) {
+          return false;
+        } else {
+          return true;
+        }
+      },
+    );
+
+    print("dateTime: $dateTime");
   }
 }
