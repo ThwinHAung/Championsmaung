@@ -106,15 +106,14 @@ Widget passwordForm(String passwordItem) {
   );
 }
 
-Widget materialButton(Color buttonColor, String buttonText) {
+Widget materialButton(
+    Color buttonColor, String buttonText, VoidCallback onCustomButtonPressed) {
   return Material(
     color: buttonColor,
     borderRadius: const BorderRadius.all(Radius.circular(10.0)),
     elevation: 5.0,
     child: MaterialButton(
-      onPressed: () {
-        //Implement registration functionality.
-      },
+      onPressed: onCustomButtonPressed,
       minWidth: 200.0,
       height: 42.0,
       child: Text(

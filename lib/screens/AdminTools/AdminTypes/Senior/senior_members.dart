@@ -46,7 +46,7 @@ class _SeniorMembersState extends State<SeniorMembers> {
                       ),
                     ),
                   ),
-                  materialButton(kBlue, 'View Member List'),
+                  materialButton(kBlue, 'View Member List', () {}),
                 ],
               ),
             ),

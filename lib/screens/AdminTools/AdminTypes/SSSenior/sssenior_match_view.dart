@@ -15,6 +15,7 @@ class SSSeniorMatchView extends StatefulWidget {
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   List<String> matchesList = ['1', '2'];
+  List<String> listValOne = ['one', 'three'];
   int selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
