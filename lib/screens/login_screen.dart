@@ -134,8 +134,8 @@ class _LoginScreenState extends State<LoginScreen> {
       final String role = responseData['role'];
 
       // Handle token and role as needed
-      // print('Token: $token');
-      // print('Role: $role');
+      print('Token: $token');
+      print('Role: $role');
       final storage = new FlutterSecureStorage();
       await storage.write(key: 'token', value: token);
 
