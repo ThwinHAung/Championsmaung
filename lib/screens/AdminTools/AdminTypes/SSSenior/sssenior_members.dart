@@ -1,6 +1,7 @@
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class SSSeniorMembers extends StatefulWidget {
   static String id = 'sssenior_member_page';
@@ -11,6 +12,7 @@ class SSSeniorMembers extends StatefulWidget {
 }
 
 class _SSSeniorMembersState extends State<SSSeniorMembers> {
+  String? selectedValue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,7 +156,9 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     ),
                     const SizedBox(height: 40.0),
                     labelText('Phone Number'),
-                    textForm('Enter your phone number'),
+                    textForm(
+                      'Enter your phone number',
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -207,7 +211,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                     elevation: 5.0,
                                     child: MaterialButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        _register();
                                       },
                                       minWidth: 100.0,
                                       height: 42.0,
@@ -238,5 +242,19 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
         ),
       ),
     );
+  }
+
+  Future<void> _register() async {
+    // String username = _usernameController.text;
+    // String password = _passwordController.text;
+
+    var url = Uri.parse('https://127.0.0.1:8000/api/register');
+    var response = await http.post(url, body: {'username': '', 'password': ''});
+
+    if (response.statusCode == 200) {
+      print('Registration successful');
+    } else {
+      print('Registration failed');
+    }
   }
 }

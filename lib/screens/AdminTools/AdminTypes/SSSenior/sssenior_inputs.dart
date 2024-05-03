@@ -1,7 +1,8 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class SSSeniorInputsPage extends StatefulWidget {
   static String id = 'sssenior_input_page';
@@ -12,10 +13,66 @@ class SSSeniorInputsPage extends StatefulWidget {
 }
 
 class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
-  List<String> leagueList = [
-    'Premiere League',
-    'Spain Laliga',
-  ];
+  final storage = FlutterSecureStorage();
+  String? _token;
+  String? selectedValue;
+  String? team_value;
+  final TextEditingController _homeTeamController = TextEditingController();
+  final TextEditingController _awayTeamController = TextEditingController();
+
+  List<Map<String, dynamic>> _leagueList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchLeagues();
+    } else {
+      print('no token');
+    }
+  }
+
+  Future<void> _fetchLeagues() async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/leagues');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> leagues = responseData['leagues'];
+      setState(() {
+        _leagueList = leagues
+            .map((item) => {
+                  'id': item['id'],
+                  'name': item['name'],
+                })
+            .toList();
+      });
+    }
+  }
+
+  Future<void> _submitForm() async {
+    final response = await http.post(
+      Uri.parse('http://127.0.0.1:8000/api/matches'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'league_id': selectedValue!,
+        'home_team': _homeTeamController.text,
+        'away_team': _awayTeamController.text,
+      }),
+    );
+  }
+
   List<String> poukKyayList = ['Team 1', 'Team 2'];
   @override
   Widget build(BuildContext context) {
@@ -76,20 +133,21 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                   ),
                                 ],
                               ),
-                              items: leagueList
+                              items: _leagueList
                                   .map(
-                                      (String item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: kPrimary,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item['id'].toString(),
+                                      child: Text(
+                                        item['name'],
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: kPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                               value: selectedValue,
                               onChanged: (String? value) {
@@ -144,6 +202,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         const SizedBox(height: 25.0),
                         labelText('Home Team'),
                         TextFormField(
+                          controller: _homeTeamController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter home team',
@@ -210,10 +269,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                             ),
                                           ))
                                   .toList(),
-                              value: selectedValue,
+                              value: team_value,
                               onChanged: (String? value) {
                                 setState(() {
-                                  selectedValue = value;
+                                  team_value = value;
                                 });
                               },
                               buttonStyleData: ButtonStyleData(

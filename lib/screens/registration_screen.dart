@@ -1,6 +1,5 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
-
 import 'package:http/http.dart' as http;
 
 class RegistrationScreen extends StatefulWidget {

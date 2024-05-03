@@ -136,7 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Handle token and role as needed
       print('Token: $token');
       print('Role: $role');
-      const storage = FlutterSecureStorage();
+      final storage = new FlutterSecureStorage();
       await storage.write(key: 'token', value: token);
 
       if (role == 'SSSenior') {
