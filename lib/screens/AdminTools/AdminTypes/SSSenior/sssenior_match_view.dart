@@ -54,7 +54,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       curve: Curves.fastLinearToSlowEaseIn,
                       duration: const Duration(milliseconds: 2500),
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
                         child: Container(
                           decoration: BoxDecoration(
                               color: kOnPrimaryContainer,
