@@ -17,6 +17,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     'Spain Laliga',
   ];
   List<String> poukKyayList = ['Team 1', 'Team 2'];
+  late DateTime _dateTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,8 +275,8 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                           children: [
                             Expanded(
                               flex: 4,
-                              child: materialButton(kBlue,
-                                  'Open date&time picker', _myDateTimeMethod),
+                              child: materialButton(
+                                  kBlue, 'Select date&time', _myDateTimeMethod),
                             ),
                             Expanded(
                               flex: 1,
@@ -283,7 +284,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                             Expanded(
                               flex: 4,
-                              child: labelText('show date time here'),
+                              child: labelText('$DateTime'),
                             ),
                           ],
                         ),
@@ -354,7 +355,6 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
         }
       },
     );
-
-    print("dateTime: $dateTime");
+    _dateTime = dateTime as DateTime;
   }
 }
