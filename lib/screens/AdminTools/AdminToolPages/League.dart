@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class LeagueScreen extends StatefulWidget {
   const LeagueScreen({super.key});
@@ -9,6 +13,36 @@ class LeagueScreen extends StatefulWidget {
 }
 
 class _LeagueScreenState extends State<LeagueScreen> {
+  final TextEditingController _leagueNameController = TextEditingController();
+  final storage = FlutterSecureStorage();
+  String? _token;
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+  }
+
+  Future<void> _insertLeague() async {
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingleague'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'name': _leagueNameController.text,
+            }));
+    if (response.statusCode == 200) {
+      print('ok');
+    } else {
+      print(response.body);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +71,13 @@ class _LeagueScreenState extends State<LeagueScreen> {
                   children: [
                     const SizedBox(height: 40.0),
                     labelText('League'),
-                    textForm('Enter league you want to add'),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      controller: _leagueNameController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter league you want to add'),
+                    ),
                     const SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
@@ -80,7 +120,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
                                     elevation: 5.0,
                                     child: MaterialButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        _insertLeague();
                                       },
                                       minWidth: 100.0,
                                       height: 42.0,

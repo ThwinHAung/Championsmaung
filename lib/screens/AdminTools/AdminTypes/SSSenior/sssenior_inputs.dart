@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class SSSeniorInputsPage extends StatefulWidget {
@@ -12,12 +16,82 @@ class SSSeniorInputsPage extends StatefulWidget {
 }
 
 class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
-  List<String> leagueList = [
-    'Premiere League',
-    'Spain Laliga',
+  final storage = FlutterSecureStorage();
+  String? _token;
+  final TextEditingController _homeTeamController = TextEditingController();
+  final TextEditingController _awayTeamController = TextEditingController();
+  final TextEditingController _specialOddsController = TextEditingController();
+  final TextEditingController _overUnderController = TextEditingController();
+  String? selectedValue;
+  String? team_value;
+  List<Map<String, dynamic>> _leagueList = [];
+  List<Map<String, String>> poukKyayList = [
+    {'name': 'Team 1', 'value': '1'},
+    {'name': 'Team 2', 'value': '2'},
   ];
-  List<String> poukKyayList = ['Team 1', 'Team 2'];
+
   late DateTime _dateTime;
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchLeagues();
+    } else {}
+  }
+
+  Future<void> _fetchLeagues() async {
+    final url = Uri.parse('http://127.0.0.1:8000/api/leagues');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final List<dynamic> leagues = responseData['leagues'];
+      setState(() {
+        _leagueList = leagues
+            .map((item) => {
+                  'id': item['id'],
+                  'name': item['name'],
+                })
+            .toList();
+      });
+    } else {
+      // Handle error
+    }
+  }
+
+  Future<void> _insertMatch() async {
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingmatch'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'league_id': selectedValue,
+              'home_match': _homeTeamController.text,
+              'away_match': _awayTeamController.text,
+              'match_time': _dateTime.toIso8601String(),
+              'special_odd_team': team_value,
+              'special_odd': _specialOddsController.text,
+              'over_under': _overUnderController.text
+            }));
+    if (response.statusCode == 200) {
+      print('ok');
+    } else {
+      print(response.body);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -77,20 +151,21 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                   ),
                                 ],
                               ),
-                              items: leagueList
+                              items: _leagueList
                                   .map(
-                                      (String item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: kPrimary,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
+                                    (item) => DropdownMenuItem<String>(
+                                      value: item['id'].toString(),
+                                      child: Text(
+                                        item['name'],
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: kPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
                                   .toList(),
                               value: selectedValue,
                               onChanged: (String? value) {
@@ -145,6 +220,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         const SizedBox(height: 25.0),
                         labelText('Home Team'),
                         TextFormField(
+                          controller: _homeTeamController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter home team',
@@ -153,6 +229,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         const SizedBox(height: 8.0),
                         labelText('Away Team'),
                         TextFormField(
+                          controller: _awayTeamController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter away team',
@@ -161,6 +238,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         const SizedBox(height: 8.0),
                         labelText('Enter Special Odds'),
                         TextFormField(
+                          controller: _specialOddsController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter Special Odds',
@@ -196,25 +274,24 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                   ),
                                 ],
                               ),
-                              items: poukKyayList
-                                  .map(
-                                      (String item) => DropdownMenuItem<String>(
-                                            value: item,
-                                            child: Text(
-                                              item,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w600,
-                                                color: kPrimary,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ))
-                                  .toList(),
-                              value: selectedValue,
+                              items: poukKyayList.map((item) {
+                                return DropdownMenuItem<String>(
+                                  value: item['value']!,
+                                  child: Text(
+                                    item['name']!,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: kPrimary,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
+                              }).toList(),
+                              value: team_value,
                               onChanged: (String? value) {
                                 setState(() {
-                                  selectedValue = value;
+                                  team_value = value!;
                                 });
                               },
                               buttonStyleData: ButtonStyleData(
@@ -264,6 +341,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         const SizedBox(height: 15.0),
                         labelText('Over,Under odds'),
                         TextFormField(
+                          controller: _overUnderController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter over,under odds',
@@ -298,7 +376,9 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                               ),
                               Expanded(
                                 flex: 1,
-                                child: materialButton(kBlue, 'Enter', () {}),
+                                child: materialButton(kBlue, 'Enter', () {
+                                  _insertMatch();
+                                }),
                               )
                             ],
                           ),
