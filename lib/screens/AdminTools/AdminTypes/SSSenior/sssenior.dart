@@ -1,3 +1,5 @@
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
@@ -25,6 +27,8 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   var drawerList = [
     'Transition Activity Log',
     'Members',
+    'Input Matches',
+    'View Matches List',
     'Report',
     'Deposit / Withdraw',
     'Account',
@@ -33,6 +37,8 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   var drawerRoutes = [
     ActivityLogScreen.id,
     SSSeniorMembers.id,
+    SSSeniorInputsPage.id,
+    SSSeniorMatchView.id,
     Report.id,
     Deposit.id,
     AccountSettings.id,
