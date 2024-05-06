@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorMembers extends StatefulWidget {
@@ -12,7 +15,38 @@ class SSSeniorMembers extends StatefulWidget {
 }
 
 class _SSSeniorMembersState extends State<SSSeniorMembers> {
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _balanceController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  final storage = FlutterSecureStorage();
   String? selectedValue;
+  String? _token;
+  String? _role;
+  String? _userId;
+
+  @override
+  void initState() {
+    _role = 'Loading...';
+    _userId = 'Loading...';
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    final String? role = await storage.read(key: 'user_role');
+    final String? userId = await storage.read(key: 'user_id');
+
+    if (role != null && userId != null) {
+      setState(() {
+        _role = role;
+        _userId = userId;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,8 +73,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                 children: [
                   Expanded(
                     child: Container(
-                      child: const Text(
-                        'Your account type : ' 'SSSenior',
+                      child: Text(
+                        'Your account type : $_role',
                         style: TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
@@ -156,19 +190,43 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     ),
                     const SizedBox(height: 40.0),
                     labelText('Phone Number'),
-                    textForm(
-                      'Enter your phone number',
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter phone number'),
                     ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Password'),
-                    passwordForm('Enter password'),
+                    TextFormField(
+                      controller: _passwordController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter password'),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    labelText('Confirm Password'),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Confirm password'),
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Starting Balance'),
-                    textForm('Enter starting balance'),
+                    TextFormField(
+                      controller: _balanceController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter starting balance'),
+                    ),
                     const SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
@@ -245,14 +303,22 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<void> _register() async {
-    // String username = _usernameController.text;
-    // String password = _passwordController.text;
-
-    var url = Uri.parse('https://127.0.0.1:8000/api/register');
-    var response = await http.post(url, body: {'username': '', 'password': ''});
+    var url = Uri.parse('http://127.0.0.1:8000/api/register');
+    var response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      'current_user_role': _role,
+      'username': selectedValue,
+      'password': _passwordController.text,
+      'password_confirmation': _confirmPasswordController.text,
+      'phone_number': _phoneNumberController.text,
+      'balance': _balanceController.text,
+      'created_by': _userId,
+    });
 
     if (response.statusCode == 200) {
       print('Registration successful');
+      Navigator.pop(context);
     } else {
       print('Registration failed');
     }

@@ -1,13 +1,16 @@
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:champion_maung/constants.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:http/http.dart' as http;
 
 class SSSeniorAdminScreen extends StatefulWidget {
   static String id = 'sssenior_admin_screen';
@@ -18,6 +21,8 @@ class SSSeniorAdminScreen extends StatefulWidget {
 }
 
 class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
+  final storage = FlutterSecureStorage();
+  String? _token;
   var list = [
     'Members',
     'Balance',
@@ -42,6 +47,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     Report.id,
     Deposit.id,
     AccountSettings.id,
+    'logout'
   ];
   var showValues = [
     000000,
@@ -58,6 +64,36 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   List<IconData> drawerIcons = [
     Icons.history,
   ];
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+  }
+
+  Future<void> _logout() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      await storage.delete(key: 'token');
+      await storage.delete(key: 'user_role');
+      await storage.delete(key: 'user_id');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } else {
+      print(response.body);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,7 +199,11 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, drawerRoutes[index]);
+                  if (drawerRoutes[index] == 'logout') {
+                    _logout();
+                  } else {
+                    Navigator.pushNamed(context, drawerRoutes[index]);
+                  }
                 },
               );
             },

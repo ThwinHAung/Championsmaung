@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _rememberMe = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,9 +68,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(
                   height: 10.0,
                 ),
-                const Row(
+                Row(
                   children: [
-                    Checkbox(value: true, onChanged: null),
+                    Checkbox(
+                        value: _rememberMe,
+                        onChanged: (value) {
+                          setState(() {
+                            _rememberMe = value!;
+                          });
+                        }),
                     Text(
                       'Remember me',
                       style: TextStyle(
@@ -131,25 +140,44 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String token = responseData['token'];
+      final String? id = responseData['user_id']?.toString();
       final String role = responseData['role'];
 
       // Handle token and role as needed
-      print('Token: $token');
-      print('Role: $role');
+
       final storage = new FlutterSecureStorage();
-      await storage.write(key: 'token', value: token);
+      if (_rememberMe) {
+        await Future.wait([
+          storage.write(key: 'token', value: token),
+          storage.write(key: 'user_id', value: id),
+          storage.write(key: 'user_role', value: role),
+          storage.write(key: 'username', value: _usernameController.text),
+          storage.write(key: 'password', value: _passwordController.text),
+        ]);
+      } else {
+        await Future.wait([
+          storage.write(key: 'token', value: token),
+          storage.write(key: 'user_id', value: id),
+          storage.write(key: 'user_role', value: role),
+          storage.delete(key: 'username'),
+          storage.delete(key: 'password'),
+        ]);
+      }
 
       if (role == 'SSSenior') {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => const SSSeniorAdminScreen()));
+      } else if (role == 'User') {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const UserHomeScreen()));
+      } else {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const SSeniorAdminScreen()));
       }
-      // setState(() {
-
-      // });
-      // Store token securely (e.g., using flutter_secure_storage)
-      // Redirect to authenticated page
     } else {
       showDialog(
         context: context,
