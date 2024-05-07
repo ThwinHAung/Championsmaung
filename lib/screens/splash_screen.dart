@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +54,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(const Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(const LoginScreen()));
+        Navigator.pushReplacement(
+            context, PageTransition(const SSSeniorShowMembersList()));
       });
     });
   }
