@@ -18,6 +18,7 @@ dependencies:
   flutter_secure_storage: ^9.0.0
   dropdown_button2: ^2.3.9
   omni_datetime_picker: ^1.1.0
+  syncfusion_flutter_datagrid: ^25.1.42
 
 dev_dependencies:
   flutter_test:

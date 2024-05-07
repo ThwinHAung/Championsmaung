@@ -320,7 +320,19 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       print('Registration successful');
       Navigator.pop(context);
     } else {
-      print('Registration failed');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Registration Failed'),
+          content: const Text('Username already exists.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 }

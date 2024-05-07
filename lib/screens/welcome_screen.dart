@@ -38,10 +38,10 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   Widget build(BuildContext context) {
     const colorizeColors = [
-      Colors.blueGrey,
-      Colors.lightBlueAccent,
-      Colors.white,
-      Colors.blueGrey,
+      kBlack,
+      kBlue,
+      kWhite,
+      kBlack,
     ];
 
     const colorizeTextStyle = TextStyle(
@@ -69,12 +69,12 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                 AnimatedTextKit(
                   animatedTexts: [
                     ColorizeAnimatedText(
-                      'Flash Maung',
+                      'Champion Maung',
                       textStyle: colorizeTextStyle,
                       colors: colorizeColors,
                     ),
                     ColorizeAnimatedText(
-                      'Enter Alternative Name',
+                      'Champion Maung',
                       textStyle: colorizeTextStyle,
                       colors: colorizeColors,
                     )

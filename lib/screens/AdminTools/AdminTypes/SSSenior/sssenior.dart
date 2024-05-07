@@ -6,6 +6,7 @@ import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -32,6 +33,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   var drawerList = [
     'Transition Activity Log',
     'Members',
+    'Members List',
     'Input Matches',
     'View Matches List',
     'Report',
@@ -42,6 +44,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   var drawerRoutes = [
     ActivityLogScreen.id,
     SSSeniorMembers.id,
+    SSSeniorShowMembersList.id,
     SSSeniorInputsPage.id,
     SSSeniorMatchView.id,
     Report.id,
