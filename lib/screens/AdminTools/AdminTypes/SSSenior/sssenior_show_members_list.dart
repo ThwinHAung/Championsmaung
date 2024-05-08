@@ -1,7 +1,5 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class SSSeniorShowMembersList extends StatefulWidget {
   static String id = "sssenior_show_members_list";
@@ -13,19 +11,48 @@ class SSSeniorShowMembersList extends StatefulWidget {
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
-  List<UserMember> userMember = <UserMember>[];
-  late UserMemberDataSource employeeDataSource;
+  final TextEditingController _controller = TextEditingController();
+  final List<String> _data = [
+    'Apple',
+    'Banana',
+    'Cherry',
+    'Date',
+    'Fig',
+    'Grapes',
+    'Kiwi',
+    'Lemon',
+    'Mango',
+    'Orange',
+    'Peach',
+    'Pineapple',
+    'Strawberry',
+    'Watermelon'
+  ];
+  List<String> _filteredData = [];
 
   @override
   void initState() {
     super.initState();
-    userMember = getEmployeeData();
-    employeeDataSource = UserMemberDataSource(employeeData: userMember);
+    _filteredData = _data;
+    _controller.addListener(_onSearchChanged);
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged() {
+    String query = _controller.text.toLowerCase();
+    setState(() {
+      _filteredData =
+          _data.where((item) => item.toLowerCase().contains(query)).toList();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimary,
@@ -41,109 +68,146 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
       ),
       body: Container(
         color: kPrimary,
-        width: double.infinity,
         child: Padding(
-          padding: EdgeInsets.all(8.0),
-          child: SfDataGrid(
-            source: employeeDataSource,
-            columnWidthMode: ColumnWidthMode.fill,
-            columns: <GridColumn>[
-              GridColumn(
-                  columnName: 'id',
-                  label: Container(
-                      padding: EdgeInsets.all(16.0),
-                      alignment: Alignment.center,
-                      child: labelText('ID'))),
-              GridColumn(
-                  columnName: 'name',
-                  label: Container(
-                      padding: EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: labelText('Username'))),
-              GridColumn(
-                  columnName: 'designation',
-                  label: Container(
-                      padding: EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: labelText('Phone Number'))),
-              GridColumn(
-                  columnName: 'salary',
-                  label: Container(
-                      padding: EdgeInsets.all(8.0),
-                      alignment: Alignment.center,
-                      child: labelText('Salary'))),
-            ],
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+                color: kOnPrimaryContainer,
+                borderRadius: BorderRadius.circular(10)),
+            child: view(),
           ),
         ),
       ),
     );
   }
 
-  List<UserMember> getEmployeeData() {
-    return [
-      UserMember(1, 'James', '09400104050', 20000),
-      UserMember(2, 'Kathryn', '0617377609', 30000),
-      UserMember(3, 'Lara', '09400104050', 15000),
-      UserMember(4, 'Michael', '09792060205', 15000),
-      UserMember(5, 'Martin', '0617377609', 15000),
-      UserMember(6, 'Newberry', '09400104050', 15000),
-      UserMember(7, 'Balnc', '09792060205', 15000),
-      UserMember(8, 'Perry', '09400104050', 15000),
-      UserMember(9, 'Gable', '09400104050', 15000),
-      UserMember(10, 'Grimes', '0617377609', 15000)
-    ];
+  Widget view() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              decoration: const InputDecoration(
+                labelText: 'Search',
+                hintText: 'Search...',
+                prefixIcon: Icon(Icons.search),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: listTitleText('ID'),
+              ),
+              Expanded(
+                flex: 5,
+                child: listTitleText('Username'),
+              ),
+              Expanded(
+                flex: 5,
+                child: listTitleText('Phone Number'),
+              ),
+              Expanded(
+                flex: 3,
+                child: listTitleText('Units'),
+              ),
+              Expanded(
+                flex: 7,
+                child: listTitleText('Add/Reduce units'),
+              ),
+              Expanded(
+                flex: 7,
+                child: listTitleText('Delete/Postpone'),
+              ),
+            ],
+          ),
+          SizedBox(height: 10.0),
+          Expanded(
+            child: ListView.builder(
+              itemCount: _filteredData.length,
+              itemBuilder: (context, index) {
+                return ListCard(_data[index].toString());
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
-}
 
-/// Custom business object class which contains properties to hold the detailed
-/// information about the employee which will be rendered in datagrid.
-class UserMember {
-  /// Creates the employee class with required details.
-  UserMember(this.id, this.username, this.phoneNumber, this.units);
-
-  /// Id of an employee.
-  final int id;
-
-  /// Name of an employee.
-  final String username;
-
-  /// Designation of an employee.
-  final String phoneNumber;
-
-  /// Salary of an employee.
-  final double units;
-}
-
-/// An object to set the employee collection data source to the datagrid. This
-/// is used to map the employee data to the datagrid widget.
-class UserMemberDataSource extends DataGridSource {
-  /// Creates the employee data source class with required details.
-  UserMemberDataSource({required List<UserMember> employeeData}) {
-    _employeeData = employeeData
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: 'id', value: e.id),
-              DataGridCell<String>(columnName: 'name', value: e.username),
-              DataGridCell<String>(
-                  columnName: 'designation', value: e.phoneNumber),
-              DataGridCell<double>(columnName: 'salary', value: e.units),
-            ]))
-        .toList();
-  }
-
-  List<DataGridRow> _employeeData = [];
-
-  @override
-  List<DataGridRow> get rows => _employeeData;
-
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+  Widget ListCard(String data) {
+    return Row(
+      children: [
+        Expanded(
+          flex: 2,
+          child: listText('1'),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText(data),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText('09400104050'),
+        ),
+        Expanded(flex: 3, child: listText('50')),
+        Expanded(
+          flex: 7,
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  '-',
+                  style: TextStyle(
+                    color: kBlue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  fixedSize: Size(5, 5),
+                ),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  '+',
+                  style: TextStyle(
+                    color: kBlue,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: TextButton.styleFrom(
+                  fixedSize: Size(5, 5),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 7,
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Icon(Icons.delete_outline_outlined),
+                style: TextButton.styleFrom(
+                    fixedSize: Size(5, 5), iconColor: kError),
+              ),
+              TextButton(
+                onPressed: () {},
+                child: Icon(Icons.error_outline),
+                style: TextButton.styleFrom(
+                    fixedSize: Size(5, 5), iconColor: kError),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }

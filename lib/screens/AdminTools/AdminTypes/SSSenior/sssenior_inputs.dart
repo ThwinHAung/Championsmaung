@@ -16,7 +16,7 @@ class SSSeniorInputsPage extends StatefulWidget {
 }
 
 class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? _token;
   final TextEditingController _homeTeamController = TextEditingController();
   final TextEditingController _awayTeamController = TextEditingController();

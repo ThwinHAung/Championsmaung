@@ -3,6 +3,7 @@ import 'package:champion_maung/Routes/UserRoutes/body_betting.dart';
 import 'package:champion_maung/Routes/UserRoutes/match_results.dart';
 import 'package:champion_maung/Routes/UserRoutes/maung_betting.dart';
 import 'package:champion_maung/Routes/UserRoutes/more.dart';
+import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
@@ -50,7 +51,7 @@ class ChampionMaung extends StatelessWidget {
         //SSSenior
         SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),
         SSSeniorMembers.id: (context) => const SSSeniorMembers(),
-        SSSeniorInputsPage.id: (context) => SSSeniorInputsPage(),
+        SSSeniorInputsPage.id: (context) => const SSSeniorInputsPage(),
         SSSeniorMatchView.id: (context) => const SSSeniorMatchView(),
         SSSeniorShowMembersList.id: (context) =>
             const SSSeniorShowMembersList(),

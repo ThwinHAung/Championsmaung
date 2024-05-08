@@ -19,7 +19,7 @@ class SSeniorAdminScreen extends StatefulWidget {
 }
 
 class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? _token;
   var list = [
     'Members',

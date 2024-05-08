@@ -77,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             _rememberMe = value!;
                           });
                         }),
-                    Text(
+                    const Text(
                       'Remember me',
                       style: TextStyle(
                         color: konPrimary,
@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Handle token and role as needed
 
-      final storage = new FlutterSecureStorage();
+      final storage = const FlutterSecureStorage();
       if (_rememberMe) {
         await Future.wait([
           storage.write(key: 'token', value: token),

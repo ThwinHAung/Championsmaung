@@ -20,7 +20,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   final TextEditingController _balanceController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? selectedValue;
   String? _token;
   String? _role;
@@ -75,7 +75,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     child: Container(
                       child: Text(
                         'Your account type : $_role',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
                         ),

@@ -155,3 +155,20 @@ const List<String> userDropdownItems = [
 ];
 
 String? selectedValue;
+
+Widget listTitleText(String listTitleText) {
+  return Text(
+    listTitleText,
+    style: TextStyle(
+      fontWeight: FontWeight.w600,
+      color: kBlue,
+    ),
+  );
+}
+
+Widget listText(String listText) {
+  return Text(
+    listText,
+    style: TextStyle(fontSize: 10.0),
+  );
+}
