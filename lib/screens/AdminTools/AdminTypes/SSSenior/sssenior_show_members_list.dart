@@ -11,6 +11,9 @@ class SSSeniorShowMembersList extends StatefulWidget {
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
+  TextEditingController _unitReduceController = TextEditingController();
+  TextEditingController _unitAddController = TextEditingController();
+
   final TextEditingController _controller = TextEditingController();
   final List<String> _data = [
     'Apple',
@@ -160,7 +163,51 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           child: Row(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Reduce Unit'),
+                      content:
+                          const Text('Enter the amount of unit to reduce.'),
+                      actions: <Widget>[
+                        TextFormField(
+                          controller: _unitReduceController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: 'Enter unit amount'),
+                        ),
+                        SizedBox(height: 10.0),
+                        TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Reduce Unit'),
+                                content: const Text(
+                                    'Do you really want to reduce "replace unit here" units from this account?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: kError),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: const Text('Enter'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Text(
                   '-',
                   style: TextStyle(
@@ -173,7 +220,50 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Add Unit'),
+                      content: const Text('Enter the amount of unit to add.'),
+                      actions: <Widget>[
+                        TextFormField(
+                          controller: _unitReduceController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: 'Enter unit amount'),
+                        ),
+                        SizedBox(height: 10.0),
+                        TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Add Unit'),
+                                content: const Text(
+                                    'Do you really want to add "replace unit here" units from this account?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: kError),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: const Text('Enter'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Text(
                   '+',
                   style: TextStyle(
@@ -193,13 +283,57 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           child: Row(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete Account'),
+                      content:
+                          const Text('Do you really want delete this account?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: kError),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Icon(Icons.delete_outline_outlined),
                 style: TextButton.styleFrom(
                     fixedSize: Size(5, 5), iconColor: kError),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Postpone Account'),
+                      content: const Text(
+                          'Do you really want to postpone this account?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: kError),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Icon(Icons.error_outline),
                 style: TextButton.styleFrom(
                     fixedSize: Size(5, 5), iconColor: kError),
