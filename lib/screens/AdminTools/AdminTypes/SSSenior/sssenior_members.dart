@@ -24,12 +24,10 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   String? selectedValue;
   String? _token;
   String? _role;
-  String? _userId;
 
   @override
   void initState() {
     _role = 'Loading...';
-    _userId = 'Loading...';
     _getToken();
     super.initState();
   }
@@ -37,12 +35,10 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
-    final String? userId = await storage.read(key: 'user_id');
 
-    if (role != null && userId != null) {
+    if (role != null) {
       setState(() {
         _role = role;
-        _userId = userId;
       });
     }
   }
@@ -202,6 +198,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     labelText('Password'),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                           hintText: 'Enter password'),
@@ -307,17 +304,14 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     var response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
-      'current_user_role': _role,
       'username': selectedValue,
       'password': _passwordController.text,
       'password_confirmation': _confirmPasswordController.text,
       'phone_number': _phoneNumberController.text,
       'balance': _balanceController.text,
-      'created_by': _userId,
     });
 
     if (response.statusCode == 200) {
-      print('Registration successful');
       Navigator.pop(context);
     } else {
       showDialog(
