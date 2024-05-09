@@ -89,8 +89,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
 
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
-      await storage.delete(key: 'user_role');
-      await storage.delete(key: 'user_id');
+      await storage.delete(key: 'role');
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else {

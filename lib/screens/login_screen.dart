@@ -140,29 +140,23 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String token = responseData['token'];
-      final String? id = responseData['user_id']?.toString();
       final String role = responseData['role'];
 
       // Handle token and role as needed
-
-      final storage = const FlutterSecureStorage();
-      if (_rememberMe) {
-        await Future.wait([
-          storage.write(key: 'token', value: token),
-          storage.write(key: 'user_id', value: id),
-          storage.write(key: 'user_role', value: role),
-          storage.write(key: 'username', value: _usernameController.text),
-          storage.write(key: 'password', value: _passwordController.text),
-        ]);
-      } else {
-        await Future.wait([
-          storage.write(key: 'token', value: token),
-          storage.write(key: 'user_id', value: id),
-          storage.write(key: 'user_role', value: role),
-          storage.delete(key: 'username'),
-          storage.delete(key: 'password'),
-        ]);
-      }
+      final storage = FlutterSecureStorage();
+      // if (_rememberMe) {
+      await storage.write(key: 'token', value: token);
+      await storage.write(key: 'user_role', value: role);
+      // storage.write(key: 'username', value: _usernameController.text),
+      // storage.write(key: 'password', value: _passwordController.text),
+      // } else {
+      //   await Future.wait([
+      //     storage.write(key: 'token', value: token),
+      //     storage.write(key: 'user_role', value: role),
+      //     storage.delete(key: 'username'),
+      //     storage.delete(key: 'password'),
+      //   ]);
+      // }
 
       if (role == 'SSSenior') {
         Navigator.push(

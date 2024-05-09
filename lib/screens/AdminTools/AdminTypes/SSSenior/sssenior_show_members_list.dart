@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class SSSeniorShowMembersList extends StatefulWidget {
   static String id = "sssenior_show_members_list";
@@ -11,29 +15,18 @@ class SSSeniorShowMembersList extends StatefulWidget {
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
+  TextEditingController _unitReduceController = TextEditingController();
+  TextEditingController _unitAddController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
-  final List<String> _data = [
-    'Apple',
-    'Banana',
-    'Cherry',
-    'Date',
-    'Fig',
-    'Grapes',
-    'Kiwi',
-    'Lemon',
-    'Mango',
-    'Orange',
-    'Peach',
-    'Pineapple',
-    'Strawberry',
-    'Watermelon'
-  ];
+  List<dynamic> _memberList = [];
   List<String> _filteredData = [];
+  final storage = const FlutterSecureStorage();
+  String? _token;
 
   @override
   void initState() {
+    _getToken();
     super.initState();
-    _filteredData = _data;
     _controller.addListener(_onSearchChanged);
   }
 
@@ -43,12 +36,40 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
     super.dispose();
   }
 
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchMemberList();
+    }
+  }
+
   void _onSearchChanged() {
     String query = _controller.text.toLowerCase();
     setState(() {
-      _filteredData =
-          _data.where((item) => item.toLowerCase().contains(query)).toList();
+      _filteredData = _memberList
+          .map((item) => item['username'].toString())
+          .where((item) => item.toLowerCase().contains(query))
+          .toList();
     });
+  }
+
+  Future<void> _fetchMemberList() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/getmemberlist');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        _memberList = jsonDecode(response.body)['created_users'];
+        _filteredData =
+            _memberList.map((item) => item['username'].toString()).toList();
+      });
+    } else {
+      print('xx');
+    }
   }
 
   @override
@@ -91,7 +112,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
             child: TextField(
               controller: _controller,
               decoration: const InputDecoration(
-                labelText: 'Search',
+                // labelText: 'Search',
                 hintText: 'Search...',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -128,39 +149,91 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(
-              itemCount: _filteredData.length,
-              itemBuilder: (context, index) {
-                return ListCard(_data[index].toString());
-              },
-            ),
+                itemCount: _filteredData.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> user = _memberList.firstWhere(
+                    (element) => element['username'] == _filteredData[index],
+                    orElse: () => {},
+                  );
+                  return ListCard(index + 1, user);
+                }),
           ),
         ],
       ),
     );
   }
 
-  Widget ListCard(String data) {
+  Widget ListCard(int index, Map<String, dynamic> userData) {
+    String userId = userData['id'].toString();
     return Row(
       children: [
         Expanded(
           flex: 2,
-          child: listText('1'),
+          child: listText(index.toString()),
         ),
         Expanded(
           flex: 5,
-          child: listText(data),
+          child: listText(userData['username']),
         ),
         Expanded(
           flex: 5,
-          child: listText('09400104050'),
+          child: listText(userData['phone_number']),
         ),
-        Expanded(flex: 3, child: listText('50')),
+        Expanded(flex: 3, child: listText(userData['balance'].toString())),
         Expanded(
           flex: 7,
           child: Row(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Reduce Unit'),
+                      content:
+                          const Text('Enter the amount of unit to reduce.'),
+                      actions: <Widget>[
+                        TextFormField(
+                          controller: _unitReduceController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: 'Enter unit amount'),
+                        ),
+                        SizedBox(height: 10.0),
+                        TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Reduce Unit'),
+                                content: const Text(
+                                    'Do you really want to reduce "replace unit here" units from this account?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      _reduceUnits(userId);
+                                    },
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: kError),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      print(userId);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: const Text('Enter'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Text(
                   '-',
                   style: TextStyle(
@@ -173,7 +246,52 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Add Unit'),
+                      content: const Text('Enter the amount of unit to add.'),
+                      actions: <Widget>[
+                        TextFormField(
+                          controller: _unitAddController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                              hintText: 'Enter unit amount'),
+                        ),
+                        SizedBox(height: 10.0),
+                        TextButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Add Unit'),
+                                content: const Text(
+                                    'Do you really want to add "replace unit here" units from this account?'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: kError),
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      _addUnits(userId);
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          child: const Text('Enter'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Text(
                   '+',
                   style: TextStyle(
@@ -193,13 +311,61 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           child: Row(
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Delete Account'),
+                      content:
+                          const Text('Do you really want delete this account?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: kError),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            _delete(userId);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Icon(Icons.delete_outline_outlined),
                 style: TextButton.styleFrom(
                     fixedSize: Size(5, 5), iconColor: kError),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Postpone Account'),
+                      content: const Text(
+                          'Do you really want to postpone this account?'),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () => Navigator.pop(context),
+                          child: const Text(
+                            'Cancel',
+                            style: TextStyle(color: kError),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            _setPP(userId);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 child: Icon(Icons.error_outline),
                 style: TextButton.styleFrom(
                     fixedSize: Size(5, 5), iconColor: kError),
@@ -209,5 +375,61 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
         ),
       ],
     );
+  }
+
+  Future<void> _reduceUnits(String userId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/reducing_units');
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      "user_id": userId,
+      "amount": _unitReduceController.text,
+    });
+    if (response.statusCode == 200) {
+      print('ok');
+    }
+  }
+
+  Future<void> _addUnits(String userId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/adding_units');
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      "user_id": userId,
+      "amount": _unitAddController.text,
+    });
+    if (response.statusCode == 200) {
+      print('ok');
+    }
+  }
+
+  Future<void> _setPP(String userId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/postpone_user');
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      "user_id": userId,
+    });
+    if (response.statusCode == 200) {}
+  }
+
+  Future<void> _unsetPP(String userId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/unpostpone_user');
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      "user_id": userId,
+    });
+    if (response.statusCode == 200) {}
+  }
+
+  Future<void> _delete(String userId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/delete_user');
+    final response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      "user_id": userId,
+    });
+    if (response.statusCode == 200) {}
   }
 }
