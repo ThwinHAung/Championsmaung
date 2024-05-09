@@ -210,18 +210,21 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                     'Do you really want to reduce "replace unit here" units from this account?'),
                                 actions: <Widget>[
                                   TextButton(
+
                                     onPressed: () {
                                       _reduceUnits(userId);
                                     },
+
                                     child: const Text(
                                       'Cancel',
                                       style: TextStyle(color: kError),
                                     ),
                                   ),
                                   TextButton(
+
                                     onPressed: () {
                                       print(userId);
-                                    },
+                                    }
                                     child: const Text('OK'),
                                   ),
                                 ],
@@ -254,7 +257,9 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                       content: const Text('Enter the amount of unit to add.'),
                       actions: <Widget>[
                         TextFormField(
+
                           controller: _unitAddController,
+                        
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Enter unit amount'),
@@ -280,6 +285,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                     onPressed: () {
                                       _addUnits(userId);
                                     },
+                                    
                                     child: const Text('OK'),
                                   ),
                                 ],
