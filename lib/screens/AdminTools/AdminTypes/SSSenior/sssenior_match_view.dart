@@ -55,20 +55,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       duration: const Duration(milliseconds: 2500),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: kOnPrimaryContainer,
-                              borderRadius: BorderRadius.circular(10.0)),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              children: [
-                                customRadio('Windows', 1),
-                                customRadio('MacOS', 2),
-                              ],
-                            ),
-                          ),
-                        ),
+                        child: radioContainer(),
                       ),
                     ),
                   ),
@@ -79,25 +66,62 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     );
   }
 
-  Widget customRadio(String text, int index) {
-    return Expanded(
+  Widget radioContainer() {
+    return Container(
+      decoration: BoxDecoration(
+          color: kOnPrimaryContainer,
+          borderRadius: BorderRadius.circular(10.0)),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: OutlinedButton(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                customRadio('Windows', 1),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                customRadio('MacOS', 2),
+              ],
+            ),
+            Row(
+              children: [
+                customRadio('Linux', 3),
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                customRadio('Android', 4),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget customRadio(String text, int index) {
+    return Expanded(
+      flex: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextButton(
           onPressed: () {
             setState(() {
               selectedIndex = index;
             });
           },
-          style: OutlinedButton.styleFrom(
-            backgroundColor: kOnPrimaryContainer,
+          style: TextButton.styleFrom(
+            backgroundColor:
+                (selectedIndex == index) ? kBlue : kOnPrimaryContainer,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
           child: Text(
             text,
             style: TextStyle(
-              color: (selectedIndex == index) ? kBlue : kGrey,
+              color: (selectedIndex == index) ? kWhite : kGrey,
             ),
           ),
         ),
