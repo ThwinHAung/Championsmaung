@@ -14,13 +14,20 @@ class SSSeniorMatchView extends StatefulWidget {
 }
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
-  List<String> matchesList = ['1', '2'];
-  List<String> listValOne = ['one', 'three'];
-  int selectedIndex = 0;
+  List<String> leagues = ['Premiere League', 'Spain Laliga', 'Championship'];
+
+  List<List<String>> lists = [
+    ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+    ['Option A', 'Option B', 'Option C', 'Option D'],
+    ['Option X', 'Option Y', 'Option Z', 'Option W'],
+  ];
+
+  // Selected value for each list
+  List<String> selectedValues = List.filled(3, '');
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimary,
@@ -42,7 +49,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: matchesList.length,
+              itemCount: lists.length,
               itemBuilder: (context, index) {
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -55,7 +62,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       duration: const Duration(milliseconds: 2500),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: radioContainer(),
+                        child: radioContainer(index),
                       ),
                     ),
                   ),
@@ -66,62 +73,98 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     );
   }
 
-  Widget radioContainer() {
+  Widget radioContainer(int index) {
     return Container(
       decoration: BoxDecoration(
           color: kOnPrimaryContainer,
           borderRadius: BorderRadius.circular(10.0)),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                customRadio('Windows', 1),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                customRadio('MacOS', 2),
-              ],
-            ),
-            Row(
-              children: [
-                customRadio('Linux', 3),
-                Expanded(
-                  flex: 2,
-                  child: Container(),
-                ),
-                customRadio('Android', 4),
-              ],
-            )
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(leagues[index]),
+              Column(
+                children: lists[index]
+                    .map((item) => GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // Toggle selection
+                              if (selectedValues[index] == item) {
+                                selectedValues[index] =
+                                    ''; // Deselect the option
+                              } else {
+                                selectedValues[index] =
+                                    item; // Select the option
+                              }
+                            });
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            margin: EdgeInsets.symmetric(vertical: 5),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: selectedValues.contains(item)
+                                    ? Colors.blue
+                                    : Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
+                            child: Text(item),
+                          ),
+                        ))
+                    .toList(),
+              ),
+            ],
+          )),
     );
   }
 
-  Widget customRadio(String text, int index) {
+  Widget listRadio(String item) {
     return Expanded(
       flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: TextButton(
           onPressed: () {
-            setState(() {
-              selectedIndex = index;
-            });
+            setState(() {});
           },
           style: TextButton.styleFrom(
-            backgroundColor:
-                (selectedIndex == index) ? kBlue : kOnPrimaryContainer,
+            backgroundColor: kOnPrimaryContainer,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           ),
           child: Text(
-            text,
-            style: TextStyle(
-              color: (selectedIndex == index) ? kWhite : kGrey,
+            item,
+            style: const TextStyle(
+              color: kBlue,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget customRadio(String item) {
+    return Expanded(
+      flex: 3,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: TextButton(
+          onPressed: () {
+            setState(() {});
+          },
+          style: TextButton.styleFrom(
+            backgroundColor: kOnPrimaryContainer,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          ),
+          child: Text(
+            item,
+            style: const TextStyle(
+              color: kBlue,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

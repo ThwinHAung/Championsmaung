@@ -159,7 +159,7 @@ String? selectedValue;
 Widget listTitleText(String listTitleText) {
   return Text(
     listTitleText,
-    style: TextStyle(
+    style: const TextStyle(
       fontWeight: FontWeight.w600,
       color: kBlue,
     ),
@@ -169,6 +169,6 @@ Widget listTitleText(String listTitleText) {
 Widget listText(String listText) {
   return Text(
     listText,
-    style: TextStyle(fontSize: 10.0),
+    style: const TextStyle(fontSize: 10.0),
   );
 }

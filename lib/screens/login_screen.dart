@@ -143,7 +143,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final String role = responseData['role'];
 
       // Handle token and role as needed
-      final storage = FlutterSecureStorage();
+      const storage = FlutterSecureStorage();
       // if (_rememberMe) {
       await storage.write(key: 'token', value: token);
       await storage.write(key: 'user_role', value: role);

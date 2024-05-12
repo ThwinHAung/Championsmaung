@@ -15,8 +15,8 @@ class SSSeniorShowMembersList extends StatefulWidget {
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
-  TextEditingController _unitReduceController = TextEditingController();
-  TextEditingController _unitAddController = TextEditingController();
+  final TextEditingController _unitReduceController = TextEditingController();
+  final TextEditingController _unitAddController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
   List<dynamic> _memberList = [];
   List<String> _filteredData = [];
@@ -118,7 +118,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
             ),
           ),
-          SizedBox(height: 15.0),
+          const SizedBox(height: 15.0),
           Row(
             children: [
               Expanded(
@@ -147,7 +147,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
             ],
           ),
-          SizedBox(height: 10.0),
+          const SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(
                 itemCount: _filteredData.length,
@@ -200,7 +200,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Enter unit amount'),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextButton(
                           onPressed: () {
                             showDialog(
@@ -235,15 +235,15 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     ),
                   );
                 },
-                child: Text(
+                style: TextButton.styleFrom(
+                  fixedSize: const Size(5, 5),
+                ),
+                child: const Text(
                   '-',
                   style: TextStyle(
                     color: kBlue,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                style: TextButton.styleFrom(
-                  fixedSize: Size(5, 5),
                 ),
               ),
               TextButton(
@@ -260,7 +260,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Enter unit amount'),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         TextButton(
                           onPressed: () {
                             showDialog(
@@ -293,15 +293,15 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     ),
                   );
                 },
-                child: Text(
+                style: TextButton.styleFrom(
+                  fixedSize: const Size(5, 5),
+                ),
+                child: const Text(
                   '+',
                   style: TextStyle(
                     color: kBlue,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                style: TextButton.styleFrom(
-                  fixedSize: Size(5, 5),
                 ),
               ),
             ],
@@ -337,9 +337,9 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     ),
                   );
                 },
-                child: Icon(Icons.delete_outline_outlined),
                 style: TextButton.styleFrom(
-                    fixedSize: Size(5, 5), iconColor: kError),
+                    fixedSize: const Size(5, 5), iconColor: kError),
+                child: const Icon(Icons.delete_outline_outlined),
               ),
               TextButton(
                 onPressed: () {
@@ -367,9 +367,9 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     ),
                   );
                 },
-                child: Icon(Icons.error_outline),
                 style: TextButton.styleFrom(
-                    fixedSize: Size(5, 5), iconColor: kError),
+                    fixedSize: const Size(5, 5), iconColor: kError),
+                child: const Icon(Icons.error_outline),
               ),
             ],
           ),
