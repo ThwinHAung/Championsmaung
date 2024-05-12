@@ -90,7 +90,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
       body: Container(
         color: kPrimary,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(10.0),
           child: Container(
             decoration: BoxDecoration(
                 color: kOnPrimaryContainer,
@@ -118,6 +118,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
             ),
           ),
+          SizedBox(height: 15.0),
           Row(
             children: [
               Expanded(
