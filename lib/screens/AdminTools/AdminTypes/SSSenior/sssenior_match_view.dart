@@ -1,5 +1,6 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class SSSeniorMatchView extends StatefulWidget {
@@ -17,13 +18,12 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   List<String> leagues = ['Premiere League', 'Spain Laliga', 'Championship'];
 
   List<List<String>> lists = [
-    ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
-    ['Option A', 'Option B', 'Option C', 'Option D'],
-    ['Option X', 'Option Y', 'Option Z', 'Option W'],
+    ['TeamOne 1', 'TeamTwo 1', 'Over 1', 'Under 1'],
+    ['TeamOne 2', 'TeamTwo 2', 'Over 2', 'Under 2'],
+    ['TeamOne 3', 'TeamTwo 3', 'Over 3', 'Under 3'],
   ];
 
-  // Selected value for each list
-  List<String> selectedValues = List.filled(3, '');
+  Map<int, String> selectedValues = {};
 
   @override
   Widget build(BuildContext context) {
@@ -76,95 +76,116 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   Widget radioContainer(int index) {
     return Container(
       decoration: BoxDecoration(
-          color: kOnPrimaryContainer,
-          borderRadius: BorderRadius.circular(10.0)),
-      child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(leagues[index]),
-              Column(
-                children: lists[index]
-                    .map((item) => GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              // Toggle selection
-                              if (selectedValues[index] == item) {
-                                selectedValues[index] =
-                                    ''; // Deselect the option
-                              } else {
-                                selectedValues[index] =
-                                    item; // Select the option
-                              }
-                            });
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: selectedValues.contains(item)
-                                    ? Colors.blue
-                                    : Colors.transparent,
-                                width: 2,
-                              ),
-                            ),
-                            child: Text(item),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ],
-          )),
-    );
-  }
-
-  Widget listRadio(String item) {
-    return Expanded(
-      flex: 3,
+        color: kOnPrimaryContainer,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: TextButton(
-          onPressed: () {
-            setState(() {});
-          },
-          style: TextButton.styleFrom(
-            backgroundColor: kOnPrimaryContainer,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-          child: Text(
-            item,
-            style: const TextStyle(
-              color: kBlue,
-              fontWeight: FontWeight.w500,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            labelText(
+              leagues[index],
             ),
-          ),
+            SizedBox(height: 5.0),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Container(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        customRadio(lists[index][0], 0, index),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '<',
+                              style: TextStyle(
+                                color: kBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text('1-30'),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '>',
+                              style: TextStyle(
+                                color: kBlue,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        customRadio(lists[index][1], 1, index),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        customRadio(lists[index][2], 2, index),
+                        Expanded(
+                          flex: 1,
+                          child: Container(
+                            alignment: Alignment.center,
+                            child: Text('2-10'),
+                          ),
+                        ),
+                        customRadio(lists[index][3], 3, index),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
-  Widget customRadio(String item) {
+  Widget customRadio(String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: TextButton(
-          onPressed: () {
-            setState(() {});
+        child: GestureDetector(
+          onTap: () {
+            setState(() {
+              // Toggle selection
+              if (selectedValues[listIndex] == item) {
+                selectedValues[listIndex] = ''; // Unselect
+              } else {
+                selectedValues[listIndex] = item; // Select
+              } // Update selectedValues list
+            });
           },
-          style: TextButton.styleFrom(
-            backgroundColor: kOnPrimaryContainer,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          ),
-          child: Text(
-            item,
-            style: const TextStyle(
-              color: kBlue,
-              fontWeight: FontWeight.w500,
+          child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: selectedValues[listIndex] == item ? kBlue : kPrimary,
+            ),
+            alignment: Alignment.center,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                item,
+                style: TextStyle(
+                  color: selectedValues[listIndex] == item ? kWhite : kBlue,
+                ),
+              ),
             ),
           ),
         ),
