@@ -1,10 +1,10 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:champion_maung/Routes/UserRoutes/betting_history.dart';
-import 'package:champion_maung/Routes/UserRoutes/body_betting.dart';
-import 'package:champion_maung/Routes/UserRoutes/match_results.dart';
-import 'package:champion_maung/Routes/UserRoutes/maung_betting.dart';
-import 'package:champion_maung/Routes/UserRoutes/more.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/constants.dart';
 
 class UserHomeScreen extends StatefulWidget {
