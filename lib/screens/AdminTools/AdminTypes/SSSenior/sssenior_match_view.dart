@@ -23,6 +23,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     ['TeamOne 3', 'TeamTwo 3', 'Over 3', 'Under 3'],
   ];
 
+  List<String> specialOdd = ['3-60', '1+40', '2-15'];
+
+  List<String> overunder = ['1+60', '2-70', '3+10'];
+
   Map<int, String> selectedValues = {};
 
   @override
@@ -114,7 +118,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text('1-30'),
+                            child: Text(specialOdd[index]),
                           ),
                         ),
                         Expanded(
@@ -140,7 +144,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text('2-10'),
+                            child: Text(overunder[index]),
                           ),
                         ),
                         customRadio(lists[index][3], 3, index),
