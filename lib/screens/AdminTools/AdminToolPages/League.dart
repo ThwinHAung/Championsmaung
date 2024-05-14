@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class LeagueScreen extends StatefulWidget {
+  static const id = "input_LeagueScreen";
   const LeagueScreen({super.key});
 
   @override

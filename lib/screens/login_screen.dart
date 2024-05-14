@@ -141,12 +141,14 @@ class _LoginScreenState extends State<LoginScreen> {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final String token = responseData['token'];
       final String role = responseData['role'];
+      final String username = responseData['username'];
 
       // Handle token and role as needed
       const storage = FlutterSecureStorage();
       // if (_rememberMe) {
       await storage.write(key: 'token', value: token);
       await storage.write(key: 'user_role', value: role);
+      await storage.write(key: 'username', value: username);
       // storage.write(key: 'username', value: _usernameController.text),
       // storage.write(key: 'password', value: _passwordController.text),
       // } else {

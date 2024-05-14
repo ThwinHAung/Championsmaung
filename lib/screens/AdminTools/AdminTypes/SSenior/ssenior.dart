@@ -21,6 +21,7 @@ class SSeniorAdminScreen extends StatefulWidget {
 class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  String? _role;
   var list = [
     'Members',
     'Balance',
@@ -61,12 +62,19 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
 
   @override
   void initState() {
+    _role = 'Loading...';
     _getToken();
     super.initState();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    final String? role = await storage.read(key: 'user_role');
+    if (role != null) {
+      setState(() {
+        _role = role;
+      });
+    }
   }
 
   Future<void> _logout() async {
@@ -81,8 +89,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
 
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
-      await storage.delete(key: 'user_role');
-      await storage.delete(key: 'user_id');
+      await storage.delete(key: 'role');
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else {
@@ -98,8 +105,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: const Text(
-          'CHAMPION MAUNG (SSenior)',
+        title: Text(
+          'CHAMPION MAUNG ($_role)',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,

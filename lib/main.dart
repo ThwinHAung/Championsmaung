@@ -1,8 +1,4 @@
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/League.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
@@ -22,6 +18,11 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart'
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/splash_screen.dart';
@@ -50,6 +51,7 @@ class ChampionMaung extends StatelessWidget {
         ActivityLogScreen.id: (context) => const ActivityLogScreen(),
         Report.id: (context) => const Report(),
         Deposit.id: (context) => const Deposit(),
+        LeagueScreen.id: (context) => LeagueScreen(),
         AccountSettings.id: (context) => const AccountSettings(),
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
