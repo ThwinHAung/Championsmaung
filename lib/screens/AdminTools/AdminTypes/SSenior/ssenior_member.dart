@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +26,11 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   String? selectedValue2;
   String? _token;
   String? _role;
-  String? _userId;
+  String? _username;
 
   @override
   void initState() {
     _role = 'Loading...';
-    _userId = 'Loading...';
     _getToken();
     super.initState();
   }
@@ -37,12 +38,11 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
-    final String? userId = await storage.read(key: 'user_id');
+    _username = await storage.read(key: 'username');
 
-    if (role != null && userId != null) {
+    if (role != null) {
       setState(() {
         _role = role;
-        _userId = userId;
       });
     }
   }
@@ -304,6 +304,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                     labelText('Password'),
                     TextFormField(
                       controller: _passwordController,
+                      obscureText: true,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                           hintText: 'Enter password'),
@@ -409,24 +410,28 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     var response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
-      'current_user_role': _role,
-      'username': selectedValue1! + selectedValue2!,
+      'username': _username! + selectedValue1! + selectedValue2!,
       'password': _passwordController.text,
       'password_confirmation': _confirmPasswordController.text,
       'phone_number': _phoneNumberController.text,
       'balance': _balanceController.text,
-      'created_by': _userId,
     });
 
     if (response.statusCode == 200) {
       print('Registration successful');
       Navigator.pop(context);
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> errors = responseData['errors'];
+      String errorMessage = "";
+      errors.forEach((key, value) {
+        errorMessage += "$key: $value\n";
+      });
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Registration Failed'),
-          content: const Text('Username already exists.'),
+          title: const Text('Errors'),
+          content: Text(errorMessage),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),

@@ -1,4 +1,5 @@
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminToolPages/League.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
@@ -16,7 +17,6 @@ import 'package:http/http.dart' as http;
 class SSSeniorAdminScreen extends StatefulWidget {
   static String id = 'sssenior_admin_screen';
   const SSSeniorAdminScreen({super.key});
-
   @override
   State<SSSeniorAdminScreen> createState() => _SSSeniorAdminScreenState();
 }
@@ -34,6 +34,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     'Transition Activity Log',
     'Members',
     'Members List',
+    'Input Leagues',
     'Input Matches',
     'View Matches List',
     'Report',
@@ -45,6 +46,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     ActivityLogScreen.id,
     SSSeniorMembers.id,
     SSSeniorShowMembersList.id,
+    LeagueScreen.id,
     SSSeniorInputsPage.id,
     SSSeniorMatchView.id,
     Report.id,

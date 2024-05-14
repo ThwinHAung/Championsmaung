@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -314,11 +315,17 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> errors = responseData['errors'];
+      String errorMessage = "";
+      errors.forEach((key, value) {
+        errorMessage += "$key: $value\n";
+      });
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Registration Failed'),
-          content: const Text('Username already exists.'),
+          title: const Text('Error'),
+          content: Text(errorMessage),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),
