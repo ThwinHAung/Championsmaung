@@ -109,7 +109,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           builder: (context) => editDilaog(index),
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.edit_outlined,
                         color: kBlue,
                       ),
@@ -118,11 +118,11 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               ],
             ),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Container(
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Show times here',
                       style: TextStyle(color: kGrey),
                     ),
@@ -133,7 +133,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               '<',
                               style: TextStyle(
                                 color: kBlue,
@@ -153,7 +153,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               '>',
                               style: TextStyle(
                                 color: kBlue,
@@ -203,7 +203,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: kBlue,
               ),
             ),
@@ -214,10 +214,12 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   ///Varibales
-  TextEditingController _homeTeamEditController = TextEditingController();
-  TextEditingController _awayTeamEditController = TextEditingController();
-  TextEditingController _specialOddsEditController = TextEditingController();
-  TextEditingController _overUnderEditController = TextEditingController();
+  final TextEditingController _homeTeamEditController = TextEditingController();
+  final TextEditingController _awayTeamEditController = TextEditingController();
+  final TextEditingController _specialOddsEditController =
+      TextEditingController();
+  final TextEditingController _overUnderEditController =
+      TextEditingController();
 
   List<Map<String, String>> poukKyayList = [
     {'name': 'Team 1', 'value': '1'},
@@ -326,7 +328,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             ),
           ),
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
         TextFormField(
           controller: _homeTeamEditController,
           style: kTextFieldActiveStyle,
@@ -389,7 +391,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   child: materialButton(kError, 'Cancel', () {
                     Navigator.pop(context);
                   })),
-              SizedBox(width: 5.0),
+              const SizedBox(width: 5.0),
               Expanded(
                 flex: 1,
                 child: materialButton(kBlue, 'Update', () {

@@ -107,7 +107,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
         centerTitle: true,
         title: Text(
           'CHAMPION MAUNG ($_role)',
-          style: TextStyle(
+          style: const TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,

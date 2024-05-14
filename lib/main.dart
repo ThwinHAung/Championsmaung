@@ -51,7 +51,7 @@ class ChampionMaung extends StatelessWidget {
         ActivityLogScreen.id: (context) => const ActivityLogScreen(),
         Report.id: (context) => const Report(),
         Deposit.id: (context) => const Deposit(),
-        LeagueScreen.id: (context) => LeagueScreen(),
+        LeagueScreen.id: (context) => const LeagueScreen(),
         AccountSettings.id: (context) => const AccountSettings(),
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),

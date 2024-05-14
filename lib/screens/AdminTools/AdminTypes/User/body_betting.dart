@@ -88,13 +88,13 @@ class _BodyBettingState extends State<BodyBetting> {
             labelText(
               leagues[index],
             ),
-            SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Container(
                 child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Show times here',
                       style: TextStyle(color: kGrey),
                     ),
@@ -105,7 +105,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               '<',
                               style: TextStyle(
                                 color: kBlue,
@@ -125,7 +125,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(
+                            child: const Text(
                               '>',
                               style: TextStyle(
                                 color: kBlue,
