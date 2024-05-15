@@ -36,7 +36,7 @@ class _BodyBettingState extends State<BodyBetting> {
           backgroundColor: kPrimary,
           centerTitle: true,
           title: const Text(
-            'Leagues,Matches View',
+            'Body Betting',
             style: TextStyle(
               color: kBlack,
               fontWeight: FontWeight.bold,

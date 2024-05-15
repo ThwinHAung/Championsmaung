@@ -29,6 +29,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/splash_screen.dart';
@@ -82,6 +83,7 @@ class ChampionMaung extends StatelessWidget {
         AgentShowMembersList.id: (context) => const AgentShowMembersList(),
         //User
         RulesPage.id: (context) => const RulesPage(),
+        RulesPageForRoute.id: (context) => const RulesPageForRoute(),
         UserHomeScreen.id: (context) => const UserHomeScreen(),
         BodyBetting.id: (context) => const BodyBetting(),
         MaungBetting.id: (context) => const MaungBetting(),

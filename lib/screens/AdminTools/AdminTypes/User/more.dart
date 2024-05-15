@@ -1,3 +1,4 @@
+import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
 class More extends StatefulWidget {
@@ -12,7 +13,18 @@ class _MoreState extends State<More> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('More')),
+      appBar: AppBar(
+        backgroundColor: kPrimary,
+        centerTitle: true,
+        title: const Text(
+          'More',
+          style: TextStyle(
+            color: konPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
     );
   }
 }

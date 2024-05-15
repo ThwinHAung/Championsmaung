@@ -1,4 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
@@ -6,6 +8,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:http/http.dart' as http;
 
 class UserHomeScreen extends StatefulWidget {
   static String id = 'userHome_screen';
@@ -34,7 +37,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
         title: const Text(
           'CHAMPION MAUNG',
           style: TextStyle(
-            color: kWhite,
+            color: konPrimary,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),
@@ -54,7 +57,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 height: height * .23,
                 decoration: BoxDecoration(
                   color: kOnPrimaryContainer,
-                  borderRadius: BorderRadius.circular(40),
+                  borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -65,7 +68,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       Text(
                         'YOUR BALANCE',
                         style: TextStyle(
-                          color: konPrimary.withAlpha(150),
+                          color: kGrey,
                           fontWeight: FontWeight.w500,
                           letterSpacing: 1,
                           fontSize: 14,
@@ -74,7 +77,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       const Text(
                         '000,000' '  MMK',
                         style: TextStyle(
-                          color: kPrimary,
+                          color: kBlue,
                           fontWeight: FontWeight.w500,
                           fontSize: 50,
                         ),
@@ -125,7 +128,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 title: Text(
                                   list[index],
                                   style: const TextStyle(
-                                    color: konPrimary,
+                                    color: kBlue,
                                   ),
                                 ),
                                 leading: const Icon(
@@ -147,7 +150,40 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
           ),
         ),
       ),
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: ListView.builder(
+            itemCount: userDrawerList.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  userDrawerList[index],
+                  style: const TextStyle(
+                    color: kBlue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, userDrawerRoutes[index]);
+                },
+              );
+            },
+          ),
+        ),
+      ),
     );
   }
+
+  var userDrawerList = [
+    'Rules and Regulations',
+    'Change Langugae',
+    'Log Out',
+  ];
+
+  var userDrawerRoutes = [
+    RulesPageForRoute.id,
+    '',
+    'logout',
+  ];
 }

@@ -36,7 +36,7 @@ class _MaungBettingState extends State<MaungBetting> {
           backgroundColor: kPrimary,
           centerTitle: true,
           title: const Text(
-            'Leagues,Matches View',
+            'Maung Betting',
             style: TextStyle(
               color: kBlack,
               fontWeight: FontWeight.bold,

@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
-class RulesPage extends StatefulWidget {
-  static String id = 'rules_page';
-  const RulesPage({super.key});
+class RulesPageForRoute extends StatefulWidget {
+  static String id = 'rules_page_for_route';
+  const RulesPageForRoute({super.key});
 
   @override
-  State<RulesPage> createState() => _RulesPageState();
+  State<RulesPageForRoute> createState() => _RulesPageForRouteState();
 }
 
-class _RulesPageState extends State<RulesPage> {
+class _RulesPageForRouteState extends State<RulesPageForRoute> {
   List<String> rulesList = [
     '-> Rule 1',
     '-> Rule 2',
@@ -51,24 +51,20 @@ class _RulesPageState extends State<RulesPage> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Rules and Regulations',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+      appBar: AppBar(
+        backgroundColor: kPrimary,
+        centerTitle: true,
+        title: const Text(
+          'Rules and Regulations',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: _buildBody(w),
-        bottomNavigationBar: BottomAppBar(
-          color: kOnPrimaryContainer,
-          elevation: 1,
-          child: bottomBar(),
-        ));
+      ),
+      body: _buildBody(w),
+    );
   }
 
   Widget _buildBody(w) {
@@ -114,34 +110,6 @@ class _RulesPageState extends State<RulesPage> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget bottomBar() {
-    return Column(
-      children: [
-        Text(
-          'Accept the Rules and Regulations?',
-          style: TextStyle(
-            color: kGrey,
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        SizedBox(height: 2.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            materialButton(kError, 'Cancel', () {
-              Navigator.pop(context);
-            }),
-            SizedBox(width: 10.0),
-            materialButton(kBlue, 'Accept', () {
-              Navigator.pushNamed(context, UserHomeScreen.id);
-            })
-          ],
-        )
-      ],
     );
   }
 }
