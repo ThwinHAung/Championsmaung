@@ -201,7 +201,7 @@ Widget rulesText(String cap, String text) {
             ),
           ),
         ),
-        SizedBox(height: 10.0),
+        const SizedBox(height: 10.0),
       ],
     ),
   );

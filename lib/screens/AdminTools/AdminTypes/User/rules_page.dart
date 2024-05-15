@@ -67,11 +67,19 @@ class _RulesPageState extends State<RulesPage> {
           elevation: 1,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
+            child: const Row(
               children: [
-                const Expanded(
+                Expanded(
                   flex: 2,
-                  child: Text('Body ' '(0)'),
+                ),
+                Expanded(
+                  flex: 3,
+                ),
+                Expanded(
+                  flex: 3,
+                ),
+                Expanded(
+                  flex: 2,
                 ),
               ],
             ),
