@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -167,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const SSSeniorAdminScreen()));
       } else if (role == 'User') {
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const UserHomeScreen()));
+            MaterialPageRoute(builder: (context) => const RulesPage()));
       } else {
         Navigator.push(
             context,

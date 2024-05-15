@@ -49,24 +49,24 @@ class _BodyBettingState extends State<BodyBetting> {
           color: kOnPrimaryContainer,
           elevation: 1,
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                Expanded(
+                const Expanded(
                   flex: 2,
-                  child: Text('Body ' + '(0)'),
+                  child: Text('Body ' '(0)'),
                 ),
                 Expanded(
                   flex: 7,
                   child: TextFormField(
                     controller: _bodyBettingEditingController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'Enter amount to bet',
                       border: OutlineInputBorder(),
                     ),
                   ),
                 ),
-                SizedBox(width: 16.0),
+                const SizedBox(width: 16.0),
                 Expanded(
                   flex: 2,
                   child: materialButton(kBlue, 'Bet', () {
@@ -84,7 +84,7 @@ class _BodyBettingState extends State<BodyBetting> {
                               materialButton(kError, 'Cancel', () {
                                 Navigator.pop(context);
                               }),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               materialButton(kBlue, 'Bet', () {
                                 Navigator.pop(context);
                               })

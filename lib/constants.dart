@@ -172,3 +172,37 @@ Widget listText(String listText) {
     style: const TextStyle(fontSize: 10.0),
   );
 }
+
+Widget rulesText(String cap, String text) {
+  return Container(
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 10, 0, 0),
+          child: Text(
+            cap,
+            style: const TextStyle(
+              fontSize: 15,
+              color: kBlue,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(30, 5, 15, 0),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 12,
+              color: kGrey,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.0),
+      ],
+    ),
+  );
+}
