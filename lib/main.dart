@@ -5,8 +5,10 @@ import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
@@ -14,10 +16,13 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_m
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
@@ -56,18 +61,24 @@ class ChampionMaung extends StatelessWidget {
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
         SSeniorMembers.id: (context) => const SSeniorMembers(),
+        SSeniorShowMembersList.id: (context) => const SSeniorShowMembersList(),
         //Senior
         SeniorAdminScreen.id: (context) => const SeniorAdminScreen(),
         SeniorMembers.id: (context) => const SeniorMembers(),
+        SeniorShowMembersList.id: (context) => const SeniorShowMembersList(),
         //Master
         MasterAdminScreen.id: (context) => const MasterAdminScreen(),
         MasterMembers.id: (context) => const MasterMembers(),
+        MasterShowMembersList.id: (context) => const MasterShowMembersList(),
         //SeniorAgent
         SeniorAgentAdminScreen.id: (context) => const SeniorAgentAdminScreen(),
         SeniorAgentMembers.id: (context) => const SeniorAgentMembers(),
+        SeniorAgentShowMembersList.id: (context) =>
+            const SeniorAgentShowMembersList(),
         //Agent
         AgentAdminScreen.id: (context) => const AgentAdminScreen(),
         AgentMembers.id: (context) => const AgentMembers(),
+        AgentShowMembersList.id: (context) => const AgentShowMembersList(),
         //User
         UserHomeScreen.id: (context) => const UserHomeScreen(),
         BodyBetting.id: (context) => const BodyBetting(),

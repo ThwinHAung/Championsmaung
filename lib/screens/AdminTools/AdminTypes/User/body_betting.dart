@@ -25,50 +25,112 @@ class _BodyBettingState extends State<BodyBetting> {
 
   Map<int, String> selectedValues = {};
 
+  final TextEditingController _bodyBettingEditingController =
+      TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Leagues,Matches View',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Leagues,Matches View',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: kPrimary,
-        child: AnimationLimiter(
-          child: ListView.builder(
-              padding: EdgeInsets.all(w / 50),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: lists.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: radioContainer(index),
-                      ),
+        body: _buildBody(w),
+        bottomNavigationBar: BottomAppBar(
+          color: kOnPrimaryContainer,
+          elevation: 1,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 2,
+                  child: Text('Body ' + '(0)'),
+                ),
+                Expanded(
+                  flex: 7,
+                  child: TextFormField(
+                    controller: _bodyBettingEditingController,
+                    decoration: InputDecoration(
+                      hintText: 'Enter amount to bet',
+                      border: OutlineInputBorder(),
                     ),
                   ),
-                );
-              }),
-        ),
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                  flex: 2,
+                  child: materialButton(kBlue, 'Bet', () {
+                    // Do something with the text from the TextFormField
+                    String text = _bodyBettingEditingController.text;
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Bet'),
+                        content: Text(
+                            'Do you want to bet $text amount for body(0) matches?'),
+                        actions: <Widget>[
+                          Row(
+                            children: [
+                              materialButton(kError, 'Cancel', () {
+                                Navigator.pop(context);
+                              }),
+                              SizedBox(width: 5.0),
+                              materialButton(kBlue, 'Bet', () {
+                                Navigator.pop(context);
+                              })
+                            ],
+                          )
+                        ],
+                      ),
+                    );
+
+                    _bodyBettingEditingController.clear();
+                  }),
+                )
+              ],
+            ),
+          ),
+        ));
+  }
+
+  Widget _buildBody(double w) {
+    return Container(
+      color: kPrimary,
+      child: AnimationLimiter(
+        child: ListView.builder(
+            padding: EdgeInsets.all(w / 50),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            itemCount: lists.length,
+            itemBuilder: (context, index) {
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    duration: const Duration(milliseconds: 2500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5.0),
+                      child: radioContainer(index),
+                    ),
+                  ),
+                ),
+              );
+            }),
       ),
     );
   }

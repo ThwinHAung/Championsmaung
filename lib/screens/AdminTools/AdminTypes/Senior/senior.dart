@@ -3,6 +3,7 @@ import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_show_members_list.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -25,6 +26,7 @@ class _SeniorAdminScreenState extends State<SeniorAdminScreen> {
   var drawerList = [
     'Transition Activity Log',
     'Members',
+    'Members List',
     'Report',
     'Deposit / Withdraw',
     'Account',
@@ -33,6 +35,7 @@ class _SeniorAdminScreenState extends State<SeniorAdminScreen> {
   var drawerRoutes = [
     ActivityLogScreen.id,
     SeniorMembers.id,
+    SeniorShowMembersList.id,
     Report.id,
     Deposit.id,
     AccountSettings.id,
