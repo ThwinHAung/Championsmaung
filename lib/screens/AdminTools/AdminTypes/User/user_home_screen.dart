@@ -54,7 +54,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Container(
                 alignment: Alignment.bottomLeft,
                 width: double.infinity,
-                height: height * .23,
+                height: height * .25,
                 decoration: BoxDecoration(
                   color: kOnPrimaryContainer,
                   borderRadius: BorderRadius.circular(20),
@@ -65,14 +65,29 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Spacer(),
-                      Text(
-                        'YOUR BALANCE',
-                        style: TextStyle(
-                          color: kGrey,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1,
-                          fontSize: 14,
-                        ),
+                      Row(
+                        children: [
+                          Text(
+                            'YOUR BALANCE',
+                            style: TextStyle(
+                              color: kGrey,
+                              fontWeight: FontWeight.w500,
+                              letterSpacing: 1,
+                              fontSize: 14,
+                            ),
+                          ),
+                          SizedBox(width: 10.0),
+                          IconButton(
+                            onPressed: () {},
+                            icon: Icon(
+                              Icons.refresh_outlined,
+                              color: kBlue,
+                            ),
+                            style: IconButton.styleFrom(
+                              iconSize: 20,
+                            ),
+                          )
+                        ],
                       ),
                       const Text(
                         '000,000' '  MMK',
@@ -86,9 +101,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: height / 100,
-              ),
+              SizedBox(height: 15.0),
               AnimatedTextKit(
                 repeatForever: true,
                 animatedTexts: [
