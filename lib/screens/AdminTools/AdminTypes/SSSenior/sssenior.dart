@@ -77,6 +77,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token != null) {}
   }
 
   Future<void> _logout() async {
@@ -92,6 +93,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
+      await storage.delete(key: 'username');
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const LoginScreen()));
     } else {

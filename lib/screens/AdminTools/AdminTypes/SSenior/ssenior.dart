@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
@@ -23,6 +25,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _role;
+  String? _username;
+  double? _balance;
   var list = [
     'Members',
     'Balance',
@@ -73,9 +77,30 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
+    _username = await storage.read(key: 'username');
     if (role != null) {
       setState(() {
         _role = role;
+      });
+    }
+    if (_token != null) {
+      _getBalance();
+    }
+  }
+
+  Future<void> _getBalance() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _balance = double.parse(data['balance'].toString());
       });
     }
   }
@@ -160,7 +185,9 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
                                         style: kTextFieldActiveStyle,
                                       ),
                                       Text(
-                                        showValues[index].toString(),
+                                        index == 1 && _balance != null
+                                            ? '${_balance!.toStringAsFixed(2)}'
+                                            : '0', // Display 'Loading...' while balance is being fetched
                                         style: const TextStyle(
                                           fontSize: 35,
                                           color: kBlue,
