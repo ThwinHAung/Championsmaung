@@ -67,7 +67,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       const Spacer(),
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             'YOUR BALANCE',
                             style: TextStyle(
                               color: kGrey,
@@ -76,10 +76,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                               fontSize: 14,
                             ),
                           ),
-                          SizedBox(width: 10.0),
+                          const SizedBox(width: 10.0),
                           IconButton(
                             onPressed: () {},
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.refresh_outlined,
                               color: kBlue,
                             ),
@@ -101,7 +101,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 15.0),
+              const SizedBox(height: 15.0),
               AnimatedTextKit(
                 repeatForever: true,
                 animatedTexts: [

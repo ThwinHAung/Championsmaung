@@ -120,7 +120,7 @@ class _RulesPageState extends State<RulesPage> {
   Widget bottomBar() {
     return Column(
       children: [
-        Text(
+        const Text(
           'Accept the Rules and Regulations?',
           style: TextStyle(
             color: kGrey,
@@ -128,14 +128,14 @@ class _RulesPageState extends State<RulesPage> {
             fontWeight: FontWeight.w600,
           ),
         ),
-        SizedBox(height: 2.0),
+        const SizedBox(height: 2.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             materialButton(kError, 'Cancel', () {
               Navigator.pop(context);
             }),
-            SizedBox(width: 10.0),
+            const SizedBox(width: 10.0),
             materialButton(kBlue, 'Accept', () {
               Navigator.pushNamed(context, UserHomeScreen.id);
             })
