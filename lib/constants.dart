@@ -155,7 +155,42 @@ const List<String> userDropdownItems = [
 ];
 
 String? selectedValue;
+String? league_value;
+String? team_value;
+String? specialOdd_calcualte_value;
+String? overUnder_calculate_value;
+String? specialOdd_goals;
+String? overUnder_goals;
 
+List<Map<String, String>> leaguesDropdown = [
+  {'name': 'Premiere League', 'value': '1'},
+  {'name': 'Spain Laliga', 'value': '2'},
+  {'name': 'Championship', 'value': '3'},
+];
+
+List<Map<String, String>> goalsDropdown = [
+  {'name': '1', 'value': '1'},
+  {'name': '2', 'value': '2'},
+  {'name': '3', 'value': '3'},
+  {'name': '4', 'value': '4'},
+  {'name': '5', 'value': '5'},
+  {'name': '6', 'value': '6'},
+  {'name': '7', 'value': '7'},
+  {'name': '8', 'value': '8'},
+  {'name': '9', 'value': '9'},
+  {'name': '10', 'value': '10'},
+];
+
+List<Map<String, String>> specialOddTeam = [
+  {'name': 'Home Team', 'value': 'H'},
+  {'name': 'Away Team', 'value': 'A'},
+];
+
+List<Map<String, String>> calculatingSigns = [
+  {'name': '+', 'value': '1'},
+  {'name': '-', 'value': '2'},
+  {'name': '=', 'value': '3'},
+];
 Widget listTitleText(String listTitleText) {
   return Text(
     listTitleText,

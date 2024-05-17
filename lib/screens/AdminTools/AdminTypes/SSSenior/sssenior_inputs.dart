@@ -18,17 +18,10 @@ class SSSeniorInputsPage extends StatefulWidget {
 class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  final TextEditingController _specialOddController = TextEditingController();
   final TextEditingController _homeTeamController = TextEditingController();
   final TextEditingController _awayTeamController = TextEditingController();
-  final TextEditingController _specialOddsController = TextEditingController();
-  final TextEditingController _overUnderController = TextEditingController();
-  String? selectedValue;
-  String? team_value;
   List<Map<String, dynamic>> _leagueList = [];
-  List<Map<String, String>> poukKyayList = [
-    {'name': 'Team 1', 'value': '1'},
-    {'name': 'Team 2', 'value': '2'},
-  ];
 
   late DateTime _dateTime;
   @override
@@ -82,8 +75,6 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
               'away_match': _awayTeamController.text,
               'match_time': _dateTime.toIso8601String(),
               'special_odd_team': team_value,
-              'special_odd': _specialOddsController.text,
-              'over_under': _overUnderController.text
             }));
     if (response.statusCode == 200) {
       print('ok');
@@ -122,41 +113,225 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        labelText('Select League'),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2<String>(
-                              isExpanded: true,
-                              hint: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
+                        labelText('League'),
+                        SizedBox(height: 10.0),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Icon(
+                                  Icons.list,
+                                  size: 16,
+                                  color: kPrimary,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Select',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimary,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            items: leaguesDropdown.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item['value']!,
+                                child: Text(
+                                  item['name']!,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
                                     color: kPrimary,
                                   ),
-                                  SizedBox(
-                                    width: 4,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            }).toList(),
+                            value: league_value,
+                            onChanged: (String? value) {
+                              setState(() {
+                                league_value = value!;
+                              });
+                            },
+                            buttonStyleData: ButtonStyleData(
+                              height: 50,
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.only(left: 14, right: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: kBlue,
+                                ),
+                                color: kBlue,
+                              ),
+                              elevation: 2,
+                            ),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                              ),
+                              iconSize: 14,
+                              iconEnabledColor: kPrimary,
+                              iconDisabledColor: kGrey,
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: kBlue,
+                              ),
+                              offset: const Offset(-20, 0),
+                              scrollbarTheme: ScrollbarThemeData(
+                                radius: const Radius.circular(40),
+                                thickness: WidgetStateProperty.all<double>(6),
+                                thumbVisibility:
+                                    WidgetStateProperty.all<bool>(true),
+                              ),
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              height: 40,
+                              padding: EdgeInsets.only(left: 14, right: 14),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        labelText('Special Odd'),
+                        const SizedBox(height: 10.0),
+                        DropdownButtonHideUnderline(
+                          child: DropdownButton2<String>(
+                            isExpanded: true,
+                            hint: const Row(
+                              children: [
+                                Icon(
+                                  Icons.list,
+                                  size: 16,
+                                  color: kPrimary,
+                                ),
+                                SizedBox(
+                                  width: 4,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    'Special Odd Team',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: kPrimary,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                  Expanded(
-                                    child: Text(
-                                      'Select',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
+                                ),
+                              ],
+                            ),
+                            items: specialOddTeam.map((item) {
+                              return DropdownMenuItem<String>(
+                                value: item['value']!,
+                                child: Text(
+                                  item['name']!,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: kPrimary,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              );
+                            }).toList(),
+                            value: team_value,
+                            onChanged: (String? value) {
+                              setState(() {
+                                team_value = value!;
+                              });
+                            },
+                            buttonStyleData: ButtonStyleData(
+                              height: 50,
+                              width: double.infinity,
+                              padding:
+                                  const EdgeInsets.only(left: 14, right: 14),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                border: Border.all(
+                                  color: kBlue,
+                                ),
+                                color: kBlue,
+                              ),
+                              elevation: 2,
+                            ),
+                            iconStyleData: const IconStyleData(
+                              icon: Icon(
+                                Icons.arrow_forward_ios_outlined,
+                              ),
+                              iconSize: 14,
+                              iconEnabledColor: kPrimary,
+                              iconDisabledColor: kGrey,
+                            ),
+                            dropdownStyleData: DropdownStyleData(
+                              maxHeight: 200,
+                              width: 200,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(14),
+                                color: kBlue,
+                              ),
+                              offset: const Offset(-20, 0),
+                              scrollbarTheme: ScrollbarThemeData(
+                                radius: const Radius.circular(40),
+                                thickness: WidgetStateProperty.all<double>(6),
+                                thumbVisibility:
+                                    WidgetStateProperty.all<bool>(true),
+                              ),
+                            ),
+                            menuItemStyleData: const MenuItemStyleData(
+                              height: 40,
+                              padding: EdgeInsets.only(left: 14, right: 14),
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 5.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  hint: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.list,
+                                        size: 16,
                                         color: kPrimary,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Select Goals',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: kPrimary,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              items: _leagueList
-                                  .map(
-                                    (item) => DropdownMenuItem<String>(
-                                      value: item['id'].toString(),
+                                  items: goalsDropdown.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item['value']!,
                                       child: Text(
-                                        item['name'],
+                                        item['name']!,
                                         style: const TextStyle(
                                           fontSize: 14,
                                           fontWeight: FontWeight.w600,
@@ -164,190 +339,384 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                         ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
+                                    );
+                                  }).toList(),
+                                  value: specialOdd_goals,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      specialOdd_goals = value!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+                                    width: 160,
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: kBlue,
+                                      ),
+                                      color: kBlue,
                                     ),
-                                  )
-                                  .toList(),
-                              value: selectedValue,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  selectedValue = value;
-                                });
-                              },
-                              buttonStyleData: ButtonStyleData(
-                                height: 50,
-                                width: 160,
-                                padding:
-                                    const EdgeInsets.only(left: 14, right: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: kBlue,
+                                    elevation: 2,
                                   ),
-                                  color: kBlue,
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                    ),
+                                    iconSize: 14,
+                                    iconEnabledColor: kPrimary,
+                                    iconDisabledColor: kGrey,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: kBlue,
+                                    ),
+                                    offset: const Offset(-20, 0),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      radius: const Radius.circular(40),
+                                      thickness:
+                                          WidgetStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          WidgetStateProperty.all<bool>(true),
+                                    ),
+                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 40,
+                                    padding:
+                                        EdgeInsets.only(left: 14, right: 14),
+                                  ),
                                 ),
-                                elevation: 2,
-                              ),
-                              iconStyleData: const IconStyleData(
-                                icon: Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                ),
-                                iconSize: 14,
-                                iconEnabledColor: kPrimary,
-                                iconDisabledColor: kGrey,
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                maxHeight: 200,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  color: kBlue,
-                                ),
-                                offset: const Offset(-20, 0),
-                                scrollbarTheme: ScrollbarThemeData(
-                                  radius: const Radius.circular(40),
-                                  thickness: WidgetStateProperty.all<double>(6),
-                                  thumbVisibility:
-                                      WidgetStateProperty.all<bool>(true),
-                                ),
-                              ),
-                              menuItemStyleData: const MenuItemStyleData(
-                                height: 40,
-                                padding: EdgeInsets.only(left: 14, right: 14),
                               ),
                             ),
+                            SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 1,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  hint: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.list,
+                                        size: 16,
+                                        color: kPrimary,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          '+',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: kPrimary,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  items: calculatingSigns.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item['value']!,
+                                      child: Text(
+                                        item['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: kPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: specialOdd_calcualte_value,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      specialOdd_calcualte_value = value!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+                                    width: 160,
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: kBlue,
+                                      ),
+                                      color: kBlue,
+                                    ),
+                                    elevation: 2,
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                    ),
+                                    iconSize: 14,
+                                    iconEnabledColor: kPrimary,
+                                    iconDisabledColor: kGrey,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: kBlue,
+                                    ),
+                                    offset: const Offset(-20, 0),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      radius: const Radius.circular(40),
+                                      thickness:
+                                          WidgetStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          WidgetStateProperty.all<bool>(true),
+                                    ),
+                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 40,
+                                    padding:
+                                        EdgeInsets.only(left: 14, right: 14),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 5.0),
+                        TextFormField(
+                          controller: _specialOddController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter Special Odd',
                           ),
                         ),
-                        const SizedBox(height: 25.0),
-                        labelText('Home Team'),
+                        SizedBox(height: 5.0),
                         TextFormField(
                           controller: _homeTeamController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter home team',
+                            hintText: 'Enter Home Team',
                           ),
                         ),
-                        const SizedBox(height: 8.0),
-                        labelText('Away Team'),
+                        const SizedBox(height: 5.0),
                         TextFormField(
                           controller: _awayTeamController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter away team',
+                            hintText: 'Enter Away Team',
                           ),
                         ),
-                        const SizedBox(height: 8.0),
-                        labelText('Enter Special Odds'),
-                        TextFormField(
-                          controller: _specialOddsController,
-                          style: kTextFieldActiveStyle,
-                          decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter Special Odds',
-                          ),
-                        ),
-                        const SizedBox(height: 15.0),
-                        labelText('Select Special Odds team'),
-                        Container(
-                          alignment: Alignment.topLeft,
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton2<String>(
-                              isExpanded: true,
-                              hint: const Row(
-                                children: [
-                                  Icon(
-                                    Icons.list,
-                                    size: 16,
-                                    color: kPrimary,
-                                  ),
-                                  SizedBox(
-                                    width: 4,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                      'Select',
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
+                        SizedBox(height: 10.0),
+                        labelText('Over, Under Odd'),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  hint: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.list,
+                                        size: 16,
                                         color: kPrimary,
                                       ),
-                                      overflow: TextOverflow.ellipsis,
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          'Select Goals',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: kPrimary,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  items: goalsDropdown.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item['value']!,
+                                      child: Text(
+                                        item['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: kPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: overUnder_goals,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      overUnder_goals = value!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+                                    width: 160,
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: kBlue,
+                                      ),
+                                      color: kBlue,
+                                    ),
+                                    elevation: 2,
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                    ),
+                                    iconSize: 14,
+                                    iconEnabledColor: kPrimary,
+                                    iconDisabledColor: kGrey,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: kBlue,
+                                    ),
+                                    offset: const Offset(-20, 0),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      radius: const Radius.circular(40),
+                                      thickness:
+                                          WidgetStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          WidgetStateProperty.all<bool>(true),
                                     ),
                                   ),
-                                ],
-                              ),
-                              items: poukKyayList.map((item) {
-                                return DropdownMenuItem<String>(
-                                  value: item['value']!,
-                                  child: Text(
-                                    item['name']!,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600,
-                                      color: kPrimary,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 40,
+                                    padding:
+                                        EdgeInsets.only(left: 14, right: 14),
                                   ),
-                                );
-                              }).toList(),
-                              value: team_value,
-                              onChanged: (String? value) {
-                                setState(() {
-                                  team_value = value!;
-                                });
-                              },
-                              buttonStyleData: ButtonStyleData(
-                                height: 50,
-                                width: 160,
-                                padding:
-                                    const EdgeInsets.only(left: 14, right: 14),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: kBlue,
-                                  ),
-                                  color: kBlue,
                                 ),
-                                elevation: 2,
-                              ),
-                              iconStyleData: const IconStyleData(
-                                icon: Icon(
-                                  Icons.arrow_forward_ios_outlined,
-                                ),
-                                iconSize: 14,
-                                iconEnabledColor: kPrimary,
-                                iconDisabledColor: kGrey,
-                              ),
-                              dropdownStyleData: DropdownStyleData(
-                                maxHeight: 200,
-                                width: 200,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(14),
-                                  color: kBlue,
-                                ),
-                                offset: const Offset(-20, 0),
-                                scrollbarTheme: ScrollbarThemeData(
-                                  radius: const Radius.circular(40),
-                                  thickness: WidgetStateProperty.all<double>(6),
-                                  thumbVisibility:
-                                      WidgetStateProperty.all<bool>(true),
-                                ),
-                              ),
-                              menuItemStyleData: const MenuItemStyleData(
-                                height: 40,
-                                padding: EdgeInsets.only(left: 14, right: 14),
                               ),
                             ),
-                          ),
+                            SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 1,
+                              child: DropdownButtonHideUnderline(
+                                child: DropdownButton2<String>(
+                                  isExpanded: true,
+                                  hint: const Row(
+                                    children: [
+                                      Icon(
+                                        Icons.list,
+                                        size: 16,
+                                        color: kPrimary,
+                                      ),
+                                      SizedBox(
+                                        width: 4,
+                                      ),
+                                      Expanded(
+                                        child: Text(
+                                          '+',
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: kPrimary,
+                                          ),
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  items: calculatingSigns.map((item) {
+                                    return DropdownMenuItem<String>(
+                                      value: item['value']!,
+                                      child: Text(
+                                        item['name']!,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: kPrimary,
+                                        ),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    );
+                                  }).toList(),
+                                  value: overUnder_calculate_value,
+                                  onChanged: (String? value) {
+                                    setState(() {
+                                      overUnder_calculate_value = value!;
+                                    });
+                                  },
+                                  buttonStyleData: ButtonStyleData(
+                                    height: 50,
+                                    width: 160,
+                                    padding: const EdgeInsets.only(
+                                        left: 14, right: 14),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      border: Border.all(
+                                        color: kBlue,
+                                      ),
+                                      color: kBlue,
+                                    ),
+                                    elevation: 2,
+                                  ),
+                                  iconStyleData: const IconStyleData(
+                                    icon: Icon(
+                                      Icons.arrow_forward_ios_outlined,
+                                    ),
+                                    iconSize: 14,
+                                    iconEnabledColor: kPrimary,
+                                    iconDisabledColor: kGrey,
+                                  ),
+                                  dropdownStyleData: DropdownStyleData(
+                                    maxHeight: 200,
+                                    width: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(14),
+                                      color: kBlue,
+                                    ),
+                                    offset: const Offset(-20, 0),
+                                    scrollbarTheme: ScrollbarThemeData(
+                                      radius: const Radius.circular(40),
+                                      thickness:
+                                          WidgetStateProperty.all<double>(6),
+                                      thumbVisibility:
+                                          WidgetStateProperty.all<bool>(true),
+                                    ),
+                                  ),
+                                  menuItemStyleData: const MenuItemStyleData(
+                                    height: 40,
+                                    padding:
+                                        EdgeInsets.only(left: 14, right: 14),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 15.0),
-                        labelText('Over,Under odds'),
+                        SizedBox(height: 5.0),
                         TextFormField(
-                          controller: _overUnderController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter over,under odds',
-                          ),
+                              hintText: 'Over, Under odd'),
                         ),
-                        const SizedBox(height: 15.0),
+                        const SizedBox(height: 10.0),
                         labelText('Enter Date & Time'),
                         Row(
                           children: [
