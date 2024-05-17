@@ -102,7 +102,32 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                     flex: 1,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Delete Match'),
+                              content: Text(
+                                  'Do you really want to delete this match?'),
+                              actions: <Widget>[
+                                Expanded(
+                                    flex: 1,
+                                    child: materialButton(kError, 'Cancel', () {
+                                      Navigator.pop(context);
+                                    })),
+                                const SizedBox(width: 5.0),
+                                Expanded(
+                                  flex: 1,
+                                  child: materialButton(kError, 'Delete', () {
+                                    ();
+                                  }),
+                                )
+                              ],
+                            ),
+                          );
+                        });
+                      },
                       icon: const Icon(
                         Icons.delete_outline,
                         color: kError,

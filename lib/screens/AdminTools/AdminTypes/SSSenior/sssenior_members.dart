@@ -243,40 +243,19 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                   style: kLabel,
                                 ),
                                 actions: <Widget>[
-                                  Material(
-                                    color: kOnPrimaryContainer,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0)),
-                                    elevation: 5.0,
-                                    child: MaterialButton(
-                                      onPressed: () {
+                                  Expanded(
+                                      flex: 1,
+                                      child:
+                                          materialButton(kError, 'Cancel', () {
                                         Navigator.pop(context);
-                                      },
-                                      minWidth: 100.0,
-                                      height: 42.0,
-                                      child: const Text(
-                                        'Cancel',
-                                        style: kButtonErrorStyle,
-                                      ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: kBlue,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0)),
-                                    elevation: 5.0,
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        _register();
-                                      },
-                                      minWidth: 100.0,
-                                      height: 42.0,
-                                      child: const Text(
-                                        'Create',
-                                        style: kButtonTextStyle,
-                                      ),
-                                    ),
-                                  ),
+                                      })),
+                                  const SizedBox(width: 5.0),
+                                  Expanded(
+                                    flex: 1,
+                                    child: materialButton(kBlue, 'Update', () {
+                                      (_register());
+                                    }),
+                                  )
                                 ],
                               ),
                             ); //Implement registration functionality.
