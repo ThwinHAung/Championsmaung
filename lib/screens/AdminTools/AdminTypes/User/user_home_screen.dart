@@ -1,5 +1,4 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
@@ -8,7 +7,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:http/http.dart' as http;
 
 class UserHomeScreen extends StatefulWidget {
   static String id = 'userHome_screen';
