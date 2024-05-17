@@ -1,12 +1,17 @@
+import 'dart:convert';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
-import 'package:flutter/material.dart';
+import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
-import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
+import 'package:champion_maung/screens/login_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class UserHomeScreen extends StatefulWidget {
   static String id = 'userHome_screen';
@@ -17,6 +22,10 @@ class UserHomeScreen extends StatefulWidget {
 }
 
 class _UserHomeScreenState extends State<UserHomeScreen> {
+  final storage = const FlutterSecureStorage();
+  String? _token;
+  String? _username;
+  double? _balance;
   var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'MORE'];
   var listRoutes = [
     BodyBetting.id,
@@ -25,6 +34,58 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     BettingHistory.id,
     More.id,
   ];
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    _username = await storage.read(key: 'username');
+    if (_token != null) {
+      _getBalance();
+    }
+  }
+
+  Future<void> _getBalance() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _balance = double.parse(data['balance'].toString());
+      });
+    }
+  }
+
+  Future<void> _logout() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      await storage.delete(key: 'token');
+      await storage.delete(key: 'role');
+      await storage.delete(key: 'username');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const LoginScreen()));
+    } else {
+      print(response.body);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -76,7 +137,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           ),
                           const SizedBox(width: 10.0),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              _getBalance();
+                            },
                             icon: const Icon(
                               Icons.refresh_outlined,
                               color: kBlue,
@@ -87,8 +150,8 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           )
                         ],
                       ),
-                      const Text(
-                        '000,000' '  MMK',
+                      Text(
+                        '$_balance MMK',
                         style: TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
@@ -176,7 +239,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, userDrawerRoutes[index]);
+                  if (userDrawerRoutes[index] == 'logout') {
+                    _logout();
+                  } else {
+                    Navigator.pushNamed(context, userDrawerRoutes[index]);
+                  }
                 },
               );
             },

@@ -1,8 +1,57 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:http/http.dart' as http;
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+
+class Match {
+  final int id;
+  final String league_name;
+  final String homeMatch;
+  final String awayMatch;
+  final String matchTime;
+  final String specialOddTeam;
+  final String specialOddFirstDigit;
+  final String specialOddSign;
+  final int specialOddLastDigit;
+  final String overUnderFirstDigit;
+  final String overUnderSign;
+  final int overUnderLastDigit;
+  Match({
+    required this.id,
+    required this.league_name,
+    required this.homeMatch,
+    required this.awayMatch,
+    required this.matchTime,
+    required this.specialOddTeam,
+    required this.specialOddFirstDigit,
+    required this.specialOddSign,
+    required this.specialOddLastDigit,
+    required this.overUnderFirstDigit,
+    required this.overUnderSign,
+    required this.overUnderLastDigit,
+  });
+  factory Match.fromJson(Map<String, dynamic> json) {
+    return Match(
+      id: json['id'],
+      league_name: json['league_name'],
+      homeMatch: json['home_match'],
+      awayMatch: json['away_match'],
+      matchTime: json['match_time'],
+      specialOddTeam: json['special_odd_team'],
+      specialOddFirstDigit: json['special_odd_first_digit'],
+      specialOddSign: json['special_odd_sign'],
+      specialOddLastDigit: json['special_odd_last_digit'],
+      overUnderFirstDigit: json['over_under_first_digit'],
+      overUnderSign: json['over_under_sign'],
+      overUnderLastDigit: json['over_under_last_digit'],
+    );
+  }
+}
 
 class SSSeniorMatchView extends StatefulWidget {
   static String id = "sssenior_match_view";
@@ -16,6 +65,38 @@ class SSSeniorMatchView extends StatefulWidget {
 }
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
+  final storage = FlutterSecureStorage();
+  String? _token;
+  List<Match> matches = [];
+
+  @override
+  void initState() {
+    _getToken();
+
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchMatches();
+    }
+  }
+
+  Future<void> _fetchMatches() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+    final response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body);
+      setState(() {
+        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+      });
+    } else {}
+  }
+
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -40,7 +121,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: lists.length,
+              itemCount: matches.length,
               itemBuilder: (context, index) {
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -65,6 +146,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Widget radioContainer(int index) {
+    Match match = matches[index];
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -81,7 +163,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                   flex: 9,
                   child: labelText(
-                    leagues[index],
+                    match.league_name,
                   ),
                 ),
                 Expanded(
@@ -141,19 +223,19 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               child: Container(
                 child: Column(
                   children: [
-                    const Text(
-                      'Show times here',
+                    Text(
+                      'Match Time: ${match.matchTime}',
                       style: TextStyle(color: kGrey),
                     ),
                     Row(
                       children: [
-                        customRadio(lists[index][0], 0, index),
+                        customRadio(match.homeMatch, 0, index),
                         Expanded(
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: const Text(
-                              '<',
+                            child: Text(
+                              match.specialOddTeam == 'H' ? '<' : '',
                               style: TextStyle(
                                 color: kBlue,
                                 fontWeight: FontWeight.bold,
@@ -165,17 +247,23 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text('='
-                                    ' +' /*show SIGNS here */ +
-                                specialOdd[index]),
+                            child: Text(
+                              match.specialOddFirstDigit == '0'
+                                  ? '=' +
+                                      match.specialOddSign +
+                                      match.specialOddLastDigit.toString()
+                                  : match.specialOddFirstDigit +
+                                      match.specialOddSign +
+                                      match.specialOddLastDigit.toString(),
+                            ),
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: const Text(
-                              '>',
+                            child: Text(
+                              match.specialOddTeam == 'H' ? '' : '>',
                               style: TextStyle(
                                 color: kBlue,
                                 fontWeight: FontWeight.bold,
@@ -183,7 +271,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                           ),
                         ),
-                        customRadio(lists[index][1], 1, index),
+                        customRadio(match.awayMatch, 1, index),
                       ],
                     ),
                     Row(
@@ -245,10 +333,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       TextEditingController();
 
   late DateTime _dateTime;
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Widget editDilaog(int index) {
     return AlertDialog(
