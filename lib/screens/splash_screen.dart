@@ -55,7 +55,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 4), () {
       setState(() {
         Navigator.pushReplacement(
-            context, PageTransition(const SSSeniorInputsPage()));
+            context, PageTransition(const SSSeniorMatchView()));
       });
     });
   }

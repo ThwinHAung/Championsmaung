@@ -16,20 +16,6 @@ class SSSeniorMatchView extends StatefulWidget {
 }
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
-  List<String> leagues = ['Premiere League', 'Spain Laliga', 'Championship'];
-
-  List<List<String>> lists = [
-    ['TeamOne 1', 'TeamTwo 1', 'Over 1', 'Under 1'],
-    ['TeamOne 2', 'TeamTwo 2', 'Over 2', 'Under 2'],
-    ['TeamOne 3', 'TeamTwo 3', 'Over 3', 'Under 3'],
-  ];
-
-  List<String> specialOdd = ['3-60', '1+40', '2-15'];
-
-  List<String> overunder = ['1+60', '2-70', '3+10'];
-
-  Map<int, String> selectedValues = {};
-
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -154,7 +140,9 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(specialOdd[index]),
+                            child: Text('='
+                                    ' +' /*show SIGNS here */ +
+                                specialOdd[index]),
                           ),
                         ),
                         Expanded(
@@ -180,7 +168,9 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(overunder[index]),
+                            child: Text(overUnderGoals[index] +
+                                ' +' /* show SIGNS here*/ +
+                                overunderOdd[index]),
                           ),
                         ),
                         customRadio(lists[index][3], 3, index),
@@ -616,7 +606,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 controller: _specialOddEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter Special Odd',
+                  hintText: specialOdd[index],
                 ),
               ),
               SizedBox(height: 5.0),
@@ -828,8 +818,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               SizedBox(height: 5.0),
               TextFormField(
                 style: kTextFieldActiveStyle,
-                decoration:
-                    kTextFieldDecoration.copyWith(hintText: 'Over, Under odd'),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: overunderOdd[index]),
               ),
               const SizedBox(height: 10.0),
               Row(
