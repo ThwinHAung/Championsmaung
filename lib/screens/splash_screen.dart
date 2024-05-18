@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
@@ -8,6 +10,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_m
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
@@ -63,8 +66,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(const Duration(seconds: 4), () {
       setState(() {
-        Navigator.pushReplacement(
-            context, PageTransition(const SeniorAdminScreen()));
+        Navigator.pushReplacement(context, PageTransition(const LoginScreen()));
       });
     });
   }
@@ -94,12 +96,15 @@ class _SplashScreenState extends State<SplashScreen>
                 AnimatedOpacity(
                   duration: const Duration(milliseconds: 1000),
                   opacity: _textOpacity,
-                  child: Text(
-                    'CHAMPION MAUNG',
-                    style: TextStyle(
-                      color: konPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: animation1.value,
+                  child: Hero(
+                    tag: 'championmaung',
+                    child: Text(
+                      'CHAMPION MAUNG',
+                      style: TextStyle(
+                        color: konPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: animation1.value,
+                      ),
                     ),
                   ),
                 ),

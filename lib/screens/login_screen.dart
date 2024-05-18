@@ -28,13 +28,13 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Container(
         color: kPrimary,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Hero(
-                  tag: 'logo',
+                  tag: 'championmaung',
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
                     child: const Text(
