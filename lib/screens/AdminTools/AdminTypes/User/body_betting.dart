@@ -60,7 +60,7 @@ class BodyBetting extends StatefulWidget {
 }
 
 class _BodyBettingState extends State<BodyBetting> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? _token;
   double? _balance;
   Map<int, String> selectedValues = {};
@@ -237,7 +237,7 @@ class _BodyBettingState extends State<BodyBetting> {
       color: kPrimary,
       child: AnimationLimiter(
         child: ListView.builder(
-          padding: EdgeInsets.all(w / 50),
+          padding: const EdgeInsets.all(10.0),
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
@@ -316,9 +316,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           alignment: Alignment.center,
                           child: Text(
                             match.specialOddFirstDigit == '0'
-                                ? '=' +
-                                    match.specialOddSign +
-                                    match.specialOddLastDigit.toString()
+                                ? '=${match.specialOddSign}${match.specialOddLastDigit}'
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),

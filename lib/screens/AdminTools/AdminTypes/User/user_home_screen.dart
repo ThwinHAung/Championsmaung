@@ -152,7 +152,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       ),
                       Text(
                         '$_balance MMK',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: kBlue,
                           fontWeight: FontWeight.w500,
                           fontSize: 50,

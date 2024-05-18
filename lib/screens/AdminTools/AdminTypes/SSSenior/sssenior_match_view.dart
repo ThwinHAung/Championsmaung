@@ -65,7 +65,7 @@ class SSSeniorMatchView extends StatefulWidget {
 }
 
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
 
@@ -190,7 +190,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             context: context,
                             builder: (context) => AlertDialog(
                               title: const Text('Delete Match'),
-                              content: Text(
+                              content: const Text(
                                   'Do you really want to delete this match?'),
                               actions: <Widget>[
                                 Expanded(
@@ -225,7 +225,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   children: [
                     Text(
                       'Match Time: ${match.matchTime}',
-                      style: TextStyle(color: kGrey),
+                      style: const TextStyle(color: kGrey),
                     ),
                     Row(
                       children: [
@@ -236,7 +236,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             alignment: Alignment.center,
                             child: Text(
                               match.specialOddTeam == 'H' ? '<' : '',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: kBlue,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -249,9 +249,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             alignment: Alignment.center,
                             child: Text(
                               match.specialOddFirstDigit == '0'
-                                  ? '=' +
-                                      match.specialOddSign +
-                                      match.specialOddLastDigit.toString()
+                                  ? '=${match.specialOddSign}${match.specialOddLastDigit}'
                                   : match.specialOddFirstDigit +
                                       match.specialOddSign +
                                       match.specialOddLastDigit.toString(),
@@ -264,7 +262,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             alignment: Alignment.center,
                             child: Text(
                               match.specialOddTeam == 'H' ? '' : '>',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: kBlue,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -281,9 +279,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
-                            child: Text(overUnderGoals[index] +
-                                ' +' /* show SIGNS here*/ +
-                                overunderOdd[index]),
+                            child: Text(
+                                '${overUnderGoals[index]} +${overunderOdd[index]}'),
                           ),
                         ),
                         customRadio(lists[index][3], 3, index),
@@ -344,7 +341,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               labelText('League'),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
@@ -432,7 +429,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               labelText('Special Odd'),
               const SizedBox(height: 10.0),
               DropdownButtonHideUnderline(
@@ -522,7 +519,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 ),
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               Row(
                 children: [
                   Expanded(
@@ -616,7 +613,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Expanded(
                     flex: 1,
                     child: DropdownButtonHideUnderline(
@@ -710,7 +707,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 ],
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 controller: _specialOddEditingController,
                 style: kTextFieldActiveStyle,
@@ -718,7 +715,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   hintText: specialOdd[index],
                 ),
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 controller: _homeTeamEditingController,
                 style: kTextFieldActiveStyle,
@@ -734,7 +731,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   hintText: lists[index][1],
                 ),
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               labelText('Over, Under Odd'),
               const SizedBox(height: 10.0),
               Row(
@@ -830,7 +827,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 10.0),
+                  const SizedBox(width: 10.0),
                   Expanded(
                     flex: 1,
                     child: DropdownButtonHideUnderline(
@@ -924,7 +921,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 ],
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               TextFormField(
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(

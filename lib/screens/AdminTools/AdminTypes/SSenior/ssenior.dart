@@ -186,7 +186,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
                                       ),
                                       Text(
                                         index == 1 && _balance != null
-                                            ? '${_balance!.toStringAsFixed(2)}'
+                                            ? _balance!.toStringAsFixed(2)
                                             : '0', // Display 'Loading...' while balance is being fetched
                                         style: const TextStyle(
                                           fontSize: 35,

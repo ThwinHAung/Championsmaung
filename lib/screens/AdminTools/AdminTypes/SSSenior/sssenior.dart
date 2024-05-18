@@ -122,7 +122,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-              padding: EdgeInsets.all(w / 50),
+              padding: EdgeInsets.all(10.0),
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),

@@ -114,7 +114,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         labelText('League'),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         DropdownButtonHideUnderline(
                           child: DropdownButton2<String>(
                             isExpanded: true,
@@ -204,7 +204,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         labelText('Special Odd'),
                         const SizedBox(height: 10.0),
                         DropdownButtonHideUnderline(
@@ -296,7 +296,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         Row(
                           children: [
                             Expanded(
@@ -393,7 +393,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: DropdownButtonHideUnderline(
@@ -490,7 +490,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         TextFormField(
                           controller: _specialOddController,
                           style: kTextFieldActiveStyle,
@@ -498,7 +498,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter Special Odd',
                           ),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         TextFormField(
                           controller: _homeTeamController,
                           style: kTextFieldActiveStyle,
@@ -514,7 +514,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             hintText: 'Enter Away Team',
                           ),
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         labelText('Over, Under Odd'),
                         const SizedBox(height: 10.0),
                         Row(
@@ -613,7 +613,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             Expanded(
                               flex: 1,
                               child: DropdownButtonHideUnderline(
@@ -710,7 +710,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         TextFormField(
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(

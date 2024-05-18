@@ -60,7 +60,7 @@ class MaungBetting extends StatefulWidget {
 }
 
 class _MaungBettingState extends State<MaungBetting> {
-  final storage = FlutterSecureStorage();
+  final storage = const FlutterSecureStorage();
   String? _token;
   double? _balance;
   Map<int, String> selectedValues = {};
@@ -237,7 +237,7 @@ class _MaungBettingState extends State<MaungBetting> {
       color: kPrimary,
       child: AnimationLimiter(
         child: ListView.builder(
-            padding: EdgeInsets.all(w / 50),
+            padding: const EdgeInsets.all(10.0),
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
@@ -292,7 +292,7 @@ class _MaungBettingState extends State<MaungBetting> {
                   children: [
                     Text(
                       'Match Time: ${match.matchTime}',
-                      style: TextStyle(color: kGrey),
+                      style: const TextStyle(color: kGrey),
                     ),
                     Row(
                       children: [
@@ -316,9 +316,7 @@ class _MaungBettingState extends State<MaungBetting> {
                             alignment: Alignment.center,
                             child: Text(
                               match.specialOddFirstDigit == '0'
-                                  ? '=' +
-                                      match.specialOddSign +
-                                      match.specialOddLastDigit.toString()
+                                  ? '=${match.specialOddSign}${match.specialOddLastDigit}'
                                   : match.specialOddFirstDigit +
                                       match.specialOddSign +
                                       match.specialOddLastDigit.toString(),
@@ -331,7 +329,7 @@ class _MaungBettingState extends State<MaungBetting> {
                             alignment: Alignment.center,
                             child: Text(
                               match.specialOddTeam == 'H' ? '' : '>',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: kBlue,
                                 fontWeight: FontWeight.bold,
                               ),
