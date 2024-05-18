@@ -12,6 +12,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_mem
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
