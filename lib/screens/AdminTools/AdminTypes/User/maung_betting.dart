@@ -65,6 +65,7 @@ class _MaungBettingState extends State<MaungBetting> {
   double? _balance;
   Map<int, String> selectedValues = {};
   List<Match> matches = [];
+  int maungNumber = 0;
 
   final TextEditingController _maungBettingEditingController =
       TextEditingController();
@@ -142,7 +143,7 @@ class _MaungBettingState extends State<MaungBetting> {
               children: [
                 const Expanded(
                   flex: 2,
-                  child: Text('Maung ' '(0)'),
+                  child: Text('Maung ( 0 )'),
                 ),
                 Expanded(
                   flex: 7,

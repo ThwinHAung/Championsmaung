@@ -21,6 +21,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _rememberMe = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkRememberedUser();
+  }
+
+  Future<void> _checkRememberedUser() async {
+    const storage = FlutterSecureStorage();
+    final String? username = await storage.read(key: 'username');
+    final String? password = await storage.read(key: 'password');
+    if (username != null && password != null) {
+      setState(() {
+        _usernameController.text = username;
+        _passwordController.text = password;
+        _rememberMe = true;
+      });
+      _login();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,22 +164,18 @@ class _LoginScreenState extends State<LoginScreen> {
       final String role = responseData['role'];
       final String username = responseData['username'];
 
-      // Handle token and role as needed
       const storage = FlutterSecureStorage();
-      // if (_rememberMe) {
       await storage.write(key: 'token', value: token);
       await storage.write(key: 'user_role', value: role);
       await storage.write(key: 'username', value: username);
-      // storage.write(key: 'username', value: _usernameController.text),
-      // storage.write(key: 'password', value: _passwordController.text),
-      // } else {
-      //   await Future.wait([
-      //     storage.write(key: 'token', value: token),
-      //     storage.write(key: 'user_role', value: role),
-      //     storage.delete(key: 'username'),
-      //     storage.delete(key: 'password'),
-      //   ]);
-      // }
+
+      if (_rememberMe) {
+        await storage.write(key: 'username', value: _usernameController.text);
+        await storage.write(key: 'password', value: _passwordController.text);
+      } else {
+        await storage.delete(key: 'username');
+        await storage.delete(key: 'password');
+      }
 
       if (role == 'SSSenior') {
         Navigator.push(
