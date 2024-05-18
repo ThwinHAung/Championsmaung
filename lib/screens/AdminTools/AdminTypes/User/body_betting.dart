@@ -374,12 +374,11 @@ class _BodyBettingState extends State<BodyBetting> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              // Toggle selection
-              if (selectedValues[listIndex] == item) {
-                selectedValues[listIndex] = ''; // Unselect
-              } else {
-                selectedValues[listIndex] = item; // Select
-              } // Update selectedValues list
+              // Clear all selections
+              selectedValues = {};
+
+              // Select the tapped item
+              selectedValues[listIndex] = item;
             });
           },
           child: Container(
