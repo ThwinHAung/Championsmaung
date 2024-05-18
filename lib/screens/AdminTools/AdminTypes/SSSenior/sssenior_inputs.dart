@@ -70,7 +70,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
               'Authorization': 'Bearer $_token',
             },
             body: json.encode({
-              'league_id': selectedValue,
+              'league_id': selectedValue1,
               'home_match': _homeTeamController.text,
               'away_match': _awayTeamController.text,
               'match_time': _dateTime.toIso8601String(),

@@ -22,8 +22,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
       TextEditingController();
 
   final storage = const FlutterSecureStorage();
-  String? selectedValue1;
-  String? selectedValue2;
   String? _token;
   String? _role;
   String? _username;
@@ -68,28 +66,17 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: Text(
-                        'Your account type : $_role',
-                        style: const TextStyle(
-                          color: kBlue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [showUsername(''), showAccountType('')],
+                  )),
                   materialButton(kBlue, 'View Member List', () {}),
                 ],
               ),
-            ),
-            const SizedBox(height: 10.0),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Username : '),
             ),
             Container(
               child: Padding(
@@ -99,7 +86,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                   children: [
                     labelText('Select Username'),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: Container(
                         alignment: Alignment.topLeft,
                         child: Row(
@@ -195,6 +182,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 ),
                               ),
                             ),
+                            SizedBox(width: 10.0),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,

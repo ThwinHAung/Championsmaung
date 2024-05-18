@@ -22,8 +22,10 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final storage = const FlutterSecureStorage();
+
   String? selectedValue;
   String? _token;
+  String? _username;
   String? _role;
 
   @override
@@ -35,6 +37,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    _username = await storage.read(key: 'username');
     final String? role = await storage.read(key: 'user_role');
 
     if (role != null) {
@@ -65,18 +68,16 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: Text(
-                        'Your account type : $_role',
-                        style: const TextStyle(
-                          color: kBlue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        showUsername('$_username'),
+                        showAccountType('$_role'),
+                      ],
                     ),
                   ),
                   materialButton(kBlue, 'View Member List', () {}),

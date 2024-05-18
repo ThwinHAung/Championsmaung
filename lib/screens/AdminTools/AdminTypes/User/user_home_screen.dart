@@ -124,13 +124,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: 20.0),
-                      Text(
-                        'Username : ' + '$_username',
-                        style: TextStyle(
-                          color: kBlue.withOpacity(.5),
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      showUsername('$_username'),
                       Row(
                         children: [
                           const Text(

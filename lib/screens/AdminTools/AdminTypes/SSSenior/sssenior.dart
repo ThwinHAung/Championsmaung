@@ -60,14 +60,11 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     000000,
     000000,
   ];
-  List<IconData> showIcons = [
-    Icons.people_alt_outlined,
-    Icons.attach_money_outlined,
-    Icons.stacked_bar_chart_outlined,
-    Icons.stacked_line_chart_outlined,
-  ];
-  List<IconData> drawerIcons = [
-    Icons.history,
+  List showIcons = [
+    Icon(Icons.people_alt_outlined, color: kBlue),
+    Text('MMK', style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
+    Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
+    Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
   @override
   void initState() {
@@ -174,10 +171,8 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
-                                  child: Icon(
-                                    showIcons[index],
-                                    color: kBlue,
-                                  ),
+                                  alignment: Alignment.center,
+                                  child: showIcons[index],
                                 ),
                               ),
                             ],

@@ -154,7 +154,8 @@ const List<String> userDropdownItems = [
   'Z'
 ];
 
-String? selectedValue;
+String? selectedValue1;
+String? selectedValue2;
 String? league_value;
 String? team_value;
 String? specialOdd_calcualte_value;
@@ -255,3 +256,23 @@ List<String> specialOdd = ['60', '40', '15'];
 
 List<String> overUnderGoals = ['1', '3', '4'];
 List<String> overunderOdd = ['60', '70', '10'];
+
+Widget showUsername(String username) {
+  return Text(
+    'Username : ' + username,
+    style: TextStyle(
+      color: kBlue,
+      fontWeight: FontWeight.w500,
+    ),
+  );
+}
+
+Widget showAccountType(String role) {
+  return Text(
+    'Your account type : ' + role,
+    style: const TextStyle(
+      color: kBlue,
+      fontWeight: FontWeight.w500,
+    ),
+  );
+}

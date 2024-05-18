@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class AgentMembers extends StatefulWidget {
   static String id = 'agent_member_page';
@@ -11,6 +15,36 @@ class AgentMembers extends StatefulWidget {
 }
 
 class _AgentMembersState extends State<AgentMembers> {
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _balanceController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+
+  final storage = const FlutterSecureStorage();
+  String? _token;
+  String? _role;
+  String? _username;
+
+  @override
+  void initState() {
+    _role = 'Loading...';
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    final String? role = await storage.read(key: 'user_role');
+    _username = await storage.read(key: 'username');
+
+    if (role != null) {
+      setState(() {
+        _role = role;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,28 +66,17 @@ class _AgentMembersState extends State<AgentMembers> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(10.0),
               child: Row(
                 children: [
                   Expanded(
-                    child: Container(
-                      child: const Text(
-                        'Your account type : ' 'Agent',
-                        style: TextStyle(
-                          color: kBlue,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
-                  ),
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [showUsername(''), showAccountType('')],
+                  )),
                   materialButton(kBlue, 'View Member List', () {}),
                 ],
               ),
-            ),
-            const SizedBox(height: 10.0),
-            const Padding(
-              padding: EdgeInsets.all(8.0),
-              child: Text('Username : '),
             ),
             Container(
               child: Padding(
@@ -63,7 +86,7 @@ class _AgentMembersState extends State<AgentMembers> {
                   children: [
                     labelText('Select Username'),
                     Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.all(2.0),
                       child: Container(
                         alignment: Alignment.topLeft,
                         child: Row(
@@ -109,10 +132,10 @@ class _AgentMembersState extends State<AgentMembers> {
                                           ),
                                         ))
                                     .toList(),
-                                value: selectedValue,
+                                value: selectedValue1,
                                 onChanged: (String? value) {
                                   setState(() {
-                                    selectedValue = value;
+                                    selectedValue1 = value;
                                   });
                                 },
                                 buttonStyleData: ButtonStyleData(
@@ -159,6 +182,7 @@ class _AgentMembersState extends State<AgentMembers> {
                                 ),
                               ),
                             ),
+                            SizedBox(width: 10.0),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,
@@ -200,10 +224,10 @@ class _AgentMembersState extends State<AgentMembers> {
                                           ),
                                         ))
                                     .toList(),
-                                value: selectedValue,
+                                value: selectedValue2,
                                 onChanged: (String? value) {
                                   setState(() {
-                                    selectedValue = value;
+                                    selectedValue2 = value;
                                   });
                                 },
                                 buttonStyleData: ButtonStyleData(
@@ -256,17 +280,44 @@ class _AgentMembersState extends State<AgentMembers> {
                     ),
                     const SizedBox(height: 40.0),
                     labelText('Phone Number'),
-                    textForm('Enter your phone number'),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter phone number'),
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Password'),
-                    passwordForm('Enter password'),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter password'),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    labelText('Confirm Password'),
+                    TextFormField(
+                      controller: _confirmPasswordController,
+                      obscureText: true,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Confirm password'),
+                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
                     labelText('Starting Balance'),
-                    textForm('Enter starting balance'),
+                    TextFormField(
+                      controller: _balanceController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                          hintText: 'Enter starting balance'),
+                    ),
                     const SizedBox(height: 30.0),
                     Container(
                       alignment: Alignment.topRight,
@@ -309,7 +360,7 @@ class _AgentMembersState extends State<AgentMembers> {
                                     elevation: 5.0,
                                     child: MaterialButton(
                                       onPressed: () {
-                                        Navigator.pop(context);
+                                        _register();
                                       },
                                       minWidth: 100.0,
                                       height: 42.0,
@@ -340,5 +391,43 @@ class _AgentMembersState extends State<AgentMembers> {
         ),
       ),
     );
+  }
+
+  Future<void> _register() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/register');
+    var response = await http.post(url, headers: {
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      'username': _username! + selectedValue1! + selectedValue2!,
+      'password': _passwordController.text,
+      'password_confirmation': _confirmPasswordController.text,
+      'phone_number': _phoneNumberController.text,
+      'balance': _balanceController.text,
+    });
+
+    if (response.statusCode == 200) {
+      print('Registration successful');
+      Navigator.pop(context);
+    } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> errors = responseData['errors'];
+      String errorMessage = "";
+      errors.forEach((key, value) {
+        errorMessage += "$key: $value\n";
+      });
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Errors'),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

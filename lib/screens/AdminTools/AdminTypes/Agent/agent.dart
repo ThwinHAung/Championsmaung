@@ -46,16 +46,12 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
     000000,
     000000,
   ];
-  List<IconData> showIcons = [
-    Icons.people_alt_outlined,
-    Icons.attach_money_outlined,
-    Icons.stacked_bar_chart_outlined,
-    Icons.stacked_line_chart_outlined,
+  List showIcons = [
+    Icon(Icons.people_alt_outlined, color: kBlue),
+    Text('MMK', style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
+    Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
+    Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
-  List<IconData> drawerIcons = [
-    Icons.history,
-  ];
-
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -129,10 +125,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
-                                  child: Icon(
-                                    showIcons[index],
-                                    color: kBlue,
-                                  ),
+                                  child: showIcons[index],
                                 ),
                               ),
                             ],

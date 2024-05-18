@@ -25,7 +25,6 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _role;
-  String? _username;
   double? _balance;
   var list = [
     'Members',
@@ -57,16 +56,12 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
     000000,
     000000,
   ];
-  List<IconData> showIcons = [
-    Icons.people_alt_outlined,
-    Icons.attach_money_outlined,
-    Icons.stacked_bar_chart_outlined,
-    Icons.stacked_line_chart_outlined,
+  List showIcons = [
+    Icon(Icons.people_alt_outlined, color: kBlue),
+    Text('MMK', style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
+    Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
+    Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
-  List<IconData> drawerIcons = [
-    Icons.history,
-  ];
-
   @override
   void initState() {
     _role = 'Loading...';
@@ -77,7 +72,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
-    _username = await storage.read(key: 'username');
+
     if (role != null) {
       setState(() {
         _role = role;
@@ -200,10 +195,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
-                                  child: Icon(
-                                    showIcons[index],
-                                    color: kBlue,
-                                  ),
+                                  child: showIcons[index],
                                 ),
                               ),
                             ],
