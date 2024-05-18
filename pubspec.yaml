@@ -33,7 +33,7 @@ flutter:
   fonts:
     - family: TimesNewRoman
       fonts:
-        - asset: assets/fonts/TimesNewRoman-Regular.ttf
+        - asset: assets\TimesNewRoman-Bold.ttf
         - asset: assets/fonts/TimesNewRoman-Bold.ttf
           weight: 500
 
