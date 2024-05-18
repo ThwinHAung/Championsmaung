@@ -25,6 +25,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorA
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
@@ -98,6 +99,7 @@ class ChampionMaung extends StatelessWidget {
         MaungBetting.id: (context) => const MaungBetting(),
         MatchResults.id: (context) => const MatchResults(),
         BettingHistory.id: (context) => const BettingHistory(),
+        UserChangePassword.id: (context) => UserChangePassword(),
         More.id: (context) => const More(),
       },
       home: const SplashScreen(),

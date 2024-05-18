@@ -86,6 +86,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,

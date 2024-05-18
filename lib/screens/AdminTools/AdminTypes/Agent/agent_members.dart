@@ -48,6 +48,7 @@ class _AgentMembersState extends State<AgentMembers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,

@@ -75,6 +75,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,

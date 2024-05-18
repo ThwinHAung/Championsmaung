@@ -4,6 +4,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
@@ -90,6 +91,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
@@ -259,15 +261,15 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   var userDrawerList = [
     'Rules and Regulations',
-    'Change Password',
     'Change Langugae',
+    'Change Password',
     'Log Out',
   ];
 
   var userDrawerRoutes = [
     RulesPageForRoute.id,
     '',
-    '',
+    UserChangePassword.id,
     'logout',
   ];
 }

@@ -1,24 +1,23 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
-class More extends StatefulWidget {
-  static String id = 'more';
-  const More({super.key});
+class UserChangePassword extends StatefulWidget {
+  static String id = 'user_change_password';
+  const UserChangePassword({super.key});
 
   @override
-  State<More> createState() => _MoreState();
+  State<UserChangePassword> createState() => _UserChangePasswordState();
 }
 
-class _MoreState extends State<More> {
+class _UserChangePasswordState extends State<UserChangePassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'More',
+          'Match Results',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,
