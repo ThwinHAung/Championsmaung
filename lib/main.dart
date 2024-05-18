@@ -44,7 +44,16 @@ class ChampionMaung extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.light(useMaterial3: true),
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light,
+        textTheme: ThemeData.light().textTheme.apply(
+              fontFamily: 'TimesNewRoman',
+            ),
+        primaryTextTheme: ThemeData.light().textTheme.apply(
+              fontFamily: 'TimesNewRoman',
+            ),
+      ),
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
 
