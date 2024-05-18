@@ -140,10 +140,6 @@ class _BodyBettingState extends State<BodyBetting> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              const Expanded(
-                flex: 2,
-                child: Text('Body ' '(0)'),
-              ),
               Expanded(
                 flex: 7,
                 child: TextFormField(
@@ -374,11 +370,14 @@ class _BodyBettingState extends State<BodyBetting> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              // Clear all selections
-              selectedValues = {};
-
-              // Select the tapped item
-              selectedValues[listIndex] = item;
+              if (selectedValues[listIndex] == item) {
+                selectedValues[listIndex] = ''; // Unselect
+              } else {
+                // Clear all selections
+                selectedValues = {};
+                // Select the tapped item
+                selectedValues[listIndex] = item;
+              }
             });
           },
           child: Container(

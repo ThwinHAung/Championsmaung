@@ -99,7 +99,7 @@ class ChampionMaung extends StatelessWidget {
         MaungBetting.id: (context) => const MaungBetting(),
         MatchResults.id: (context) => const MatchResults(),
         BettingHistory.id: (context) => const BettingHistory(),
-        UserChangePassword.id: (context) => UserChangePassword(),
+        UserChangePassword.id: (context) => const UserChangePassword(),
         More.id: (context) => const More(),
       },
       home: const SplashScreen(),

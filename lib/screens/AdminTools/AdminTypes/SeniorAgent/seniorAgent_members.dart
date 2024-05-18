@@ -183,7 +183,7 @@ class _SeniorAgentMembersState extends State<SeniorAgentMembers> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,

@@ -125,7 +125,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      SizedBox(height: 20.0),
+                      const SizedBox(height: 20.0),
                       showUsername('$_username'),
                       Row(
                         children: [
@@ -179,7 +179,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),

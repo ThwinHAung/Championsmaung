@@ -35,28 +35,28 @@ class _UserChangePasswordState extends State<UserChangePassword> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 labelText('Change your password'),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextFormField(
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter Old Password',
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter New Password',
                   ),
                 ),
-                SizedBox(height: 5.0),
+                const SizedBox(height: 5.0),
                 TextFormField(
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Confirm New Password',
                   ),
                 ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 Row(
                   children: [
                     Expanded(
@@ -72,7 +72,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                             context: context,
                             builder: (context) => AlertDialog(
                               title: const Text('Change Password'),
-                              content: Text(
+                              content: const Text(
                                   'Do you really want to change password?'),
                               actions: <Widget>[
                                 Row(
@@ -89,7 +89,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                                         },
                                       ),
                                     ),
-                                    SizedBox(width: 10.0),
+                                    const SizedBox(width: 10.0),
                                     Expanded(
                                       flex: 1,
                                       child: materialButton(

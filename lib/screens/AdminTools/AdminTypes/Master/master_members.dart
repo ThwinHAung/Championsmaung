@@ -183,7 +183,7 @@ class _MasterMembersState extends State<MasterMembers> {
                                 ),
                               ),
                             ),
-                            SizedBox(width: 10.0),
+                            const SizedBox(width: 10.0),
                             DropdownButtonHideUnderline(
                               child: DropdownButton2<String>(
                                 isExpanded: true,

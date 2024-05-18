@@ -61,10 +61,11 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     000000,
   ];
   List showIcons = [
-    Icon(Icons.people_alt_outlined, color: kBlue),
-    Text('MMK', style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
-    Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
-    Icon(Icons.stacked_line_chart_outlined, color: kBlue),
+    const Icon(Icons.people_alt_outlined, color: kBlue),
+    const Text('MMK',
+        style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
+    const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
+    const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
   @override
   void initState() {
@@ -119,7 +120,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-              padding: EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(10.0),
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),

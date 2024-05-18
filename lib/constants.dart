@@ -259,8 +259,8 @@ List<String> overunderOdd = ['60', '70', '10'];
 
 Widget showUsername(String username) {
   return Text(
-    'Username : ' + username,
-    style: TextStyle(
+    'Username : $username',
+    style: const TextStyle(
       color: kBlue,
       fontWeight: FontWeight.w500,
     ),
@@ -269,7 +269,7 @@ Widget showUsername(String username) {
 
 Widget showAccountType(String role) {
   return Text(
-    'Your account type : ' + role,
+    'Your account type : $role',
     style: const TextStyle(
       color: kBlue,
       fontWeight: FontWeight.w500,
