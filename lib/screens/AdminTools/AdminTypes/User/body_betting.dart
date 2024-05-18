@@ -63,7 +63,9 @@ class _BodyBettingState extends State<BodyBetting> {
   final storage = const FlutterSecureStorage();
   String? _token;
   double? _balance;
-  Map<int, String> selectedValues = {};
+  String? selectedHomeMatch;
+  String? selectedAwayMatch;
+  String? selectedOverUnder;
   List<Match> matches = [];
 
   final TextEditingController _bodyBettingEditingController =
@@ -367,6 +369,13 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Widget customRadio(String item, int itemIndex, int listIndex) {
+    if (itemIndex == 0) {
+      selectedValue1 = selectedHomeMatch;
+    } else if (itemIndex == 1) {
+      selectedValue1 = selectedAwayMatch;
+    } else {
+      selectedValue1 = selectedOverUnder;
+    }
     return Expanded(
       flex: 3,
       child: Padding(
@@ -374,18 +383,20 @@ class _BodyBettingState extends State<BodyBetting> {
         child: GestureDetector(
           onTap: () {
             setState(() {
-              // Toggle selection
-              if (selectedValues[listIndex] == item) {
-                selectedValues[listIndex] = ''; // Unselect
+              // Update selected value
+              if (itemIndex == 0) {
+                selectedHomeMatch = item;
+              } else if (itemIndex == 1) {
+                selectedAwayMatch = item;
               } else {
-                selectedValues[listIndex] = item; // Select
-              } // Update selectedValues list
+                selectedOverUnder = item;
+              }
             });
           },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: selectedValues[listIndex] == item ? kBlue : kPrimary,
+              color: selectedValue1 == item ? kBlue : kPrimary,
             ),
             alignment: Alignment.center,
             child: Padding(
@@ -393,7 +404,7 @@ class _BodyBettingState extends State<BodyBetting> {
               child: Text(
                 item,
                 style: TextStyle(
-                  color: selectedValues[listIndex] == item ? kWhite : kBlue,
+                  color: selectedValue1 == item ? kWhite : kBlue,
                 ),
               ),
             ),
