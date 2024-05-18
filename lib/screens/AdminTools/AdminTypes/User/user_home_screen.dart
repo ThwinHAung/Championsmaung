@@ -10,6 +10,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -88,7 +89,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kPrimary,
@@ -113,7 +113,6 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
               Container(
                 alignment: Alignment.bottomLeft,
                 width: double.infinity,
-                height: height * .25,
                 decoration: BoxDecoration(
                   color: kOnPrimaryContainer,
                   borderRadius: BorderRadius.circular(20),
@@ -122,8 +121,16 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Spacer(),
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Username : ' + '$_username',
+                        style: TextStyle(
+                          color: kBlue.withOpacity(.5),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Row(
                         children: [
                           const Text(
@@ -162,7 +169,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15.0),
+              const SizedBox(height: 10.0),
               AnimatedTextKit(
                 repeatForever: true,
                 animatedTexts: [
@@ -170,14 +177,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     'ဘယ်လိုလောင်းလောင်း PLUS ပေါင်း',
                     speed: const Duration(milliseconds: 100),
                     textStyle: const TextStyle(
+                      fontWeight: FontWeight.bold,
                       fontSize: 10,
                     ),
                   ),
                 ],
               ),
-              SizedBox(
-                height: height / 50,
-              ),
+              SizedBox(height: 10.0),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.only(top: 10.0),
@@ -227,40 +233,46 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       drawer: Drawer(
         child: Padding(
           padding: const EdgeInsets.only(top: 30),
-          child: ListView.builder(
-            itemCount: userDrawerList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  userDrawerList[index],
-                  style: const TextStyle(
-                    color: kBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  if (userDrawerRoutes[index] == 'logout') {
-                    _logout();
-                  } else {
-                    Navigator.pushNamed(context, userDrawerRoutes[index]);
-                  }
-                },
-              );
-            },
-          ),
+          child: _userDrawerListView(),
         ),
       ),
     );
   }
 
+  Widget _userDrawerListView() {
+    return ListView.builder(
+      itemCount: userDrawerList.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(
+            userDrawerList[index],
+            style: const TextStyle(
+              color: kBlue,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          onTap: () {
+            if (userDrawerRoutes[index] == 'logout') {
+              _logout();
+            } else {
+              Navigator.pushNamed(context, userDrawerRoutes[index]);
+            }
+          },
+        );
+      },
+    );
+  }
+
   var userDrawerList = [
     'Rules and Regulations',
+    'Change Password',
     'Change Langugae',
     'Log Out',
   ];
 
   var userDrawerRoutes = [
     RulesPageForRoute.id,
+    '',
     '',
     'logout',
   ];
