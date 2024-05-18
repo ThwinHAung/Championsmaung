@@ -109,7 +109,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
               children: [
                 Container(
                   child: Padding(
-                    padding: const EdgeInsets.all(15.0),
+                    padding: const EdgeInsets.all(2.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

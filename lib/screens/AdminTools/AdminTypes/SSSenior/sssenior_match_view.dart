@@ -117,7 +117,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-              padding: EdgeInsets.all(w / 50),
+              padding: const EdgeInsets.all(10.0),
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
