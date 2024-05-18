@@ -215,7 +215,22 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                         color: kError,
                       ),
                       style: IconButton.styleFrom(iconSize: 20),
-                    ))
+                    )),
+                Expanded(
+                    flex: 1,
+                    child: IconButton(
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => editDilaog(index),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.done,
+                        color: kGreen,
+                      ),
+                      style: IconButton.styleFrom(iconSize: 20),
+                    )),
               ],
             ),
             Padding(

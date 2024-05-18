@@ -29,6 +29,7 @@ const Color kWhite = Colors.white;
 const Color kBlack = Colors.black;
 const Color kGrey = Colors.grey;
 const Color kBlue = Color(0xFF0D47A1);
+const Color kGreen = Colors.green;
 
 const kTextFieldHintStyle = TextStyle(
   fontSize: 12.0,
