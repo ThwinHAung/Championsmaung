@@ -127,6 +127,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
+                                  alignment: Alignment.center,
                                   child: showIcons[index],
                                 ),
                               ),

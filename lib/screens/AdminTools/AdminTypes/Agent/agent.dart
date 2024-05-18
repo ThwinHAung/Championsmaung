@@ -126,6 +126,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
+                                  alignment: Alignment.center,
                                   child: showIcons[index],
                                 ),
                               ),

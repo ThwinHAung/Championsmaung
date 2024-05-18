@@ -5,9 +5,11 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.d
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/change_password.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -62,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen>
     Timer(const Duration(seconds: 4), () {
       setState(() {
         Navigator.pushReplacement(
-            context, PageTransition(const SSSeniorInputsPage()));
+            context, PageTransition(const SeniorAdminScreen()));
       });
     });
   }

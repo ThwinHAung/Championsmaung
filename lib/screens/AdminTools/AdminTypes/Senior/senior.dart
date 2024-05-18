@@ -127,6 +127,7 @@ class _SeniorAdminScreenState extends State<SeniorAdminScreen> {
                               ),
                               Expanded(
                                 child: Container(
+                                  alignment: Alignment.center,
                                   child: showIcons[index],
                                 ),
                               ),
