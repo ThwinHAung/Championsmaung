@@ -351,6 +351,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   Widget editDilaog(int index) {
     Match match = matches[index];
+
     return AlertDialog(
       title: const Text('Edit'),
       content: SingleChildScrollView(
@@ -376,7 +377,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ),
                       Expanded(
                         child: Text(
-                          'Select',
+                          '',
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -538,7 +539,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 5.0),
+              SizedBox(height: 5.0),
               Row(
                 children: [
                   Expanded(
@@ -650,7 +651,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                             Expanded(
                               child: Text(
-                                '+',
+                                '',
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
