@@ -161,7 +161,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                             items: _leagueList.map((item) {
                               return DropdownMenuItem<String>(
-                                value: item['id'].toString()!,
+                                value: item['id'].toString(),
                                 child: Text(
                                   item['name']!,
                                   style: const TextStyle(

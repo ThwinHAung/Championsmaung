@@ -289,16 +289,19 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     ),
                     Row(
                       children: [
-                        customRadio(lists[index][2], 2, index),
+                        customRadio('Over', 2, index),
                         Expanded(
                           flex: 1,
                           child: Container(
                             alignment: Alignment.center,
                             child: Text(
-                                '${overUnderGoals[index]} +${overunderOdd[index]}'),
+                              match.overUnderFirstDigit +
+                                  match.overUnderSign +
+                                  match.overUnderLastDigit.toString(),
+                            ),
                           ),
                         ),
-                        customRadio(lists[index][3], 3, index),
+                        customRadio('Under', 3, index),
                       ],
                     ),
                   ],
@@ -347,6 +350,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   late DateTime _dateTime;
 
   Widget editDilaog(int index) {
+    Match match = matches[index];
     return AlertDialog(
       title: const Text('Edit'),
       content: SingleChildScrollView(
@@ -727,15 +731,14 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 controller: _specialOddEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: specialOdd[index],
-                ),
+                    hintText: '${match.specialOddLastDigit}'),
               ),
               const SizedBox(height: 5.0),
               TextFormField(
                 controller: _homeTeamEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: lists[index][0],
+                  hintText: match.homeMatch,
                 ),
               ),
               const SizedBox(height: 5.0),
@@ -743,7 +746,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 controller: _awayTeamEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: lists[index][1],
+                  hintText: match.awayMatch,
                 ),
               ),
               const SizedBox(height: 10.0),
@@ -940,7 +943,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               TextFormField(
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                    hintText: overunderOdd[index]),
+                    hintText: '${match.overUnderLastDigit}'),
               ),
               const SizedBox(height: 10.0),
               Row(

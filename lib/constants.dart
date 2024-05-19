@@ -256,20 +256,6 @@ Widget rulesText(String cap, String text) {
   );
 }
 
-///LISTS for match views for both admin and user
-List<String> leagues = ['Premiere League', 'Spain Laliga', 'Championship'];
-
-List<List<String>> lists = [
-  ['TeamOne 1', 'TeamTwo 1', 'Over 1', 'Under 1'],
-  ['TeamOne 2', 'TeamTwo 2', 'Over 2', 'Under 2'],
-  ['TeamOne 3', 'TeamTwo 3', 'Over 3', 'Under 3'],
-];
-
-List<String> specialOdd = ['60', '40', '15'];
-
-List<String> overUnderGoals = ['1', '3', '4'];
-List<String> overunderOdd = ['60', '70', '10'];
-
 Widget showUsername(String username) {
   return Text(
     'Username : $username',
