@@ -4,11 +4,11 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_betting.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -43,7 +43,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    _username = await storage.read(key: 'username');
+    _username = await storage.read(key: 'user_name');
     if (_token != null) {
       _getBalance();
     }

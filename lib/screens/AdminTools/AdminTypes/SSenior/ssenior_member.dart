@@ -25,10 +25,13 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   String? _token;
   String? _role;
   String? _username;
+  String? selectedValue1;
+  String? selectedValue2;
 
   @override
   void initState() {
     _role = 'Loading...';
+    _username = 'Loading...';
     _getToken();
     super.initState();
   }
@@ -36,11 +39,12 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
-    _username = await storage.read(key: 'username');
+    final String? username = await storage.read(key: 'user_name');
 
-    if (role != null) {
+    if (role != null && username != null) {
       setState(() {
         _role = role;
+        _username = username;
       });
     }
   }
@@ -73,7 +77,10 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                   Expanded(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [showUsername(''), showAccountType('')],
+                    children: [
+                      showUsername(_username!),
+                      showAccountType(_role!)
+                    ],
                   )),
                   materialButton(kBlue, 'View Member List', () {}),
                 ],

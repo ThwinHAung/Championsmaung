@@ -1,5 +1,7 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 
 class UserChangePassword extends StatefulWidget {
   static String id = 'user_change_password';
@@ -10,6 +12,42 @@ class UserChangePassword extends StatefulWidget {
 }
 
 class _UserChangePasswordState extends State<UserChangePassword> {
+  final storage = const FlutterSecureStorage();
+  String? _token;
+  final TextEditingController _currentPasswordController =
+      TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+  }
+
+  Future<void> _passwordChange() async {
+    var url = Uri.parse('');
+    final response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: {
+        'current_password': _confirmPasswordController.text,
+        'new_password': _newPasswordController.text,
+        'new_password_confirmation': _confirmPasswordController.text,
+      },
+    );
+    if (response.statusCode == 200) {
+      print('okay');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,13 +75,15 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                 labelText('Change your password'),
                 const SizedBox(height: 10.0),
                 TextFormField(
+                  controller: _currentPasswordController,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter Old Password',
+                    hintText: 'Enter Current Password',
                   ),
                 ),
                 const SizedBox(height: 20.0),
                 TextFormField(
+                  controller: _newPasswordController,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Enter New Password',
@@ -51,6 +91,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                 ),
                 const SizedBox(height: 5.0),
                 TextFormField(
+                  controller: _confirmPasswordController,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
                     hintText: 'Confirm New Password',
