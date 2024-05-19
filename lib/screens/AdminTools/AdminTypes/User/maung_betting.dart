@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Match {
   final int id;
@@ -73,8 +74,12 @@ class _MaungBettingState extends State<MaungBetting> {
   @override
   void initState() {
     _getToken();
-
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _getToken() async {
@@ -120,7 +125,6 @@ class _MaungBettingState extends State<MaungBetting> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
-        backgroundColor: kPrimary,
         appBar: AppBar(
           backgroundColor: kPrimary,
           centerTitle: true,
@@ -160,8 +164,26 @@ class _MaungBettingState extends State<MaungBetting> {
                   flex: 2,
                   child: materialButton(kBlue, 'Bet', () {
                     String text = _maungBettingEditingController.text;
-                    double amount = double.tryParse(text) ??
-                        0.0; // Convert text to double or default to 0.0 if parsing fails
+                    double amount = double.tryParse(text) ?? 0.0;
+
+                    // Check if the input amount is numeric
+                    if (text.isEmpty || amount <= 0) {
+                      // Show dialog for invalid bet amount
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Invalid Bet Amount'),
+                          content: const Text(
+                              'Please enter a valid numeric amount to bet.'),
+                          actions: <Widget>[
+                            materialButton(kError, 'OK', () {
+                              Navigator.pop(context);
+                            }),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
 
                     // Check if user has enough balance
                     if (_balance == null || _balance! < amount) {
@@ -179,51 +201,50 @@ class _MaungBettingState extends State<MaungBetting> {
                           ],
                         ),
                       );
-                    } else {
-                      // Check if user has entered an amount to bet
-                      if (text.isEmpty) {
-                        // Show dialog for empty bet amount
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Empty Bet Amount'),
-                            content:
-                                const Text('Please enter an amount to bet.'),
-                            actions: <Widget>[
-                              materialButton(kError, 'OK', () {
+                      return;
+                    }
+
+                    // Check if user has selected a match
+                    if (selectedValues.isEmpty) {
+                      // Show dialog for no match selected
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('No Match Selected'),
+                          content: const Text(
+                              'Please select a match before placing the bet.'),
+                          actions: <Widget>[
+                            materialButton(kError, 'OK', () {
+                              Navigator.pop(context);
+                            }),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
+                    // Both conditions are met, show confirmation dialog
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Confirm Bet'),
+                        content: Text(
+                            'Do you want to bet $text amount for maung(0) matches?'),
+                        actions: <Widget>[
+                          Row(
+                            children: [
+                              materialButton(kError, 'Cancel', () {
                                 Navigator.pop(context);
                               }),
+                              const SizedBox(width: 5.0),
+                              materialButton(kBlue, 'Bet', () {
+                                _placeAccumulatorBet(amount);
+                                Navigator.pop(context);
+                              })
                             ],
-                          ),
-                        );
-                      } else {
-                        // Both conditions are met, show confirmation dialog
-                        showDialog(
-                          context: context,
-                          builder: (context) => AlertDialog(
-                            title: const Text('Confirm Bet'),
-                            content: Text(
-                                'Do you want to bet $text amount for body(0) matches?'),
-                            actions: <Widget>[
-                              Row(
-                                children: [
-                                  materialButton(kError, 'Cancel', () {
-                                    Navigator.pop(context);
-                                  }),
-                                  const SizedBox(width: 5.0),
-                                  materialButton(kBlue, 'Bet', () {
-                                    // Place the bet here
-                                    // You can call a function to handle the bet placement
-                                    // For example: _placeBet(amount);
-                                    Navigator.pop(context);
-                                  })
-                                ],
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                    }
+                          )
+                        ],
+                      ),
+                    );
 
                     _maungBettingEditingController.clear();
                   }),
@@ -268,6 +289,15 @@ class _MaungBettingState extends State<MaungBetting> {
 
   Widget radioContainer(int index) {
     Match match = matches[index];
+    // Parse match time
+    DateTime matchTime =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
+    String formattedMatchTime =
+        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+    // Get current time
+    DateTime now = DateTime.now();
+    // Check if the match has started
+    bool matchStarted = now.isAfter(matchTime);
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -293,12 +323,12 @@ class _MaungBettingState extends State<MaungBetting> {
                 child: Column(
                   children: [
                     Text(
-                      'Match Time: ${match.matchTime}',
+                      'Match Time: $formattedMatchTime',
                       style: const TextStyle(color: kGrey),
                     ),
                     Row(
                       children: [
-                        customRadio(match.homeMatch, 0, index),
+                        customRadio(match.homeMatch, 0, index, matchStarted),
                         Expanded(
                           flex: 1,
                           child: Container(
@@ -338,12 +368,12 @@ class _MaungBettingState extends State<MaungBetting> {
                             ),
                           ),
                         ),
-                        customRadio(match.awayMatch, 1, index),
+                        customRadio(match.awayMatch, 1, index, matchStarted),
                       ],
                     ),
                     Row(
                       children: [
-                        customRadio("Over", 2, index),
+                        customRadio("Over", 2, index, matchStarted),
                         Expanded(
                           flex: 1,
                           child: Container(
@@ -355,7 +385,7 @@ class _MaungBettingState extends State<MaungBetting> {
                             ),
                           ),
                         ),
-                        customRadio("Under", 3, index),
+                        customRadio("Under", 3, index, matchStarted),
                       ],
                     ),
                   ],
@@ -368,22 +398,25 @@ class _MaungBettingState extends State<MaungBetting> {
     );
   }
 
-  Widget customRadio(String item, int itemIndex, int listIndex) {
+  Widget customRadio(
+      String item, int itemIndex, int listIndex, bool matchStarted) {
     return Expanded(
       flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          onTap: () {
-            setState(() {
-              // Toggle selection
-              if (selectedValues[listIndex] == item) {
-                selectedValues[listIndex] = ''; // Unselect
-              } else {
-                selectedValues[listIndex] = item; // Select
-              } // Update selectedValues list
-            });
-          },
+          onTap: matchStarted
+              ? null
+              : () {
+                  setState(() {
+                    // Toggle selection
+                    if (selectedValues[listIndex] == item) {
+                      selectedValues[listIndex] = ''; // Unselect
+                    } else {
+                      selectedValues[listIndex] = item; // Select
+                    } // Update selectedValues list
+                  });
+                },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -403,5 +436,44 @@ class _MaungBettingState extends State<MaungBetting> {
         ),
       ),
     );
+  }
+
+  Future<void> _placeAccumulatorBet(double amount) async {
+    List<Map<String, dynamic>> accumulatorData =
+        selectedValues.entries.map((entry) {
+      int matchId = matches[entry.key].id;
+      String selectedOutcome = entry.value;
+      if (selectedOutcome == matches[entry.key].homeMatch) {
+        selectedOutcome = 'W1';
+      } else if (selectedOutcome == matches[entry.key].awayMatch) {
+        selectedOutcome = 'W2';
+      }
+      return {
+        'match_id': matchId,
+        'selected_outcome': selectedOutcome,
+      };
+    }).toList();
+
+    var url = Uri.parse('http://127.0.0.1:8000/api/add_maung_matches');
+    var response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: jsonEncode({
+        'amount': amount,
+        'matches': accumulatorData,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('hello');
+      _getBalance();
+    } else {
+      print(response.body);
+      print('fail');
+    }
   }
 }

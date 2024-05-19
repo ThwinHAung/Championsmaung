@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Match {
   final int id;
@@ -72,7 +73,6 @@ class _BodyBettingState extends State<BodyBetting> {
   @override
   void initState() {
     _getToken();
-
     super.initState();
   }
 
@@ -155,8 +155,26 @@ class _BodyBettingState extends State<BodyBetting> {
                 flex: 2,
                 child: materialButton(kBlue, 'Bet', () {
                   String text = _bodyBettingEditingController.text;
-                  double amount = double.tryParse(text) ??
-                      0.0; // Convert text to double or default to 0.0 if parsing fails
+                  double amount = double.tryParse(text) ?? 0.0;
+
+                  // Check if the input amount is numeric
+                  if (text.isEmpty || amount <= 0) {
+                    // Show dialog for invalid bet amount
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Invalid Bet Amount'),
+                        content: const Text(
+                            'Please enter a valid numeric amount to bet.'),
+                        actions: <Widget>[
+                          materialButton(kError, 'OK', () {
+                            Navigator.pop(context);
+                          }),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
 
                   // Check if user has enough balance
                   if (_balance == null || _balance! < amount) {
@@ -174,50 +192,72 @@ class _BodyBettingState extends State<BodyBetting> {
                         ],
                       ),
                     );
-                  } else {
-                    // Check if user has entered an amount to bet
-                    if (text.isEmpty) {
-                      // Show dialog for empty bet amount
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Empty Bet Amount'),
-                          content: const Text('Please enter an amount to bet.'),
-                          actions: <Widget>[
-                            materialButton(kError, 'OK', () {
+                    return;
+                  }
+
+                  // Check if user has selected a match
+                  if (selectedValues.isEmpty) {
+                    // Show dialog for no match selected
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('No Match Selected'),
+                        content: const Text(
+                            'Please select a match before placing the bet.'),
+                        actions: <Widget>[
+                          materialButton(kError, 'OK', () {
+                            Navigator.pop(context);
+                          }),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Both conditions are met, show confirmation dialog
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Confirm Bet'),
+                      content: Text(
+                          'Do you want to bet $text amount for body(0) matches?'),
+                      actions: <Widget>[
+                        Row(
+                          children: [
+                            materialButton(kError, 'Cancel', () {
                               Navigator.pop(context);
                             }),
+                            const SizedBox(width: 5.0),
+                            materialButton(kBlue, 'Bet', () {
+                              // Get the index of the selected match and the selected outcome
+                              int selectedIndex = selectedValues.keys.first;
+                              String selectedOutcome =
+                                  selectedValues[selectedIndex]!;
+
+                              // Get the match ID from the selected match
+                              int matchId = matches[selectedIndex].id;
+
+                              // Map the selected outcome to "W1" or "W2"
+                              if (selectedOutcome ==
+                                  matches[selectedIndex].homeMatch) {
+                                selectedOutcome = 'W1';
+                              } else if (selectedOutcome ==
+                                  matches[selectedIndex].awayMatch) {
+                                selectedOutcome = 'W2';
+                              } else if (selectedOutcome == "Over") {
+                                selectedOutcome = 'Over';
+                              } else if (selectedOutcome == "Under") {
+                                selectedOutcome = 'Under';
+                              }
+
+                              _placeSingleBet(matchId, selectedOutcome, amount);
+                              Navigator.pop(context);
+                            })
                           ],
-                        ),
-                      );
-                    } else {
-                      // Both conditions are met, show confirmation dialog
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Confirm Bet'),
-                          content: Text(
-                              'Do you want to bet $text amount for body(0) matches?'),
-                          actions: <Widget>[
-                            Row(
-                              children: [
-                                materialButton(kError, 'Cancel', () {
-                                  Navigator.pop(context);
-                                }),
-                                const SizedBox(width: 5.0),
-                                materialButton(kBlue, 'Bet', () {
-                                  // Place the bet here
-                                  // You can call a function to handle the bet placement
-                                  // For example: _placeBet(amount);
-                                  Navigator.pop(context);
-                                })
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  }
+                        )
+                      ],
+                    ),
+                  );
 
                   _bodyBettingEditingController.clear();
                 }),
@@ -264,6 +304,15 @@ class _BodyBettingState extends State<BodyBetting> {
 
   Widget radioContainer(int index) {
     Match match = matches[index];
+    // Parse match time
+    DateTime matchTime =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
+    String formattedMatchTime =
+        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+    // Get current time
+    DateTime now = DateTime.now();
+    // Check if the match has started
+    bool matchStarted = now.isAfter(matchTime);
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -288,12 +337,12 @@ class _BodyBettingState extends State<BodyBetting> {
               child: Column(
                 children: [
                   Text(
-                    'Match Time: ${match.matchTime}',
+                    'Match Time: $formattedMatchTime',
                     style: const TextStyle(color: kGrey),
                   ),
                   Row(
                     children: [
-                      customRadio(match.homeMatch, 0, index),
+                      customRadio(match.homeMatch, 0, index, matchStarted),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -333,12 +382,12 @@ class _BodyBettingState extends State<BodyBetting> {
                           ),
                         ),
                       ),
-                      customRadio(match.awayMatch, 1, index),
+                      customRadio(match.awayMatch, 1, index, matchStarted),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadio("Over", 2, index),
+                      customRadio("Over", 2, index, matchStarted),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -350,7 +399,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           ),
                         ),
                       ),
-                      customRadio("Under", 3, index),
+                      customRadio("Under", 3, index, matchStarted),
                     ],
                   ),
                 ],
@@ -362,24 +411,27 @@ class _BodyBettingState extends State<BodyBetting> {
     );
   }
 
-  Widget customRadio(String item, int itemIndex, int listIndex) {
+  Widget customRadio(
+      String item, int itemIndex, int listIndex, bool matchStarted) {
     return Expanded(
       flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          onTap: () {
-            setState(() {
-              if (selectedValues[listIndex] == item) {
-                selectedValues[listIndex] = ''; // Unselect
-              } else {
-                // Clear all selections
-                selectedValues = {};
-                // Select the tapped item
-                selectedValues[listIndex] = item;
-              }
-            });
-          },
+          onTap: matchStarted
+              ? null
+              : () {
+                  setState(() {
+                    if (selectedValues[listIndex] == item) {
+                      selectedValues[listIndex] = ''; // Unselect
+                    } else {
+                      // Clear all selections
+                      selectedValues = {};
+                      // Select the tapped item
+                      selectedValues[listIndex] = item;
+                    }
+                  });
+                },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
@@ -401,24 +453,20 @@ class _BodyBettingState extends State<BodyBetting> {
     );
   }
 
-  // Widget materialButton(Color color, String text, VoidCallback onPressed) {
-  //   return ElevatedButton(
-  //     style: ElevatedButton.styleFrom(
-  //       kprimary: color,
-  //     ),
-  //     onPressed: onPressed,
-  //     child: Text(text),
-  //   );
-  // }
-  //
-  // Widget labelText(String text) {
-  //   return Text(
-  //     text,
-  //     style: const TextStyle(
-  //       color: kBlack,
-  //       fontSize: 16.0,
-  //       fontWeight: FontWeight.bold,
-  //     ),
-  //   );
-  // }
+  Future<void> _placeSingleBet(
+      int matchId, String selectedOutcome, double amount) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
+    final response = await http.post(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    }, body: {
+      'match_id': matchId.toString(),
+      'selected_outcome': selectedOutcome,
+      'amount': amount.toString(),
+    });
+    if (response.statusCode == 200) {
+      print('hello');
+      _getBalance();
+    }
+  }
 }

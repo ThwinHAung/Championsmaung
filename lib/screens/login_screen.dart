@@ -24,8 +24,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    super.initState();
     _checkRememberedUser();
+    super.initState();
   }
 
   Future<void> _checkRememberedUser() async {
@@ -167,7 +167,7 @@ class _LoginScreenState extends State<LoginScreen> {
       const storage = FlutterSecureStorage();
       await storage.write(key: 'token', value: token);
       await storage.write(key: 'user_role', value: role);
-      await storage.write(key: 'username', value: username);
+      await storage.write(key: 'user_name', value: username);
 
       if (_rememberMe) {
         await storage.write(key: 'username', value: _usernameController.text);
@@ -192,11 +192,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const SSeniorAdminScreen()));
       }
     } else {
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Login Failed'),
-          content: const Text('Invalid username or password.'),
+          content: Text(message),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),

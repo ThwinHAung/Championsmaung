@@ -31,18 +31,20 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   @override
   void initState() {
     _role = 'Loading...';
+    _username = 'Loading...';
     _getToken();
     super.initState();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    _username = await storage.read(key: 'username');
     final String? role = await storage.read(key: 'user_role');
+    final String? username = await storage.read(key: 'user_name');
 
-    if (role != null) {
+    if (role != null && username != null) {
       setState(() {
         _role = role;
+        _username = username;
       });
     }
   }

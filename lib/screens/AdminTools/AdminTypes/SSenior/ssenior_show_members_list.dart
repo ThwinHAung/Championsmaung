@@ -400,7 +400,7 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
       "amount": _unitAddController.text,
     });
     if (response.statusCode == 200) {
-      print('ok');
+      setState(() {});
     }
   }
 

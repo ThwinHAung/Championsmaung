@@ -18,9 +18,16 @@ class SSSeniorInputsPage extends StatefulWidget {
 class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  String? league_value;
+  String? team_value;
+  String? specialOdd_goals;
+  String? specialOdd_calculate_value;
   final TextEditingController _specialOddController = TextEditingController();
   final TextEditingController _homeTeamController = TextEditingController();
   final TextEditingController _awayTeamController = TextEditingController();
+  String? overUnder_goals;
+  String? overUnder_calculate_value;
+  final TextEditingController _OverUnderOddController = TextEditingController();
   List<Map<String, dynamic>> _leagueList = [];
 
   late DateTime _dateTime;
@@ -70,16 +77,26 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
               'Authorization': 'Bearer $_token',
             },
             body: json.encode({
-              'league_id': selectedValue1,
+              'league_id': league_value,
               'home_match': _homeTeamController.text,
               'away_match': _awayTeamController.text,
               'match_time': _dateTime.toIso8601String(),
               'special_odd_team': team_value,
+              "special_odd_first_digit": specialOdd_goals,
+              "special_odd_sign": specialOdd_calculate_value,
+              "special_odd_last_digit": _specialOddController.text,
+              "over_under_first_digit": overUnder_goals,
+              "over_under_sign": overUnder_calculate_value,
+              "over_under_last_digit": _OverUnderOddController.text,
             }));
     if (response.statusCode == 200) {
-      print('ok');
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
     } else {
-      print(response.body);
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
     }
   }
 
@@ -142,9 +159,9 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                 ),
                               ],
                             ),
-                            items: leaguesDropdown.map((item) {
+                            items: _leagueList.map((item) {
                               return DropdownMenuItem<String>(
-                                value: item['value']!,
+                                value: item['id'].toString()!,
                                 child: Text(
                                   item['name']!,
                                   style: const TextStyle(
@@ -437,10 +454,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                       ),
                                     );
                                   }).toList(),
-                                  value: specialOdd_calcualte_value,
+                                  value: specialOdd_calculate_value,
                                   onChanged: (String? value) {
                                     setState(() {
-                                      specialOdd_calcualte_value = value!;
+                                      specialOdd_calculate_value = value!;
                                     });
                                   },
                                   buttonStyleData: ButtonStyleData(
@@ -548,7 +565,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                       ),
                                     ],
                                   ),
-                                  items: goalsDropdown.map((item) {
+                                  items: OverUnderGoalsDropdown.map((item) {
                                     return DropdownMenuItem<String>(
                                       value: item['value']!,
                                       child: Text(
@@ -713,6 +730,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         ),
                         const SizedBox(height: 5.0),
                         TextFormField(
+                          controller: _OverUnderOddController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Over, Under odd'),
