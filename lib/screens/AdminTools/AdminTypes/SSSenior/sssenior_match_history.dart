@@ -53,18 +53,18 @@ class Match {
   }
 }
 
-class SSSeniorMatchView extends StatefulWidget {
-  static String id = "sssenior_match_view";
+class SSSeniorMatchHistory extends StatefulWidget {
+  static String id = "sssenior_match_history";
 
   // constructor for custom radio button widget
 
-  const SSSeniorMatchView({super.key});
+  const SSSeniorMatchHistory({super.key});
 
   @override
-  State<SSSeniorMatchView> createState() => _SSSeniorMatchViewState();
+  State<SSSeniorMatchHistory> createState() => _SSSeniorMatchHistoryState();
 }
 
-class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
+class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
@@ -105,7 +105,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'Leagues, Matches',
+          'Pending, Match History',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
@@ -161,11 +161,20 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             Row(
               children: [
                 Expanded(
-                  flex: 9,
+                  flex: 7,
                   child: labelText(
                     match.league_name,
                   ),
                 ),
+                Expanded(
+                    flex: 2,
+                    child: Text(
+                      'Over , Pending',
+                      style: TextStyle(
+                        fontSize: 10,
+                        color: kGrey,
+                      ),
+                    )),
                 Expanded(
                     flex: 1,
                     child: IconButton(

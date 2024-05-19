@@ -5,6 +5,7 @@ import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.da
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
@@ -37,6 +38,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     'Input Leagues',
     'Input Matches',
     'View Matches List',
+    'View Matches History',
     'Report',
     'Deposit / Withdraw',
     'Account',
@@ -49,6 +51,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     LeagueScreen.id,
     SSSeniorInputsPage.id,
     SSSeniorMatchView.id,
+    SSSeniorMatchHistory.id,
     Report.id,
     Deposit.id,
     AccountSettings.id,
