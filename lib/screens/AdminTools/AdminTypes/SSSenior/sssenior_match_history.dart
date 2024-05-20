@@ -181,62 +181,19 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                       children: [
                         customRadio(match.homeMatch, 0, index),
                         Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '<' : '',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddFirstDigit == '0'
-                                  ? '=${match.specialOddSign}${match.specialOddLastDigit}'
-                                  : match.specialOddFirstDigit +
-                                      match.specialOddSign +
-                                      match.specialOddLastDigit.toString(),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '' : '>',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          flex: 2,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 5.0),
+                            child: Row(
+                              children: [
+                                labelText('3'),
+                                labelText('-'),
+                                labelText('0'),
+                              ],
                             ),
                           ),
                         ),
                         customRadio(match.awayMatch, 1, index),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        customRadio('Over', 2, index),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.overUnderFirstDigit +
-                                  match.overUnderSign +
-                                  match.overUnderLastDigit.toString(),
-                            ),
-                          ),
-                        ),
-                        customRadio('Under', 3, index),
                       ],
                     ),
                   ],
@@ -251,7 +208,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
 
   Widget customRadio(String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 3,
+      flex: 4,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
