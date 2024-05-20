@@ -226,17 +226,23 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                               content: const Text(
                                   'Do you really want to delete this match?'),
                               actions: <Widget>[
-                                Expanded(
-                                    flex: 1,
-                                    child: materialButton(kError, 'Cancel', () {
-                                      Navigator.pop(context);
-                                    })),
-                                const SizedBox(width: 5.0),
-                                Expanded(
-                                  flex: 1,
-                                  child: materialButton(kError, 'Delete', () {
-                                    ();
-                                  }),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: materialButton(kError, 'Cancel',
+                                            () {
+                                          Navigator.pop(context);
+                                        })),
+                                    const SizedBox(width: 10.0),
+                                    Expanded(
+                                      flex: 1,
+                                      child:
+                                          materialButton(kError, 'Delete', () {
+                                        ();
+                                      }),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -255,7 +261,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => editDilaog(index),
+                          builder: (context) => finishedDialog(index),
                         );
                       },
                       icon: const Icon(
@@ -381,6 +387,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       TextEditingController();
   final TextEditingController _overUnderOddEditingController =
       TextEditingController();
+  final TextEditingController _homeGoalEditingController =
+      TextEditingController();
+  final TextEditingController _awayGoalEditingController =
+      TextEditingController();
 
   late DateTime _dateTime;
 
@@ -404,7 +414,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -416,7 +426,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                             Expanded(
                               child: Text(
-                                'Select Goals',
+                                match.specialOddFirstDigit,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -496,7 +506,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -508,7 +518,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                             Expanded(
                               child: Text(
-                                '',
+                                match.specialOddSign,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -617,7 +627,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -629,7 +639,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                             Expanded(
                               child: Text(
-                                'Select Goals',
+                                match.overUnderFirstDigit,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -709,7 +719,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -721,7 +731,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             ),
                             Expanded(
                               child: Text(
-                                '+',
+                                match.overUnderSign,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -818,7 +828,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   ),
                   Expanded(
                     flex: 4,
-                    child: labelText('$DateTime'),
+                    child: labelText('${match.matchTime}'),
                   ),
                 ],
               ),
@@ -890,6 +900,79 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       },
     );
     _dateTime = dateTime as DateTime;
+  }
+
+  Widget finishedDialog(int index) {
+    Match match = matches[index];
+    return AlertDialog(
+      title: const Text('Finish Match'),
+      content: const Text('Enter goal results'),
+      actions: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Home Team : ${match.homeMatch}',
+                    style: TextStyle(color: kBlue, fontSize: 12),
+                  ),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  child: Text(
+                    'Away Team : ${match.awayMatch}',
+                    style: TextStyle(color: kBlue, fontSize: 12),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 10.0),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _homeGoalEditingController,
+                    style: kTextFieldActiveStyle,
+                    decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter Home Goal',
+                    ),
+                  ),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  child: TextFormField(
+                    controller: _awayGoalEditingController,
+                    style: kTextFieldActiveStyle,
+                    decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter Away Goal',
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kError, 'Cancel', () {
+                      Navigator.pop(context);
+                    })),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'Enter', () {
+                    ();
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
