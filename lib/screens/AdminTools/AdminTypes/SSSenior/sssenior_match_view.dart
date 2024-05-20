@@ -405,195 +405,43 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              labelText('Special Odd'),
-              const SizedBox(height: 10.0),
               Row(
                 children: [
                   Expanded(
-                    flex: 1,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: Row(
-                          children: [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: kPrimary,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                match.specialOddFirstDigit,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPrimary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: goalsDropdown.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item['value']!,
-                            child: Text(
-                              item['name']!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: kPrimary,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList(),
-                        value: specialOdd_goals,
-                        onChanged: (String? value) {
-                          setState(() {
-                            specialOdd_goals = value!;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 160,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: kBlue,
-                            ),
-                            color: kBlue,
-                          ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                          ),
-                          iconSize: 14,
-                          iconEnabledColor: kPrimary,
-                          iconDisabledColor: kGrey,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: kBlue,
-                          ),
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: WidgetStateProperty.all<double>(6),
-                            thumbVisibility:
-                                WidgetStateProperty.all<bool>(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
+                    child: labelText('Home Team'),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                    child: labelText('Away Team'),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _homeTeamEditingController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: match.homeMatch,
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
-                    flex: 1,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: Row(
-                          children: [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: kPrimary,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                match.specialOddSign,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPrimary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: calculatingSigns.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item['value']!,
-                            child: Text(
-                              item['name']!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: kPrimary,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList(),
-                        value: specialOdd_calcualte_value,
-                        onChanged: (String? value) {
-                          setState(() {
-                            specialOdd_calcualte_value = value!;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 160,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: kBlue,
-                            ),
-                            color: kBlue,
-                          ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                          ),
-                          iconSize: 14,
-                          iconEnabledColor: kPrimary,
-                          iconDisabledColor: kGrey,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: kBlue,
-                          ),
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: WidgetStateProperty.all<double>(6),
-                            thumbVisibility:
-                                WidgetStateProperty.all<bool>(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
+                    child: TextFormField(
+                      controller: _awayTeamEditingController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: match.awayMatch,
                       ),
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 20.0),
+              labelText('Special Odd'),
               const SizedBox(height: 5.0),
               TextFormField(
                 controller: _specialOddEditingController,
@@ -601,212 +449,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: '${match.specialOddLastDigit}'),
               ),
-              const SizedBox(height: 5.0),
-              TextFormField(
-                controller: _homeTeamEditingController,
-                style: kTextFieldActiveStyle,
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: match.homeMatch,
-                ),
-              ),
-              const SizedBox(height: 5.0),
-              TextFormField(
-                controller: _awayTeamEditingController,
-                style: kTextFieldActiveStyle,
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: match.awayMatch,
-                ),
-              ),
-              const SizedBox(height: 10.0),
+              const SizedBox(height: 20.0),
               labelText('Over, Under Odd'),
-              const SizedBox(height: 10.0),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: Row(
-                          children: [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: kPrimary,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                match.overUnderFirstDigit,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPrimary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: goalsDropdown.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item['value']!,
-                            child: Text(
-                              item['name']!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: kPrimary,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList(),
-                        value: overUnder_goals,
-                        onChanged: (String? value) {
-                          setState(() {
-                            overUnder_goals = value!;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 160,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: kBlue,
-                            ),
-                            color: kBlue,
-                          ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                          ),
-                          iconSize: 14,
-                          iconEnabledColor: kPrimary,
-                          iconDisabledColor: kGrey,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: kBlue,
-                          ),
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: WidgetStateProperty.all<double>(6),
-                            thumbVisibility:
-                                WidgetStateProperty.all<bool>(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10.0),
-                  Expanded(
-                    flex: 1,
-                    child: DropdownButtonHideUnderline(
-                      child: DropdownButton2<String>(
-                        isExpanded: true,
-                        hint: Row(
-                          children: [
-                            Icon(
-                              Icons.list,
-                              size: 16,
-                              color: kPrimary,
-                            ),
-                            SizedBox(
-                              width: 4,
-                            ),
-                            Expanded(
-                              child: Text(
-                                match.overUnderSign,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: kPrimary,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                        items: calculatingSigns.map((item) {
-                          return DropdownMenuItem<String>(
-                            value: item['value']!,
-                            child: Text(
-                              item['name']!,
-                              style: const TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: kPrimary,
-                              ),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          );
-                        }).toList(),
-                        value: overUnder_calculate_value,
-                        onChanged: (String? value) {
-                          setState(() {
-                            overUnder_calculate_value = value!;
-                          });
-                        },
-                        buttonStyleData: ButtonStyleData(
-                          height: 50,
-                          width: 160,
-                          padding: const EdgeInsets.only(left: 14, right: 14),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            border: Border.all(
-                              color: kBlue,
-                            ),
-                            color: kBlue,
-                          ),
-                          elevation: 2,
-                        ),
-                        iconStyleData: const IconStyleData(
-                          icon: Icon(
-                            Icons.arrow_forward_ios_outlined,
-                          ),
-                          iconSize: 14,
-                          iconEnabledColor: kPrimary,
-                          iconDisabledColor: kGrey,
-                        ),
-                        dropdownStyleData: DropdownStyleData(
-                          maxHeight: 200,
-                          width: 200,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(14),
-                            color: kBlue,
-                          ),
-                          offset: const Offset(-20, 0),
-                          scrollbarTheme: ScrollbarThemeData(
-                            radius: const Radius.circular(40),
-                            thickness: WidgetStateProperty.all<double>(6),
-                            thumbVisibility:
-                                WidgetStateProperty.all<bool>(true),
-                          ),
-                        ),
-                        menuItemStyleData: const MenuItemStyleData(
-                          height: 40,
-                          padding: EdgeInsets.only(left: 14, right: 14),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
               const SizedBox(height: 5.0),
               TextFormField(
                 controller: _overUnderOddEditingController,
@@ -814,92 +458,29 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: '${match.overUnderLastDigit}'),
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 20.0),
               Row(
                 children: [
                   Expanded(
-                    flex: 4,
-                    child: materialButton(
-                        kBlue, 'Select date&time', _myDateTimeMethod),
-                  ),
+                      flex: 1,
+                      child: materialButton(kError, 'Cancel', () {
+                        Navigator.pop(context);
+                      })),
+                  const SizedBox(width: 5.0),
                   Expanded(
                     flex: 1,
-                    child: labelText(':'),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: labelText('${match.matchTime}'),
-                  ),
+                    child: materialButton(kBlue, 'Update', () {
+                      int matchId = matches[index].id;
+                      _editMatch(matchId);
+                    }),
+                  )
                 ],
-              ),
-              SizedBox(
-                height: 100,
-                child: Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                    const SizedBox(width: 5.0),
-                    Expanded(
-                      flex: 1,
-                      child: materialButton(kBlue, 'Update', () {
-                        int matchId = matches[index].id;
-                        _editMatch(matchId);
-                      }),
-                    )
-                  ],
-                ),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  void _myDateTimeMethod() async {
-    DateTime? dateTime = await showOmniDateTimePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-      lastDate: DateTime.now().add(
-        const Duration(days: 3652),
-      ),
-      is24HourMode: false,
-      isShowSeconds: false,
-      minutesInterval: 1,
-      secondsInterval: 1,
-      isForce2Digits: true,
-      borderRadius: const BorderRadius.all(Radius.circular(16)),
-      constraints: const BoxConstraints(
-        maxWidth: 350,
-        maxHeight: 650,
-      ),
-      transitionBuilder: (context, anim1, anim2, child) {
-        return FadeTransition(
-          opacity: anim1.drive(
-            Tween(
-              begin: 0,
-              end: 1,
-            ),
-          ),
-          child: child,
-        );
-      },
-      transitionDuration: const Duration(milliseconds: 200),
-      barrierDismissible: true,
-      selectableDayPredicate: (dateTime) {
-        // Disable 25th Feb 2023
-        if (dateTime == DateTime(2023, 2, 25)) {
-          return false;
-        } else {
-          return true;
-        }
-      },
-    );
-    _dateTime = dateTime as DateTime;
   }
 
   Widget finishedDialog(int index) {
