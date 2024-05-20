@@ -166,7 +166,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     match.league_name,
                   ),
                 ),
-                Expanded(
+                const Expanded(
                     flex: 2,
                     child: Text(
                       'Over , Pending',
@@ -202,17 +202,23 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                               content: const Text(
                                   'Do you really want to delete this match?'),
                               actions: <Widget>[
-                                Expanded(
-                                    flex: 1,
-                                    child: materialButton(kError, 'Cancel', () {
-                                      Navigator.pop(context);
-                                    })),
-                                const SizedBox(width: 5.0),
-                                Expanded(
-                                  flex: 1,
-                                  child: materialButton(kError, 'Delete', () {
-                                    ();
-                                  }),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: materialButton(kError, 'Cancel',
+                                            () {
+                                          Navigator.pop(context);
+                                        })),
+                                    const SizedBox(width: 10.0),
+                                    Expanded(
+                                      flex: 1,
+                                      child:
+                                          materialButton(kError, 'Delete', () {
+                                        setState(() {});
+                                      }),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -231,7 +237,32 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                       onPressed: () {
                         showDialog(
                           context: context,
-                          builder: (context) => editDilaog(index),
+                          builder: (context) => AlertDialog(
+                            title: const Text('Finish Match'),
+                            content: const Text(
+                              'Is this match finished?',
+                            ),
+                            actions: <Widget>[
+                              Row(
+                                children: [
+                                  Expanded(
+                                      flex: 1,
+                                      child:
+                                          materialButton(kError, 'Cancel', () {
+                                        Navigator.pop(context);
+                                      })),
+                                  const SizedBox(width: 10.0),
+                                  Expanded(
+                                    flex: 1,
+                                    child:
+                                        materialButton(kBlue, 'Finished', () {
+                                      setState(() {});
+                                    }),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
                         );
                       },
                       icon: const Icon(
@@ -374,7 +405,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
               DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
-                  hint: const Row(
+                  hint: Row(
                     children: [
                       Icon(
                         Icons.list,
@@ -386,7 +417,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                       ),
                       Expanded(
                         child: Text(
-                          '',
+                          match.league_name,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -464,7 +495,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
               DropdownButtonHideUnderline(
                 child: DropdownButton2<String>(
                   isExpanded: true,
-                  hint: const Row(
+                  hint: Row(
                     children: [
                       Icon(
                         Icons.list,
@@ -476,7 +507,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                       ),
                       Expanded(
                         child: Text(
-                          'Special Odd Team',
+                          match.specialOddTeam,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
@@ -548,7 +579,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   ),
                 ),
               ),
-              SizedBox(height: 5.0),
+              const SizedBox(height: 5.0),
               Row(
                 children: [
                   Expanded(
@@ -556,7 +587,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -568,7 +599,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                             ),
                             Expanded(
                               child: Text(
-                                'Select Goals',
+                                match.specialOddFirstDigit,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -648,7 +679,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -660,7 +691,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                             ),
                             Expanded(
                               child: Text(
-                                '',
+                                match.specialOddSign,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -769,7 +800,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -781,7 +812,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                             ),
                             Expanded(
                               child: Text(
-                                'Select Goals',
+                                match.overUnderFirstDigit,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -861,7 +892,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     child: DropdownButtonHideUnderline(
                       child: DropdownButton2<String>(
                         isExpanded: true,
-                        hint: const Row(
+                        hint: Row(
                           children: [
                             Icon(
                               Icons.list,
@@ -873,7 +904,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                             ),
                             Expanded(
                               child: Text(
-                                '+',
+                                match.overUnderSign,
                                 style: TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
@@ -969,7 +1000,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   ),
                   Expanded(
                     flex: 4,
-                    child: labelText('$DateTime'),
+                    child: labelText(match.matchTime),
                   ),
                 ],
               ),

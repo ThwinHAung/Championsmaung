@@ -170,7 +170,7 @@ class _BettingHistoryState extends State<BettingHistory> {
       child: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Container(
-          child: Column(
+          child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -188,7 +188,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events : ' + '20'),
+                        Text('Number of events : ' '20'),
                         Text('Odds'),
                         Text('Potential winnings'),
                         Text('Status'),
@@ -211,7 +211,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events : ' + '20'),
+                        Text('Number of events : ' '20'),
                         Text('Odds'),
                         Text('Potential winnings'),
                         Text('Status'),
@@ -248,7 +248,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     match.league_name,
                   ),
                 ),
-                Expanded(
+                const Expanded(
                     flex: 2,
                     child: Text(
                       'Win or Lose',
