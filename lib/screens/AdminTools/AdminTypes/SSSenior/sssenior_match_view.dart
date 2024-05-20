@@ -410,13 +410,13 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   Expanded(
                     child: labelText('Home Team'),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                     child: labelText('Away Team'),
                   ),
                 ],
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Row(
                 children: [
                   Expanded(
@@ -458,7 +458,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: '${match.overUnderLastDigit}'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
               Row(
                 children: [
                   Expanded(
@@ -497,19 +497,19 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                   child: Text(
                     'Home Team : ${match.homeMatch}',
-                    style: TextStyle(color: kBlue, fontSize: 12),
+                    style: const TextStyle(color: kBlue, fontSize: 12),
                   ),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                   child: Text(
                     'Away Team : ${match.awayMatch}',
-                    style: TextStyle(color: kBlue, fontSize: 12),
+                    style: const TextStyle(color: kBlue, fontSize: 12),
                   ),
                 ),
               ],
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             Row(
               children: [
                 Expanded(
@@ -521,7 +521,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     ),
                   ),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                   child: TextFormField(
                     controller: _awayGoalEditingController,
@@ -533,7 +533,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 ),
               ],
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             Row(
               children: [
                 Expanded(

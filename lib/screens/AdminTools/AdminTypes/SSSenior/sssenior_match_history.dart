@@ -302,18 +302,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   isExpanded: true,
                   hint: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.list,
                         size: 16,
                         color: kPrimary,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Expanded(
                         child: Text(
                           match.league_name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: kPrimary,
@@ -392,18 +392,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   isExpanded: true,
                   hint: Row(
                     children: [
-                      Icon(
+                      const Icon(
                         Icons.list,
                         size: 16,
                         color: kPrimary,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 4,
                       ),
                       Expanded(
                         child: Text(
                           match.specialOddTeam,
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                             color: kPrimary,
@@ -484,18 +484,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                         isExpanded: true,
                         hint: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.list,
                               size: 16,
                               color: kPrimary,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 4,
                             ),
                             Expanded(
                               child: Text(
                                 match.specialOddFirstDigit,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: kPrimary,
@@ -576,18 +576,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                         isExpanded: true,
                         hint: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.list,
                               size: 16,
                               color: kPrimary,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 4,
                             ),
                             Expanded(
                               child: Text(
                                 match.specialOddSign,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: kPrimary,
@@ -697,18 +697,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                         isExpanded: true,
                         hint: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.list,
                               size: 16,
                               color: kPrimary,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 4,
                             ),
                             Expanded(
                               child: Text(
                                 match.overUnderFirstDigit,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: kPrimary,
@@ -789,18 +789,18 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                         isExpanded: true,
                         hint: Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.list,
                               size: 16,
                               color: kPrimary,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 4,
                             ),
                             Expanded(
                               child: Text(
                                 match.overUnderSign,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 14,
                                   fontWeight: FontWeight.bold,
                                   color: kPrimary,
