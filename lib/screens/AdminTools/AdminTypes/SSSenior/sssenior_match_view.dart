@@ -101,26 +101,24 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     } else {}
   }
 
-  Future<void> _editMatch() async {
-    final response =
-        await http.post(Uri.parse('http://127.0.0.1:8000/api/editMatches/{id}'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $_token',
-            },
-            body: json.encode({
-              'home_match': _homeTeamEditingController.text,
-              'away_match': _awayTeamEditingController.text,
-              'match_time': _dateTime.toIso8601String(),
-              "special_odd_first_digit": specialOdd_goals,
-              "special_odd_sign": specialOdd_calcualte_value,
-              "special_odd_last_digit": _specialOddEditingController.text,
-              "over_under_first_digit": overUnder_goals,
-              "over_under_sign": overUnder_calculate_value,
-              "over_under_last_digit": _overUnderOddEditingController.text,
-              "home_goals": "",
-              "away_goals": ""
-            }));
+  Future<void> _editMatch(int matchId) async {
+    final response = await http.put(
+        Uri.parse('http://127.0.0.1:8000/api/editMatches/$matchId'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          'home_match': _homeTeamEditingController.text,
+          'away_match': _awayTeamEditingController.text,
+          'match_time': _dateTime.toIso8601String(),
+          "special_odd_first_digit": specialOdd_goals,
+          "special_odd_sign": specialOdd_calcualte_value,
+          "special_odd_last_digit": _specialOddEditingController.text,
+          "over_under_first_digit": overUnder_goals,
+          "over_under_sign": overUnder_calculate_value,
+          "over_under_last_digit": _overUnderOddEditingController.text,
+        }));
     if (response.statusCode == 200) {
       final responseData = json.decode(response.body);
       final message = responseData['message'];
@@ -837,7 +835,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'Update', () {
-                        ();
+                        int matchId = matches[index].id;
+                        _editMatch(matchId);
                       }),
                     )
                   ],

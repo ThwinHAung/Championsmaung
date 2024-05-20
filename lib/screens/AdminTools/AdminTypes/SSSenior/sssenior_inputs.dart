@@ -31,6 +31,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   List<Map<String, dynamic>> _leagueList = [];
 
   late DateTime _dateTime;
+
   @override
   void initState() {
     super.initState();
@@ -823,6 +824,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
         }
       },
     );
-    _dateTime = dateTime as DateTime;
+    if (dateTime != null) {
+      setState(() {
+        _dateTime = dateTime;
+      });
+    }
   }
 }
