@@ -68,6 +68,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
+  String? specialOdd_goals;
+  String? specialOdd_calcualte_value;
+  String? overUnder_goals;
+  String? overUnder_calculate_value;
 
   @override
   void initState() {
@@ -95,6 +99,37 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
       });
     } else {}
+  }
+
+  Future<void> _editMatch() async {
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/api/editMatches/{id}'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'home_match': _homeTeamEditingController.text,
+              'away_match': _awayTeamEditingController.text,
+              'match_time': _dateTime.toIso8601String(),
+              "special_odd_first_digit": specialOdd_goals,
+              "special_odd_sign": specialOdd_calcualte_value,
+              "special_odd_last_digit": _specialOddEditingController.text,
+              "over_under_first_digit": overUnder_goals,
+              "over_under_sign": overUnder_calculate_value,
+              "over_under_last_digit": _overUnderOddEditingController.text,
+              "home_goals": "",
+              "away_goals": ""
+            }));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
+    } else {
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
+    }
   }
 
   @override
@@ -346,6 +381,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       TextEditingController();
   final TextEditingController _awayTeamEditingController =
       TextEditingController();
+  final TextEditingController _overUnderOddEditingController =
+      TextEditingController();
 
   late DateTime _dateTime;
 
@@ -360,186 +397,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              labelText('League'),
-              const SizedBox(height: 10.0),
-              DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: const Row(
-                    children: [
-                      Icon(
-                        Icons.list,
-                        size: 16,
-                        color: kPrimary,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Text(
-                          '',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: kPrimary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  items: leaguesDropdown.map((item) {
-                    return DropdownMenuItem<String>(
-                      value: item['value']!,
-                      child: Text(
-                        item['name']!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: kPrimary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  }).toList(),
-                  value: league_value,
-                  onChanged: (String? value) {
-                    setState(() {
-                      league_value = value!;
-                    });
-                  },
-                  buttonStyleData: ButtonStyleData(
-                    height: 50,
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: kBlue,
-                      ),
-                      color: kBlue,
-                    ),
-                    elevation: 2,
-                  ),
-                  iconStyleData: const IconStyleData(
-                    icon: Icon(
-                      Icons.arrow_forward_ios_outlined,
-                    ),
-                    iconSize: 14,
-                    iconEnabledColor: kPrimary,
-                    iconDisabledColor: kGrey,
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    maxHeight: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: kBlue,
-                    ),
-                    offset: const Offset(-20, 0),
-                    scrollbarTheme: ScrollbarThemeData(
-                      radius: const Radius.circular(40),
-                      thickness: WidgetStateProperty.all<double>(6),
-                      thumbVisibility: WidgetStateProperty.all<bool>(true),
-                    ),
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
               labelText('Special Odd'),
               const SizedBox(height: 10.0),
-              DropdownButtonHideUnderline(
-                child: DropdownButton2<String>(
-                  isExpanded: true,
-                  hint: const Row(
-                    children: [
-                      Icon(
-                        Icons.list,
-                        size: 16,
-                        color: kPrimary,
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Expanded(
-                        child: Text(
-                          'Special Odd Team',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: kPrimary,
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ],
-                  ),
-                  items: specialOddTeam.map((item) {
-                    return DropdownMenuItem<String>(
-                      value: item['value']!,
-                      child: Text(
-                        item['name']!,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: kPrimary,
-                        ),
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    );
-                  }).toList(),
-                  value: team_value,
-                  onChanged: (String? value) {
-                    setState(() {
-                      team_value = value!;
-                    });
-                  },
-                  buttonStyleData: ButtonStyleData(
-                    height: 50,
-                    width: double.infinity,
-                    padding: const EdgeInsets.only(left: 14, right: 14),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      border: Border.all(
-                        color: kBlue,
-                      ),
-                      color: kBlue,
-                    ),
-                    elevation: 2,
-                  ),
-                  iconStyleData: const IconStyleData(
-                    icon: Icon(
-                      Icons.arrow_forward_ios_outlined,
-                    ),
-                    iconSize: 14,
-                    iconEnabledColor: kPrimary,
-                    iconDisabledColor: kGrey,
-                  ),
-                  dropdownStyleData: DropdownStyleData(
-                    maxHeight: 200,
-                    width: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(14),
-                      color: kBlue,
-                    ),
-                    offset: const Offset(-20, 0),
-                    scrollbarTheme: ScrollbarThemeData(
-                      radius: const Radius.circular(40),
-                      thickness: WidgetStateProperty.all<double>(6),
-                      thumbVisibility: WidgetStateProperty.all<bool>(true),
-                    ),
-                  ),
-                  menuItemStyleData: const MenuItemStyleData(
-                    height: 40,
-                    padding: EdgeInsets.only(left: 14, right: 14),
-                  ),
-                ),
-              ),
-              SizedBox(height: 5.0),
               Row(
                 children: [
                   Expanded(
@@ -942,6 +801,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               ),
               const SizedBox(height: 5.0),
               TextFormField(
+                controller: _overUnderOddEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
                     hintText: '${match.overUnderLastDigit}'),
