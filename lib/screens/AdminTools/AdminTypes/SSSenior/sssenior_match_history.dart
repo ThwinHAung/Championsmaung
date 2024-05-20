@@ -1000,7 +1000,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   ),
                   Expanded(
                     flex: 4,
-                    child: labelText('$DateTime'),
+                    child: labelText(match.matchTime),
                   ),
                 ],
               ),
