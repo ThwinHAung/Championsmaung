@@ -166,7 +166,7 @@ class _MatchResultsState extends State<MatchResults> {
                     match.league_name,
                   ),
                 ),
-                Expanded(
+                const Expanded(
                     flex: 2,
                     child: Text(
                       'Over , Pending',
