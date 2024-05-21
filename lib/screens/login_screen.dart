@@ -42,6 +42,8 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -125,16 +127,18 @@ class _LoginScreenState extends State<LoginScreen> {
                             const BorderRadius.all(Radius.circular(10.0)),
                         elevation: 5.0,
                         child: MaterialButton(
-                          onPressed: () {
-                            _login();
-                            //Implement registration functionality.
-                          },
+                          onPressed: _isLoading ? null : _login,
                           minWidth: 200.0,
                           height: 42.0,
-                          child: const Text(
-                            'Login',
-                            style: kButtonTextStyle,
-                          ),
+                          child: _isLoading
+                              ? Text(
+                                  'Login',
+                                  style: kButtonTextStyle,
+                                )
+                              : Text(
+                                  'Login',
+                                  style: kButtonTextStyle,
+                                ),
                         ),
                       ),
                     ),
@@ -147,6 +151,21 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _login() async {
+    if (_isLoading) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simulate a login delay
+    await Future.delayed(Duration(seconds: 2));
+
+    // Perform your login logic here
+
+    setState(() {
+      _isLoading = false;
+    });
+
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/api/login'),
       headers: <String, String>{

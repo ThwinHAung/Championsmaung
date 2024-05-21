@@ -88,7 +88,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'Pending, Match History',
+          'Match Results',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
