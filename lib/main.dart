@@ -34,6 +34,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dar
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
+import 'package:champion_maung/screens/my_loading.dart';
 import 'package:champion_maung/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -58,6 +59,7 @@ class ChampionMaung extends StatelessWidget {
       ),
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
+        MyLoading.id: (context) => MyLoading(),
 
         //SSSenior
         SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),
