@@ -172,7 +172,7 @@ class _MatchResultsState extends State<MatchResults> {
                         Expanded(
                           flex: 2,
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 5.0),
+                            padding: const EdgeInsets.only(left: 15.0),
                             child: Row(
                               children: [
                                 labelText(match.homeGoals),
