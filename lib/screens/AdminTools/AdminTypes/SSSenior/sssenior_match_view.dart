@@ -1,12 +1,10 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
-import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class Match {
   final int id;
@@ -68,10 +66,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
-  String? specialOdd_goals;
-  String? specialOdd_calcualte_value;
-  String? overUnder_goals;
-  String? overUnder_calculate_value;
 
   @override
   void initState() {
@@ -111,12 +105,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         body: json.encode({
           'home_match': _homeTeamEditingController.text,
           'away_match': _awayTeamEditingController.text,
-          'match_time': _dateTime.toIso8601String(),
-          "special_odd_first_digit": specialOdd_goals,
-          "special_odd_sign": specialOdd_calcualte_value,
           "special_odd_last_digit": _specialOddEditingController.text,
-          "over_under_first_digit": overUnder_goals,
-          "over_under_sign": overUnder_calculate_value,
           "over_under_last_digit": _overUnderOddEditingController.text,
         }));
     if (response.statusCode == 200) {
@@ -128,6 +117,31 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       final message = responseData['message'];
       print(message);
     }
+  }
+
+  Future<void> _deleteMatch(int matchId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/deleteMatch');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          "match_id": matchId,
+        }));
+  }
+
+  Future<void> _matchStatusUpdate(int matchId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/updateStatus{$matchId}');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          "home_goals": _homeGoalEditingController.text,
+          "away_goals": _awayTeamEditingController.text,
+        }));
   }
 
   @override
@@ -239,7 +253,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                       flex: 1,
                                       child:
                                           materialButton(kError, 'Delete', () {
-                                        ();
+                                        int matchId = matches[index].id;
+                                        _deleteMatch(matchId);
                                       }),
                                     ),
                                   ],
@@ -391,8 +406,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       TextEditingController();
   final TextEditingController _awayGoalEditingController =
       TextEditingController();
-
-  late DateTime _dateTime;
 
   Widget editDilaog(int index) {
     Match match = matches[index];
