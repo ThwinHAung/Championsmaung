@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Match {
   final int id;
@@ -30,8 +31,8 @@ class Match {
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
       matchTime: json['match_time'],
-      homeGoals: json['home_goals'],
-      awayGoals: json['away_goals'],
+      homeGoals: json['home_goals'].toString(),
+      awayGoals: json['away_goals'].toString(),
     );
   }
 }
@@ -129,6 +130,12 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
 
   Widget radioContainer(int index) {
     Match match = matches[index];
+    // Parse match time
+    DateTime matchTime =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
+    String formattedMatchTime =
+        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+    // Get current time
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -156,7 +163,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                 child: Column(
                   children: [
                     Text(
-                      'Match Time: ${match.matchTime}',
+                      'Match Time: $formattedMatchTime',
                       style: const TextStyle(color: kGrey),
                     ),
                     Row(

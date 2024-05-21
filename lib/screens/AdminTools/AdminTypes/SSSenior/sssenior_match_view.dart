@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class Match {
   final int id;
@@ -132,16 +133,22 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/updateStatus{$matchId}');
+    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token',
         },
         body: json.encode({
+          "match_id": matchId,
           "home_goals": _homeGoalEditingController.text,
           "away_goals": _awayTeamEditingController.text,
         }));
+    if (response.statusCode == 200) {
+      print(response.body);
+    } else {
+      print(response.body);
+    }
   }
 
   @override
@@ -194,6 +201,11 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   Widget radioContainer(int index) {
     Match match = matches[index];
+    // Parse match time
+    DateTime matchTime =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
+    String formattedMatchTime =
+        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -293,7 +305,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 child: Column(
                   children: [
                     Text(
-                      'Match Time: ${match.matchTime}',
+                      'Match Time: $formattedMatchTime',
                       style: const TextStyle(color: kGrey),
                     ),
                     Row(
@@ -558,7 +570,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'Enter', () {
-                    ();
+                    int matchId = matches[index].id;
+                    _matchStatusUpdate(matchId);
                   }),
                 ),
               ],
