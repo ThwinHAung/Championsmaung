@@ -265,12 +265,30 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                         })),
                                     const SizedBox(width: 10.0),
                                     Expanded(
-                                      flex: 1,
-                                      child:
-                                          materialButton(kError, 'Delete', () {
-                                        int matchId = matches[index].id;
-                                        _deleteMatch(matchId);
-                                      }),
+                                      child: Material(
+                                        color: kOnPrimaryContainer,
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(10.0)),
+                                        elevation: 5.0,
+                                        child: MaterialButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              int matchId = matches[index].id;
+                                              _deleteMatch(matchId);
+                                            });
+                                          },
+                                          minWidth: 200.0,
+                                          height: 42.0,
+                                          child: Text(
+                                            'Delete',
+                                            style: TextStyle(
+                                              fontSize: 12.0,
+                                              fontWeight: FontWeight.bold,
+                                              color: kError,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 )
