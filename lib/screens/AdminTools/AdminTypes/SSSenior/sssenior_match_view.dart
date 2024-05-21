@@ -133,20 +133,23 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus');
+    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId');
     final response = await http.post(url,
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
           'Authorization': 'Bearer $_token',
         },
         body: json.encode({
-          "match_id": matchId,
           "home_goals": _homeGoalEditingController.text,
           "away_goals": _awayTeamEditingController.text,
         }));
     if (response.statusCode == 200) {
+      // final responseData = json.decode(response.body);
+      // final message = responseData['message'];
       print(response.body);
     } else {
+      // final responseData = json.decode(response.body);
+      // final message = responseData['message'];
       print(response.body);
     }
   }
