@@ -6,6 +6,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Match {
   final int id;
@@ -75,6 +76,29 @@ class _BettingHistoryState extends State<BettingHistory> {
         matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
       });
     } else {}
+  }
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> getData() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatchesHistory();
+
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> refreshPage() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatchesHistory();
+
+    _refreshController.refreshCompleted();
   }
 
   @override

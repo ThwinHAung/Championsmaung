@@ -160,12 +160,6 @@ class _LoginScreenState extends State<LoginScreen> {
     // Simulate a login delay
     await Future.delayed(Duration(seconds: 2));
 
-    // Perform your login logic here
-
-    setState(() {
-      _isLoading = false;
-    });
-
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/api/login'),
       headers: <String, String>{
@@ -226,6 +220,9 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
       );
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

@@ -5,6 +5,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class SSSeniorInputsPage extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   final TextEditingController _OverUnderOddController = TextEditingController();
   List<Map<String, dynamic>> _leagueList = [];
 
-  late DateTime _dateTime;
+  DateTime _dateTime = DateTime.now();
 
   @override
   void initState() {
@@ -103,6 +104,8 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(_dateTime);
+
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
@@ -741,7 +744,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         Row(
                           children: [
                             Expanded(
-                              flex: 4,
+                              flex: 5,
                               child: materialButton(
                                   kBlue, 'Select date&time', _myDateTimeMethod),
                             ),
@@ -751,7 +754,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                             ),
                             Expanded(
                               flex: 4,
-                              child: labelText('$DateTime'),
+                              child: labelText(formattedDate),
                             ),
                           ],
                         ),
@@ -760,9 +763,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                           child: Row(
                             children: [
                               Expanded(
-                                flex: 2,
-                                child: Container(),
-                              ),
+                                  flex: 1,
+                                  child: materialButton(
+                                      kGreen, 'Clear All', () {})),
+                              SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'Enter', () {
@@ -787,11 +791,9 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   void _myDateTimeMethod() async {
     DateTime? dateTime = await showOmniDateTimePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: _dateTime,
       firstDate: DateTime(1600).subtract(const Duration(days: 3652)),
-      lastDate: DateTime.now().add(
-        const Duration(days: 3652),
-      ),
+      lastDate: DateTime.now().add(const Duration(days: 3652)),
       is24HourMode: false,
       isShowSeconds: false,
       minutesInterval: 1,
@@ -824,6 +826,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
         }
       },
     );
+
     if (dateTime != null) {
       setState(() {
         _dateTime = dateTime;

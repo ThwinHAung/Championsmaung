@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Match {
   final int id;
@@ -66,6 +68,18 @@ class _MatchResultsState extends State<MatchResults> {
     }
   }
 
+  RefreshController _refreshController = RefreshController();
+
+  Future<void> getData() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatchesHistory();
+
+    _refreshController.refreshCompleted();
+  }
+
   Future<void> _fetchMatchesHistory() async {
     var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_matchesHistory');
     final response = await http.get(url, headers: {
@@ -99,30 +113,40 @@ class _MatchResultsState extends State<MatchResults> {
       body: Container(
         color: kPrimary,
         child: AnimationLimiter(
-          child: ListView.builder(
-              padding: const EdgeInsets.all(10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: matches.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
+            ),
+            onRefresh: () => getData(),
+            child: ListView.builder(
+                padding: const EdgeInsets.all(10.0),
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                itemCount: matches.length,
+                itemBuilder: (context, index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    delay: const Duration(milliseconds: 100),
+                    child: SlideAnimation(
                       duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: radioContainer(index),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      child: FadeInAnimation(
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        duration: const Duration(milliseconds: 2500),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: radioContainer(index),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              }),
+                  );
+                }),
+          ),
         ),
       ),
     );
