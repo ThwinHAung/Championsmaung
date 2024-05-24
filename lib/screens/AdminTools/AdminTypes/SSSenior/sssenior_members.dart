@@ -296,6 +296,19 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     });
 
     if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succeed.'),
+          content: Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
       Navigator.pop(context);
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);

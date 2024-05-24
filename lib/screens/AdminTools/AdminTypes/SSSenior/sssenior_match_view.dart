@@ -191,6 +191,24 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   @override
   Widget build(BuildContext context) {
+    // Group matches by league_name
+    final Map<String, List<Match>> groupedMatches = {};
+    for (var match in matches) {
+      if (!groupedMatches.containsKey(match.league_name)) {
+        groupedMatches[match.league_name] = [];
+      }
+      groupedMatches[match.league_name]!.add(match);
+    }
+
+    // Sort matches by time within each league
+    for (var matchList in groupedMatches.values) {
+      matchList.sort((a, b) {
+        DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
+        DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
+        return timeB.compareTo(timeA);
+      });
+    }
+
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
@@ -218,47 +236,77 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             ),
             onRefresh: () => getData(),
             child: ListView.builder(
-                padding: const EdgeInsets.all(10.0),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: matches.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+              padding: const EdgeInsets.all(10.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: groupedMatches.length,
+              itemBuilder: (context, index) {
+                String leagueName = groupedMatches.keys.elementAt(index);
+                List<Match> leagueMatches = groupedMatches[leagueName]!;
+
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: radioContainer(index),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Text(
+                                  leagueName,
+                                  style: TextStyle(
+                                    color: kBlack,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18.0,
+                                  ),
+                                ),
+                              ),
+                              // Matches for the League
+                              ...leagueMatches.asMap().entries.map((entry) {
+                                int matchIndex = entry.key;
+                                Match match = entry.value;
+                                bool isLastMatch =
+                                    matchIndex == leagueMatches.length - 1;
+                                return radioContainer(match, isLastMatch);
+                              }).toList(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget radioContainer(int index) {
-    Match match = matches[index];
+  Widget radioContainer(Match match, bool isLastMatch) {
     // Parse match time
     DateTime matchTime =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
     String formattedMatchTime =
         DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+
     return Container(
-      decoration: BoxDecoration(
-        color: kOnPrimaryContainer,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -269,179 +317,179 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               children: [
                 Expanded(
                   flex: 9,
-                  child: labelText(
-                    match.league_name,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Match Time: $formattedMatchTime',
+                      style: const TextStyle(color: kGrey),
+                    ),
                   ),
                 ),
                 Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => editDilaog(index),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.edit_outlined,
-                        color: kBlue,
-                      ),
-                      style: IconButton.styleFrom(iconSize: 20),
-                    )),
+                  flex: 1,
+                  child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => editDilaog(match.id),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.edit_outlined,
+                      color: kBlue,
+                    ),
+                    style: IconButton.styleFrom(iconSize: 20),
+                  ),
+                ),
                 Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Delete Match'),
-                              content: const Text(
-                                  'Do you really want to delete this match?'),
-                              actions: <Widget>[
-                                Row(
-                                  children: [
-                                    Expanded(
-                                        flex: 1,
-                                        child: materialButton(kError, 'Cancel',
-                                            () {
+                  flex: 1,
+                  child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Delete Match'),
+                          content: const Text(
+                              'Do you really want to delete this match?'),
+                          actions: <Widget>[
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: materialButton(kError, 'Cancel', () {
+                                    Navigator.pop(context);
+                                  }),
+                                ),
+                                const SizedBox(width: 10.0),
+                                Expanded(
+                                  child: Material(
+                                    color: kOnPrimaryContainer,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(10.0)),
+                                    elevation: 5.0,
+                                    child: MaterialButton(
+                                      onPressed: () {
+                                        setState(() {
+                                          _deleteMatch(match.id);
+                                          refreshPage();
                                           Navigator.pop(context);
-                                        })),
-                                    const SizedBox(width: 10.0),
-                                    Expanded(
-                                      child: Material(
-                                        color: kOnPrimaryContainer,
-                                        borderRadius: const BorderRadius.all(
-                                            Radius.circular(10.0)),
-                                        elevation: 5.0,
-                                        child: MaterialButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              int matchId = matches[index].id;
-                                              _deleteMatch(matchId);
-                                              refreshPage();
-                                              Navigator.pop(context);
-                                            });
-                                          },
-                                          minWidth: 200.0,
-                                          height: 42.0,
-                                          child: Text(
-                                            'Delete',
-                                            style: TextStyle(
-                                              fontSize: 12.0,
-                                              fontWeight: FontWeight.bold,
-                                              color: kError,
-                                            ),
-                                          ),
+                                        });
+                                      },
+                                      minWidth: 200.0,
+                                      height: 42.0,
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.bold,
+                                          color: kError,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                )
+                                  ),
+                                ),
                               ],
-                            ),
-                          );
-                        });
-                      },
-                      icon: const Icon(
-                        Icons.delete_outline,
-                        color: kError,
-                      ),
-                      style: IconButton.styleFrom(iconSize: 20),
-                    )),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.delete_outline,
+                      color: kError,
+                    ),
+                    style: IconButton.styleFrom(iconSize: 20),
+                  ),
+                ),
                 Expanded(
-                    flex: 1,
-                    child: IconButton(
-                      onPressed: () {
-                        showDialog(
-                          context: context,
-                          builder: (context) => finishedDialog(index),
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.done,
-                        color: kGreen,
-                      ),
-                      style: IconButton.styleFrom(iconSize: 20),
-                    )),
+                  flex: 1,
+                  child: IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) => finishedDialog(match.id),
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.done,
+                      color: kGreen,
+                    ),
+                    style: IconButton.styleFrom(iconSize: 20),
+                  ),
+                ),
               ],
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    Text(
-                      'Match Time: $formattedMatchTime',
-                      style: const TextStyle(color: kGrey),
-                    ),
-                    Row(
-                      children: [
-                        customRadio(match.homeMatch, 0, index),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '<' : '',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      customRadio(match.homeMatch, 0, match.id),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.specialOddTeam == 'H' ? '<' : '',
+                            style: const TextStyle(
+                              color: kBlue,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddFirstDigit == '0'
-                                  ? '=${match.specialOddSign}${match.specialOddLastDigit}'
-                                  : match.specialOddFirstDigit +
-                                      match.specialOddSign +
-                                      match.specialOddLastDigit.toString(),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.specialOddFirstDigit == '0'
+                                ? '=${match.specialOddSign}${match.specialOddLastDigit}'
+                                : match.specialOddFirstDigit +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString(),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.specialOddTeam == 'H' ? '' : '>',
+                            style: const TextStyle(
+                              color: kBlue,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '' : '>',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                      ),
+                      customRadio(match.awayMatch, 1, match.id),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      customRadio('Over', 2, match.id),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.overUnderFirstDigit +
+                                match.overUnderSign +
+                                match.overUnderLastDigit.toString(),
                           ),
                         ),
-                        customRadio(match.awayMatch, 1, index),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        customRadio('Over', 2, index),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.overUnderFirstDigit +
-                                  match.overUnderSign +
-                                  match.overUnderLastDigit.toString(),
-                            ),
-                          ),
-                        ),
-                        customRadio('Under', 3, index),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      customRadio('Under', 3, match.id),
+                    ],
+                  ),
+                ],
               ),
             ),
+            if (!isLastMatch)
+              Divider(), // Only render divider if not the last match
           ],
         ),
       ),

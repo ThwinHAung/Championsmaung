@@ -35,7 +35,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   ];
   var drawerList = [
     'Transition Activity Log',
-    'Members',
+    'Create Members',
     'Members List',
     'Input Leagues',
     'Input Matches',

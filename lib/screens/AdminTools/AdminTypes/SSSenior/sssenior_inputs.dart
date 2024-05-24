@@ -71,41 +71,9 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     }
   }
 
-  Future<void> _insertMatch() async {
-    final response =
-        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingmatch'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $_token',
-            },
-            body: json.encode({
-              'league_id': league_value,
-              'home_match': _homeTeamController.text,
-              'away_match': _awayTeamController.text,
-              'match_time': _dateTime.toIso8601String(),
-              'special_odd_team': team_value,
-              "special_odd_first_digit": specialOdd_goals,
-              "special_odd_sign": specialOdd_calculate_value,
-              "special_odd_last_digit": _specialOddController.text,
-              "over_under_first_digit": overUnder_goals,
-              "over_under_sign": overUnder_calculate_value,
-              "over_under_last_digit": _OverUnderOddController.text,
-            }));
-    if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      final message = responseData['message'];
-      print(message);
-    } else {
-      final responseData = json.decode(response.body);
-      final message = responseData['message'];
-      print(message);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    String formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(_dateTime);
-
+    String formattedDate = DateFormat('yyyy-MM-dd | h:mm a').format(_dateTime);
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
@@ -763,9 +731,9 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                           child: Row(
                             children: [
                               Expanded(
-                                  flex: 1,
-                                  child: materialButton(
-                                      kGreen, 'Clear All', () {})),
+                                flex: 1,
+                                child: Container(),
+                              ),
                               SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
@@ -785,6 +753,89 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> _insertMatch() async {
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingmatch'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'league_id': league_value,
+              'home_match': _homeTeamController.text,
+              'away_match': _awayTeamController.text,
+              'match_time': _dateTime.toIso8601String(),
+              'special_odd_team': team_value,
+              "special_odd_first_digit": specialOdd_goals,
+              "special_odd_sign": specialOdd_calculate_value,
+              "special_odd_last_digit": _specialOddController.text,
+              "over_under_first_digit": overUnder_goals,
+              "over_under_sign": overUnder_calculate_value,
+              "over_under_last_digit": _OverUnderOddController.text,
+            }));
+    if (response.statusCode == 200) {
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
+      _successDialog(context, message);
+    } else {
+      final responseData = json.decode(response.body);
+      final message = responseData['message'];
+      print(message);
+      _failedDialog(context, message);
+    }
+  }
+
+  void _successDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Success"),
+          content: Text(message),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    })),
+              ],
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void _failedDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Failed"),
+          content: Text(message),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    })),
+              ],
+            )
+          ],
+        );
+      },
     );
   }
 
