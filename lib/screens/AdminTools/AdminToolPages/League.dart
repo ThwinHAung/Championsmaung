@@ -47,6 +47,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: konPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,

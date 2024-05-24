@@ -13,6 +13,7 @@ class _ReportState extends State<Report> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: konPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
