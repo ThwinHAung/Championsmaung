@@ -51,6 +51,20 @@ class _BettingHistoryState extends State<BettingHistory> {
   String? _token;
   List<Match> matches = [];
 
+  int _widgetSelectedIndex = 0;
+
+  List<Widget> get _widgetOptions => <Widget>[
+        bodyBettingHistoryWidget(),
+        maungBettingHistoryWidget(),
+      ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      refreshPage();
+      _widgetSelectedIndex = index;
+    });
+  }
+
   @override
   void initState() {
     _getToken();
@@ -117,23 +131,59 @@ class _BettingHistoryState extends State<BettingHistory> {
           ),
         ),
       ),
-      body: Container(
-        color: kPrimary,
-        child: Container(
-          child: view(),
-        ),
+      body: Center(
+        child: _widgetOptions.elementAt(_widgetSelectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 1),
+            ),
+            label: 'BODY',
+          ),
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 1),
+            ),
+            label: 'MAUNG',
+          ),
+        ],
+        currentIndex: _widgetSelectedIndex,
+        selectedItemColor: kBlue,
+        onTap: _onItemTapped,
       ),
     );
   }
 
-  Widget view() {
+  Widget bodyBettingHistoryWidget() {
+    return Container(
+      color: kPrimary,
+      child: Container(
+        child: bodyView(),
+      ),
+    );
+  }
+
+  Widget maungBettingHistoryWidget() {
+    return Container(
+      color: kPrimary,
+      child: Container(
+        child: maungView(),
+      ),
+    );
+  }
+
+  Widget bodyView() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: bettingResults(),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: bodyBettingResults(),
           ),
           const SizedBox(height: 10.0),
           Expanded(
@@ -164,7 +214,45 @@ class _BettingHistoryState extends State<BettingHistory> {
     );
   }
 
-  Widget bettingResults() {
+  Widget maungView() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: maungBettingResults(),
+          ),
+          const SizedBox(height: 10.0),
+          Expanded(
+            child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                itemCount: matches.length,
+                itemBuilder: (context, index) {
+                  return AnimationConfiguration.staggeredList(
+                    position: index,
+                    delay: const Duration(milliseconds: 100),
+                    child: SlideAnimation(
+                      duration: const Duration(milliseconds: 2500),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      child: FadeInAnimation(
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        duration: const Duration(milliseconds: 2500),
+                        child: radioContainer(index),
+                      ),
+                    ),
+                  );
+                }),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget bodyBettingResults() {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -188,11 +276,11 @@ class _BettingHistoryState extends State<BettingHistory> {
               Row(
                 children: [
                   Expanded(
-                    flex: 5,
+                    flex: 10,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events : ' '20'),
+                        Text('Number of events (BODY) : ' '20'),
                         Text('Odds'),
                         Text('Potential winnings'),
                         Text('Status'),
@@ -215,10 +303,77 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events : ' '20'),
+                        Text('00'),
+                        Text('00'),
+                        Text('00'),
+                        Text('**'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget maungBettingResults() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: kOnPrimaryContainer,
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Container(
+          child: const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Accumulator',
+                style: TextStyle(
+                  color: kBlue,
+                  fontSize: 20.0,
+                ),
+              ),
+              SizedBox(height: 10.0),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 10,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Number of events (MAUNG) : ' '20'),
                         Text('Odds'),
                         Text('Potential winnings'),
                         Text('Status'),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      children: [
+                        Text(':'),
+                        Text(':'),
+                        Text(':'),
+                        Text(':'),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 5,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('00'),
+                        Text('00'),
+                        Text('00'),
+                        Text('**'),
                       ],
                     ),
                   ),
