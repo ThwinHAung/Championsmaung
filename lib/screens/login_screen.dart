@@ -158,7 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     // Simulate a login delay
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/api/login'),

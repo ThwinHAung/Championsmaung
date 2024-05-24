@@ -282,6 +282,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                 Match match = entry.value;
                                 bool isLastMatch =
                                     matchIndex == leagueMatches.length - 1;
+                                print(matchIndex);
                                 return radioContainer(match, isLastMatch);
                               }).toList(),
                             ],
@@ -331,7 +332,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => editDilaog(match.id),
+                        builder: (context) => editDialog(match),
                       );
                     },
                     icon: const Icon(
@@ -407,7 +408,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     onPressed: () {
                       showDialog(
                         context: context,
-                        builder: (context) => finishedDialog(match.id),
+                        builder: (context) => finishedDialog(match),
                       );
                     },
                     icon: const Icon(
@@ -535,8 +536,11 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   final TextEditingController _awayGoalEditingController =
       TextEditingController();
 
-  Widget editDilaog(int index) {
-    Match match = matches[index];
+  Widget editDialog(Match match) {
+    _homeTeamEditingController.text = match.homeMatch;
+    _awayTeamEditingController.text = match.awayMatch;
+    _specialOddEditingController.text = match.specialOddLastDigit.toString();
+    _overUnderOddEditingController.text = match.overUnderLastDigit.toString();
 
     return AlertDialog(
       title: const Text('Edit'),
@@ -565,7 +569,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       controller: _homeTeamEditingController,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: match.homeMatch,
+                        hintText: 'Enter home team',
                       ),
                     ),
                   ),
@@ -575,7 +579,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       controller: _awayTeamEditingController,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: match.awayMatch,
+                        hintText: 'Enter away team',
                       ),
                     ),
                   ),
@@ -588,7 +592,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 controller: _specialOddEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                    hintText: '${match.specialOddLastDigit}'),
+                    hintText: 'Enter special odd last digit'),
               ),
               const SizedBox(height: 20.0),
               labelText('Over, Under Odd'),
@@ -597,7 +601,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 controller: _overUnderOddEditingController,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                    hintText: '${match.overUnderLastDigit}'),
+                    hintText: 'Enter over/under odd last digit'),
               ),
               const SizedBox(height: 20.0),
               Row(
@@ -616,7 +620,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                         builder: (context) => AlertDialog(
                           title: const Text('Update Match'),
                           content: const Text(
-                              'Enter "Confirm" to Update info of this match.'),
+                              'Enter "Confirm" to update info of this match.'),
                           actions: <Widget>[
                             Row(
                               children: [
@@ -630,8 +634,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                   flex: 1,
                                   child: materialButton(kBlue, 'Confirm', () {
                                     setState(() {
-                                      int matchId = matches[index].id;
-                                      _editMatch(matchId);
+                                      _editMatch(match.id);
                                       refreshPage();
                                       Navigator.pop(context);
                                       Navigator.pop(context);
@@ -654,8 +657,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     );
   }
 
-  Widget finishedDialog(int index) {
-    Match match = matches[index];
+  Widget finishedDialog(Match match) {
     return AlertDialog(
       title: const Text('Finish Match'),
       content: const Text('Enter goal results'),
@@ -716,8 +718,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'Enter', () {
-                    int matchId = matches[index].id;
-                    _matchStatusUpdate(matchId);
+                    _matchStatusUpdate(match.id);
                     refreshPage();
                     Navigator.pop(context);
                   }),
