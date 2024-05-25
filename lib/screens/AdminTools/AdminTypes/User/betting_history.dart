@@ -135,18 +135,19 @@ class _BettingHistoryState extends State<BettingHistory> {
         child: _widgetOptions.elementAt(_widgetSelectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: kPrimary,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Text(
               '',
-              style: TextStyle(fontSize: 1),
+              style: TextStyle(fontSize: 0),
             ),
             label: 'BODY',
           ),
           BottomNavigationBarItem(
             icon: Text(
               '',
-              style: TextStyle(fontSize: 1),
+              style: TextStyle(fontSize: 0),
             ),
             label: 'MAUNG',
           ),
