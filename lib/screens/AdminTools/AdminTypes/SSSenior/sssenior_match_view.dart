@@ -236,7 +236,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             ),
             onRefresh: () => getData(),
             child: ListView.builder(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
@@ -266,15 +266,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                             children: [
                               // League Name Header
                               Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Text(
-                                  leagueName,
-                                  style: TextStyle(
-                                    color: kBlack,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18.0,
-                                  ),
-                                ),
+                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                child: labelText(leagueName),
                               ),
                               // Matches for the League
                               ...leagueMatches.asMap().entries.map((entry) {
@@ -309,7 +302,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
     return Container(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -319,10 +312,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                 Expanded(
                   flex: 9,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
+                    padding: const EdgeInsets.only(left: 17.0),
                     child: Text(
                       'Match Time: $formattedMatchTime',
-                      style: const TextStyle(color: kGrey),
+                      style: const TextStyle(color: kGrey, fontSize: 12),
                     ),
                   ),
                 ),
@@ -421,7 +414,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Column(
                 children: [
                   Row(

@@ -134,7 +134,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
             ),
             onRefresh: () => getData(),
             child: ListView.builder(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
