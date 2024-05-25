@@ -26,7 +26,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _username;
-  double? _balance;
+  double? _balance = 0;
   var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'MORE'];
   var listRoutes = [
     BodyBetting.id,

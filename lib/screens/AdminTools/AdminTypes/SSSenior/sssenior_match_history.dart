@@ -55,6 +55,9 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
   String? _token;
   List<Match> matches = [];
 
+  int selectedLeagueIndex = -1;
+  int selectedItemIndex = -1;
+
   @override
   void initState() {
     _getToken();
@@ -76,11 +79,24 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
     });
     if (response.statusCode == 200) {
       List jsonResponse = jsonDecode(response.body);
+      List<Match> matchList =
+          jsonResponse.map((match) => Match.fromJson(match)).toList();
+      Map<String, List<Match>> groupedMatches = {};
+      for (var match in matchList) {
+        if (!groupedMatches.containsKey(match.league_name)) {
+          groupedMatches[match.league_name] = [];
+        }
+        groupedMatches[match.league_name]!.add(match);
+      }
       setState(() {
-        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+        matchesByLeague = groupedMatches;
       });
-    } else {}
+    } else {
+      // Handle the error appropriately
+    }
   }
+
+  Map<String, List<Match>> matchesByLeague = {};
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
@@ -107,6 +123,9 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> sortedLeagueNames = matchesByLeague.keys.toList();
+    sortedLeagueNames
+        .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
@@ -134,43 +153,41 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
             ),
             onRefresh: () => getData(),
             child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: matches.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: sortedLeagueNames.length,
+              itemBuilder: (context, leagueIndex) {
+                String leagueName = sortedLeagueNames[leagueIndex];
+                List<Match> leagueMatches = matchesByLeague[leagueName]!;
+                return AnimationConfiguration.staggeredList(
+                  position: leagueIndex,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5.0),
-                          child: radioContainer(index),
-                        ),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: leagueContainer(
+                            leagueName, leagueMatches, leagueIndex),
                       ),
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget radioContainer(int index) {
-    Match match = matches[index];
-    // Parse match time
-    DateTime matchTime =
-        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
-    String formattedMatchTime =
-        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
-    // Get current time
+  Widget leagueContainer(
+      String leagueName, List<Match> leagueMatches, int listIndex) {
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -182,48 +199,72 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Row(
-              children: [
-                Expanded(
-                  flex: 7,
-                  child: labelText(
-                    match.league_name,
+            labelText(leagueName),
+            ...leagueMatches.asMap().entries.map((entry) {
+              int matchIndex = entry.key;
+              Match match = entry.value;
+              bool isLastMatch = matchIndex == leagueMatches.length - 1;
+              return AnimationConfiguration.staggeredList(
+                position: matchIndex,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    duration: const Duration(milliseconds: 2500),
+                    child: radioContainer(match, listIndex, isLastMatch),
                   ),
                 ),
-              ],
-            ),
+              );
+            }).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget radioContainer(Match match, int listIndex, bool isLastMatch) {
+    DateTime matchTime =
+        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
+    String formattedMatchTime =
+        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: Column(
-                  children: [
-                    Text(
-                      'Match Time: $formattedMatchTime',
-                      style: const TextStyle(color: kGrey),
-                    ),
-                    Row(
-                      children: [
-                        customRadio(match.homeMatch, 0, index),
-                        Expanded(
-                          flex: 2,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 15.0),
-                            child: Row(
-                              children: [
-                                labelText(match.homeGoals),
-                                labelText('-'),
-                                labelText(match.awayGoals),
-                              ],
-                            ),
-                          ),
-                        ),
-                        customRadio(match.awayMatch, 1, index),
-                      ],
-                    ),
-                  ],
-                ),
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Text(
+                'Match Time: $formattedMatchTime',
+                style: const TextStyle(color: kGrey, fontSize: 12),
               ),
             ),
+            Row(
+              children: [
+                customRadio(match.homeMatch, 0, listIndex),
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Row(
+                      children: [
+                        labelText(match.homeGoals),
+                        labelText('-'),
+                        labelText(match.awayGoals),
+                      ],
+                    ),
+                  ),
+                ),
+                customRadio(match.awayMatch, 1, listIndex),
+              ],
+            ),
+            if (!isLastMatch) Divider(),
           ],
         ),
       ),
@@ -238,15 +279,15 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: kPrimary, // Highlight if selected
           ),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: const TextStyle(
-                color: kBlue,
+              style: TextStyle(
+                color: kBlue, // Change text color if selected
               ),
             ),
           ),

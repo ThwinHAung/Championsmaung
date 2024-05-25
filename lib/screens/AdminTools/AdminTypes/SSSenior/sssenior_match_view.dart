@@ -191,7 +191,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   @override
   Widget build(BuildContext context) {
-    // Group matches by league_name
+// Group matches by league_name
     final Map<String, List<Match>> groupedMatches = {};
     for (var match in matches) {
       if (!groupedMatches.containsKey(match.league_name)) {
@@ -208,6 +208,9 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         return timeB.compareTo(timeA);
       });
     }
+
+    // Extract league names and sort them alphabetically
+    List<String> sortedLeagueNames = groupedMatches.keys.toList()..sort();
 
     return Scaffold(
       backgroundColor: kPrimary,
@@ -240,9 +243,9 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: groupedMatches.length,
+              itemCount: sortedLeagueNames.length,
               itemBuilder: (context, index) {
-                String leagueName = groupedMatches.keys.elementAt(index);
+                String leagueName = sortedLeagueNames[index];
                 List<Match> leagueMatches = groupedMatches[leagueName]!;
 
                 return AnimationConfiguration.staggeredList(
@@ -275,7 +278,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                 Match match = entry.value;
                                 bool isLastMatch =
                                     matchIndex == leagueMatches.length - 1;
-                                print(matchIndex);
                                 return radioContainer(match, isLastMatch);
                               }).toList(),
                             ],

@@ -266,7 +266,7 @@ class _BettingHistoryState extends State<BettingHistory> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Accumulator',
+                'Single',
                 style: TextStyle(
                   color: kBlue,
                   fontSize: 20.0,
@@ -280,8 +280,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events (BODY) : ' '20'),
-                        Text('Odds'),
+                        Text('Number of events'),
                         Text('Potential winnings'),
                         Text('Status'),
                       ],
@@ -347,8 +346,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Number of events (MAUNG) : ' '20'),
-                        Text('Odds'),
+                        Text('Number of events'),
                         Text('Potential winnings'),
                         Text('Status'),
                       ],
@@ -361,7 +359,6 @@ class _BettingHistoryState extends State<BettingHistory> {
                         Text(':'),
                         Text(':'),
                         Text(':'),
-                        Text(':'),
                       ],
                     ),
                   ),
@@ -370,7 +367,6 @@ class _BettingHistoryState extends State<BettingHistory> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('00'),
                         Text('00'),
                         Text('00'),
                         Text('**'),
