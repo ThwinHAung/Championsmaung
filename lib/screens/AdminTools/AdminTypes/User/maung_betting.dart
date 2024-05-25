@@ -355,22 +355,19 @@ class _MaungBettingState extends State<MaungBetting> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              match.league_name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-              ),
-            ),
-            const SizedBox(height: 5.0),
+            labelText(match.league_name),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Match Time: $formattedMatchTime',
-                      style: const TextStyle(color: kGrey),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'Match Time: $formattedMatchTime',
+                        style: const TextStyle(color: kGrey, fontSize: 12),
+                      ),
                     ),
                     Row(
                       children: [
