@@ -123,7 +123,7 @@ class _MaungBettingState extends State<MaungBetting> {
     } else {}
   }
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   Future<void> getData() async {
@@ -144,6 +144,16 @@ class _MaungBettingState extends State<MaungBetting> {
     await _fetchMatches();
 
     _refreshController.refreshCompleted();
+  }
+
+  void _updateMaungCount(bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        maungNumber++;
+      } else {
+        maungNumber--;
+      }
+    });
   }
 
   @override
@@ -170,10 +180,11 @@ class _MaungBettingState extends State<MaungBetting> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Row(
               children: [
-                const Expanded(
+                Expanded(
                   flex: 2,
-                  child: Text('Maung ( 0 )'),
+                  child: Text('Maung ( $maungNumber )'),
                 ),
+                const SizedBox(width: 10.0),
                 Expanded(
                   flex: 7,
                   child: TextFormField(
@@ -446,9 +457,11 @@ class _MaungBettingState extends State<MaungBetting> {
                   setState(() {
                     // Toggle selection
                     if (selectedValues[listIndex] == item) {
-                      selectedValues[listIndex] = ''; // Unselect
+                      selectedValues[listIndex] = '';
+                      _updateMaungCount(false); // Unselect
                     } else {
-                      selectedValues[listIndex] = item; // Select
+                      selectedValues[listIndex] = item;
+                      _updateMaungCount(true); // Select
                     } // Update selectedValues list
                   });
                 },
