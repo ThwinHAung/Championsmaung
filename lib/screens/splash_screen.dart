@@ -38,13 +38,13 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(milliseconds: 1200), () {
       setState(() {
         _fontSize = 1.06;
       });
     });
 
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(milliseconds: 1500), () {
       setState(() {
         _containerSize = 2;
         _containerOpacity = 1;
@@ -77,11 +77,11 @@ class _SplashScreenState extends State<SplashScreen>
             child: Column(
               children: [
                 AnimatedContainer(
-                    duration: const Duration(milliseconds: 750),
+                    duration: const Duration(milliseconds: 1000),
                     curve: Curves.fastLinearToSlowEaseIn,
                     height: height / _fontSize),
                 AnimatedOpacity(
-                  duration: const Duration(milliseconds: 250),
+                  duration: const Duration(milliseconds: 500),
                   opacity: _textOpacity,
                   child: Hero(
                     tag: 'championmaung',
@@ -100,11 +100,11 @@ class _SplashScreenState extends State<SplashScreen>
           ),
           Center(
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 750),
+              duration: const Duration(milliseconds: 1000),
               curve: Curves.fastLinearToSlowEaseIn,
               opacity: _containerOpacity,
               child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 750),
+                  duration: const Duration(milliseconds: 1000),
                   curve: Curves.fastLinearToSlowEaseIn,
                   height: width / _containerSize,
                   width: width / _containerSize,
@@ -131,7 +131,7 @@ class PageTransition extends PageRouteBuilder {
   PageTransition(this.page)
       : super(
           pageBuilder: (context, animation, anotherAnimation) => page,
-          transitionDuration: const Duration(milliseconds: 750),
+          transitionDuration: const Duration(milliseconds: 2000),
           transitionsBuilder: (context, animation, anotherAnimation, child) {
             animation = CurvedAnimation(
               curve: Curves.fastLinearToSlowEaseIn,

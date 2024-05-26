@@ -98,7 +98,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
 
   Map<String, List<Match>> matchesByLeague = {};
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   Future<void> getData() async {
@@ -264,7 +264,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                 customRadio(match.awayMatch, 1, listIndex),
               ],
             ),
-            if (!isLastMatch) Divider(),
+            if (!isLastMatch) const Divider(),
           ],
         ),
       ),
@@ -286,7 +286,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: kBlue, // Change text color if selected
               ),
             ),

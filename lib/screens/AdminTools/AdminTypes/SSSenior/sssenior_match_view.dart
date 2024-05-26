@@ -166,7 +166,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     }
   }
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   Future<void> getData() async {
@@ -373,7 +373,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                       },
                                       minWidth: 200.0,
                                       height: 42.0,
-                                      child: Text(
+                                      child: const Text(
                                         'Delete',
                                         style: TextStyle(
                                           fontSize: 12.0,
@@ -485,7 +485,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               ),
             ),
             if (!isLastMatch)
-              Divider(), // Only render divider if not the last match
+              const Divider(), // Only render divider if not the last match
           ],
         ),
       ),

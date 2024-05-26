@@ -68,7 +68,7 @@ class _MatchResultsState extends State<MatchResults> {
     }
   }
 
-  RefreshController _refreshController = RefreshController();
+  final RefreshController _refreshController = RefreshController();
 
   Future<void> getData() async {
     setState(() {
@@ -251,7 +251,7 @@ class _MatchResultsState extends State<MatchResults> {
                 customRadio(match.awayMatch, 1, listIndex),
               ],
             ),
-            if (!isLastMatch) Divider(),
+            if (!isLastMatch) const Divider(),
           ],
         ),
       ),
@@ -273,7 +273,7 @@ class _MatchResultsState extends State<MatchResults> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: kBlue, // Change text color if selected
               ),
             ),

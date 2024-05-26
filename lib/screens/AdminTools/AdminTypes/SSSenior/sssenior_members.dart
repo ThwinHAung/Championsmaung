@@ -300,7 +300,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Succeed.'),
-          content: Text('Click OK to close this dialog.'),
+          content: const Text('Click OK to close this dialog.'),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.pop(context),

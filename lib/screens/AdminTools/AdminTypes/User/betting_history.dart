@@ -374,26 +374,26 @@ class _BettingHistoryState extends State<BettingHistory> {
           color: kOnPrimaryContainer,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: const Padding(
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Single',
                 style: TextStyle(
                   color: kBlue,
                   fontSize: 20.0,
                 ),
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 10.0),
               Row(
                 children: [
                   Expanded(
                     flex: 10,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('Number of events'),
                         Text('Potential winnings'),
                         Text('Status'),
@@ -403,7 +403,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                   Expanded(
                     flex: 1,
                     child: Column(
-                      children: const [
+                      children: [
                         Text(':'),
                         Text(':'),
                         Text(':'),
@@ -414,7 +414,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     flex: 5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('00'),
                         Text('00'),
                         Text('**'),
@@ -439,26 +439,26 @@ class _BettingHistoryState extends State<BettingHistory> {
           color: kOnPrimaryContainer,
           borderRadius: BorderRadius.circular(10.0),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
+        child: const Padding(
+          padding: EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Accumulator',
                 style: TextStyle(
                   color: kBlue,
                   fontSize: 20.0,
                 ),
               ),
-              const SizedBox(height: 10.0),
+              SizedBox(height: 10.0),
               Row(
                 children: [
                   Expanded(
                     flex: 10,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('Number of events'),
                         Text('Potential winnings'),
                         Text('Status'),
@@ -468,7 +468,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                   Expanded(
                     flex: 1,
                     child: Column(
-                      children: const [
+                      children: [
                         Text(':'),
                         Text(':'),
                         Text(':'),
@@ -479,7 +479,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     flex: 5,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text('00'),
                         Text('00'),
                         Text('**'),
@@ -557,7 +557,7 @@ class _BettingHistoryState extends State<BettingHistory> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: TextStyle(
+              style: const TextStyle(
                 color: kBlue, // Change text color if selected
               ),
             ),

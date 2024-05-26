@@ -117,7 +117,7 @@ class _BodyBettingState extends State<BodyBetting> {
     } else {}
   }
 
-  RefreshController _refreshController =
+  final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
   Future<void> getData() async {
@@ -362,7 +362,7 @@ class _BodyBettingState extends State<BodyBetting> {
           children: [
             labelText(match.league_name),
             Padding(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

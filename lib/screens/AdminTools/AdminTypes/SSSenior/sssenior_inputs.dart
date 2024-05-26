@@ -734,7 +734,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                 flex: 1,
                                 child: Container(),
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'Enter', () {
@@ -794,13 +794,13 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Success"),
+          title: const Text("Success"),
           content: Text(message),
           actions: <Widget>[
             Row(
               children: [
                 Expanded(flex: 1, child: Container()),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
@@ -819,13 +819,13 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Failed"),
+          title: const Text("Failed"),
           content: Text(message),
           actions: <Widget>[
             Row(
               children: [
                 Expanded(flex: 1, child: Container()),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {

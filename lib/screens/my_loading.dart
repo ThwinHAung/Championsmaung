@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 class MyLoading extends StatelessWidget {
   static String id = 'my_loading';
 
+  const MyLoading({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: SizedBox(
         height: 20,
         width: 20,
