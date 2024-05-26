@@ -41,6 +41,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     _username = await storage.read(key: 'user_name');

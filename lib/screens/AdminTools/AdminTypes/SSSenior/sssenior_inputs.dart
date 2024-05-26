@@ -39,6 +39,14 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     _getToken();
   }
 
+  @override
+  void dispose() {
+    _specialOddController.dispose();
+    _homeTeamController.dispose();
+    _awayTeamController.dispose();
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {

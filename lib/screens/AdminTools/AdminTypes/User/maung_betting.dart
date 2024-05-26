@@ -81,6 +81,7 @@ class _MaungBettingState extends State<MaungBetting> {
 
   @override
   void dispose() {
+    _maungBettingEditingController.dispose();
     super.dispose();
   }
 

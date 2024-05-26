@@ -19,10 +19,19 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   final TextEditingController _newPasswordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+
   @override
   void initState() {
     _getToken();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _currentPasswordController.dispose();
+    _newPasswordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
   }
 
   Future<void> _getToken() async {

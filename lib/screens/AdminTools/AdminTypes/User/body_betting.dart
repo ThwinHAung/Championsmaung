@@ -78,6 +78,12 @@ class _BodyBettingState extends State<BodyBetting> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _bodyBettingEditingController.dispose();
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {

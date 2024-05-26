@@ -126,12 +126,23 @@ class _LoginScreenState extends State<LoginScreen> {
                 Expanded(
                   flex: 1,
                   child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: materialButton(kBlue, 'Login', () {
-                        setState(() {
-                          _isLoading ? null : _login;
-                        });
-                      })),
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: Material(
+                      color: kBlue,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10.0)),
+                      elevation: 5.0,
+                      child: MaterialButton(
+                        onPressed: _isLoading ? null : _login,
+                        minWidth: 200.0,
+                        height: 42.0,
+                        child: const Text(
+                          'Login',
+                          style: kButtonTextStyle,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ]),
             ],

@@ -76,6 +76,11 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {}

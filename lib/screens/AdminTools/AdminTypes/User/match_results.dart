@@ -61,6 +61,11 @@ class _MatchResultsState extends State<MatchResults> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {

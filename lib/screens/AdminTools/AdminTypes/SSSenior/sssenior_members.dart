@@ -36,6 +36,15 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _phoneNumberController.dispose();
+    _passwordController.dispose();
+    _balanceController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
