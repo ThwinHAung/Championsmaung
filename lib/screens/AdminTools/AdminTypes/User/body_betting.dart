@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +70,9 @@ class _BodyBettingState extends State<BodyBetting> {
 
   final TextEditingController _bodyBettingEditingController =
       TextEditingController();
+
+  static const int minSelect = 2;
+  static const int maxSelect = 11;
 
   @override
   void initState() {
@@ -196,11 +198,23 @@ class _BodyBettingState extends State<BodyBetting> {
                       builder: (context) => AlertDialog(
                         title: const Text('Invalid Bet Amount'),
                         content: const Text(
-                            'Please enter a valid numeric amount to bet.'),
+                            'You can only bet between 2 and 11 matches.'),
                         actions: <Widget>[
-                          materialButton(kError, 'OK', () {
-                            Navigator.pop(context);
-                          }),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'OK', () {
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     );
@@ -217,35 +231,60 @@ class _BodyBettingState extends State<BodyBetting> {
                         content: const Text(
                             'You do not have enough balance to place this bet.'),
                         actions: <Widget>[
-                          materialButton(kError, 'OK', () {
-                            Navigator.pop(context);
-                          }),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'OK', () {
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     );
                     return;
                   }
 
-                  // Check if user has selected a match
-                  if (selectedValues.isEmpty) {
-                    // Show dialog for no match selected
+                  // Check if user has selected the correct number of matches
+                  if (selectedValues.length < minSelect ||
+                      selectedValues.length > maxSelect) {
+                    // Show dialog for invalid number of matches selected
                     showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                        title: const Text('No Match Selected'),
-                        content: const Text(
-                            'Please select a match before placing the bet.'),
+                        title: const Text('Invalid Number of Matches Selected'),
+                        content: Text(
+                            'Please select between $minSelect and $maxSelect matches before placing the bet.'),
                         actions: <Widget>[
-                          materialButton(kError, 'OK', () {
-                            Navigator.pop(context);
-                          }),
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'OK', () {
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     );
                     return;
                   }
 
-                  // Both conditions are met, show confirmation dialog
+                  // All conditions are met, show confirmation dialog
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
@@ -260,28 +299,28 @@ class _BodyBettingState extends State<BodyBetting> {
                             }),
                             const SizedBox(width: 5.0),
                             materialButton(kBlue, 'Bet', () {
-                              // Get the index of the selected match and the selected outcome
-                              int selectedIndex = selectedValues.keys.first;
-                              String selectedOutcome =
-                                  selectedValues[selectedIndex]!;
+                              selectedValues
+                                  .forEach((selectedIndex, selectedOutcome) {
+                                // Get the match ID from the selected match
+                                int matchId = matches[selectedIndex].id;
 
-                              // Get the match ID from the selected match
-                              int matchId = matches[selectedIndex].id;
+                                // Map the selected outcome to "W1" or "W2"
+                                if (selectedOutcome ==
+                                    matches[selectedIndex].homeMatch) {
+                                  selectedOutcome = 'W1';
+                                } else if (selectedOutcome ==
+                                    matches[selectedIndex].awayMatch) {
+                                  selectedOutcome = 'W2';
+                                } else if (selectedOutcome == "Over") {
+                                  selectedOutcome = 'Over';
+                                } else if (selectedOutcome == "Under") {
+                                  selectedOutcome = 'Under';
+                                }
 
-                              // Map the selected outcome to "W1" or "W2"
-                              if (selectedOutcome ==
-                                  matches[selectedIndex].homeMatch) {
-                                selectedOutcome = 'W1';
-                              } else if (selectedOutcome ==
-                                  matches[selectedIndex].awayMatch) {
-                                selectedOutcome = 'W2';
-                              } else if (selectedOutcome == "Over") {
-                                selectedOutcome = 'Over';
-                              } else if (selectedOutcome == "Under") {
-                                selectedOutcome = 'Under';
-                              }
+                                _placeSingleBet(
+                                    matchId, selectedOutcome, amount);
+                              });
 
-                              _placeSingleBet(matchId, selectedOutcome, amount);
                               Navigator.pop(context);
                             })
                           ],
@@ -462,12 +501,12 @@ class _BodyBettingState extends State<BodyBetting> {
               : () {
                   setState(() {
                     if (selectedValues[listIndex] == item) {
-                      selectedValues[listIndex] = ''; // Unselect
+                      selectedValues.remove(listIndex); // Unselect
                     } else {
-                      // Clear all selections
-                      selectedValues = {};
-                      // Select the tapped item
-                      selectedValues[listIndex] = item;
+                      if (selectedValues.length < maxSelect) {
+                        selectedValues[listIndex] =
+                            item; // Select the tapped item
+                      }
                     }
                   });
                 },
@@ -504,8 +543,10 @@ class _BodyBettingState extends State<BodyBetting> {
       'amount': amount.toString(),
     });
     if (response.statusCode == 200) {
-      print('hello');
+      print('Bet placed successfully');
       _getBalance();
+    } else {
+      print('Failed to place bet');
     }
   }
 }

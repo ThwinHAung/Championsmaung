@@ -129,11 +129,11 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 20.0),
+                      const SizedBox(height: 25.0),
                       Text(
                         'Username : $_username',
                         style: TextStyle(
-                          color: Colors.white.withOpacity(.8),
+                          color: kWhite.withOpacity(.7),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -142,9 +142,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                           const Text(
                             'YOUR BALANCE',
                             style: TextStyle(
-                              color: kGrey,
+                              color: kOnPrimaryContainer,
                               fontWeight: FontWeight.w500,
-                              letterSpacing: 1,
+                              letterSpacing: 3,
                               fontSize: 14,
                             ),
                           ),
@@ -155,7 +155,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             },
                             icon: const Icon(
                               Icons.refresh_outlined,
-                              color: kGrey,
+                              color: kOnPrimaryContainer,
                             ),
                             style: IconButton.styleFrom(
                               iconSize: 20,
