@@ -21,6 +21,22 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   final TextEditingController _balanceController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
+  final TextEditingController _mixBetController = TextEditingController();
+  final TextEditingController _singleBetController = TextEditingController();
+  final TextEditingController _singleBetCommisionController =
+      TextEditingController();
+  final TextEditingController _singleBetHighCommisionController =
+      TextEditingController();
+  final TextEditingController _mixBet2Commision = TextEditingController();
+  final TextEditingController _mixBet3Commision = TextEditingController();
+  final TextEditingController _mixBet4Commision = TextEditingController();
+  final TextEditingController _mixBet5Commision = TextEditingController();
+  final TextEditingController _mixBet6Commision = TextEditingController();
+  final TextEditingController _mixBet7Commision = TextEditingController();
+  final TextEditingController _mixBet8Commision = TextEditingController();
+  final TextEditingController _mixBet9Commision = TextEditingController();
+  final TextEditingController _mixBet10Commision = TextEditingController();
+  final TextEditingController _mixBet11Commision = TextEditingController();
   final storage = const FlutterSecureStorage();
 
   String? selectedValue;
@@ -42,6 +58,21 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     _passwordController.dispose();
     _balanceController.dispose();
     _confirmPasswordController.dispose();
+
+    _mixBetController.dispose();
+    _singleBetController.dispose();
+    _singleBetCommisionController.dispose();
+    _singleBetHighCommisionController.dispose();
+    _mixBet2Commision.dispose();
+    _mixBet3Commision.dispose();
+    _mixBet4Commision.dispose();
+    _mixBet5Commision.dispose();
+    _mixBet6Commision.dispose();
+    _mixBet7Commision.dispose();
+    _mixBet8Commision.dispose();
+    _mixBet9Commision.dispose();
+    _mixBet10Commision.dispose();
+    _mixBet11Commision.dispose();
     super.dispose();
   }
 
@@ -74,221 +105,401 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
           ),
         ),
       ),
-      body: Container(
-        color: kPrimary,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        showUsername('$_username'),
-                        showAccountType('$_role'),
-                      ],
-                    ),
-                  ),
-                  materialButton(kBlue, 'View Member List', () {}),
-                ],
-              ),
-            ),
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      body: SingleChildScrollView(
+        child: Container(
+          color: kPrimary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
                   children: [
-                    labelText('Select Username'),
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2<String>(
-                            isExpanded: true,
-                            hint: const Row(
-                              children: [
-                                Icon(
-                                  Icons.list,
-                                  size: 16,
-                                  color: kPrimary,
-                                ),
-                                SizedBox(
-                                  width: 4,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    'Select',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: kPrimary,
-                                    ),
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            items: userDropdownItems
-                                .map((String item) => DropdownMenuItem<String>(
-                                      value: item,
-                                      child: Text(
-                                        item,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: kPrimary,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ))
-                                .toList(),
-                            value: selectedValue,
-                            onChanged: (String? value) {
-                              setState(() {
-                                selectedValue = value;
-                              });
-                            },
-                            buttonStyleData: ButtonStyleData(
-                              height: 50,
-                              width: 160,
-                              padding:
-                                  const EdgeInsets.only(left: 14, right: 14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                border: Border.all(
-                                  color: kBlue,
-                                ),
-                                color: kBlue,
-                              ),
-                              elevation: 2,
-                            ),
-                            iconStyleData: const IconStyleData(
-                              icon: Icon(
-                                Icons.arrow_forward_ios_outlined,
-                              ),
-                              iconSize: 14,
-                              iconEnabledColor: kPrimary,
-                              iconDisabledColor: kGrey,
-                            ),
-                            dropdownStyleData: DropdownStyleData(
-                              maxHeight: 200,
-                              width: 200,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(14),
-                                color: kBlue,
-                              ),
-                              offset: const Offset(-20, 0),
-                              scrollbarTheme: ScrollbarThemeData(
-                                radius: const Radius.circular(40),
-                                thickness: WidgetStateProperty.all<double>(6),
-                                thumbVisibility:
-                                    WidgetStateProperty.all<bool>(true),
-                              ),
-                            ),
-                            menuItemStyleData: const MenuItemStyleData(
-                              height: 40,
-                              padding: EdgeInsets.only(left: 14, right: 14),
-                            ),
-                          ),
-                        ),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          showUsername('$_username'),
+                          showAccountType('$_role'),
+                        ],
                       ),
                     ),
-                    const SizedBox(height: 40.0),
-                    labelText('Phone Number'),
-                    TextFormField(
-                      controller: _phoneNumberController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter phone number'),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    labelText('Password'),
-                    TextFormField(
-                      controller: _passwordController,
-                      obscureText: true,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter password'),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    labelText('Confirm Password'),
-                    TextFormField(
-                      controller: _confirmPasswordController,
-                      obscureText: true,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Confirm password'),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
-                    labelText('Starting Balance'),
-                    TextFormField(
-                      controller: _balanceController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter starting balance'),
-                    ),
-                    const SizedBox(height: 30.0),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: Material(
-                        color: kBlue,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10.0)),
-                        elevation: 5.0,
-                        child: MaterialButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text(
-                                  'Do you want to create account?',
-                                  style: kLabel,
-                                ),
-                                actions: <Widget>[
-                                  Expanded(
-                                      flex: 1,
-                                      child:
-                                          materialButton(kError, 'Cancel', () {
-                                        Navigator.pop(context);
-                                      })),
-                                  const SizedBox(width: 5.0),
-                                  Expanded(
-                                    flex: 1,
-                                    child: materialButton(kBlue, 'Update', () {
-                                      (_register());
-                                    }),
-                                  )
-                                ],
-                              ),
-                            ); //Implement registration functionality.
-                          },
-                          minWidth: 200.0,
-                          height: 42.0,
-                          child: const Text(
-                            'Create Account',
-                            style: kButtonTextStyle,
-                          ),
-                        ),
-                      ),
-                    )
+                    materialButton(kBlue, 'View Member List', () {}),
                   ],
                 ),
               ),
-            ),
-          ],
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelText('Select Username'),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          alignment: Alignment.topLeft,
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint: const Row(
+                                children: [
+                                  Icon(
+                                    Icons.list,
+                                    size: 16,
+                                    color: kPrimary,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Select',
+                                      style: TextStyle(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: kPrimary,
+                                      ),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              items: userDropdownItems
+                                  .map(
+                                      (String item) => DropdownMenuItem<String>(
+                                            value: item,
+                                            child: Text(
+                                              item,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w600,
+                                                color: kPrimary,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ))
+                                  .toList(),
+                              value: selectedValue,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  selectedValue = value;
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: 160,
+                                padding:
+                                    const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  border: Border.all(
+                                    color: kBlue,
+                                  ),
+                                  color: kBlue,
+                                ),
+                                elevation: 2,
+                              ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: kPrimary,
+                                iconDisabledColor: kGrey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: kBlue,
+                                ),
+                                offset: const Offset(-20, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: WidgetStateProperty.all<double>(6),
+                                  thumbVisibility:
+                                      WidgetStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20.0),
+                      bigCapText('Basic Info'),
+                      labelText('Phone Number'),
+                      TextFormField(
+                        controller: _phoneNumberController,
+                        style: kTextFieldActiveStyle,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter phone number'),
+                      ),
+                      const SizedBox(
+                        height: 10.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Password'),
+                                TextFormField(
+                                  controller: _passwordController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: 'Enter password'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Confirm Password'),
+                                TextFormField(
+                                  controller: _confirmPasswordController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: 'Confirm password'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      labelText('Starting Balance'),
+                      TextFormField(
+                        controller: _balanceController,
+                        style: kTextFieldActiveStyle,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter starting balance'),
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Bet Limitation'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Max for Mix Bet'),
+                                TextFormField(
+                                  controller: _mixBetController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Max for Single Bet'),
+                                TextFormField(
+                                  controller: _singleBetController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Single Bet Commision'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Commision'),
+                                TextFormField(
+                                  controller: _singleBetCommisionController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'Tax: 5',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('High Commision'),
+                                TextFormField(
+                                  controller: _singleBetHighCommisionController,
+                                  obscureText: true,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                SizedBox(height: 10.0),
+                                Text(
+                                  'High Tax: 8',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Mix Bet Commisions'),
+                      Column(
+                        children: [
+                          matchCounts(2, 15, _mixBet2Commision),
+                          matchCounts(3, 20, _mixBet3Commision),
+                          matchCounts(4, 20, _mixBet4Commision),
+                          matchCounts(5, 20, _mixBet5Commision),
+                          matchCounts(6, 20, _mixBet6Commision),
+                          matchCounts(7, 20, _mixBet7Commision),
+                          matchCounts(8, 20, _mixBet8Commision),
+                          matchCounts(9, 20, _mixBet9Commision),
+                          matchCounts(10, 20, _mixBet10Commision),
+                          matchCounts(11, 20, _mixBet11Commision),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Material(
+                          color: kBlue,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0)),
+                          elevation: 5.0,
+                          child: MaterialButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text(
+                                    'Do you want to create account?',
+                                    style: kLabel,
+                                  ),
+                                  actions: <Widget>[
+                                    Expanded(
+                                        flex: 1,
+                                        child: materialButton(kError, 'Cancel',
+                                            () {
+                                          Navigator.pop(context);
+                                        })),
+                                    const SizedBox(width: 5.0),
+                                    Expanded(
+                                      flex: 1,
+                                      child:
+                                          materialButton(kBlue, 'Update', () {
+                                        (_register());
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                              ); //Implement registration functionality.
+                            },
+                            minWidth: 200.0,
+                            height: 42.0,
+                            child: const Text(
+                              'Create Account',
+                              style: kButtonTextStyle,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+    );
+  }
+
+  Widget matchCounts(
+      int matchCountNumber, int tax, TextEditingController _controller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labelText('Match Count'),
+              labelText(matchCountNumber.toString()),
+            ],
+          ),
+        ),
+        const SizedBox(width: 5.0),
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labelText('Tax'),
+              labelText(tax.toString()),
+            ],
+          ),
+        ),
+        const SizedBox(width: 5.0),
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: _controller,
+                obscureText: true,
+                style: kTextFieldActiveStyle,
+                decoration: kTextFieldDecoration.copyWith(hintText: '0'),
+              ),
+              SizedBox(height: 20.0),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

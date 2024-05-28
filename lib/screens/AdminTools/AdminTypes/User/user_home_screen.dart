@@ -25,7 +25,7 @@ class UserHomeScreen extends StatefulWidget {
 class _UserHomeScreenState extends State<UserHomeScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  String? _username;
+  String? _username = '';
   double? _balance = 0;
   var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'MORE'];
   var listRoutes = [
@@ -120,7 +120,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                 alignment: Alignment.bottomLeft,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: kOnPrimaryContainer,
+                  color: kBlue,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Padding(
@@ -130,7 +130,13 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const SizedBox(height: 20.0),
-                      showUsername('$_username'),
+                      Text(
+                        'Username : $_username',
+                        style: TextStyle(
+                          color: Colors.white.withOpacity(.8),
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       Row(
                         children: [
                           const Text(
@@ -149,7 +155,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                             },
                             icon: const Icon(
                               Icons.refresh_outlined,
-                              color: kBlue,
+                              color: kGrey,
                             ),
                             style: IconButton.styleFrom(
                               iconSize: 20,
@@ -160,7 +166,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                       Text(
                         '$_balance MMK',
                         style: const TextStyle(
-                          color: kBlue,
+                          color: kOnPrimaryContainer,
                           fontWeight: FontWeight.w500,
                           fontSize: 50,
                         ),

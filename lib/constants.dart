@@ -92,6 +92,17 @@ Widget labelText(String labelText) {
   );
 }
 
+Widget bigCapText(String text) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+      color: kBlue,
+    ),
+  );
+}
+
 Widget textForm(String textItem) {
   return TextFormField(
     style: kTextFieldActiveStyle,

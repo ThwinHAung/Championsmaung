@@ -171,8 +171,22 @@ class _LoginScreenState extends State<LoginScreen> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return const Center(
-          child: CircularProgressIndicator(
-            color: kBlue,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                color: kBlue,
+              ),
+              SizedBox(height: 20.0),
+              Text(
+                'Loading...',
+                style: TextStyle(
+                  decoration: TextDecoration.none,
+                  fontSize: 14,
+                  color: kOnPrimaryContainer,
+                ),
+              ),
+            ],
           ),
         );
       },
