@@ -716,7 +716,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: const Text('Update Match'),
+                      title: const Text('Finish Match'),
                       content: const Text(
                           'Do you really want to enter goals in this finished match?'),
                       actions: <Widget>[
@@ -732,8 +732,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                               flex: 1,
                               child: materialButton(kBlue, 'Confirm', () {
                                 setState(() {
-                                  _matchStatusUpdate(match.id);
-                                  refreshPage();
                                   Navigator.pop(context);
                                 });
                               }),
@@ -743,6 +741,9 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ],
                     ),
                   );
+
+                  await _matchStatusUpdate(match.id);
+                  await refreshPage();
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
