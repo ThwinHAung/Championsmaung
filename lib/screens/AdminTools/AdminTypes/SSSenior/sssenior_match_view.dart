@@ -713,8 +713,36 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               child: materialButton(kBlue, 'Enter', () async {
                 if (_homeGoalEditingController.text.isNotEmpty &&
                     _awayGoalEditingController.text.isNotEmpty) {
-                  await _matchStatusUpdate(match.id);
-                  await refreshPage();
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Update Match'),
+                      content: const Text(
+                          'Do you really want to enter goals in this finished match?'),
+                      actions: <Widget>[
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: materialButton(kError, 'Cancel', () {
+                                  Navigator.pop(context);
+                                })),
+                            const SizedBox(width: 10.0),
+                            Expanded(
+                              flex: 1,
+                              child: materialButton(kBlue, 'Confirm', () {
+                                setState(() {
+                                  _matchStatusUpdate(match.id);
+                                  refreshPage();
+                                  Navigator.pop(context);
+                                });
+                              }),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  );
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
