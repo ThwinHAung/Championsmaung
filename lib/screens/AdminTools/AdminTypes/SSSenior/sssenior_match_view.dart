@@ -83,11 +83,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   @override
   void dispose() {
-    _homeTeamEditingController.dispose();
-    _awayTeamEditingController.dispose();
-    _specialOddEditingController.dispose();
-    _overUnderOddEditingController.dispose();
     _homeGoalEditingController.dispose();
+    _awayGoalEditingController.dispose();
     super.dispose();
   }
 
@@ -149,26 +146,22 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    print(_homeGoalEditingController.text);
-    print(_awayGoalEditingController.text);
     final response = await http.put(
-        Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
-        headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Bearer $_token',
-        },
-        body: json.encode({
-          'home_goals': _homeGoalEditingController.text,
-          'away_goals': _awayTeamEditingController.text,
-        }));
+      Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'home_goals': _homeGoalEditingController.text,
+        'away_goals': _awayGoalEditingController.text,
+      }),
+    );
     if (response.statusCode == 200) {
-      // final responseData = json.decode(response.body);
-      // final message = responseData['message'];
-      print(response.body);
+      print('Match status updated successfully');
+      _fetchMatches(); // Refresh matches list after update
     } else {
-      // final responseData = json.decode(response.body);
-      // final message = responseData['message'];
-      print(response.body);
+      print('Failed to update match status: ${response.body}');
     }
   }
 
@@ -186,12 +179,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> refreshPage() async {
-    setState(() {
-      matches.clear();
-    });
-
     await _fetchMatches();
-
     _refreshController.refreshCompleted();
   }
 
@@ -655,72 +643,78 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Widget finishedDialog(Match match) {
+    // Clear the controllers when the dialog is opened
+    _homeGoalEditingController.clear();
+    _awayGoalEditingController.clear();
+
     return AlertDialog(
       title: const Text('Finish Match'),
-      content: const Text('Enter goal results'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  'Home Team: ${match.homeMatch}',
+                  style: const TextStyle(color: kBlue, fontSize: 12),
+                ),
+              ),
+              const SizedBox(width: 5.0),
+              Expanded(
+                child: Text(
+                  'Away Team: ${match.awayMatch}',
+                  style: const TextStyle(color: kBlue, fontSize: 12),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10.0),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: _homeGoalEditingController,
+                  style: kTextFieldActiveStyle,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter Home Goal',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+              const SizedBox(width: 5.0),
+              Expanded(
+                child: TextFormField(
+                  controller: _awayGoalEditingController,
+                  style: kTextFieldActiveStyle,
+                  decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter Away Goal',
+                  ),
+                  keyboardType: TextInputType.number,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       actions: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Row(
           children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    'Home Team : ${match.homeMatch}',
-                    style: const TextStyle(color: kBlue, fontSize: 12),
-                  ),
-                ),
-                const SizedBox(width: 5.0),
-                Expanded(
-                  child: Text(
-                    'Away Team : ${match.awayMatch}',
-                    style: const TextStyle(color: kBlue, fontSize: 12),
-                  ),
-                ),
-              ],
+            Expanded(
+              flex: 1,
+              child: materialButton(kError, 'Cancel', () {
+                Navigator.pop(context);
+              }),
             ),
-            const SizedBox(height: 10.0),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _homeGoalEditingController,
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter Home Goal',
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 5.0),
-                Expanded(
-                  child: TextFormField(
-                    controller: _awayGoalEditingController,
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter Away Goal',
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20.0),
-            Row(
-              children: [
-                Expanded(
-                    flex: 1,
-                    child: materialButton(kError, 'Cancel', () {
-                      Navigator.pop(context);
-                    })),
-                const SizedBox(width: 5.0),
-                Expanded(
-                  flex: 1,
-                  child: materialButton(kBlue, 'Enter', () {
-                    _matchStatusUpdate(match.id);
-                    refreshPage();
-                    Navigator.pop(context);
-                  }),
-                ),
-              ],
+            const SizedBox(width: 5.0),
+            Expanded(
+              flex: 1,
+              child: materialButton(kBlue, 'Enter', () async {
+                await _matchStatusUpdate(match.id);
+                await refreshPage();
+                Navigator.pop(context);
+              }),
             ),
           ],
         ),
@@ -728,5 +722,4 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     );
   }
 }
-
 ///changes
