@@ -145,6 +145,19 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         }));
   }
 
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> getData() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatches();
+
+    _refreshController.refreshCompleted();
+  }
+
   Future<void> _matchStatusUpdate(int matchId) async {
     final response = await http.put(
       Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
@@ -163,19 +176,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     } else {
       print('Failed to update match status: ${response.body}');
     }
-  }
-
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  Future<void> getData() async {
-    setState(() {
-      matches.clear();
-    });
-
-    await _fetchMatches();
-
-    _refreshController.refreshCompleted();
   }
 
   Future<void> refreshPage() async {
@@ -711,9 +711,18 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             Expanded(
               flex: 1,
               child: materialButton(kBlue, 'Enter', () async {
-                await _matchStatusUpdate(match.id);
-                await refreshPage();
-                Navigator.pop(context);
+                if (_homeGoalEditingController.text.isNotEmpty &&
+                    _awayGoalEditingController.text.isNotEmpty) {
+                  await _matchStatusUpdate(match.id);
+                  await refreshPage();
+                  Navigator.pop(context);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Please enter goals for both teams.'),
+                    ),
+                  );
+                }
               }),
             ),
           ],
