@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
@@ -156,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (_isLoading) return;
 
     if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
-      _showErrorDialog('Please enter both username and password.');
+      _showErrorDialog('Username and password cannot be empty');
       return;
     }
 
@@ -180,6 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final response = await http.post(
       Uri.parse('http://127.0.0.1:8000/api/login'),
       headers: <String, String>{
+        'Accept': 'application/json',
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
@@ -232,6 +234,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final responseData = json.decode(response.body);
       final message = responseData['message'];
       _showErrorDialog(message);
+      print(message);
     }
   }
 

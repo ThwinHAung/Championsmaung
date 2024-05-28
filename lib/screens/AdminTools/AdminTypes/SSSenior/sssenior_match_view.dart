@@ -68,6 +68,10 @@ class SSSeniorMatchView extends StatefulWidget {
 class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  final TextEditingController _homeGoalEditingController =
+      TextEditingController();
+  final TextEditingController _awayGoalEditingController =
+      TextEditingController();
   List<Match> matches = [];
 
   @override
@@ -145,15 +149,17 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId');
-    final response = await http.post(url,
+    print(_homeGoalEditingController.text);
+    print(_awayGoalEditingController.text);
+    final response = await http.put(
+        Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
         headers: {
           'Accept': 'application/json',
           'Authorization': 'Bearer $_token',
         },
         body: json.encode({
-          "home_goals": _homeGoalEditingController.text,
-          "away_goals": _awayTeamEditingController.text,
+          'home_goals': _homeGoalEditingController.text,
+          'away_goals': _awayTeamEditingController.text,
         }));
     if (response.statusCode == 200) {
       // final responseData = json.decode(response.body);
@@ -525,10 +531,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   final TextEditingController _awayTeamEditingController =
       TextEditingController();
   final TextEditingController _overUnderOddEditingController =
-      TextEditingController();
-  final TextEditingController _homeGoalEditingController =
-      TextEditingController();
-  final TextEditingController _awayGoalEditingController =
       TextEditingController();
 
   Widget editDialog(Match match) {
