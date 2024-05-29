@@ -95,7 +95,7 @@ Widget labelText(String labelText) {
 Widget bigCapText(String text) {
   return Text(
     text,
-    style: TextStyle(
+    style: const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.bold,
       color: kBlue,

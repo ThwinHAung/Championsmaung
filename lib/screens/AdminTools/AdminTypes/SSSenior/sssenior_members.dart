@@ -351,8 +351,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
                                 ),
-                                SizedBox(height: 10.0),
-                                Text(
+                                const SizedBox(height: 10.0),
+                                const Text(
                                   'Tax: 5',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
@@ -375,8 +375,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
                                 ),
-                                SizedBox(height: 10.0),
-                                Text(
+                                const SizedBox(height: 10.0),
+                                const Text(
                                   'High Tax: 8',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
@@ -458,7 +458,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Widget matchCounts(
-      int matchCountNumber, int tax, TextEditingController _controller) {
+      int matchCountNumber, int tax, TextEditingController controller) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -490,12 +490,12 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextFormField(
-                controller: _controller,
+                controller: controller,
                 obscureText: true,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(hintText: '0'),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
             ],
           ),
         ),

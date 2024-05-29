@@ -202,7 +202,7 @@ class _BettingHistoryState extends State<BettingHistory> {
           controller: _refreshController,
           header: WaterDropHeader(
             waterDropColor: kBlue,
-            refresh: MyLoading(),
+            refresh: const MyLoading(),
             complete: Container(),
             completeDuration: Duration.zero,
           ),
@@ -256,7 +256,7 @@ class _BettingHistoryState extends State<BettingHistory> {
           controller: _refreshController,
           header: WaterDropHeader(
             waterDropColor: kBlue,
-            refresh: MyLoading(),
+            refresh: const MyLoading(),
             complete: Container(),
             completeDuration: Duration.zero,
           ),

@@ -152,7 +152,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
             controller: _refreshController,
             header: WaterDropHeader(
               waterDropColor: kBlue,
-              refresh: MyLoading(),
+              refresh: const MyLoading(),
               complete: Container(),
               completeDuration: Duration.zero,
             ),

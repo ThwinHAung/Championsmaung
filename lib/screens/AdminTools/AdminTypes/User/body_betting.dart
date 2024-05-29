@@ -206,7 +206,7 @@ class _BodyBettingState extends State<BodyBetting> {
                                 flex: 1,
                                 child: Container(),
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'OK', () {
@@ -237,7 +237,7 @@ class _BodyBettingState extends State<BodyBetting> {
                                 flex: 1,
                                 child: Container(),
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'OK', () {
@@ -260,7 +260,7 @@ class _BodyBettingState extends State<BodyBetting> {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Invalid Number of Matches Selected'),
-                        content: Text(
+                        content: const Text(
                             'Please select between $minSelect and $maxSelect matches before placing the bet.'),
                         actions: <Widget>[
                           Row(
@@ -269,7 +269,7 @@ class _BodyBettingState extends State<BodyBetting> {
                                 flex: 1,
                                 child: Container(),
                               ),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'OK', () {
@@ -347,7 +347,7 @@ class _BodyBettingState extends State<BodyBetting> {
           controller: _refreshController,
           header: WaterDropHeader(
             waterDropColor: kBlue,
-            refresh: MyLoading(),
+            refresh: const MyLoading(),
             complete: Container(),
             completeDuration: Duration.zero,
           ),

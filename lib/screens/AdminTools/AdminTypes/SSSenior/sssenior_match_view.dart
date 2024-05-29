@@ -227,7 +227,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
             controller: _refreshController,
             header: WaterDropHeader(
               waterDropColor: kBlue,
-              refresh: MyLoading(),
+              refresh: const MyLoading(),
               complete: Container(),
               completeDuration: Duration.zero,
             ),
@@ -747,7 +747,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
+                    const SnackBar(
                       content: Text('Please enter goals for both teams.'),
                     ),
                   );

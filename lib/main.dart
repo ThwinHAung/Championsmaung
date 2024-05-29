@@ -59,7 +59,7 @@ class ChampionMaung extends StatelessWidget {
       ),
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
-        MyLoading.id: (context) => MyLoading(),
+        MyLoading.id: (context) => const MyLoading(),
 
         //SSSenior
         SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),

@@ -300,7 +300,7 @@ class _MaungBettingState extends State<MaungBetting> {
           controller: _refreshController,
           header: WaterDropHeader(
             waterDropColor: kBlue,
-            refresh: MyLoading(),
+            refresh: const MyLoading(),
             complete: Container(),
             completeDuration: Duration.zero,
           ),

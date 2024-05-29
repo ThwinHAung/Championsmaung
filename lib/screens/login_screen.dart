@@ -265,7 +265,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 1,
                 child: Container(),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Expanded(
                 flex: 1,
                 child: materialButton(kBlue, 'OK', () {
