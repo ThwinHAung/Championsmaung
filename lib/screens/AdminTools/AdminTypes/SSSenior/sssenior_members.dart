@@ -445,7 +445,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                             ),
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
