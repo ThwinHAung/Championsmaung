@@ -83,6 +83,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   @override
   void dispose() {
+    _homeTeamEditingController.dispose();
+    _awayTeamEditingController.dispose();
+    _specialOddEditingController.dispose();
+    _overUnderOddEditingController.dispose();
     _homeGoalEditingController.dispose();
     _awayGoalEditingController.dispose();
     super.dispose();
@@ -145,19 +149,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         }));
   }
 
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  Future<void> getData() async {
-    setState(() {
-      matches.clear();
-    });
-
-    await _fetchMatches();
-
-    _refreshController.refreshCompleted();
-  }
-
   Future<void> _matchStatusUpdate(int matchId) async {
     final response = await http.put(
       Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
@@ -178,8 +169,26 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     }
   }
 
-  Future<void> refreshPage() async {
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> getData() async {
+    setState(() {
+      matches.clear();
+    });
+
     await _fetchMatches();
+
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> refreshPage() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatches();
+
     _refreshController.refreshCompleted();
   }
 
@@ -760,4 +769,5 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     );
   }
 }
+
 ///changes
