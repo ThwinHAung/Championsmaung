@@ -172,34 +172,34 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       int userId = json.decode(response.body)['user_id'];
 
       // Insert commissions and their IDs
-      List<Map<String, dynamic>> commissionsList = [];
-
-      List<TaxData> taxDataList = await futureTaxData;
-
-      for (int i = 0; i < taxDataList.length; i++) {
-        TaxData taxData = taxDataList[i];
-        TextEditingController controller = commissionControllers[i];
-        if (controller.text.isNotEmpty) {
-          commissionsList.add({
-            'user_id': userId,
-            'match_count': taxData.id,
-            'percent': controller.text, // Use the controller value here
-          });
-        }
-      }
-
-      var commissionsUrl =
-          Uri.parse('http://127.0.0.1:8000/api/addingCommissions');
-      var commissionsResponse = await http.post(commissionsUrl, headers: {
-        'Authorization': 'Bearer $_token',
-      }, body: {
-        'commissions': json.encode(commissionsList),
-      });
-      if (response.statusCode == 200) {
-        print('hello');
-      } else {
-        print(response.body);
-      }
+      // List<Map<String, dynamic>> commissionsList = [];
+      //
+      // List<TaxData> taxDataList = await futureTaxData;
+      //
+      // for (int i = 0; i < taxDataList.length; i++) {
+      //   TaxData taxData = taxDataList[i];
+      //   TextEditingController controller = commissionControllers[i];
+      //   if (controller.text.isNotEmpty) {
+      //     commissionsList.add({
+      //       'user_id': userId,
+      //       'match_count': taxData.id,
+      //       'percent': controller.text, // Use the controller value here
+      //     });
+      //   }
+      // }
+      //
+      // var commissionsUrl =
+      //     Uri.parse('http://127.0.0.1:8000/api/addingCommissions');
+      // var commissionsResponse = await http.post(commissionsUrl, headers: {
+      //   'Authorization': 'Bearer $_token',
+      // }, body: {
+      //   'commissions': json.encode(commissionsList),
+      // });
+      // if (response.statusCode == 200) {
+      //   print('hello');
+      // } else {
+      //   print(response.body);
+      // }
 
       showDialog(
         context: context,

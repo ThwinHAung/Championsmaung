@@ -150,22 +150,21 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    final response = await http.put(
-      Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus/$matchId'),
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-      body: json.encode({
-        'home_goals': _homeGoalEditingController.text,
-        'away_goals': _awayGoalEditingController.text,
-      }),
-    );
+    var url = Uri.parse('http://127.0.01:8000/api/matchupdateStatus');
+    final response = await http.post(url,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          "match_id": matchId,
+          "home_goals": _homeGoalEditingController.text,
+          "away_goals": _awayGoalEditingController.text,
+        }));
     if (response.statusCode == 200) {
-      print('Match status updated successfully');
-      _fetchMatches(); // Refresh matches list after update
+      print(response.body);
     } else {
-      print('Failed to update match status: ${response.body}');
+      print(response.body);
     }
   }
 
@@ -750,7 +749,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ],
                     ),
                   );
-
                   await _matchStatusUpdate(match.id);
                   await refreshPage();
                   Navigator.pop(context);
