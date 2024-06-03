@@ -147,16 +147,6 @@ class _BodyBettingState extends State<BodyBetting> {
     _refreshController.refreshCompleted();
   }
 
-  void _updateBodyCount(bool isSelected) {
-    setState(() {
-      if (isSelected) {
-        maungNumber++;
-      } else {
-        maungNumber--;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -479,11 +469,9 @@ class _BodyBettingState extends State<BodyBetting> {
                   setState(() {
                     // Toggle selection
                     if (selectedValues[listIndex] == item) {
-                      selectedValues[listIndex] = '';
-                      _updateBodyCount(false); // Unselect
+                      selectedValues[listIndex] = ''; // Unselect
                     } else {
-                      selectedValues[listIndex] = item;
-                      _updateBodyCount(true); // Select
+                      selectedValues[listIndex] = item; // Select
                     } // Update selectedValues list
                   });
                 },
