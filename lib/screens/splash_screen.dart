@@ -59,8 +59,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(const Duration(milliseconds: 2500), () {
       setState(() {
-        Navigator.pushReplacement(
-            context, PageTransition(const BettingHistory()));
+        Navigator.pushReplacement(context, PageTransition(const LoginScreen()));
       });
     });
   }
