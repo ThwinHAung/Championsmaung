@@ -21,9 +21,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_sho
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_show_members_list.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/body_betting.dart';
@@ -88,11 +85,6 @@ class ChampionMaung extends StatelessWidget {
         MasterAdminScreen.id: (context) => const MasterAdminScreen(),
         MasterMembers.id: (context) => const MasterMembers(),
         MasterShowMembersList.id: (context) => const MasterShowMembersList(),
-        //SeniorAgent
-        SeniorAgentAdminScreen.id: (context) => const SeniorAgentAdminScreen(),
-        SeniorAgentMembers.id: (context) => const SeniorAgentMembers(),
-        SeniorAgentShowMembersList.id: (context) =>
-            const SeniorAgentShowMembersList(),
         //Agent
         AgentAdminScreen.id: (context) => const AgentAdminScreen(),
         AgentMembers.id: (context) => const AgentMembers(),

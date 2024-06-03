@@ -534,7 +534,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(
+                                child: CircularProgressIndicator());
                           } else if (snapshot.hasError) {
                             return Center(
                                 child: Text('Error: ${snapshot.error}'));
@@ -640,7 +641,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   const SizedBox(height: 10.0),
                   Text(
                     'Tax: $tax',
-                    style: TextStyle(fontSize: 12.0),
+                    style: const TextStyle(fontSize: 12.0),
                   ),
                 ],
               ),
@@ -661,7 +662,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   const SizedBox(height: 10.0),
                   Text(
                     'High Tax: $tax',
-                    style: TextStyle(fontSize: 12.0),
+                    style: const TextStyle(fontSize: 12.0),
                   ),
                 ],
               ),

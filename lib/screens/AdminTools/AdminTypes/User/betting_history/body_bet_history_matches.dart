@@ -256,7 +256,7 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
                 customRadio(match.awayMatch, 1, listIndex),
               ],
             ),
-            SizedBox(height: 5.0),
+            const SizedBox(height: 5.0),
             Row(
               children: [
                 customRadio("Over", 2, listIndex),

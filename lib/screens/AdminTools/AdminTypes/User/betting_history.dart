@@ -208,20 +208,20 @@ class _BettingHistoryState extends State<BettingHistory> {
           itemBuilder: (BuildContext context, int index) {
             return AnimationConfiguration.staggeredList(
               position: index,
-              delay: Duration(milliseconds: 100),
+              delay: const Duration(milliseconds: 100),
               child: SlideAnimation(
-                duration: Duration(milliseconds: 2500),
+                duration: const Duration(milliseconds: 2500),
                 curve: Curves.fastLinearToSlowEaseIn,
                 child: FadeInAnimation(
                   curve: Curves.fastLinearToSlowEaseIn,
-                  duration: Duration(milliseconds: 2500),
+                  duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, BodyBetHistoryMatches.id);
                     },
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 10.0),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(bottom: 10.0),
+                      decoration: const BoxDecoration(
                         color: kOnPrimaryContainer,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
@@ -238,11 +238,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       labelText('Voucher ID'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('လောင်းငွေ'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('ပြန်ရငွေ'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('နိုင် / ရှုံး'),
                                     ],
                                   ),
@@ -254,18 +254,18 @@ class _BettingHistoryState extends State<BettingHistory> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' 'ACTIVE'),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Container(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -275,12 +275,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kBlue, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
                                       'show match time Here',
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color:
                                             kOnPrimaryContainer, // Change text color if selected
                                       ),
@@ -320,20 +320,20 @@ class _BettingHistoryState extends State<BettingHistory> {
           itemBuilder: (BuildContext context, int index) {
             return AnimationConfiguration.staggeredList(
               position: index,
-              delay: Duration(milliseconds: 100),
+              delay: const Duration(milliseconds: 100),
               child: SlideAnimation(
-                duration: Duration(milliseconds: 2500),
+                duration: const Duration(milliseconds: 2500),
                 curve: Curves.fastLinearToSlowEaseIn,
                 child: FadeInAnimation(
                   curve: Curves.fastLinearToSlowEaseIn,
-                  duration: Duration(milliseconds: 2500),
+                  duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
                       Navigator.pushNamed(context, MaungBetHistoryMatches.id);
                     },
                     child: Container(
-                      margin: EdgeInsets.only(bottom: 10.0),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.only(bottom: 10.0),
+                      decoration: const BoxDecoration(
                         color: kOnPrimaryContainer,
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
@@ -350,11 +350,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       labelText('Voucher ID'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('လောင်းငွေ'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('ပြန်ရငွေ'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText('နိုင် / ရှုံး'),
                                     ],
                                   ),
@@ -366,18 +366,18 @@ class _BettingHistoryState extends State<BettingHistory> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' '0000'),
-                                      SizedBox(height: 5.0),
+                                      const SizedBox(height: 5.0),
                                       labelText(': ' 'ACTIVE'),
                                     ],
                                   ),
                                 ),
                               ],
                             ),
-                            SizedBox(height: 10.0),
+                            const SizedBox(height: 10.0),
                             Container(
                               child: Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -387,12 +387,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kPrimary, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
                                       'show match time Here',
-                                      style: const TextStyle(color: kBlue),
+                                      style: TextStyle(color: kBlue),
                                     ),
                                   ),
                                 ),
