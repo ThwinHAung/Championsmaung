@@ -17,6 +17,9 @@ class Match {
   final String matchTime;
   final String homeGoals;
   final String awayGoals;
+  final String overUnderFirstDigit;
+  final String overUnderSign;
+  final int overUnderLastDigit;
   Match({
     required this.id,
     required this.league_name,
@@ -25,6 +28,9 @@ class Match {
     required this.matchTime,
     required this.homeGoals,
     required this.awayGoals,
+    required this.overUnderFirstDigit,
+    required this.overUnderSign,
+    required this.overUnderLastDigit,
   });
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
@@ -35,6 +41,9 @@ class Match {
       matchTime: json['match_time'],
       homeGoals: json['home_goals'].toString(),
       awayGoals: json['away_goals'].toString(),
+      overUnderFirstDigit: json['over_under_first_digit'],
+      overUnderSign: json['over_under_sign'],
+      overUnderLastDigit: json['over_under_last_digit'],
     );
   }
 }
@@ -251,6 +260,24 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                   ),
                 ),
                 customRadio(match.awayMatch, 1, listIndex),
+              ],
+            ),
+            SizedBox(height: 5.0),
+            Row(
+              children: [
+                customRadio("Over", 2, listIndex),
+                Expanded(
+                  flex: 1,
+                  child: Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      match.overUnderFirstDigit +
+                          match.overUnderSign +
+                          match.overUnderLastDigit.toString(),
+                    ),
+                  ),
+                ),
+                customRadio("Under", 3, listIndex),
               ],
             ),
             if (!isLastMatch) const Divider(),

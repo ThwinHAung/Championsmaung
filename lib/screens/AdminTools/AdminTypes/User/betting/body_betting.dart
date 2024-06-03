@@ -68,11 +68,10 @@ class _BodyBettingState extends State<BodyBetting> {
   Map<int, String> selectedValues = {};
   List<Match> matches = [];
 
+  int maungNumber = 0;
+
   final TextEditingController _bodyBettingEditingController =
       TextEditingController();
-
-  static const int minSelect = 2;
-  static const int maxSelect = 11;
 
   @override
   void initState() {
@@ -146,6 +145,16 @@ class _BodyBettingState extends State<BodyBetting> {
     await _fetchMatches();
 
     _refreshController.refreshCompleted();
+  }
+
+  void _updateBodyCount(bool isSelected) {
+    setState(() {
+      if (isSelected) {
+        maungNumber++;
+      } else {
+        maungNumber--;
+      }
+    });
   }
 
   @override
@@ -230,38 +239,6 @@ class _BodyBettingState extends State<BodyBetting> {
                         title: const Text('Insufficient Balance'),
                         content: const Text(
                             'You do not have enough balance to place this bet.'),
-                        actions: <Widget>[
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(),
-                              ),
-                              const SizedBox(width: 5.0),
-                              Expanded(
-                                flex: 1,
-                                child: materialButton(kBlue, 'OK', () {
-                                  Navigator.pop(context);
-                                }),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    );
-                    return;
-                  }
-
-                  // Check if user has selected the correct number of matches
-                  if (selectedValues.length < minSelect ||
-                      selectedValues.length > maxSelect) {
-                    // Show dialog for invalid number of matches selected
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Invalid Number of Matches Selected'),
-                        content: const Text(
-                            'Please select between $minSelect and $maxSelect matches before placing the bet.'),
                         actions: <Widget>[
                           Row(
                             children: [
@@ -500,14 +477,14 @@ class _BodyBettingState extends State<BodyBetting> {
               ? null
               : () {
                   setState(() {
+                    // Toggle selection
                     if (selectedValues[listIndex] == item) {
-                      selectedValues.remove(listIndex); // Unselect
+                      selectedValues[listIndex] = '';
+                      _updateBodyCount(false); // Unselect
                     } else {
-                      if (selectedValues.length < maxSelect) {
-                        selectedValues[listIndex] =
-                            item; // Select the tapped item
-                      }
-                    }
+                      selectedValues[listIndex] = item;
+                      _updateBodyCount(true); // Select
+                    } // Update selectedValues list
                   });
                 },
           child: Container(

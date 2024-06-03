@@ -73,6 +73,9 @@ class _MaungBettingState extends State<MaungBetting> {
   final TextEditingController _maungBettingEditingController =
       TextEditingController();
 
+  static const int minSelect = 2;
+  static const int maxSelect = 11;
+
   @override
   void initState() {
     _getToken();
@@ -145,16 +148,6 @@ class _MaungBettingState extends State<MaungBetting> {
     await _fetchMatches();
 
     _refreshController.refreshCompleted();
-  }
-
-  void _updateMaungCount(bool isSelected) {
-    setState(() {
-      if (isSelected) {
-        maungNumber++;
-      } else {
-        maungNumber--;
-      }
-    });
   }
 
   @override
@@ -274,8 +267,42 @@ class _MaungBettingState extends State<MaungBetting> {
                               }),
                               const SizedBox(width: 5.0),
                               materialButton(kBlue, 'Bet', () {
-                                _placeAccumulatorBet(amount);
-                                Navigator.pop(context);
+                                // Check if user has selected the correct number of matches
+                                if (selectedValues.length < minSelect ||
+                                    selectedValues.length > maxSelect) {
+                                  // Show dialog for invalid number of matches selected
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text(
+                                          'Invalid Number of Matches Selected.'),
+                                      content: const Text(
+                                          'Please select between $minSelect and $maxSelect matches before placing the bet.'),
+                                      actions: <Widget>[
+                                        Row(
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Container(),
+                                            ),
+                                            const SizedBox(width: 5.0),
+                                            Expanded(
+                                              flex: 1,
+                                              child: materialButton(kBlue, 'OK',
+                                                  () {
+                                                Navigator.pop(context);
+                                              }),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  return;
+                                } else {
+                                  _placeAccumulatorBet(amount);
+                                  Navigator.pop(context);
+                                }
                               })
                             ],
                           )
@@ -453,14 +480,14 @@ class _MaungBettingState extends State<MaungBetting> {
               ? null
               : () {
                   setState(() {
-                    // Toggle selection
                     if (selectedValues[listIndex] == item) {
-                      selectedValues[listIndex] = '';
-                      _updateMaungCount(false); // Unselect
+                      selectedValues.remove(listIndex); // Unselect
                     } else {
-                      selectedValues[listIndex] = item;
-                      _updateMaungCount(true); // Select
-                    } // Update selectedValues list
+                      if (selectedValues.length < maxSelect) {
+                        selectedValues[listIndex] =
+                            item; // Select the tapped item
+                      }
+                    }
                   });
                 },
           child: Container(

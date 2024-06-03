@@ -40,14 +40,17 @@ class Match {
 }
 
 class BodyBetHistoryMatches extends StatefulWidget {
-  static String id = 'body_bet_history_matches';
+  static String id = "body_bet_history_matches";
+
+  // constructor for custom radio button widget
+
   const BodyBetHistoryMatches({super.key});
 
   @override
-  State<BodyBetHistoryMatches> createState() => _BodyBetHistoryMatchesState();
+  State<BodyBetHistoryMatches> createState() => _BodyBetHistoryMatches();
 }
 
-class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
+class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
@@ -121,7 +124,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'Body Betting History',
+          'Body Bet Match Results',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
@@ -251,6 +254,14 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                   ),
                 ),
                 customRadio(match.awayMatch, 1, listIndex),
+              ],
+            ),
+            SizedBox(height: 5.0),
+            Row(
+              children: [
+                customRadio("Over", 2, listIndex),
+                Expanded(flex: 1, child: labelText('-')),
+                customRadio("Under", 3, listIndex),
               ],
             ),
             if (!isLastMatch) const Divider(),

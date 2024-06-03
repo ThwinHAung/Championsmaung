@@ -572,19 +572,23 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                     style: kLabel,
                                   ),
                                   actions: <Widget>[
-                                    Expanded(
-                                        flex: 1,
-                                        child: materialButton(kError, 'Cancel',
-                                            () {
-                                          Navigator.pop(context);
-                                        })),
-                                    const SizedBox(width: 5.0),
-                                    Expanded(
-                                      flex: 1,
-                                      child:
-                                          materialButton(kBlue, 'Update', () {
-                                        (_register());
-                                      }),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: materialButton(
+                                                kError, 'Cancel', () {
+                                              Navigator.pop(context);
+                                            })),
+                                        const SizedBox(width: 5.0),
+                                        Expanded(
+                                          flex: 1,
+                                          child: materialButton(
+                                              kBlue, 'Confirm', () {
+                                            (_register());
+                                          }),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

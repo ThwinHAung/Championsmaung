@@ -513,19 +513,23 @@ class _SeniorAgentMembersState extends State<SeniorAgentMembers> {
                                     style: kLabel,
                                   ),
                                   actions: <Widget>[
-                                    Expanded(
-                                        flex: 1,
-                                        child: materialButton(kError, 'Cancel',
-                                            () {
-                                          Navigator.pop(context);
-                                        })),
-                                    const SizedBox(width: 5.0),
-                                    Expanded(
-                                      flex: 1,
-                                      child:
-                                          materialButton(kBlue, 'Update', () {
-                                        (_register());
-                                      }),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: materialButton(
+                                                kError, 'Cancel', () {
+                                              Navigator.pop(context);
+                                            })),
+                                        const SizedBox(width: 5.0),
+                                        Expanded(
+                                          flex: 1,
+                                          child: materialButton(
+                                              kBlue, 'Confirm', () {
+                                            (_register());
+                                          }),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -610,7 +614,19 @@ class _SeniorAgentMembersState extends State<SeniorAgentMembers> {
     });
 
     if (response.statusCode == 200) {
-      print('Registration successful');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succeed.'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
       Navigator.pop(context);
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);

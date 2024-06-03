@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_bet_history_matches.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_bet_history_matches.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
