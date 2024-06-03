@@ -1,5 +1,8 @@
 import 'dart:convert';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/body_bet_history_matches.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/maung_bet_history_matches.dart';
+import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -171,7 +174,6 @@ class _BettingHistoryState extends State<BettingHistory> {
       color: kPrimary,
       child: Column(
         children: [
-          bodyBettingResults(),
           Expanded(child: bodyView()),
         ],
       ),
@@ -183,7 +185,6 @@ class _BettingHistoryState extends State<BettingHistory> {
       color: kPrimary,
       child: Column(
         children: [
-          maungBettingResults(),
           Expanded(child: maungView()),
         ],
       ),
@@ -198,47 +199,105 @@ class _BettingHistoryState extends State<BettingHistory> {
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            itemCount: sortedLeagueNames.length,
-            itemBuilder: (context, leagueIndex) {
-              String leagueName = sortedLeagueNames[leagueIndex];
-              List<Match> leagueMatches = matchesByLeague[leagueName]!;
-              return AnimationConfiguration.staggeredList(
-                position: leagueIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
+          itemCount: 5,
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              delay: Duration(milliseconds: 100),
+              child: SlideAnimation(
+                duration: Duration(milliseconds: 2500),
+                curve: Curves.fastLinearToSlowEaseIn,
+                child: FadeInAnimation(
                   curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: Column(
-                        children: [
-                          bodyLeagueContainer(
-                              leagueName, leagueMatches, leagueIndex),
-                        ],
+                  duration: Duration(milliseconds: 2500),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, BodyBetHistoryMatches.id);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 10.0),
+                      decoration: BoxDecoration(
+                        color: kOnPrimaryContainer,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      labelText('Voucher ID'),
+                                      SizedBox(height: 5.0),
+                                      labelText('လောင်းငွေ'),
+                                      SizedBox(height: 5.0),
+                                      labelText('ပြန်ရငွေ'),
+                                      SizedBox(height: 5.0),
+                                      labelText('နိုင် / ရှုံး'),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' 'ACTIVE'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.0),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: kBlue, // Highlight if selected
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
+                                      'show match time Here',
+                                      style: const TextStyle(
+                                        color:
+                                            kOnPrimaryContainer, // Change text color if selected
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -252,321 +311,102 @@ class _BettingHistoryState extends State<BettingHistory> {
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
+        child: ListView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            itemCount: sortedLeagueNames.length,
-            itemBuilder: (context, leagueIndex) {
-              String leagueName = sortedLeagueNames[leagueIndex];
-              List<Match> leagueMatches = matchesByLeague[leagueName]!;
-              return AnimationConfiguration.staggeredList(
-                position: leagueIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
+          itemCount: 5,
+          itemBuilder: (BuildContext context, int index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              delay: Duration(milliseconds: 100),
+              child: SlideAnimation(
+                duration: Duration(milliseconds: 2500),
+                curve: Curves.fastLinearToSlowEaseIn,
+                child: FadeInAnimation(
                   curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child: maungLeagueContainer(
-                          leagueName, leagueMatches, leagueIndex),
+                  duration: Duration(milliseconds: 2500),
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, MaungBetHistoryMatches.id);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(bottom: 10.0),
+                      decoration: BoxDecoration(
+                        color: kOnPrimaryContainer,
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      labelText('Voucher ID'),
+                                      SizedBox(height: 5.0),
+                                      labelText('လောင်းငွေ'),
+                                      SizedBox(height: 5.0),
+                                      labelText('ပြန်ရငွေ'),
+                                      SizedBox(height: 5.0),
+                                      labelText('နိုင် / ရှုံး'),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' '0000'),
+                                      SizedBox(height: 5.0),
+                                      labelText(': ' 'ACTIVE'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(height: 10.0),
+                            Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: kPrimary, // Highlight if selected
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    child: Text(
+                                      'show match time Here',
+                                      style: const TextStyle(color: kBlue),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                 ),
-              );
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget bodyLeagueContainer(
-      String leagueName, List<Match> leagueMatches, int listIndex) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kOnPrimaryContainer,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            labelText(leagueName),
-            ...leagueMatches.asMap().entries.map((entry) {
-              int matchIndex = entry.key;
-              Match match = entry.value;
-              bool isLastMatch = matchIndex == leagueMatches.length - 1;
-              return AnimationConfiguration.staggeredList(
-                position: matchIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
-                    child: radioContainer(match, listIndex, isLastMatch),
-                  ),
-                ),
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget maungLeagueContainer(
-      String leagueName, List<Match> leagueMatches, int listIndex) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kOnPrimaryContainer,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            labelText(leagueName),
-            ...leagueMatches.asMap().entries.map((entry) {
-              int matchIndex = entry.key;
-              Match match = entry.value;
-              bool isLastMatch = matchIndex == leagueMatches.length - 1;
-              return AnimationConfiguration.staggeredList(
-                position: matchIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
-                    child: radioContainer(match, listIndex, isLastMatch),
-                  ),
-                ),
-              );
-            }).toList(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget bodyBettingResults() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: kOnPrimaryContainer,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Single',
-                style: TextStyle(
-                  color: kBlue,
-                  fontSize: 20.0,
-                ),
               ),
-              SizedBox(height: 10.0),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Number of events'),
-                        Text('Potential winnings'),
-                        Text('Status'),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(':'),
-                        Text(':'),
-                        Text(':'),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('00'),
-                        Text('00'),
-                        Text('**'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget maungBettingResults() {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: kOnPrimaryContainer,
-          borderRadius: BorderRadius.circular(10.0),
-        ),
-        child: const Padding(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Accumulator',
-                style: TextStyle(
-                  color: kBlue,
-                  fontSize: 20.0,
-                ),
-              ),
-              SizedBox(height: 10.0),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 10,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Number of events'),
-                        Text('Potential winnings'),
-                        Text('Status'),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Column(
-                      children: [
-                        Text(':'),
-                        Text(':'),
-                        Text(':'),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('00'),
-                        Text('00'),
-                        Text('**'),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget radioContainer(Match match, int listIndex, bool isLastMatch) {
-    DateTime matchTime =
-        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
-    String formattedMatchTime =
-        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
-
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
-      child: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                'Match Time: $formattedMatchTime',
-                style: const TextStyle(color: kGrey, fontSize: 12),
-              ),
-            ),
-            Row(
-              children: [
-                customRadio(match.homeMatch, 0, listIndex),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        labelText(match.homeGoals),
-                        labelText('-'),
-                        labelText(match.awayGoals),
-                      ],
-                    ),
-                  ),
-                ),
-                customRadio(match.awayMatch, 1, listIndex),
-              ],
-            ),
-            if (!isLastMatch) const Divider(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget customRadio(String item, int itemIndex, int listIndex) {
-    return Expanded(
-      flex: 4,
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            color: kPrimary, // Highlight if selected
-          ),
-          alignment: Alignment.center,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0),
-            child: Text(
-              item,
-              style: const TextStyle(
-                color: kBlue, // Change text color if selected
-              ),
-            ),
-          ),
+            );
+          },
         ),
       ),
     );

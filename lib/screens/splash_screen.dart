@@ -6,6 +6,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_membe
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Senior/senior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SeniorAgent/seniorAgent_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -58,7 +59,8 @@ class _SplashScreenState extends State<SplashScreen>
 
     Timer(const Duration(milliseconds: 2500), () {
       setState(() {
-        Navigator.pushReplacement(context, PageTransition(const LoginScreen()));
+        Navigator.pushReplacement(
+            context, PageTransition(const BettingHistory()));
       });
     });
   }
