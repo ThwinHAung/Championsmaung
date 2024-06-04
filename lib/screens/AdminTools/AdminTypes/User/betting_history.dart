@@ -351,6 +351,8 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     children: [
                                       labelText('Voucher ID'),
                                       const SizedBox(height: 5.0),
+                                      labelText('ပွဲစဉ်အရေအတွက်'),
+                                      const SizedBox(height: 5.0),
                                       labelText('လောင်းငွေ'),
                                       const SizedBox(height: 5.0),
                                       labelText('ပြန်ရငွေ'),
