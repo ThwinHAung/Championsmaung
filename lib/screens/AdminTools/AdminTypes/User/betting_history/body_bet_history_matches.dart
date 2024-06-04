@@ -175,6 +175,33 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: kPrimary,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 0),
+            ),
+            label: 'လောင်းငွေ' '=' '',
+          ),
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 0),
+            ),
+            label: 'ပြန်ရငွေ' '=' '',
+          ),
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 0),
+            ),
+            label: 'နိုင် / ရှုံး' '=' '',
+          ),
+        ],
+        unselectedItemColor: kBlue,
+      ),
     );
   }
 
