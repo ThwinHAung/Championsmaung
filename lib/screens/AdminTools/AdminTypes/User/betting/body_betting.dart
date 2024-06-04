@@ -471,6 +471,7 @@ class _BodyBettingState extends State<BodyBetting> {
                     if (selectedValues[listIndex] == item) {
                       selectedValues[listIndex] = ''; // Unselect
                     } else {
+                      selectedValues[listIndex] = '';
                       selectedValues[listIndex] = item; // Select
                     } // Update selectedValues list
                   });
