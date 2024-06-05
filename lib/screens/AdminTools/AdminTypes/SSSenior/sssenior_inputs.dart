@@ -746,7 +746,35 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'Enter', () {
-                                  _insertMatch();
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Add Match?"),
+                                        content: Text(
+                                            'Do you rally want to add this match info?'),
+                                        actions: <Widget>[
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: materialButton(
+                                                      kError, 'Cancel', () {
+                                                    Navigator.pop(context);
+                                                  })),
+                                              const SizedBox(width: 5.0),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: materialButton(
+                                                      kBlue, 'Enter', () {
+                                                    _insertMatch();
+                                                  })),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }),
                               )
                             ],
