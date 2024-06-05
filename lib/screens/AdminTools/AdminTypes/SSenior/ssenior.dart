@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/account.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminToolPages/report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/deposit.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
