@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
@@ -8,34 +9,30 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Match {
+class SingleBet {
   final int id;
-  final String league_name;
-  final String homeMatch;
-  final String awayMatch;
-  final String matchTime;
-  final String homeGoals;
-  final String awayGoals;
+  final int matchId;
+  final String selectedOutcome;
+  final double amount;
+  final String status;
+  final double wining_amount;
 
-  Match({
+  SingleBet({
     required this.id,
-    required this.league_name,
-    required this.homeMatch,
-    required this.awayMatch,
-    required this.matchTime,
-    required this.homeGoals,
-    required this.awayGoals,
+    required this.matchId,
+    required this.selectedOutcome,
+    required this.amount,
+    required this.status,
+    required this.wining_amount,
   });
-
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
+  factory SingleBet.fromJson(Map<String, dynamic> json) {
+    return SingleBet(
       id: json['id'],
-      league_name: json['league_name'],
-      homeMatch: json['home_match'],
-      awayMatch: json['away_match'],
-      matchTime: json['match_time'],
-      homeGoals: json['home_goals'].toString(),
-      awayGoals: json['away_goals'].toString(),
+      matchId: json['match_id'],
+      selectedOutcome: json['selected_outcome'],
+      amount: double.parse(json['amount']),
+      status: json['status'],
+      wining_amount: double.parse(json['wining_amount']),
     );
   }
 }
@@ -51,7 +48,8 @@ class BettingHistory extends StatefulWidget {
 class _BettingHistoryState extends State<BettingHistory> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  Map<String, List<Match>> matchesByLeague = {};
+  String? _username;
+  Map<String, List<SingleBet>> singleSlip = {};
 
   int _widgetSelectedIndex = 0;
 
@@ -83,38 +81,37 @@ class _BettingHistoryState extends State<BettingHistory> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      _fetchMatchesHistory();
+    _username = await storage.read(key: 'user_name');
+    if (_token != null && _username != null) {
+      _fetchMatchesHistory(_username!);
     }
   }
 
-  Future<void> _fetchMatchesHistory() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_matchesHistory');
+  Future<void> _fetchMatchesHistory(String username) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/getBetSlip/$username');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
-      List jsonResponse = jsonDecode(response.body);
-      List<Match> matchList =
-          jsonResponse.map((match) => Match.fromJson(match)).toList();
-      Map<String, List<Match>> groupedMatches = {};
-      for (var match in matchList) {
-        if (!groupedMatches.containsKey(match.league_name)) {
-          groupedMatches[match.league_name] = [];
-        }
-        groupedMatches[match.league_name]!.add(match);
+      Map<String, dynamic> data = json.decode(response.body);
+
+      if (data.containsKey('singleBets')) {
+        setState(() {
+          singleSlip = {
+            'singleBets': (data['singleBets'] as List)
+                .map((betJson) => SingleBet.fromJson(betJson))
+                .toList(),
+          };
+        });
       }
-      setState(() {
-        matchesByLeague = groupedMatches;
-      });
     } else {
       // Handle the error appropriately
     }
   }
 
   Future<void> getData() async {
-    await _fetchMatchesHistory();
+    await _fetchMatchesHistory(_username!);
     _refreshController.refreshCompleted();
   }
 
@@ -189,10 +186,10 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Widget bodyView() {
-    List<String> sortedLeagueNames = matchesByLeague.keys.toList();
-    sortedLeagueNames
-        .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-
+    // List<String> sortedLeagueNames = matchesByLeague.keys.toList();
+    // sortedLeagueNames
+    //     .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    List<SingleBet> singleBets = singleSlip['singleBets'] ?? [];
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -201,8 +198,10 @@ class _BettingHistoryState extends State<BettingHistory> {
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
-          itemCount: 5,
+          itemCount: singleBets.length,
           itemBuilder: (BuildContext context, int index) {
+            SingleBet bet = singleBets[index];
+
             return AnimationConfiguration.staggeredList(
               position: index,
               delay: const Duration(milliseconds: 100),
@@ -236,11 +235,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     children: [
                                       labelText('Voucher ID'),
                                       const SizedBox(height: 5.0),
-                                      labelText('လောင်းငွေ'),
+                                      labelText('Amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('ပြန်ရငွေ'),
+                                      labelText('Wining_amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('နိုင် / ရှုံး'),
+                                      labelText('Status'),
                                     ],
                                   ),
                                 ),
@@ -250,13 +249,13 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '${bet.id}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '${bet.amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '${bet.wining_amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' 'ACTIVE'),
+                                      labelText(': ' '${bet.status}'),
                                     ],
                                   ),
                                 ),
@@ -301,10 +300,6 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Widget maungView() {
-    List<String> sortedLeagueNames = matchesByLeague.keys.toList();
-    sortedLeagueNames
-        .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-
     return Container(
       color: kPrimary,
       child: AnimationLimiter(

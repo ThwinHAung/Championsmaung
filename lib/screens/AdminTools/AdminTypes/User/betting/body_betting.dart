@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
@@ -196,8 +197,7 @@ class _BodyBettingState extends State<BodyBetting> {
                       context: context,
                       builder: (context) => AlertDialog(
                         title: const Text('Invalid Bet Amount'),
-                        content: const Text(
-                            'You can only bet between 2 and 11 matches.'),
+                        content: const Text('Please Enter valid amount'),
                         actions: <Widget>[
                           Row(
                             children: [
