@@ -189,24 +189,27 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               '',
               style: TextStyle(fontSize: 0),
             ),
-            label: 'လောင်းငွေ' '=' '',
+            label: 'Amount = ' '',
           ),
           BottomNavigationBarItem(
             icon: Text(
               '',
               style: TextStyle(fontSize: 0),
             ),
-            label: 'ပြန်ရငွေ' '=' '',
+            label: 'Winning Amount = ' '',
           ),
           BottomNavigationBarItem(
             icon: Text(
               '',
               style: TextStyle(fontSize: 0),
             ),
-            label: 'နိုင် / ရှုံး' '=' '',
+            label: 'Status = ' '',
           ),
         ],
+        selectedFontSize: 14,
+        unselectedFontSize: 14,
         unselectedItemColor: kBlue,
+        selectedItemColor: kBlue,
       ),
     );
   }
