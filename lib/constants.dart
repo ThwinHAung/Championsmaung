@@ -136,6 +136,28 @@ Widget materialButton(
   );
 }
 
+Widget secondaryMaterialButton(Color buttonColor, String buttonText,
+    Color kButtonTextColor, VoidCallback onCustomButtonPressed) {
+  return Material(
+    color: buttonColor,
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    elevation: 5.0,
+    child: MaterialButton(
+      onPressed: onCustomButtonPressed,
+      minWidth: 200.0,
+      height: 42.0,
+      child: Text(
+        buttonText,
+        style: TextStyle(
+          fontSize: 12.0,
+          fontWeight: FontWeight.bold,
+          color: kButtonTextColor,
+        ),
+      ),
+    ),
+  );
+}
+
 //username selection dropdown
 const List<String> userDropdownItems = [
   'A',

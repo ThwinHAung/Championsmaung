@@ -66,10 +66,9 @@ class _BodyBettingState extends State<BodyBetting> {
   final storage = const FlutterSecureStorage();
   String? _token;
   double? _balance;
-  Map<int, String> selectedValues = {};
+  int? selectedMatchIndex;
+  String? selectedOutcome;
   List<Match> matches = [];
-
-  int maungNumber = 0;
 
   final TextEditingController _bodyBettingEditingController =
       TextEditingController();
@@ -266,27 +265,12 @@ class _BodyBettingState extends State<BodyBetting> {
                             }),
                             const SizedBox(width: 5.0),
                             materialButton(kBlue, 'Bet', () {
-                              selectedValues
-                                  .forEach((selectedIndex, selectedOutcome) {
-                                // Get the match ID from the selected match
-                                int matchId = matches[selectedIndex].id;
-
-                                // Map the selected outcome to "W1" or "W2"
-                                if (selectedOutcome ==
-                                    matches[selectedIndex].homeMatch) {
-                                  selectedOutcome = 'W1';
-                                } else if (selectedOutcome ==
-                                    matches[selectedIndex].awayMatch) {
-                                  selectedOutcome = 'W2';
-                                } else if (selectedOutcome == "Over") {
-                                  selectedOutcome = 'Over';
-                                } else if (selectedOutcome == "Under") {
-                                  selectedOutcome = 'Under';
-                                }
-
+                              if (selectedMatchIndex != null &&
+                                  selectedOutcome != null) {
+                                int matchId = matches[selectedMatchIndex!].id;
                                 _placeSingleBet(
-                                    matchId, selectedOutcome, amount);
-                              });
+                                    matchId, selectedOutcome!, amount);
+                              }
 
                               Navigator.pop(context);
                             })
@@ -467,18 +451,24 @@ class _BodyBettingState extends State<BodyBetting> {
               ? null
               : () {
                   setState(() {
-                    // Toggle selection
-                    if (selectedValues[listIndex] == item) {
-                      selectedValues[listIndex] = ''; // Unselect
+                    if (selectedMatchIndex == listIndex &&
+                        selectedOutcome == item) {
+                      // Deselect if the same item is tapped
+                      selectedMatchIndex = null;
+                      selectedOutcome = null;
                     } else {
-                      selectedValues[listIndex] = item; // Select
-                    } // Update selectedValues list
+                      // Clear previous selection and select the new one
+                      selectedMatchIndex = listIndex;
+                      selectedOutcome = item;
+                    }
                   });
                 },
           child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
-              color: selectedValues[listIndex] == item ? kBlue : kPrimary,
+              color: selectedMatchIndex == listIndex && selectedOutcome == item
+                  ? kBlue
+                  : kPrimary,
             ),
             alignment: Alignment.center,
             child: Padding(
@@ -486,7 +476,10 @@ class _BodyBettingState extends State<BodyBetting> {
               child: Text(
                 item,
                 style: TextStyle(
-                  color: selectedValues[listIndex] == item ? kWhite : kBlue,
+                  color:
+                      selectedMatchIndex == listIndex && selectedOutcome == item
+                          ? kWhite
+                          : kBlue,
                 ),
               ),
             ),

@@ -38,9 +38,53 @@ class _LeagueScreenState extends State<LeagueScreen> {
               'name': _leagueNameController.text,
             }));
     if (response.statusCode == 200) {
-      print('ok');
+      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Success"),
+            content: Text('Adding League Succeed!'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(flex: 1, child: Container()),
+                  const SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      })),
+                ],
+              ),
+            ],
+          );
+        },
+      );
     } else {
-      print(response.body);
+      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Failed"),
+            content: Text('Adding League Failed!'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(flex: 1, child: Container()),
+                  const SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      })),
+                ],
+              )
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -67,11 +111,10 @@ class _LeagueScreenState extends State<LeagueScreen> {
           children: [
             Container(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 40.0),
                     labelText('League'),
                     const SizedBox(height: 10.0),
                     TextFormField(
@@ -98,39 +141,22 @@ class _LeagueScreenState extends State<LeagueScreen> {
                                   style: kLabel,
                                 ),
                                 actions: <Widget>[
-                                  Material(
-                                    color: kOnPrimaryContainer,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0)),
-                                    elevation: 5.0,
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      minWidth: 100.0,
-                                      height: 42.0,
-                                      child: const Text(
-                                        'Cancel',
-                                        style: kButtonErrorStyle,
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: materialButton(kError, 'Cancel',
+                                            () {
+                                          Navigator.pop(context);
+                                        }),
                                       ),
-                                    ),
-                                  ),
-                                  Material(
-                                    color: kBlue,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10.0)),
-                                    elevation: 5.0,
-                                    child: MaterialButton(
-                                      onPressed: () {
-                                        _insertLeague();
-                                      },
-                                      minWidth: 100.0,
-                                      height: 42.0,
-                                      child: const Text(
-                                        'Add',
-                                        style: kButtonTextStyle,
+                                      SizedBox(width: 5.0),
+                                      Expanded(
+                                        flex: 1,
+                                        child: materialButton(
+                                            kBlue, 'Enter', _insertLeague),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               ),

@@ -28,7 +28,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   final TextEditingController _awayTeamController = TextEditingController();
   String? overUnder_goals;
   String? overUnder_calculate_value;
-  final TextEditingController _OverUnderOddController = TextEditingController();
+  final TextEditingController _overUnderOddController = TextEditingController();
   List<Map<String, dynamic>> _leagueList = [];
 
   DateTime _dateTime = DateTime.now();
@@ -710,7 +710,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                         ),
                         const SizedBox(height: 5.0),
                         TextFormField(
-                          controller: _OverUnderOddController,
+                          controller: _overUnderOddController,
                           style: kTextFieldActiveStyle,
                           decoration: kTextFieldDecoration.copyWith(
                               hintText: 'Over, Under odd'),
@@ -746,7 +746,35 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                               Expanded(
                                 flex: 1,
                                 child: materialButton(kBlue, 'Enter', () {
-                                  _insertMatch();
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text("Add Match?"),
+                                        content: Text(
+                                            'Do you rally want to add this match info?'),
+                                        actions: <Widget>[
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: materialButton(
+                                                      kError, 'Cancel', () {
+                                                    Navigator.pop(context);
+                                                  })),
+                                              const SizedBox(width: 5.0),
+                                              Expanded(
+                                                  flex: 1,
+                                                  child: materialButton(
+                                                      kBlue, 'Enter', () {
+                                                    _insertMatch();
+                                                  })),
+                                            ],
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
                                 }),
                               )
                             ],
@@ -782,14 +810,30 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
               "special_odd_last_digit": _specialOddController.text,
               "over_under_first_digit": overUnder_goals,
               "over_under_sign": overUnder_calculate_value,
-              "over_under_last_digit": _OverUnderOddController.text,
+              "over_under_last_digit": _overUnderOddController.text,
             }));
     if (response.statusCode == 200) {
+      Navigator.pop(context);
+
+      selectedValue1 = '0';
+      selectedValue2 = '0';
+      league_value = '0';
+
+      _homeTeamController.clear();
+      _awayTeamController.clear();
+      team_value = '0';
+      specialOdd_goals = '0';
+      specialOdd_calculate_value = '0';
+      _specialOddController.clear();
+      overUnder_goals = '0';
+      overUnder_calculate_value = '0';
+
       final responseData = json.decode(response.body);
       final message = responseData['message'];
       print(message);
       _successDialog(context, message);
     } else {
+      Navigator.pop(context);
       final responseData = json.decode(response.body);
       final message = responseData['message'];
       print(message);
