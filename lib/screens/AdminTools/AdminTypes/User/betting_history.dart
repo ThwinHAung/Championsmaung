@@ -123,28 +123,29 @@ class _BettingHistoryState extends State<BettingHistory> {
     });
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body);
-      if (data.containsKey('singleBets')) {
-        print(data);
-        setState(() {
+      setState(() {
+        if (data.containsKey('singleBets')) {
           singleSlip = {
             'singleBets': (data['singleBets'] as List)
                 .map((betJson) => SingleBet.fromJson(betJson))
                 .toList(),
           };
-        });
-      } else if (data.containsKey('accumulatorBets')) {
-        setState(() {
+          print('Single Bets:');
+          print(singleSlip['singleBets']);
+        }
+        if (data.containsKey('accumulatorBets')) {
           accumulatorSlip = {
             'accumulatorBets': (data['accumulatorBets'] as List)
                 .map((betJson) => AccumulatorBet.fromJson(betJson))
                 .toList(),
           };
-        });
-        print('Accumulator Bets:');
-        print(data['accumulatorBets']);
-      }
+          print('Accumulator Bets:');
+          print(accumulatorSlip['accumulatorBets']);
+        }
+      });
     } else {
       // Handle the error appropriately
+      print('Error fetching data: ${response.statusCode}');
     }
   }
 
@@ -225,6 +226,14 @@ class _BettingHistoryState extends State<BettingHistory> {
 
   Widget bodyView() {
     List<SingleBet> singleBets = singleSlip['singleBets'] ?? [];
+    if (singleBets.isEmpty) {
+      return Center(
+        child: Text(
+          'No Single Bets found',
+          style: TextStyle(color: konPrimary),
+        ),
+      );
+    }
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -251,7 +260,8 @@ class _BettingHistoryState extends State<BettingHistory> {
                       Navigator.pushNamed(
                         context,
                         BodyBetHistoryMatches.id,
-                        arguments: singleBet.id, // Pass the singleBet.id here
+                        arguments:
+                            singleBet.id, // Pass the accumulatorBet.id here
                       );
                     },
                     child: Container(
@@ -292,8 +302,8 @@ class _BettingHistoryState extends State<BettingHistory> {
                                       const SizedBox(height: 5.0),
                                       labelText(': ' '${singleBet.amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(
-                                          ': ' '${singleBet.wining_amount}'),
+                                      labelText(': '
+                                          '${singleBet.wining_amount}'),
                                       const SizedBox(height: 5.0),
                                       labelText(': ' '${singleBet.status}'),
                                     ],
@@ -318,7 +328,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                       'Match Time : ', // Display match time
                                       style: const TextStyle(
                                         color:
-                                            kOnPrimaryContainer, // Change text color if selected
+                                            kPrimary, // Change text color if selected
                                       ),
                                     ),
                                   ),
@@ -342,9 +352,14 @@ class _BettingHistoryState extends State<BettingHistory> {
   Widget maungView() {
     List<AccumulatorBet> accumulatorBets =
         accumulatorSlip['accumulatorBets'] ?? [];
-
-    print('Accumulator Bets Length: ${accumulatorBets.length}');
-
+    if (accumulatorBets.isEmpty) {
+      return Center(
+        child: Text(
+          'No Accumulator Bets found',
+          style: TextStyle(color: konPrimary),
+        ),
+      );
+    }
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -355,7 +370,8 @@ class _BettingHistoryState extends State<BettingHistory> {
           ),
           itemCount: accumulatorBets.length,
           itemBuilder: (BuildContext context, int index) {
-            AccumulatorBet bet = accumulatorBets[index];
+            AccumulatorBet accumulatorBet = accumulatorBets[index];
+
             return AnimationConfiguration.staggeredList(
               position: index,
               delay: const Duration(milliseconds: 100),
@@ -367,7 +383,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, MaungBetHistoryMatches.id);
+                      Navigator.pushNamed(
+                        context,
+                        BodyBetHistoryMatches.id,
+                        arguments: accumulatorBet
+                            .id, // Pass the accumulatorBet.id here
+                      );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10.0),
@@ -389,11 +410,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     children: [
                                       labelText('Voucher ID'),
                                       const SizedBox(height: 5.0),
-                                      labelText('Number of matches'),
+                                      labelText('Number of Matches'),
                                       const SizedBox(height: 5.0),
                                       labelText('Amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('Winning Amount'),
+                                      labelText('Wining Amount'),
                                       const SizedBox(height: 5.0),
                                       labelText('Status'),
                                     ],
@@ -405,15 +426,19 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelText(': ' '00'),
+                                      labelText(': ' '${accumulatorBet.id}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.matchCount}'),
+                                      labelText(
+                                          ':' '${accumulatorBets.length}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.amount}'),
+                                      labelText(
+                                          ': ' '${accumulatorBet.amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.wining_amount}'),
+                                      labelText(': '
+                                          '${accumulatorBet.wining_amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.status}'),
+                                      labelText(
+                                          ': ' '${accumulatorBet.status}'),
                                     ],
                                   ),
                                 ),
@@ -429,12 +454,15 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kPrimary, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Text(
-                                      'show match time Here',
-                                      style: TextStyle(color: kBlue),
+                                      'Match Time : ', // Display match time
+                                      style: const TextStyle(
+                                        color:
+                                            kBlue, // Change text color if selected
+                                      ),
                                     ),
                                   ),
                                 ),
