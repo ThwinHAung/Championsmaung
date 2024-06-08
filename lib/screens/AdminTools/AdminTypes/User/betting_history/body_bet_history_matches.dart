@@ -15,6 +15,12 @@ class Match {
   final String homeMatch;
   final String awayMatch;
   final String matchTime;
+  final String specialOddFirstDigit;
+  final String specialOddSign;
+  final int specialOddValue;
+  final String overUnderFirstDigit;
+  final String overUnderSign;
+  final int overUnderLastDigit;
   final String homeGoals;
   final String awayGoals;
   Match({
@@ -23,6 +29,12 @@ class Match {
     required this.homeMatch,
     required this.awayMatch,
     required this.matchTime,
+    required this.specialOddFirstDigit,
+    required this.specialOddSign,
+    required this.specialOddValue,
+    required this.overUnderFirstDigit,
+    required this.overUnderSign,
+    required this.overUnderLastDigit,
     required this.homeGoals,
     required this.awayGoals,
   });
@@ -33,6 +45,12 @@ class Match {
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
       matchTime: json['match_time'],
+      specialOddFirstDigit: json[''],
+      specialOddSign: json[''],
+      specialOddValue: json[''],
+      overUnderFirstDigit: json['over_under_first_digit'],
+      overUnderSign: json['over_under_sign'],
+      overUnderLastDigit: json['over_under_last_digit'],
       homeGoals: json['home_goals'].toString(),
       awayGoals: json['away_goals'].toString(),
     );

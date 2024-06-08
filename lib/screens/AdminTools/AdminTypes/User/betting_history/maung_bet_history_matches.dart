@@ -15,22 +15,28 @@ class Match {
   final String homeMatch;
   final String awayMatch;
   final String matchTime;
-  final String homeGoals;
-  final String awayGoals;
+  final String specialOddFirstDigit;
+  final String specialOddSign;
+  final int specialOddValue;
   final String overUnderFirstDigit;
   final String overUnderSign;
   final int overUnderLastDigit;
+  final String homeGoals;
+  final String awayGoals;
   Match({
     required this.id,
     required this.league_name,
     required this.homeMatch,
     required this.awayMatch,
     required this.matchTime,
-    required this.homeGoals,
-    required this.awayGoals,
+    required this.specialOddFirstDigit,
+    required this.specialOddSign,
+    required this.specialOddValue,
     required this.overUnderFirstDigit,
     required this.overUnderSign,
     required this.overUnderLastDigit,
+    required this.homeGoals,
+    required this.awayGoals,
   });
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
@@ -39,11 +45,14 @@ class Match {
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
       matchTime: json['match_time'],
-      homeGoals: json['home_goals'].toString(),
-      awayGoals: json['away_goals'].toString(),
+      specialOddFirstDigit: json[''],
+      specialOddSign: json[''],
+      specialOddValue: json['x'],
       overUnderFirstDigit: json['over_under_first_digit'],
       overUnderSign: json['over_under_sign'],
       overUnderLastDigit: json['over_under_last_digit'],
+      homeGoals: json['home_goals'].toString(),
+      awayGoals: json['away_goals'].toString(),
     );
   }
 }

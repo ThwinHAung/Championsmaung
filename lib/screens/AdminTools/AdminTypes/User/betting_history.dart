@@ -37,6 +37,31 @@ class SingleBet {
   }
 }
 
+class AccumulatorBet {
+  final int id;
+  final double amount;
+  final String status;
+  final double wining_amount;
+  final int matchCount;
+
+  AccumulatorBet({
+    required this.id,
+    required this.amount,
+    required this.status,
+    required this.wining_amount,
+    required this.matchCount,
+  });
+  factory AccumulatorBet.fromJson(Map<String, dynamic> json) {
+    return AccumulatorBet(
+      id: json['id'],
+      amount: double.parse(json['amount']),
+      status: json['status'],
+      wining_amount: double.parse(json['wining_amount']),
+      matchCount: json['match_count'],
+    );
+  }
+}
+
 class BettingHistory extends StatefulWidget {
   static String id = 'betting_history';
   const BettingHistory({super.key});
@@ -50,6 +75,7 @@ class _BettingHistoryState extends State<BettingHistory> {
   String? _token;
   String? _username;
   Map<String, List<SingleBet>> singleSlip = {};
+  Map<String, List<AccumulatorBet>> accumulatorSlip = {};
 
   int _widgetSelectedIndex = 0;
 
@@ -95,8 +121,8 @@ class _BettingHistoryState extends State<BettingHistory> {
     });
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body);
-
       if (data.containsKey('singleBets')) {
+        print(data);
         setState(() {
           singleSlip = {
             'singleBets': (data['singleBets'] as List)
@@ -104,6 +130,16 @@ class _BettingHistoryState extends State<BettingHistory> {
                 .toList(),
           };
         });
+      } else if (data.containsKey('accumulatorBets')) {
+        setState(() {
+          accumulatorSlip = {
+            'accumulatorBets': (data['accumulatorBets'] as List)
+                .map((betJson) => AccumulatorBet.fromJson(betJson))
+                .toList(),
+          };
+        });
+        print('Accumulator Bets:');
+        print(data['accumulatorBets']);
       }
     } else {
       // Handle the error appropriately
@@ -300,6 +336,11 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Widget maungView() {
+    List<AccumulatorBet> accumulatorBets =
+        accumulatorSlip['accumulatorBets'] ?? [];
+
+    print('Accumulator Bets Length: ${accumulatorBets.length}');
+
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -308,8 +349,9 @@ class _BettingHistoryState extends State<BettingHistory> {
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
-          itemCount: 5,
+          itemCount: accumulatorBets.length,
           itemBuilder: (BuildContext context, int index) {
+            AccumulatorBet bet = accumulatorBets[index];
             return AnimationConfiguration.staggeredList(
               position: index,
               delay: const Duration(milliseconds: 100),
@@ -359,13 +401,15 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '00'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '${bet.matchCount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '0000'),
+                                      labelText(': ' '${bet.amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' 'ACTIVE'),
+                                      labelText(': ' '${bet.wining_amount}'),
+                                      const SizedBox(height: 5.0),
+                                      labelText(': ' '${bet.status}'),
                                     ],
                                   ),
                                 ),

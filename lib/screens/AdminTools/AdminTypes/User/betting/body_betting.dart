@@ -490,7 +490,26 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> _placeSingleBet(
-      int matchId, String selectedOutcome, double amount) async {
+      int matchId, String selectedTeam, double amount) async {
+    Match? selectedMatch = matches.firstWhere(
+      (match) => match.id == matchId,
+      orElse: () => null as Match,
+    );
+
+    if (selectedMatch == null) {
+      print('Match not found');
+      return;
+    }
+
+    String selectedOutcome;
+    if (selectedMatch.homeMatch == selectedTeam) {
+      selectedOutcome = 'W1';
+    } else if (selectedMatch.awayMatch == selectedTeam) {
+      selectedOutcome = 'W2';
+    } else {
+      print('Selected team does not match home or away team');
+      return;
+    }
     var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
     final response = await http.post(url, headers: {
       'Accept': 'application/json',
@@ -504,6 +523,7 @@ class _BodyBettingState extends State<BodyBetting> {
       print('Bet placed successfully');
       _getBalance();
     } else {
+      print(response.body);
       print('Failed to place bet');
     }
   }
