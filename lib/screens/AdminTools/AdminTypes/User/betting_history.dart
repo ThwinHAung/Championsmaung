@@ -385,7 +385,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                     onTap: () {
                       Navigator.pushNamed(
                         context,
-                        BodyBetHistoryMatches.id,
+                        MaungBetHistoryMatches.id,
                         arguments: accumulatorBet
                             .id, // Pass the accumulatorBet.id here
                       );
@@ -429,7 +429,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                       labelText(': ' '${accumulatorBet.id}'),
                                       const SizedBox(height: 5.0),
                                       labelText(
-                                          ':' '${accumulatorBets.length}'),
+                                          ': ' '${accumulatorBets.length}'),
                                       const SizedBox(height: 5.0),
                                       labelText(
                                           ': ' '${accumulatorBet.amount}'),
