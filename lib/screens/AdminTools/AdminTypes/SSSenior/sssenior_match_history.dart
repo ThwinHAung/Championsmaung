@@ -199,7 +199,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.fromLTRB(0, 8.0, 8.0, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,

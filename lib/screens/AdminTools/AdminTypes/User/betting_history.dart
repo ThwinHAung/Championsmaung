@@ -15,7 +15,7 @@ class SingleBet {
   final String selectedOutcome;
   final double amount;
   final String status;
-  final double wining_amount;
+  final double wining_amount; // Add matchTime field
 
   SingleBet({
     required this.id,
@@ -23,8 +23,9 @@ class SingleBet {
     required this.selectedOutcome,
     required this.amount,
     required this.status,
-    required this.wining_amount,
+    required this.wining_amount, // Initialize matchTime
   });
+
   factory SingleBet.fromJson(Map<String, dynamic> json) {
     return SingleBet(
       id: json['id'],
@@ -32,7 +33,8 @@ class SingleBet {
       selectedOutcome: json['selected_outcome'],
       amount: double.parse(json['amount']),
       status: json['status'],
-      wining_amount: double.parse(json['wining_amount']),
+      wining_amount:
+          double.parse(json['wining_amount']), // Parse matchTime from JSON
     );
   }
 }
@@ -222,9 +224,6 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Widget bodyView() {
-    // List<String> sortedLeagueNames = matchesByLeague.keys.toList();
-    // sortedLeagueNames
-    //     .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
     List<SingleBet> singleBets = singleSlip['singleBets'] ?? [];
     return Container(
       color: kPrimary,
@@ -236,7 +235,7 @@ class _BettingHistoryState extends State<BettingHistory> {
           ),
           itemCount: singleBets.length,
           itemBuilder: (BuildContext context, int index) {
-            SingleBet bet = singleBets[index];
+            SingleBet singleBet = singleBets[index];
 
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -249,7 +248,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, BodyBetHistoryMatches.id);
+                      Navigator.pushNamed(
+                        context,
+                        BodyBetHistoryMatches.id,
+                        arguments: singleBet.id, // Pass the singleBet.id here
+                      );
                     },
                     child: Container(
                       margin: const EdgeInsets.only(bottom: 10.0),
@@ -273,7 +276,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                       const SizedBox(height: 5.0),
                                       labelText('Amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('Wining_amount'),
+                                      labelText('Wining Amount'),
                                       const SizedBox(height: 5.0),
                                       labelText('Status'),
                                     ],
@@ -285,13 +288,14 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      labelText(': ' '${bet.id}'),
+                                      labelText(': ' '${singleBet.id}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.amount}'),
+                                      labelText(': ' '${singleBet.amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.wining_amount}'),
+                                      labelText(
+                                          ': ' '${singleBet.wining_amount}'),
                                       const SizedBox(height: 5.0),
-                                      labelText(': ' '${bet.status}'),
+                                      labelText(': ' '${singleBet.status}'),
                                     ],
                                   ),
                                 ),
@@ -307,12 +311,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kBlue, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: const Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Text(
-                                      'show match time Here',
-                                      style: TextStyle(
+                                      'Match Time : ', // Display match time
+                                      style: const TextStyle(
                                         color:
                                             kOnPrimaryContainer, // Change text color if selected
                                       ),
@@ -385,13 +389,13 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     children: [
                                       labelText('Voucher ID'),
                                       const SizedBox(height: 5.0),
-                                      labelText('ပွဲစဉ်အရေအတွက်'),
+                                      labelText('Number of matches'),
                                       const SizedBox(height: 5.0),
-                                      labelText('လောင်းငွေ'),
+                                      labelText('Amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('ပြန်ရငွေ'),
+                                      labelText('Winning Amount'),
                                       const SizedBox(height: 5.0),
-                                      labelText('နိုင် / ရှုံး'),
+                                      labelText('Status'),
                                     ],
                                   ),
                                 ),
