@@ -496,11 +496,6 @@ class _BodyBettingState extends State<BodyBetting> {
       orElse: () => null as Match,
     );
 
-    if (selectedMatch == null) {
-      print('Match not found');
-      return;
-    }
-
     String selectedOutcome;
     if (selectedMatch.homeMatch == selectedTeam) {
       selectedOutcome = 'W1';

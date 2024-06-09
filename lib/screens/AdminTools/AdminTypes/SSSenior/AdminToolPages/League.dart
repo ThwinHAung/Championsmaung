@@ -44,7 +44,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Success"),
-            content: Text('Adding League Succeed!'),
+            content: const Text('Adding League Succeed!'),
             actions: <Widget>[
               Row(
                 children: [
@@ -68,7 +68,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text("Failed"),
-            content: Text('Adding League Failed!'),
+            content: const Text('Adding League Failed!'),
             actions: <Widget>[
               Row(
                 children: [
@@ -150,7 +150,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
                                           Navigator.pop(context);
                                         }),
                                       ),
-                                      SizedBox(width: 5.0),
+                                      const SizedBox(width: 5.0),
                                       Expanded(
                                         flex: 1,
                                         child: materialButton(

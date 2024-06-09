@@ -751,7 +751,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                         title: const Text("Add Match?"),
-                                        content: Text(
+                                        content: const Text(
                                             'Do you rally want to add this match info?'),
                                         actions: <Widget>[
                                           Row(

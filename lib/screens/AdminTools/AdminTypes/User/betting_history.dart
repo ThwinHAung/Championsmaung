@@ -227,7 +227,7 @@ class _BettingHistoryState extends State<BettingHistory> {
   Widget bodyView() {
     List<SingleBet> singleBets = singleSlip['singleBets'] ?? [];
     if (singleBets.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No Single Bets found',
           style: TextStyle(color: konPrimary),
@@ -321,12 +321,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kBlue, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
                                       'Match Time : ', // Display match time
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color:
                                             kPrimary, // Change text color if selected
                                       ),
@@ -353,7 +353,7 @@ class _BettingHistoryState extends State<BettingHistory> {
     List<AccumulatorBet> accumulatorBets =
         accumulatorSlip['accumulatorBets'] ?? [];
     if (accumulatorBets.isEmpty) {
-      return Center(
+      return const Center(
         child: Text(
           'No Accumulator Bets found',
           style: TextStyle(color: konPrimary),
@@ -454,12 +454,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kPrimary, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 8.0),
+                                  child: const Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
                                       'Match Time : ', // Display match time
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         color:
                                             kBlue, // Change text color if selected
                                       ),

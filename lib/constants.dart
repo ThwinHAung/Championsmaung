@@ -298,10 +298,16 @@ List<List<String>> lists = [
   ['TeamOne 3', 'TeamTwo 3', 'Over 3', 'Under 3'],
 ];
 
-List<String> specialOdd = ['60', '40', '15'];
+List<String> specialOddHomeTeam = [];
+List<String> specialOddAwayTeam = [];
 
-List<String> overUnderGoals = ['1', '3', '4'];
-List<String> overunderOdd = ['60', '70', '10'];
+List<String> specialOddFirstDigit = [];
+List<String> specialOddSign = [];
+List<String> specialOddLastDigit = ['60', '40', '15'];
+
+List<String> overUnderFirstDigit = ['1', '3', '4'];
+List<String> overUnderSign = [];
+List<String> overunderLastDigit = ['60', '70', '10'];
 
 Widget showUsername(String username) {
   return Text(

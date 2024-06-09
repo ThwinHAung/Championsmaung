@@ -209,7 +209,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                 Navigator.pop(context);
                               }),
                             ),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                               flex: 1,
                               child: materialButton(kBlue, 'Enter', () {
@@ -279,7 +279,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                 child: materialButton(kError, 'Cancel', () {
                                   Navigator.pop(context);
                                 })),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                                 child: materialButton(kBlue, 'Enter', () {
                               showDialog(
@@ -345,7 +345,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                 child: materialButton(kError, 'Cancel', () {
                               Navigator.pop(context);
                             })),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                                 child: secondaryMaterialButton(
                                     kOnPrimaryContainer, 'Delete', kError, () {
@@ -376,7 +376,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                 child: materialButton(kError, 'Cancel', () {
                               Navigator.pop(context);
                             })),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                                 child: secondaryMaterialButton(
                                     kOnPrimaryContainer, 'Delete', kError, () {
