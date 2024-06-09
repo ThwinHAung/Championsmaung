@@ -15,28 +15,26 @@ class Match {
   final String homeMatch;
   final String awayMatch;
   final String matchTime;
+  final String specialOddTeam;
   final String specialOddFirstDigit;
   final String specialOddSign;
-  final int specialOddValue;
+  final int specialOddLastDigit;
   final String overUnderFirstDigit;
   final String overUnderSign;
   final int overUnderLastDigit;
-  final String homeGoals;
-  final String awayGoals;
   Match({
     required this.id,
     required this.league_name,
     required this.homeMatch,
     required this.awayMatch,
     required this.matchTime,
+    required this.specialOddTeam,
     required this.specialOddFirstDigit,
     required this.specialOddSign,
-    required this.specialOddValue,
+    required this.specialOddLastDigit,
     required this.overUnderFirstDigit,
     required this.overUnderSign,
     required this.overUnderLastDigit,
-    required this.homeGoals,
-    required this.awayGoals,
   });
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
@@ -45,14 +43,13 @@ class Match {
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
       matchTime: json['match_time'],
-      specialOddFirstDigit: json[''],
-      specialOddSign: json[''],
-      specialOddValue: json[''],
+      specialOddTeam: json['special_odd_team'],
+      specialOddFirstDigit: json['special_odd_first_digit'],
+      specialOddSign: json['special_odd_sign'],
+      specialOddLastDigit: json['special_odd_last_digit'],
       overUnderFirstDigit: json['over_under_first_digit'],
       overUnderSign: json['over_under_sign'],
       overUnderLastDigit: json['over_under_last_digit'],
-      homeGoals: json['home_goals'].toString(),
-      awayGoals: json['away_goals'].toString(),
     );
   }
 }
@@ -65,10 +62,10 @@ class BodyBetHistoryMatches extends StatefulWidget {
   const BodyBetHistoryMatches({super.key});
 
   @override
-  State<BodyBetHistoryMatches> createState() => _BodyBetHistoryMatches();
+  State<BodyBetHistoryMatches> createState() => _BodyBetHistoryMatchesState();
 }
 
-class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
+class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
@@ -76,6 +73,7 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
   @override
   void initState() {
     _getToken();
+
     super.initState();
   }
 
@@ -87,54 +85,56 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {
-      _fetchMatchesHistory();
+      _fetchMatches();
     }
   }
 
-  final RefreshController _refreshController = RefreshController();
-
-  Future<void> getData() async {
-    setState(() {
-      matches.clear();
-    });
-
-    await _fetchMatchesHistory();
-
-    _refreshController.refreshCompleted();
-  }
-
-  Future<void> _fetchMatchesHistory() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_matchesHistory');
+  Future<void> _fetchMatches() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
       List jsonResponse = jsonDecode(response.body);
-      List<Match> matchList =
-          jsonResponse.map((match) => Match.fromJson(match)).toList();
-      Map<String, List<Match>> groupedMatches = {};
-      for (var match in matchList) {
-        if (!groupedMatches.containsKey(match.league_name)) {
-          groupedMatches[match.league_name] = [];
-        }
-        groupedMatches[match.league_name]!.add(match);
-      }
       setState(() {
-        matchesByLeague = groupedMatches;
+        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
       });
-    } else {
-      // Handle the error appropriately
-    }
+    } else {}
   }
 
-  Map<String, List<Match>> matchesByLeague = {};
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> getData() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatches();
+
+    _refreshController.refreshCompleted();
+  }
+
+  Future<void> refreshPage() async {
+    setState(() {
+      matches.clear();
+    });
+
+    await _fetchMatches();
+
+    _refreshController.refreshCompleted();
+  }
 
   @override
+  @override
   Widget build(BuildContext context) {
-    List<String> sortedLeagueNames = matchesByLeague.keys.toList();
-    sortedLeagueNames
-        .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
+    // Sort matches by time
+    matches.sort((a, b) {
+      DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
+      DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
+      return timeB.compareTo(timeA);
+    });
 
     return Scaffold(
       backgroundColor: kPrimary,
@@ -142,7 +142,7 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'Body Bet Match Results',
+          'Body Bet History',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
@@ -167,12 +167,12 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: sortedLeagueNames.length,
-              itemBuilder: (context, leagueIndex) {
-                String leagueName = sortedLeagueNames[leagueIndex];
-                List<Match> leagueMatches = matchesByLeague[leagueName]!;
+              itemCount: matches.length,
+              itemBuilder: (context, index) {
+                Match match = matches[index];
+                bool isLastMatch = index == matches.length - 1;
                 return AnimationConfiguration.staggeredList(
-                  position: leagueIndex,
+                  position: index,
                   delay: const Duration(milliseconds: 100),
                   child: SlideAnimation(
                     duration: const Duration(milliseconds: 2500),
@@ -181,9 +181,25 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
                       curve: Curves.fastLinearToSlowEaseIn,
                       duration: const Duration(milliseconds: 2500),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: leagueContainer(
-                            leagueName, leagueMatches, leagueIndex),
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                child: labelText(match.league_name),
+                              ),
+                              // Matches for the League
+                              radioContainer(match, isLastMatch),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -193,126 +209,130 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: kPrimary,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Text(
-              '',
-              style: TextStyle(fontSize: 0),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Home
+              },
+              child: Text('Amount = ' ''),
             ),
-            label: 'Amount = ' '',
-          ),
-          BottomNavigationBarItem(
-            icon: Text(
-              '',
-              style: TextStyle(fontSize: 0),
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Search
+              },
+              child: Text('Winning Amount = ' ''),
             ),
-            label: 'Winning Amount = ' '',
-          ),
-          BottomNavigationBarItem(
-            icon: Text(
-              '',
-              style: TextStyle(fontSize: 0),
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Profile
+              },
+              child: Text('Status = ' ''),
             ),
-            label: 'Status = ' '',
-          ),
-        ],
-        selectedFontSize: 14,
-        unselectedFontSize: 14,
-        unselectedItemColor: kBlue,
-        selectedItemColor: kBlue,
-      ),
-    );
-  }
-
-  Widget leagueContainer(
-      String leagueName, List<Match> leagueMatches, int listIndex) {
-    return Container(
-      decoration: BoxDecoration(
-        color: kOnPrimaryContainer,
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            labelText(leagueName),
-            ...leagueMatches.asMap().entries.map((entry) {
-              int matchIndex = entry.key;
-              Match match = entry.value;
-              bool isLastMatch = matchIndex == leagueMatches.length - 1;
-              return AnimationConfiguration.staggeredList(
-                position: matchIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
-                    child: radioContainer(match, listIndex, isLastMatch),
-                  ),
-                ),
-              );
-            }).toList(),
           ],
         ),
       ),
     );
   }
 
-  Widget radioContainer(Match match, int listIndex, bool isLastMatch) {
+  Widget radioContainer(Match match, bool isLastMatch) {
+    // Parse match time
     DateTime matchTime =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
     String formattedMatchTime =
         DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5.0),
+    return Container(
       child: Padding(
-        padding: const EdgeInsets.only(left: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: Text(
-                'Match Time: $formattedMatchTime',
-                style: const TextStyle(color: kGrey, fontSize: 12),
-              ),
-            ),
             Row(
               children: [
-                customRadio(match.homeMatch, 0, listIndex),
                 Expanded(
-                  flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        labelText(match.homeGoals),
-                        labelText('-'),
-                        labelText(match.awayGoals),
-                      ],
+                    padding: const EdgeInsets.fromLTRB(17.0, 10, 0, 10),
+                    child: Text(
+                      'Match Time: $formattedMatchTime',
+                      style: const TextStyle(color: kGrey, fontSize: 12),
                     ),
                   ),
                 ),
-                customRadio(match.awayMatch, 1, listIndex),
               ],
             ),
-            const SizedBox(height: 5.0),
-            Row(
-              children: [
-                customRadio("Over", 2, listIndex),
-                Expanded(flex: 1, child: labelText('-')),
-                customRadio("Under", 3, listIndex),
-              ],
-            ),
-            if (!isLastMatch) const Divider(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      customRadio(match.homeMatch, 0, match.id),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '0',
+                            style: const TextStyle(
+                              color: kBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '-',
+                            style: const TextStyle(
+                              color: kBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            '0',
+                            style: const TextStyle(
+                              color: kBlack,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      customRadio(match.awayMatch, 1, match.id),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      customRadio('Over', 2, match.id),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.overUnderFirstDigit +
+                                match.overUnderSign +
+                                match.overUnderLastDigit.toString(),
+                          ),
+                        ),
+                      ),
+                      customRadio('Under', 3, match.id),
+                    ],
+                  ),
+                ],
+              ),
+            ), // Only render divider if not the last match
           ],
         ),
       ),
@@ -321,13 +341,13 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
 
   Widget customRadio(String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 4,
+      flex: 3,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary, // Highlight if selected
+            color: kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
@@ -335,7 +355,7 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
             child: Text(
               item,
               style: const TextStyle(
-                color: kBlue, // Change text color if selected
+                color: kBlue,
               ),
             ),
           ),
@@ -344,3 +364,5 @@ class _BodyBetHistoryMatches extends State<BodyBetHistoryMatches> {
     );
   }
 }
+
+///changes
