@@ -496,14 +496,15 @@ class _BodyBettingState extends State<BodyBetting> {
       orElse: () => null as Match,
     );
 
-    String selectedOutcome;
+    String? selectedOutcome;
     if (selectedMatch.homeMatch == selectedTeam) {
       selectedOutcome = 'W1';
     } else if (selectedMatch.awayMatch == selectedTeam) {
       selectedOutcome = 'W2';
-    } else {
-      print('Selected team does not match home or away team');
-      return;
+    }else if(selectedTeam == 'Over'){
+      selectedOutcome ='Over';
+    }else if(selectedTeam == 'Under'){
+      selectedOutcome == 'Under';
     }
     var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
     final response = await http.post(url, headers: {

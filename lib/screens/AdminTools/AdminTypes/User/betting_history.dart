@@ -7,34 +7,34 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class SingleBet {
   final int id;
-  final int matchId;
   final String selectedOutcome;
   final double amount;
   final String status;
-  final double wining_amount; // Add matchTime field
+  final double wining_amount;
+  final String slipDate; // Add matchTime field
 
   SingleBet({
     required this.id,
-    required this.matchId,
     required this.selectedOutcome,
     required this.amount,
     required this.status,
-    required this.wining_amount, // Initialize matchTime
+    required this.wining_amount,
+    required this.slipDate, // Initialize matchTime
   });
 
   factory SingleBet.fromJson(Map<String, dynamic> json) {
     return SingleBet(
       id: json['id'],
-      matchId: json['match_id'],
       selectedOutcome: json['selected_outcome'],
       amount: double.parse(json['amount']),
       status: json['status'],
-      wining_amount:
-          double.parse(json['wining_amount']), // Parse matchTime from JSON
+      wining_amount: double.parse(json['wining_amount']),
+      slipDate: json['created_at'], // Parse matchTime from JSON
     );
   }
 }
@@ -44,6 +44,7 @@ class AccumulatorBet {
   final double amount;
   final String status;
   final double wining_amount;
+  final String slipDate;
   final int matchCount;
 
   AccumulatorBet({
@@ -51,6 +52,7 @@ class AccumulatorBet {
     required this.amount,
     required this.status,
     required this.wining_amount,
+    required this.slipDate,
     required this.matchCount,
   });
   factory AccumulatorBet.fromJson(Map<String, dynamic> json) {
@@ -59,6 +61,7 @@ class AccumulatorBet {
       amount: double.parse(json['amount']),
       status: json['status'],
       wining_amount: double.parse(json['wining_amount']),
+      slipDate: json['created_at'],
       matchCount: json['match_count'],
     );
   }
@@ -130,8 +133,6 @@ class _BettingHistoryState extends State<BettingHistory> {
                 .map((betJson) => SingleBet.fromJson(betJson))
                 .toList(),
           };
-          print('Single Bets:');
-          print(singleSlip['singleBets']);
         }
         if (data.containsKey('accumulatorBets')) {
           accumulatorSlip = {
@@ -139,12 +140,9 @@ class _BettingHistoryState extends State<BettingHistory> {
                 .map((betJson) => AccumulatorBet.fromJson(betJson))
                 .toList(),
           };
-          print('Accumulator Bets:');
-          print(accumulatorSlip['accumulatorBets']);
         }
       });
     } else {
-      // Handle the error appropriately
       print('Error fetching data: ${response.statusCode}');
     }
   }
@@ -246,6 +244,13 @@ class _BettingHistoryState extends State<BettingHistory> {
           itemBuilder: (BuildContext context, int index) {
             SingleBet singleBet = singleBets[index];
 
+            DateTime matchTime =
+                DateFormat("yyyy-MM-dd HH:mm:ss").parse(singleBet.slipDate);
+            String formattedMatchTime =
+                DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+            // Get current time
+            DateTime now = DateTime.now();
+
             return AnimationConfiguration.staggeredList(
               position: index,
               delay: const Duration(milliseconds: 100),
@@ -321,11 +326,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kBlue, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: const Padding(
+                                  child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
-                                      'Match Time : ', // Display match time
+                                      'Match Time : ${formattedMatchTime}', // Display match time
                                       style: TextStyle(
                                         color:
                                             kPrimary, // Change text color if selected
@@ -371,6 +376,13 @@ class _BettingHistoryState extends State<BettingHistory> {
           itemCount: accumulatorBets.length,
           itemBuilder: (BuildContext context, int index) {
             AccumulatorBet accumulatorBet = accumulatorBets[index];
+
+            DateTime matchTime = DateFormat("yyyy-MM-dd HH:mm:ss")
+                .parse(accumulatorBet.slipDate);
+            String formattedMatchTime =
+                DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+            // Get current time
+            DateTime now = DateTime.now();
 
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -429,7 +441,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                       labelText(': ' '${accumulatorBet.id}'),
                                       const SizedBox(height: 5.0),
                                       labelText(
-                                          ': ' '${accumulatorBets.length}'),
+                                          ': ' '${accumulatorBet.matchCount}'),
                                       const SizedBox(height: 5.0),
                                       labelText(
                                           ': ' '${accumulatorBet.amount}'),
@@ -454,11 +466,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     color: kPrimary, // Highlight if selected
                                   ),
                                   alignment: Alignment.center,
-                                  child: const Padding(
+                                  child: Padding(
                                     padding:
                                         EdgeInsets.symmetric(vertical: 8.0),
                                     child: Text(
-                                      'Match Time : ', // Display match time
+                                      'Match Time :${formattedMatchTime}', // Display match time
                                       style: TextStyle(
                                         color:
                                             kBlue, // Change text color if selected

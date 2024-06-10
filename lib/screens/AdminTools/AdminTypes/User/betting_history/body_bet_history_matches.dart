@@ -9,8 +9,11 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Match {
-  final int id;
+class Body {
+  final String selectedOutcome;
+  final String amount;
+  final String userStatus;
+  final String winingAmount;
   final String league_name;
   final String homeMatch;
   final String awayMatch;
@@ -22,8 +25,15 @@ class Match {
   final String overUnderFirstDigit;
   final String overUnderSign;
   final int overUnderLastDigit;
-  Match({
-    required this.id,
+  final int? homeGoals;
+  final int? awayGoals;
+  final String status;
+
+  Body({
+    required this.selectedOutcome,
+    required this.amount,
+    required this.userStatus,
+    required this.winingAmount,
     required this.league_name,
     required this.homeMatch,
     required this.awayMatch,
@@ -35,10 +45,17 @@ class Match {
     required this.overUnderFirstDigit,
     required this.overUnderSign,
     required this.overUnderLastDigit,
+    this.homeGoals,
+    this.awayGoals,
+    required this.status,
   });
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
-      id: json['id'],
+
+  factory Body.fromJson(Map<String, dynamic> json) {
+    return Body(
+      selectedOutcome: json['selected_outcome'],
+      amount: json['amount'],
+      userStatus: json['user_status'],
+      winingAmount: json['wining_amount'],
       league_name: json['league_name'],
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
@@ -50,6 +67,9 @@ class Match {
       overUnderFirstDigit: json['over_under_first_digit'],
       overUnderSign: json['over_under_sign'],
       overUnderLastDigit: json['over_under_last_digit'],
+      homeGoals: json['home_goals'],
+      awayGoals: json['away_goals'],
+      status: json['status'],
     );
   }
 }
@@ -68,13 +88,19 @@ class BodyBetHistoryMatches extends StatefulWidget {
 class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  List<Match> matches = [];
+  List<Body> body_matches = [];
+  int? betId;
 
   @override
   void initState() {
-    _getToken();
-
     super.initState();
+    Future.microtask(() {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null) {
+        betId = args as int;
+        _getToken();
+      }
+    });
   }
 
   @override
@@ -84,21 +110,21 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      _fetchMatches();
+    if (_token != null && betId != null) {
+      _fetchBetDetails(betId!);
     }
   }
 
-  Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+  Future<void> _fetchBetDetails(int betId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/getSingleBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
-      List jsonResponse = jsonDecode(response.body);
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       setState(() {
-        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+        body_matches.add(Body.fromJson(jsonResponse['bet']));
       });
     } else {}
   }
@@ -108,20 +134,20 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> getData() async {
     setState(() {
-      matches.clear();
+      body_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
 
   Future<void> refreshPage() async {
     setState(() {
-      matches.clear();
+      body_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
@@ -130,11 +156,6 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   @override
   Widget build(BuildContext context) {
     // Sort matches by time
-    matches.sort((a, b) {
-      DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
-      DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
-      return timeB.compareTo(timeA);
-    });
 
     return Scaffold(
       backgroundColor: kPrimary,
@@ -167,10 +188,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: matches.length,
+              itemCount: body_matches.length,
               itemBuilder: (context, index) {
-                Match match = matches[index];
-                bool isLastMatch = index == matches.length - 1;
+                Body match = body_matches[index];
+                bool isLastMatch = index == body_matches.length - 1;
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   delay: const Duration(milliseconds: 100),
@@ -217,19 +238,22 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               onTap: () {
                 // Handle onTap for Home
               },
-              child: Text('Amount = ' ''),
+              child: Text(
+                  'Amount = ${body_matches.isNotEmpty ? body_matches[0].amount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Search
               },
-              child: Text('Winning Amount = ' ''),
+              child: Text(
+                  'Winning Amount = ${body_matches.isNotEmpty ? body_matches[0].winingAmount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Profile
               },
-              child: Text('Status = ' ''),
+              child: Text(
+                  'Status = ${body_matches.isNotEmpty ? body_matches[0].status : ""}'),
             ),
           ],
         ),
@@ -237,12 +261,15 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget radioContainer(Match match, bool isLastMatch) {
+  Widget radioContainer(Body match, bool isLastMatch) {
     // Parse match time
     DateTime matchTime =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
     String formattedMatchTime =
         DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+
+    String homeGoals = match.homeGoals?.toString() ?? "0";
+    String awayGoals = match.awayGoals?.toString() ?? "0";
 
     return Container(
       child: Padding(
@@ -270,13 +297,13 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                 children: [
                   Row(
                     children: [
-                      customRadioSpecialOddLeft(match.homeMatch, 0, match.id),
+                      customRadioSpecialOddLeft(match.homeMatch, 0, 1),
                       Expanded(
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '0',
+                            '$homeGoals',
                             style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
@@ -302,7 +329,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '0',
+                            '$awayGoals',
                             style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
@@ -310,12 +337,12 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioSpecialOddRight(match.awayMatch, 1, match.id),
+                      customRadioSpecialOddRight(match.awayMatch, 1, 3),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadioLeft('Over', 2, match.id),
+                      customRadioLeft('Over', 2, 2),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -327,7 +354,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioRight('Under', 3, match.id),
+                      customRadioRight('Under', 3, 4),
                     ],
                   ),
                 ],

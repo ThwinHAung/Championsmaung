@@ -9,8 +9,8 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Match {
-  final int id;
+class Maung {
+  final String selected_outcome;
   final String league_name;
   final String homeMatch;
   final String awayMatch;
@@ -22,8 +22,10 @@ class Match {
   final String overUnderFirstDigit;
   final String overUnderSign;
   final int overUnderLastDigit;
-  Match({
-    required this.id,
+  final int? homeGoals;
+  final int? awayGoals;
+  Maung({
+    required this.selected_outcome,
     required this.league_name,
     required this.homeMatch,
     required this.awayMatch,
@@ -35,10 +37,12 @@ class Match {
     required this.overUnderFirstDigit,
     required this.overUnderSign,
     required this.overUnderLastDigit,
+    this.homeGoals,
+    this.awayGoals,
   });
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
-      id: json['id'],
+  factory Maung.fromJson(Map<String, dynamic> json) {
+    return Maung(
+      selected_outcome: json['selected_outcome'],
       league_name: json['league_name'],
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
@@ -50,6 +54,26 @@ class Match {
       overUnderFirstDigit: json['over_under_first_digit'],
       overUnderSign: json['over_under_sign'],
       overUnderLastDigit: json['over_under_last_digit'],
+      homeGoals: json['home_goals'],
+      awayGoals: json['away_goals'],
+    );
+  }
+}
+
+class Bet {
+  final double amount;
+  final String status;
+  final double wining_amount;
+  Bet({
+    required this.amount,
+    required this.status,
+    required this.wining_amount,
+  });
+  factory Bet.fromJson(Map<String, dynamic> json) {
+    return Bet(
+      amount: double.parse(json['amount']),
+      status: json['status'],
+      wining_amount: double.parse(json['wining_amount']),
     );
   }
 }
@@ -68,13 +92,20 @@ class MaungBetHistoryMatches extends StatefulWidget {
 class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  List<Match> matches = [];
+  int? betId;
+  List<Maung> maung_matches = [];
+  List<Bet> bet_info = [];
 
   @override
   void initState() {
-    _getToken();
-
     super.initState();
+    Future.microtask(() {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null) {
+        betId = args as int;
+        _getToken();
+      }
+    });
   }
 
   @override
@@ -84,21 +115,27 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      _fetchMatches();
+    if (_token != null && betId != null) {
+      _fetchBetDetails(betId!);
     }
   }
 
-  Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+  Future<void> _fetchBetDetails(int betId) async {
+    var url =
+        Uri.parse('http://127.0.0.1:8000/api/getAccumulatorBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
-      List jsonResponse = jsonDecode(response.body);
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       setState(() {
-        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+        bet_info.add(Bet.fromJson(jsonResponse['bet']));
+        if (jsonResponse['accumulator_entries'] is List) {
+          maung_matches = (jsonResponse['accumulator_entries'] as List)
+              .map((entry) => Maung.fromJson(entry))
+              .toList();
+        }
       });
     } else {}
   }
@@ -108,20 +145,20 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
 
   Future<void> getData() async {
     setState(() {
-      matches.clear();
+      maung_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
 
   Future<void> refreshPage() async {
     setState(() {
-      matches.clear();
+      maung_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
@@ -129,8 +166,8 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
   @override
   Widget build(BuildContext context) {
 // Group matches by league_name
-    final Map<String, List<Match>> groupedMatches = {};
-    for (var match in matches) {
+    final Map<String, List<Maung>> groupedMatches = {};
+    for (var match in maung_matches) {
       if (!groupedMatches.containsKey(match.league_name)) {
         groupedMatches[match.league_name] = [];
       }
@@ -183,7 +220,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               itemCount: sortedLeagueNames.length,
               itemBuilder: (context, index) {
                 String leagueName = sortedLeagueNames[index];
-                List<Match> leagueMatches = groupedMatches[leagueName]!;
+                List<Maung> leagueMatches = groupedMatches[leagueName]!;
 
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -212,7 +249,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                               // Matches for the League
                               ...leagueMatches.asMap().entries.map((entry) {
                                 int matchIndex = entry.key;
-                                Match match = entry.value;
+                                Maung match = entry.value;
                                 bool isLastMatch =
                                     matchIndex == leagueMatches.length - 1;
                                 return radioContainer(match, isLastMatch);
@@ -237,19 +274,22 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               onTap: () {
                 // Handle onTap for Home
               },
-              child: Text('Amount = ' ''),
+              child: Text(
+                  'Amount = ${bet_info.isNotEmpty ? bet_info[0].amount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Search
               },
-              child: Text('Winning Amount = ' ''),
+              child: Text(
+                  'Winning Amount = ${bet_info.isNotEmpty ? bet_info[0].wining_amount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Profile
               },
-              child: Text('Status = ' ''),
+              child: Text(
+                  'Status = ${bet_info.isNotEmpty ? bet_info[0].status : ""}'),
             ),
           ],
         ),
@@ -257,12 +297,15 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     );
   }
 
-  Widget radioContainer(Match match, bool isLastMatch) {
+  Widget radioContainer(Maung match, bool isLastMatch) {
     // Parse match time
     DateTime matchTime =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
     String formattedMatchTime =
         DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+
+    String homeGoals = match.homeGoals?.toString() ?? "0";
+    String awayGoals = match.awayGoals?.toString() ?? "0";
 
     return Container(
       child: Padding(
@@ -290,13 +333,13 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                 children: [
                   Row(
                     children: [
-                      customRadioSpecialOddLeft(match.homeMatch, 0, match.id),
+                      customRadioSpecialOddLeft(match.homeMatch, 0, 1),
                       Expanded(
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '0',
+                            '$homeGoals',
                             style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
@@ -322,7 +365,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '0',
+                            '$awayGoals',
                             style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
@@ -330,20 +373,24 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioSpecialOddRight(match.awayMatch, 1, match.id),
+                      customRadioSpecialOddRight(match.awayMatch, 1, 2),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadioLeft('Over', 2, match.id),
+                      customRadioLeft('Over', 2, 3),
                       Expanded(
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text('1+20'),
+                          child: Text(
+                            match.overUnderFirstDigit +
+                                match.overUnderSign +
+                                match.overUnderLastDigit.toString(),
+                          ),
                         ),
                       ),
-                      customRadioRight('Under', 3, match.id),
+                      customRadioRight('Under', 3, 4),
                     ],
                   ),
                 ],
