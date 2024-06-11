@@ -314,11 +314,14 @@ class _BodyBettingState extends State<BodyBetting> {
                 position: index,
                 delay: const Duration(milliseconds: 100),
                 child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
+                  verticalOffset:
+                      50.0, // Adjust the vertical offset for sliding effect
+                  duration: const Duration(
+                      milliseconds: 500), // Adjust the duration for smoothness
+                  curve: Curves.easeInOut, // Use a smooth curve
                   child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 500),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child:
@@ -501,9 +504,9 @@ class _BodyBettingState extends State<BodyBetting> {
       selectedOutcome = 'W1';
     } else if (selectedMatch.awayMatch == selectedTeam) {
       selectedOutcome = 'W2';
-    }else if(selectedTeam == 'Over'){
-      selectedOutcome ='Over';
-    }else if(selectedTeam == 'Under'){
+    } else if (selectedTeam == 'Over') {
+      selectedOutcome = 'Over';
+    } else if (selectedTeam == 'Under') {
       selectedOutcome == 'Under';
     }
     var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
