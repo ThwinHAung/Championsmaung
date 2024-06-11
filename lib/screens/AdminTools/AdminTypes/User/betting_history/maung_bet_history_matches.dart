@@ -142,7 +142,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
       matchList.sort((a, b) {
         DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
         DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
-        return timeB.compareTo(timeA);
+        return timeA.compareTo(timeB);
       });
     }
 

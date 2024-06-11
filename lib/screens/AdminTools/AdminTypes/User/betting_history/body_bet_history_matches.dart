@@ -127,14 +127,27 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
-    // Sort matches by time
-    matches.sort((a, b) {
-      DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
-      DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
-      return timeB.compareTo(timeA);
-    });
+// Group matches by league_name
+    final Map<String, List<Match>> groupedMatches = {};
+    for (var match in matches) {
+      if (!groupedMatches.containsKey(match.league_name)) {
+        groupedMatches[match.league_name] = [];
+      }
+      groupedMatches[match.league_name]!.add(match);
+    }
+
+    // Sort matches by time within each league
+    for (var matchList in groupedMatches.values) {
+      matchList.sort((a, b) {
+        DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
+        DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
+        return timeA.compareTo(timeB);
+      });
+    }
+
+    // Extract league names and sort them alphabetically
+    List<String> sortedLeagueNames = groupedMatches.keys.toList()..sort();
 
     return Scaffold(
       backgroundColor: kPrimary,
@@ -142,7 +155,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'Body Bet History',
+          'Maung Bet History',
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
@@ -167,10 +180,11 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: matches.length,
+              itemCount: sortedLeagueNames.length,
               itemBuilder: (context, index) {
-                Match match = matches[index];
-                bool isLastMatch = index == matches.length - 1;
+                String leagueName = sortedLeagueNames[index];
+                List<Match> leagueMatches = groupedMatches[leagueName]!;
+
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   delay: const Duration(milliseconds: 100),
@@ -193,10 +207,16 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                               // League Name Header
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                child: labelText(match.league_name),
+                                child: labelText(leagueName),
                               ),
                               // Matches for the League
-                              radioContainer(match, isLastMatch),
+                              ...leagueMatches.asMap().entries.map((entry) {
+                                int matchIndex = entry.key;
+                                Match match = entry.value;
+                                bool isLastMatch =
+                                    matchIndex == leagueMatches.length - 1;
+                                return radioContainer(match, isLastMatch);
+                              }).toList(),
                             ],
                           ),
                         ),
@@ -320,11 +340,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text(
-                            match.overUnderFirstDigit +
-                                match.overUnderSign +
-                                match.overUnderLastDigit.toString(),
-                          ),
+                          child: const Text('1+20'),
                         ),
                       ),
                       customRadioRight('Under', 3, match.id),
@@ -332,7 +348,9 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                   ),
                 ],
               ),
-            ), // Only render divider if not the last match
+            ),
+            if (!isLastMatch)
+              const Divider(), // Only render divider if not the last match
           ],
         ),
       ),
