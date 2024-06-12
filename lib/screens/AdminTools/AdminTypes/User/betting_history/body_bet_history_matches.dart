@@ -316,9 +316,9 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: Text(
+                          child: const Text(
                             '-',
-                            style: const TextStyle(
+                            style: TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -389,10 +389,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                       borderRadius: BorderRadius.circular(10),
                       color: kBlue,
                     ),
-                    child: Text(
+                    child: const Text(
                       textAlign: TextAlign.center,
                       '3+45',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: kWhite,
                       ),
                     ),
@@ -456,10 +456,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                       borderRadius: BorderRadius.circular(10),
                       color: kBlue,
                     ),
-                    child: Text(
+                    child: const Text(
                       textAlign: TextAlign.center,
                       '3+45',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: kWhite,
                       ),
                     ),

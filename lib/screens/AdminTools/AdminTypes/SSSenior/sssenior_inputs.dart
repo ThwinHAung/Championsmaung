@@ -930,10 +930,8 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
       },
     );
 
-    if (dateTime != null) {
-      setState(() {
-        _dateTime = dateTime;
-      });
-    }
+    setState(() {
+      _dateTime = dateTime!;
+    });
   }
 }

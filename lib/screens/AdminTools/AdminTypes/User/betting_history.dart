@@ -328,11 +328,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                   ),
                                   alignment: Alignment.center,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Text(
-                                      'Match Time : ${formattedMatchTime}', // Display match time
-                                      style: TextStyle(
+                                      'Match Time : $formattedMatchTime', // Display match time
+                                      style: const TextStyle(
                                         color:
                                             kPrimary, // Change text color if selected
                                       ),
@@ -468,11 +468,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                                   ),
                                   alignment: Alignment.center,
                                   child: Padding(
-                                    padding:
-                                        EdgeInsets.symmetric(vertical: 8.0),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
                                     child: Text(
-                                      'Match Time :${formattedMatchTime}', // Display match time
-                                      style: TextStyle(
+                                      'Match Time :$formattedMatchTime', // Display match time
+                                      style: const TextStyle(
                                         color:
                                             kBlue, // Change text color if selected
                                       ),
