@@ -9,8 +9,12 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class Match {
-  final int id;
+//here!!
+class Body {
+  final String selectedOutcome;
+  final String amount;
+  final String userStatus;
+  final String winingAmount;
   final String league_name;
   final String homeMatch;
   final String awayMatch;
@@ -22,8 +26,15 @@ class Match {
   final String overUnderFirstDigit;
   final String overUnderSign;
   final int overUnderLastDigit;
-  Match({
-    required this.id,
+  final int? homeGoals;
+  final int? awayGoals;
+  final String status;
+
+  Body({
+    required this.selectedOutcome,
+    required this.amount,
+    required this.userStatus,
+    required this.winingAmount,
     required this.league_name,
     required this.homeMatch,
     required this.awayMatch,
@@ -35,10 +46,17 @@ class Match {
     required this.overUnderFirstDigit,
     required this.overUnderSign,
     required this.overUnderLastDigit,
+    this.homeGoals,
+    this.awayGoals,
+    required this.status,
   });
-  factory Match.fromJson(Map<String, dynamic> json) {
-    return Match(
-      id: json['id'],
+
+  factory Body.fromJson(Map<String, dynamic> json) {
+    return Body(
+      selectedOutcome: json['selected_outcome'],
+      amount: json['amount'],
+      userStatus: json['user_status'],
+      winingAmount: json['wining_amount'],
       league_name: json['league_name'],
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
@@ -50,6 +68,9 @@ class Match {
       overUnderFirstDigit: json['over_under_first_digit'],
       overUnderSign: json['over_under_sign'],
       overUnderLastDigit: json['over_under_last_digit'],
+      homeGoals: json['home_goals'],
+      awayGoals: json['away_goals'],
+      status: json['status'],
     );
   }
 }
@@ -68,13 +89,19 @@ class BodyBetHistoryMatches extends StatefulWidget {
 class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  List<Match> matches = [];
+  List<Body> body_matches = [];
+  int? betId;
 
   @override
   void initState() {
-    _getToken();
-
     super.initState();
+    Future.microtask(() {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null) {
+        betId = args as int;
+        _getToken();
+      }
+    });
   }
 
   @override
@@ -84,21 +111,21 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      _fetchMatches();
+    if (_token != null && betId != null) {
+      _fetchBetDetails(betId!);
     }
   }
 
-  Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+  Future<void> _fetchBetDetails(int betId) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/getSingleBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
-      List jsonResponse = jsonDecode(response.body);
+      Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       setState(() {
-        matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+        body_matches.add(Body.fromJson(jsonResponse['bet']));
       });
     } else {}
   }
@@ -108,46 +135,28 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> getData() async {
     setState(() {
-      matches.clear();
+      body_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
 
   Future<void> refreshPage() async {
     setState(() {
-      matches.clear();
+      body_matches.clear();
     });
 
-    await _fetchMatches();
+    await _fetchBetDetails(betId!);
 
     _refreshController.refreshCompleted();
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
-// Group matches by league_name
-    final Map<String, List<Match>> groupedMatches = {};
-    for (var match in matches) {
-      if (!groupedMatches.containsKey(match.league_name)) {
-        groupedMatches[match.league_name] = [];
-      }
-      groupedMatches[match.league_name]!.add(match);
-    }
-
-    // Sort matches by time within each league
-    for (var matchList in groupedMatches.values) {
-      matchList.sort((a, b) {
-        DateTime timeA = DateFormat("yyyy-MM-dd HH:mm:ss").parse(a.matchTime);
-        DateTime timeB = DateFormat("yyyy-MM-dd HH:mm:ss").parse(b.matchTime);
-        return timeA.compareTo(timeB);
-      });
-    }
-
-    // Extract league names and sort them alphabetically
-    List<String> sortedLeagueNames = groupedMatches.keys.toList()..sort();
+    // Sort matches by time
 
     return Scaffold(
       backgroundColor: kPrimary,
@@ -180,11 +189,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: sortedLeagueNames.length,
+              itemCount: body_matches.length,
               itemBuilder: (context, index) {
-                String leagueName = sortedLeagueNames[index];
-                List<Match> leagueMatches = groupedMatches[leagueName]!;
-
+                Body match = body_matches[index];
+                bool isLastMatch = index == body_matches.length - 1;
                 return AnimationConfiguration.staggeredList(
                   position: index,
                   delay: const Duration(milliseconds: 100),
@@ -207,16 +215,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                               // League Name Header
                               Padding(
                                 padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                child: labelText(leagueName),
+                                child: labelText(match.league_name),
                               ),
                               // Matches for the League
-                              ...leagueMatches.asMap().entries.map((entry) {
-                                int matchIndex = entry.key;
-                                Match match = entry.value;
-                                bool isLastMatch =
-                                    matchIndex == leagueMatches.length - 1;
-                                return radioContainer(match, isLastMatch);
-                              }).toList(),
+                              radioContainer(match, isLastMatch),
                             ],
                           ),
                         ),
@@ -237,19 +239,22 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               onTap: () {
                 // Handle onTap for Home
               },
-              child: const Text('Amount = ' ''),
+              child: Text(
+                  'Amount = ${body_matches.isNotEmpty ? body_matches[0].amount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Search
               },
-              child: const Text('Winning Amount = ' ''),
+              child: Text(
+                  'Winning Amount = ${body_matches.isNotEmpty ? body_matches[0].winingAmount : ""}'),
             ),
             GestureDetector(
               onTap: () {
                 // Handle onTap for Profile
               },
-              child: const Text('Status = ' ''),
+              child: Text(
+                  'Status = ${body_matches.isNotEmpty ? body_matches[0].status : ""}'),
             ),
           ],
         ),
@@ -257,12 +262,15 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget radioContainer(Match match, bool isLastMatch) {
+  Widget radioContainer(Body match, bool isLastMatch) {
     // Parse match time
     DateTime matchTime =
         DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
     String formattedMatchTime =
         DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
+
+    String homeGoals = match.homeGoals?.toString() ?? "0";
+    String awayGoals = match.awayGoals?.toString() ?? "0";
 
     return Container(
       child: Padding(
@@ -290,15 +298,14 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                 children: [
                   Row(
                     children: [
-                      customRadioSpecialOddLeft(
-                          match, match.homeMatch, 0, match.id),
+                      customRadioSpecialOddLeft(match.homeMatch, 0, 1),
                       Expanded(
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: const Text(
-                            '0',
-                            style: TextStyle(
+                          child: Text(
+                            '$homeGoals',
+                            style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -309,9 +316,9 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: const Text(
+                          child: Text(
                             '-',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -322,45 +329,45 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: const Text(
-                            '0',
-                            style: TextStyle(
+                          child: Text(
+                            '$awayGoals',
+                            style: const TextStyle(
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
                       ),
-                      customRadioSpecialOddRight(
-                          match, match.awayMatch, 1, match.id),
+                      customRadioSpecialOddRight(match.awayMatch, 1, 3),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadioLeft(match, 'Over', 2, match.id),
+                      customRadioLeft('Over', 2, 2),
                       Expanded(
                         flex: 1,
                         child: Container(
                           alignment: Alignment.center,
-                          child: const Text('1+20'),
+                          child: Text(
+                            match.overUnderFirstDigit +
+                                match.overUnderSign +
+                                match.overUnderLastDigit.toString(),
+                          ),
                         ),
                       ),
-                      customRadioRight(match, 'Under', 3, match.id),
+                      customRadioRight('Under', 3, 4),
                     ],
                   ),
                 ],
               ),
-            ),
-            if (!isLastMatch)
-              const Divider(), // Only render divider if not the last match
+            ), // Only render divider if not the last match
           ],
         ),
       ),
     );
   }
 
-  Widget customRadioSpecialOddLeft(
-      Match match, String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddLeft(String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -377,23 +384,19 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: match.specialOddTeam == 'H'
-                      ? Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: kBlue,
-                          ),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
-                            style: TextStyle(
-                              color: kWhite,
-                            ),
-                          ),
-                        )
-                      : Container(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kBlue,
+                    ),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '3+45',
+                      style: const TextStyle(
+                        color: kWhite,
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
                   flex: 1,
@@ -417,8 +420,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioSpecialOddRight(
-      Match match, String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddRight(String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -449,23 +451,19 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: match.specialOddTeam == 'A'
-                      ? Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: kBlue,
-                          ),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
-                            style: TextStyle(
-                              color: kWhite,
-                            ),
-                          ),
-                        )
-                      : Container(),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: kBlue,
+                    ),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      '3+45',
+                      style: const TextStyle(
+                        color: kWhite,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -475,8 +473,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioLeft(
-      Match match, String item, int itemIndex, int listIndex) {
+  Widget customRadioLeft(String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -501,8 +498,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioRight(
-      Match match, String item, int itemIndex, int listIndex) {
+  Widget customRadioRight(String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
