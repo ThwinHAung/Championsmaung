@@ -334,7 +334,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                 children: [
                   Row(
                     children: [
-                      customRadioSpecialOddLeft(match.homeMatch, 0, 1),
+                      customRadioSpecialOddLeft(match, match.homeMatch, 0, 1),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -374,12 +374,12 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioSpecialOddRight(match.awayMatch, 1, 2),
+                      customRadioSpecialOddRight(match, match.awayMatch, 1, 2),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadioLeft('Over', 2, 3),
+                      customRadioLeft(match, 'Over', 2, 3),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -391,7 +391,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioRight('Under', 3, 4),
+                      customRadioRight(match, 'Under', 3, 4),
                     ],
                   ),
                 ],
@@ -405,15 +405,16 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     );
   }
 
-  Widget customRadioSpecialOddLeft(String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddLeft(
+      Maung match, String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 5,
+      flex: 7,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selected_outcome == 'W1' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
@@ -422,33 +423,39 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kBlue,
-                    ),
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      '3+45',
-                      style: TextStyle(
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    item,
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      color: kBlue,
-                    ),
-                  ),
+                  child: match.specialOddTeam == 'H'
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            match.specialOddFirstDigit +
+                                match.specialOddSign +
+                                match.specialOddLastDigit.toString(),
+                            style: TextStyle(
+                              color: match.selected_outcome == 'W2'
+                                  ? kPrimary
+                                  : kBlue,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ),
                 Expanded(
                   flex: 1,
                   child: Container(),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    item,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: match.selected_outcome == 'W1' ? kWhite : kBlue,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -458,15 +465,16 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     );
   }
 
-  Widget customRadioSpecialOddRight(String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddRight(
+      Maung match, String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 5,
+      flex: 7,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selected_outcome == 'W2' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
@@ -475,33 +483,39 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
+                  flex: 2,
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      color: match.selected_outcome == 'W2' ? kWhite : kBlue,
+                    ),
+                  ),
+                ),
+                Expanded(
                   flex: 1,
                   child: Container(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    item,
-                    style: const TextStyle(
-                      color: kBlue,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kBlue,
-                    ),
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      '3+45',
-                      style: TextStyle(
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
+                  child: match.specialOddTeam == 'A'
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            match.specialOddFirstDigit +
+                                match.specialOddSign +
+                                match.specialOddLastDigit.toString(),
+                            style: TextStyle(
+                              color: match.selected_outcome == 'W2'
+                                  ? kPrimary
+                                  : kBlue,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ),
               ],
             ),
@@ -511,7 +525,8 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     );
   }
 
-  Widget customRadioLeft(String item, int itemIndex, int listIndex) {
+  Widget customRadioLeft(
+      Maung match, String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -519,15 +534,15 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selected_outcome == 'Over' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               item,
-              style: const TextStyle(
-                color: kBlue,
+              style: TextStyle(
+                color: match.selected_outcome == 'Over' ? kWhite : kBlue,
               ),
             ),
           ),
@@ -536,7 +551,8 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     );
   }
 
-  Widget customRadioRight(String item, int itemIndex, int listIndex) {
+  Widget customRadioRight(
+      Maung match, String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -544,15 +560,15 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selected_outcome == 'Under' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               item,
-              style: const TextStyle(
-                color: kBlue,
+              style: TextStyle(
+                color: match.selected_outcome == 'Under' ? kWhite : kBlue,
               ),
             ),
           ),

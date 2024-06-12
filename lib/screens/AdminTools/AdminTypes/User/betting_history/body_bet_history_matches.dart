@@ -298,7 +298,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                 children: [
                   Row(
                     children: [
-                      customRadioSpecialOddLeft(match.homeMatch, 0, 1),
+                      customRadioSpecialOddLeft(match, match.homeMatch, 0, 1),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -338,12 +338,12 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioSpecialOddRight(match.awayMatch, 1, 3),
+                      customRadioSpecialOddRight(match, match.awayMatch, 1, 3),
                     ],
                   ),
                   Row(
                     children: [
-                      customRadioLeft('Over', 2, 2),
+                      customRadioLeft(match, 'Over', 2, 2),
                       Expanded(
                         flex: 1,
                         child: Container(
@@ -355,7 +355,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                         ),
                       ),
-                      customRadioRight('Under', 3, 4),
+                      customRadioRight(match, 'Under', 3, 4),
                     ],
                   ),
                 ],
@@ -367,15 +367,16 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioSpecialOddLeft(String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddLeft(
+      Body match, String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 5,
+      flex: 7,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selectedOutcome == 'W1' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
@@ -384,33 +385,39 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kBlue,
-                    ),
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      '3+45',
-                      style: TextStyle(
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Text(
-                    item,
-                    textAlign: TextAlign.right,
-                    style: const TextStyle(
-                      color: kBlue,
-                    ),
-                  ),
+                  child: match.specialOddTeam == 'H'
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            match.specialOddFirstDigit +
+                                match.specialOddSign +
+                                match.specialOddLastDigit.toString(),
+                            style: TextStyle(
+                              color: match.selectedOutcome == 'W1'
+                                  ? kPrimary
+                                  : kBlue,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ),
                 Expanded(
                   flex: 1,
                   child: Container(),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: Text(
+                    item,
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: match.selectedOutcome == 'W1' ? kWhite : kBlue,
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -420,15 +427,16 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioSpecialOddRight(String item, int itemIndex, int listIndex) {
+  Widget customRadioSpecialOddRight(
+      Body match, String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 5,
+      flex: 7,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selectedOutcome == 'W2' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
@@ -437,33 +445,39 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Expanded(
+                  flex: 2,
+                  child: Text(
+                    item,
+                    style: TextStyle(
+                      color: match.selectedOutcome == 'W2' ? kWhite : kBlue,
+                    ),
+                  ),
+                ),
+                Expanded(
                   flex: 1,
                   child: Container(),
                 ),
                 Expanded(
                   flex: 1,
-                  child: Text(
-                    item,
-                    style: const TextStyle(
-                      color: kBlue,
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: kBlue,
-                    ),
-                    child: const Text(
-                      textAlign: TextAlign.center,
-                      '3+45',
-                      style: TextStyle(
-                        color: kWhite,
-                      ),
-                    ),
-                  ),
+                  child: match.specialOddTeam == 'A'
+                      ? Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Text(
+                            textAlign: TextAlign.center,
+                            match.specialOddFirstDigit +
+                                match.specialOddSign +
+                                match.specialOddLastDigit.toString(),
+                            style: TextStyle(
+                              color: match.selectedOutcome == 'W2'
+                                  ? kPrimary
+                                  : kBlue,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ),
               ],
             ),
@@ -473,7 +487,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioLeft(String item, int itemIndex, int listIndex) {
+  Widget customRadioLeft(
+      Body match, String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -481,15 +496,15 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selectedOutcome == 'Over' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               item,
-              style: const TextStyle(
-                color: kBlue,
+              style: TextStyle(
+                color: match.selectedOutcome == 'Over' ? kWhite : kBlue,
               ),
             ),
           ),
@@ -498,7 +513,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     );
   }
 
-  Widget customRadioRight(String item, int itemIndex, int listIndex) {
+  Widget customRadioRight(
+      Body match, String item, int itemIndex, int listIndex) {
     return Expanded(
       flex: 5,
       child: Padding(
@@ -506,15 +522,15 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: kPrimary,
+            color: match.selectedOutcome == 'Under' ? kBlue : kPrimary,
           ),
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
               item,
-              style: const TextStyle(
-                color: kBlue,
+              style: TextStyle(
+                color: match.selectedOutcome == 'Under' ? kWhite : kBlue,
               ),
             ),
           ),

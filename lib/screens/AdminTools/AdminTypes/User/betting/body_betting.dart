@@ -260,27 +260,32 @@ class _BodyBettingState extends State<BodyBetting> {
                       actions: <Widget>[
                         Row(
                           children: [
-                            materialButton(kError, 'Cancel', () {
-                              Navigator.pop(context);
-                            }),
+                            Expanded(
+                              flex: 1,
+                              child: materialButton(kError, 'Cancel', () {
+                                Navigator.pop(context);
+                              }),
+                            ),
                             const SizedBox(width: 5.0),
-                            materialButton(kBlue, 'Bet', () {
-                              if (selectedMatchIndex != null &&
-                                  selectedOutcome != null) {
-                                int matchId = matches[selectedMatchIndex!].id;
-                                _placeSingleBet(
-                                    matchId, selectedOutcome!, amount);
-                              }
+                            Expanded(
+                              flex: 1,
+                              child: materialButton(kBlue, 'Bet', () {
+                                if (selectedMatchIndex != null &&
+                                    selectedOutcome != null) {
+                                  int matchId = matches[selectedMatchIndex!].id;
+                                  _placeSingleBet(
+                                      matchId, selectedOutcome!, amount);
+                                }
 
-                              Navigator.pop(context);
-                            })
+                                Navigator.pop(context);
+                                _bodyBettingEditingController.clear();
+                              }),
+                            )
                           ],
                         )
                       ],
                     ),
                   );
-
-                  _bodyBettingEditingController.clear();
                 }),
               )
             ],

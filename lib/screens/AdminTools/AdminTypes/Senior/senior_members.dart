@@ -427,75 +427,75 @@ class _SeniorMembersState extends State<SeniorMembers> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30.0),
-                      bigCapText('Single Bet Commision'),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                labelText('Commision'),
-                                TextFormField(
-                                  controller: _singleBetCommisionController,
-                                  obscureText: true,
-                                  style: kTextFieldActiveStyle,
-                                  decoration: kTextFieldDecoration.copyWith(
-                                      hintText: '0'),
-                                ),
-                                const SizedBox(height: 10.0),
-                                const Text(
-                                  'Tax: 5',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5.0,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                labelText('High Commision'),
-                                TextFormField(
-                                  controller: _singleBetHighCommisionController,
-                                  obscureText: true,
-                                  style: kTextFieldActiveStyle,
-                                  decoration: kTextFieldDecoration.copyWith(
-                                      hintText: '0'),
-                                ),
-                                const SizedBox(height: 10.0),
-                                const Text(
-                                  'High Tax: 8',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      bigCapText('Mix Bet Commisions'),
-                      Column(
-                        children: [
-                          matchCounts(2, 15, _mixBet2Commision),
-                          matchCounts(3, 20, _mixBet3Commision),
-                          matchCounts(4, 20, _mixBet4Commision),
-                          matchCounts(5, 20, _mixBet5Commision),
-                          matchCounts(6, 20, _mixBet6Commision),
-                          matchCounts(7, 20, _mixBet7Commision),
-                          matchCounts(8, 20, _mixBet8Commision),
-                          matchCounts(9, 20, _mixBet9Commision),
-                          matchCounts(10, 20, _mixBet10Commision),
-                          matchCounts(11, 20, _mixBet11Commision),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
+                      // const SizedBox(height: 30.0),
+                      // bigCapText('Single Bet Commision'),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.start,
+                      //   children: [
+                      //     Expanded(
+                      //       flex: 1,
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           labelText('Commision'),
+                      //           TextFormField(
+                      //             controller: _singleBetCommisionController,
+                      //             obscureText: true,
+                      //             style: kTextFieldActiveStyle,
+                      //             decoration: kTextFieldDecoration.copyWith(
+                      //                 hintText: '0'),
+                      //           ),
+                      //           const SizedBox(height: 10.0),
+                      //           const Text(
+                      //             'Tax: 5',
+                      //             style: TextStyle(fontSize: 12.0),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     const SizedBox(
+                      //       width: 5.0,
+                      //     ),
+                      //     Expanded(
+                      //       flex: 1,
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           labelText('High Commision'),
+                      //           TextFormField(
+                      //             controller: _singleBetHighCommisionController,
+                      //             obscureText: true,
+                      //             style: kTextFieldActiveStyle,
+                      //             decoration: kTextFieldDecoration.copyWith(
+                      //                 hintText: '0'),
+                      //           ),
+                      //           const SizedBox(height: 10.0),
+                      //           const Text(
+                      //             'High Tax: 8',
+                      //             style: TextStyle(fontSize: 12.0),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
+                      // const SizedBox(height: 30.0),
+                      // bigCapText('Mix Bet Commisions'),
+                      // Column(
+                      //   children: [
+                      //     matchCounts(2, 15, _mixBet2Commision),
+                      //     matchCounts(3, 20, _mixBet3Commision),
+                      //     matchCounts(4, 20, _mixBet4Commision),
+                      //     matchCounts(5, 20, _mixBet5Commision),
+                      //     matchCounts(6, 20, _mixBet6Commision),
+                      //     matchCounts(7, 20, _mixBet7Commision),
+                      //     matchCounts(8, 20, _mixBet8Commision),
+                      //     matchCounts(9, 20, _mixBet9Commision),
+                      //     matchCounts(10, 20, _mixBet10Commision),
+                      //     matchCounts(11, 20, _mixBet11Commision),
+                      //   ],
+                      // ),
+                      // const SizedBox(height: 30.0),
                       Container(
                         alignment: Alignment.topRight,
                         child: Material(

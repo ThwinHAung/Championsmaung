@@ -815,18 +815,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
 
-      selectedValue1 = '0';
-      selectedValue2 = '0';
-      league_value = '0';
-
       _homeTeamController.clear();
       _awayTeamController.clear();
-      team_value = '0';
-      specialOdd_goals = '0';
-      specialOdd_calculate_value = '0';
       _specialOddController.clear();
-      overUnder_goals = '0';
-      overUnder_calculate_value = '0';
+      _overUnderOddController.clear();
 
       final responseData = json.decode(response.body);
       final message = responseData['message'];

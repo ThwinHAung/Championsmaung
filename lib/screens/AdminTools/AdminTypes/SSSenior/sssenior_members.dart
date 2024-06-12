@@ -527,34 +527,34 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30.0),
-                      bigCapText('Single Bet Commision'),
-                      FutureBuilder<List<TaxData>>(
-                        future: futureTaxData,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${snapshot.error}'));
-                          } else {
-                            List<TaxData> taxDataList = snapshot.data!;
-                            return Column(
-                              children: [
-                                for (var taxData in taxDataList)
-                                  matchCounts(
-                                    taxData.matchCount,
-                                    taxData.taxRate.toInt(),
-                                    taxData
-                                        .calculateOn, // Pass your controller here
-                                  ),
-                              ],
-                            );
-                          }
-                        },
-                      ),
+                      // const SizedBox(height: 30.0),
+                      // bigCapText('Single Bet Commision'),
+                      // FutureBuilder<List<TaxData>>(
+                      //   future: futureTaxData,
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return const Center(
+                      //           child: CircularProgressIndicator());
+                      //     } else if (snapshot.hasError) {
+                      //       return Center(
+                      //           child: Text('Error: ${snapshot.error}'));
+                      //     } else {
+                      //       List<TaxData> taxDataList = snapshot.data!;
+                      //       return Column(
+                      //         children: [
+                      //           for (var taxData in taxDataList)
+                      //             matchCounts(
+                      //               taxData.matchCount,
+                      //               taxData.taxRate.toInt(),
+                      //               taxData
+                      //                   .calculateOn, // Pass your controller here
+                      //             ),
+                      //         ],
+                      //       );
+                      //     }
+                      //   },
+                      // ),
                       const SizedBox(height: 30.0),
                       Container(
                         alignment: Alignment.topRight,

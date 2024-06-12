@@ -261,48 +261,54 @@ class _MaungBettingState extends State<MaungBetting> {
                         actions: <Widget>[
                           Row(
                             children: [
-                              materialButton(kError, 'Cancel', () {
-                                Navigator.pop(context);
-                              }),
-                              const SizedBox(width: 5.0),
-                              materialButton(kBlue, 'Bet', () {
-                                // Check if user has selected the correct number of matches
-                                if (selectedValues.length < minSelect ||
-                                    selectedValues.length > maxSelect) {
-                                  // Show dialog for invalid number of matches selected
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text(
-                                          'Invalid Number of Matches Selected.'),
-                                      content: const Text(
-                                          'Please select between $minSelect and $maxSelect matches before placing the bet.'),
-                                      actions: <Widget>[
-                                        Row(
-                                          children: [
-                                            Expanded(
-                                              flex: 1,
-                                              child: Container(),
-                                            ),
-                                            const SizedBox(width: 5.0),
-                                            Expanded(
-                                              flex: 1,
-                                              child: materialButton(kBlue, 'OK',
-                                                  () {
-                                                Navigator.pop(context);
-                                              }),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  return;
-                                } else {
-                                  _placeAccumulatorBet(amount);
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kError, 'Cancel', () {
                                   Navigator.pop(context);
-                                }
-                              })
+                                }),
+                              ),
+                              const SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'Bet', () {
+                                  // Check if user has selected the correct number of matches
+                                  if (selectedValues.length < minSelect ||
+                                      selectedValues.length > maxSelect) {
+                                    // Show dialog for invalid number of matches selected
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) => AlertDialog(
+                                        title: const Text(
+                                            'Invalid Number of Matches Selected.'),
+                                        content: const Text(
+                                            'Please select between $minSelect and $maxSelect matches before placing the bet.'),
+                                        actions: <Widget>[
+                                          Row(
+                                            children: [
+                                              Expanded(
+                                                flex: 1,
+                                                child: Container(),
+                                              ),
+                                              const SizedBox(width: 5.0),
+                                              Expanded(
+                                                flex: 1,
+                                                child: materialButton(
+                                                    kBlue, 'OK', () {
+                                                  Navigator.pop(context);
+                                                }),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                    return;
+                                  } else {
+                                    _placeAccumulatorBet(amount);
+                                    Navigator.pop(context);
+                                  }
+                                }),
+                              )
                             ],
                           )
                         ],
