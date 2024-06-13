@@ -431,9 +431,11 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
+                            match.specialOddFirstDigit == 0
+                                ? '='
+                                : match.specialOddFirstDigit +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString(),
                             style: TextStyle(
                               color: kBlue,
                             ),
@@ -503,9 +505,11 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
+                            match.specialOddFirstDigit == 0
+                                ? '='
+                                : match.specialOddFirstDigit +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString(),
                             style: TextStyle(
                               color: kBlue,
                             ),

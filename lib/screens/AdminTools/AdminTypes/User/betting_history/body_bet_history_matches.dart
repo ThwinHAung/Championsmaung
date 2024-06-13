@@ -393,9 +393,11 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
+                            match.specialOddFirstDigit == 0
+                                ? '='
+                                : match.specialOddFirstDigit +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString(),
                             style: TextStyle(
                               color: kBlue,
                             ),
@@ -465,9 +467,11 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit +
-                                match.specialOddSign +
-                                match.specialOddLastDigit.toString(),
+                            match.specialOddFirstDigit == 0
+                                ? '='
+                                : match.specialOddFirstDigit +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString(),
                             style: TextStyle(
                               color: kBlue,
                             ),
