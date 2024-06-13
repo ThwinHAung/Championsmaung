@@ -255,8 +255,7 @@ class _BodyBettingState extends State<BodyBetting> {
                     context: context,
                     builder: (context) => AlertDialog(
                       title: const Text('Confirm Bet'),
-                      content: Text(
-                          'Do you want to bet $text amount for body(0) matches?'),
+                      content: Text('Do you want to bet $text units?'),
                       actions: <Widget>[
                         Row(
                           children: [
@@ -276,9 +275,6 @@ class _BodyBettingState extends State<BodyBetting> {
                                   _placeSingleBet(
                                       matchId, selectedOutcome!, amount);
                                 }
-
-                                Navigator.pop(context);
-                                _bodyBettingEditingController.clear();
                               }),
                             )
                           ],
@@ -524,11 +520,71 @@ class _BodyBettingState extends State<BodyBetting> {
       'amount': amount.toString(),
     });
     if (response.statusCode == 200) {
-      print('Bet placed successfully');
       _getBalance();
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succeed.'),
+          content: const Text('Betting Succeed.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {
+        _bodyBettingEditingController.clear();
+        setState(() {
+          selectedMatchIndex = null;
+          selectedOutcome = null;
+        });
+        // Navigate back after dialog is closed
+        Navigator.pop(context);
+      });
     } else {
-      print(response.body);
-      print('Failed to place bet');
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> errors = responseData['errors'];
+      String errorMessage = "";
+      errors.forEach((key, value) {
+        errorMessage += "$key: $value\n";
+      });
+
+      // Show error dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Failed to bet'),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    }))
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 }

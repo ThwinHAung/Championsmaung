@@ -397,9 +397,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                                 match.specialOddSign +
                                 match.specialOddLastDigit.toString(),
                             style: TextStyle(
-                              color: match.selectedOutcome == 'W1'
-                                  ? kPrimary
-                                  : kBlue,
+                              color: kBlue,
                             ),
                           ),
                         )
@@ -471,9 +469,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                                 match.specialOddSign +
                                 match.specialOddLastDigit.toString(),
                             style: TextStyle(
-                              color: match.selectedOutcome == 'W2'
-                                  ? kPrimary
-                                  : kBlue,
+                              color: kBlue,
                             ),
                           ),
                         )

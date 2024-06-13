@@ -257,7 +257,7 @@ class _MaungBettingState extends State<MaungBetting> {
                       builder: (context) => AlertDialog(
                         title: const Text('Confirm Bet'),
                         content: Text(
-                            'Do you want to bet $text amount for maung(0) matches?'),
+                            'Do you want to bet $text amount for maung(${selectedValues.length}) matches?'),
                         actions: <Widget>[
                           Row(
                             children: [
@@ -305,7 +305,6 @@ class _MaungBettingState extends State<MaungBetting> {
                                     return;
                                   } else {
                                     _placeAccumulatorBet(amount);
-                                    Navigator.pop(context);
                                   }
                                 }),
                               )
@@ -314,8 +313,6 @@ class _MaungBettingState extends State<MaungBetting> {
                         ],
                       ),
                     );
-
-                    _maungBettingEditingController.clear();
                   }),
                 )
               ],
@@ -549,9 +546,70 @@ class _MaungBettingState extends State<MaungBetting> {
     if (response.statusCode == 200) {
       print('hello');
       _getBalance();
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succeed.'),
+          content: const Text('Betting ucceed.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {
+        _maungBettingEditingController.clear();
+        setState(() {
+          selectedValues.clear(); // Clear the selected values
+        });
+        // Navigate back after dialog is closed
+        Navigator.pop(context);
+      });
     } else {
-      print(response.body);
-      print('fail');
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final Map<String, dynamic> errors = responseData['errors'];
+      String errorMessage = "";
+      errors.forEach((key, value) {
+        errorMessage += "$key: $value\n";
+      });
+
+      // Show error dialog
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Failed to bet'),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    }))
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 }

@@ -435,9 +435,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                                 match.specialOddSign +
                                 match.specialOddLastDigit.toString(),
                             style: TextStyle(
-                              color: match.selected_outcome == 'W2'
-                                  ? kPrimary
-                                  : kBlue,
+                              color: kBlue,
                             ),
                           ),
                         )
@@ -509,9 +507,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                                 match.specialOddSign +
                                 match.specialOddLastDigit.toString(),
                             style: TextStyle(
-                              color: match.selected_outcome == 'W2'
-                                  ? kPrimary
-                                  : kBlue,
+                              color: kBlue,
                             ),
                           ),
                         )

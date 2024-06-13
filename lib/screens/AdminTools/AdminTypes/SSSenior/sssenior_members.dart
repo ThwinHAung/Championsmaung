@@ -170,51 +170,37 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
     if (response.statusCode == 200) {
       int userId = json.decode(response.body)['user_id'];
+      // Insert commissions and their IDs if needed
 
-      // Insert commissions and their IDs
-      // List<Map<String, dynamic>> commissionsList = [];
-      //
-      // List<TaxData> taxDataList = await futureTaxData;
-      //
-      // for (int i = 0; i < taxDataList.length; i++) {
-      //   TaxData taxData = taxDataList[i];
-      //   TextEditingController controller = commissionControllers[i];
-      //   if (controller.text.isNotEmpty) {
-      //     commissionsList.add({
-      //       'user_id': userId,
-      //       'match_count': taxData.id,
-      //       'percent': controller.text, // Use the controller value here
-      //     });
-      //   }
-      // }
-      //
-      // var commissionsUrl =
-      //     Uri.parse('http://127.0.0.1:8000/api/addingCommissions');
-      // var commissionsResponse = await http.post(commissionsUrl, headers: {
-      //   'Authorization': 'Bearer $_token',
-      // }, body: {
-      //   'commissions': json.encode(commissionsList),
-      // });
-      // if (response.statusCode == 200) {
-      //   print('hello');
-      // } else {
-      //   print(response.body);
-      // }
-
+      Navigator.pop(context);
+      // Show success dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Succeed.'),
           content: const Text('Click OK to close this dialog.'),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
             ),
           ],
         ),
-      );
-      Navigator.pop(context);
+      ).then((_) {
+        // Navigate back after dialog is closed
+        Navigator.pop(context);
+      });
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Map<String, dynamic> errors = responseData['errors'];
@@ -222,21 +208,115 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       errors.forEach((key, value) {
         errorMessage += "$key: $value\n";
       });
+
+      // Show error dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Error'),
           content: Text(errorMessage),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    }))
+              ],
             ),
           ],
         ),
       );
     }
   }
+
+  // Future<void> _register() async {
+  //   var url = Uri.parse('http://127.0.0.1:8000/api/register');
+  //   var response = await http.post(url, headers: {
+  //     'Authorization': 'Bearer $_token',
+  //   }, body: {
+  //     'username': selectedValue,
+  //     'password': _passwordController.text,
+  //     'password_confirmation': _confirmPasswordController.text,
+  //     'phone_number': _phoneNumberController.text,
+  //     'balance': _balanceController.text,
+  //   });
+
+  //   if (response.statusCode == 200) {
+  //     int userId = json.decode(response.body)['user_id'];
+
+  //     // Insert commissions and their IDs
+  //     // List<Map<String, dynamic>> commissionsList = [];
+  //     //
+  //     // List<TaxData> taxDataList = await futureTaxData;
+  //     //
+  //     // for (int i = 0; i < taxDataList.length; i++) {
+  //     //   TaxData taxData = taxDataList[i];
+  //     //   TextEditingController controller = commissionControllers[i];
+  //     //   if (controller.text.isNotEmpty) {
+  //     //     commissionsList.add({
+  //     //       'user_id': userId,
+  //     //       'match_count': taxData.id,
+  //     //       'percent': controller.text, // Use the controller value here
+  //     //     });
+  //     //   }
+  //     // }
+  //     //
+  //     // var commissionsUrl =
+  //     //     Uri.parse('http://127.0.0.1:8000/api/addingCommissions');
+  //     // var commissionsResponse = await http.post(commissionsUrl, headers: {
+  //     //   'Authorization': 'Bearer $_token',
+  //     // }, body: {
+  //     //   'commissions': json.encode(commissionsList),
+  //     // });
+  //     // if (response.statusCode == 200) {
+  //     //   print('hello');
+  //     // } else {
+  //     //   print(response.body);
+  //     // }
+
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: const Text('Succeed.'),
+  //         content: const Text('Click OK to close this dialog.'),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //     Navigator.pop(context);
+  //   } else {
+  //     final Map<String, dynamic> responseData = json.decode(response.body);
+  //     final Map<String, dynamic> errors = responseData['errors'];
+  //     String errorMessage = "";
+  //     errors.forEach((key, value) {
+  //       errorMessage += "$key: $value\n";
+  //     });
+  //     showDialog(
+  //       context: context,
+  //       builder: (context) => AlertDialog(
+  //         title: const Text('Error'),
+  //         content: Text(errorMessage),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             onPressed: () => Navigator.pop(context),
+  //             child: const Text('OK'),
+  //           ),
+  //         ],
+  //       ),
+  //     );
+  //   }
+  // }
 
   Future<void> _insertCommission(
       int userId, int matchCountId, String percent) async {

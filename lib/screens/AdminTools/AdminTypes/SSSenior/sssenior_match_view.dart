@@ -162,9 +162,60 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
           "away_goals": _awayGoalEditingController.text,
         }));
     if (response.statusCode == 200) {
-      print(response.body);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Success.'),
+          content: const Text('Finishing match succeed.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      await refreshPage();
     } else {
-      print(response.body);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Failed.'),
+          content: const Text('Finishing match failed.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Container(),
+                ),
+                SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -726,7 +777,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                     builder: (context) => AlertDialog(
                       title: const Text('Finish Match'),
                       content: const Text(
-                          'Do you really want to enter goals in this finished match?'),
+                          'Do you really want to enter goals and finish this match?'),
                       actions: <Widget>[
                         Row(
                           children: [
@@ -740,7 +791,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                               flex: 1,
                               child: materialButton(kBlue, 'Confirm', () {
                                 setState(() {
-                                  Navigator.pop(context);
+                                  _matchStatusUpdate(match.id);
                                 });
                               }),
                             ),
@@ -749,9 +800,6 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                       ],
                     ),
                   );
-                  await _matchStatusUpdate(match.id);
-                  await refreshPage();
-                  Navigator.pop(context);
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

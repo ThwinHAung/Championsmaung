@@ -217,23 +217,26 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                   context: context,
                                   builder: (context) => AlertDialog(
                                     title: const Text('Reduce Unit'),
-                                    content: const Text(
-                                        'Do you really want to reduce "replace unit here" units from this account?'),
+                                    content: Text(
+                                        'Do you really want to reduce ${_unitReduceController.text} units from this account?'),
                                     actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          _reduceUnits(userId);
-                                        },
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(color: kError),
-                                        ),
-                                      ),
-                                      TextButton(
-                                        onPressed: () {
-                                          print(userId);
-                                        },
-                                        child: const Text('OK'),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: materialButton(
+                                                kError, 'Cancel', () {
+                                              Navigator.pop(context);
+                                            }),
+                                          ),
+                                          SizedBox(width: 5.0),
+                                          Expanded(
+                                              flex: 1,
+                                              child: materialButton(
+                                                  kBlue, 'Reduce', () {
+                                                _reduceUnits(userId);
+                                              })),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -286,21 +289,26 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                 context: context,
                                 builder: (context) => AlertDialog(
                                   title: const Text('Add Unit'),
-                                  content: const Text(
-                                      'Do you really want to add "replace unit here" units from this account?'),
+                                  content: Text(
+                                      'Do you really want to add ${_unitAddController.text} units to this account?'),
                                   actions: <Widget>[
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text(
-                                        'Cancel',
-                                        style: TextStyle(color: kError),
-                                      ),
-                                    ),
-                                    TextButton(
-                                      onPressed: () {
-                                        _addUnits(userId);
-                                      },
-                                      child: const Text('OK'),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: materialButton(
+                                              kError, 'Cancel', () {
+                                            Navigator.pop(context);
+                                          }),
+                                        ),
+                                        SizedBox(width: 5.0),
+                                        Expanded(
+                                            flex: 1,
+                                            child: materialButton(kBlue, 'Add',
+                                                () {
+                                              _addUnits(userId);
+                                            })),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -379,7 +387,8 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                             const SizedBox(width: 5.0),
                             Expanded(
                                 child: secondaryMaterialButton(
-                                    kOnPrimaryContainer, 'Delete', kError, () {
+                                    kOnPrimaryContainer, 'Postpone', kError,
+                                    () {
                               _setPP(userId);
                             })),
                           ],
@@ -407,8 +416,70 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
       "user_id": userId,
       "amount": _unitReduceController.text,
     });
+
     if (response.statusCode == 200) {
-      print('ok');
+      // Clear the controller
+      _unitAddController.clear();
+
+      // Refresh the member list
+      await _fetchMemberList();
+
+      // Close the previous dialog
+      Navigator.pop(context);
+      Navigator.pop(context);
+
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Units have been successfully reduced.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Failed'),
+            content: const Text('Failed to reduce units.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -421,7 +492,68 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
       "amount": _unitAddController.text,
     });
     if (response.statusCode == 200) {
-      print('ok');
+      // Clear the controller
+      _unitAddController.clear();
+
+      // Refresh the member list
+      await _fetchMemberList();
+
+      // Close the previous dialog
+      Navigator.pop(context);
+      Navigator.pop(context);
+
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Units have been successfully added.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Failed'),
+            content: const Text('Failed to add units.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
     }
   }
 
@@ -432,7 +564,66 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
     }, body: {
       "user_id": userId,
     });
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      // Refresh the member list
+      await _fetchMemberList();
+
+      // Close the previous dialog
+      Navigator.pop(context);
+
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('Postponed this user.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Failed'),
+            content: const Text('Failed to postpone this user'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future<void> _unsetPP(String userId) async {
@@ -442,7 +633,65 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
     }, body: {
       "user_id": userId,
     });
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      // Refresh the member list
+      await _fetchMemberList();
+
+      // Close the previous dialog
+      Navigator.pop(context);
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('This user has been unpostponed'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Failed'),
+            content: const Text('Failed to unpostpone this user'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   Future<void> _delete(String userId) async {
@@ -452,6 +701,64 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
     }, body: {
       "user_id": userId,
     });
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      // Refresh the member list
+      await _fetchMemberList();
+
+      // Close the previous dialog
+      Navigator.pop(context);
+      // Show success dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Success'),
+            content: const Text('This user has been deleted.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Failed'),
+            content: const Text('Failed to delete this user.'),
+            actions: <Widget>[
+              Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  SizedBox(width: 5.0),
+                  Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'OK', () {
+                        Navigator.pop(context);
+                      }))
+                ],
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 }
