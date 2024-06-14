@@ -147,6 +147,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
         body: json.encode({
           "match_id": matchId,
         }));
+    if (response.statusCode == 200) {}
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {

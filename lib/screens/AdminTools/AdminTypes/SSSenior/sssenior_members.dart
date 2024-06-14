@@ -169,7 +169,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     });
 
     if (response.statusCode == 200) {
-      int userId = json.decode(response.body)['user_id'];
+      // int userId = json.decode(response.body)['user_id'];
       // Insert commissions and their IDs if needed
 
       Navigator.pop(context);

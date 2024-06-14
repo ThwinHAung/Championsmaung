@@ -508,8 +508,9 @@ class _BodyBettingState extends State<BodyBetting> {
     } else if (selectedTeam == 'Over') {
       selectedOutcome = 'Over';
     } else if (selectedTeam == 'Under') {
-      selectedOutcome == 'Under';
+      selectedOutcome = 'Under';
     }
+    print(selectedOutcome);
     var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
     final response = await http.post(url, headers: {
       'Accept': 'application/json',
