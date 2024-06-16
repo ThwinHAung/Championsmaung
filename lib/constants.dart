@@ -92,6 +92,14 @@ Widget labelText(String labelText) {
   );
 }
 
+Widget goalText(String goalText) {
+  return Text(
+    textAlign: TextAlign.center,
+    goalText,
+    style: kLabel,
+  );
+}
+
 Widget bigCapText(String text) {
   return Text(
     text,

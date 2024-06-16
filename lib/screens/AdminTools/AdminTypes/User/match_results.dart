@@ -242,15 +242,13 @@ class _MatchResultsState extends State<MatchResults> {
                 customRadio(match.homeMatch, 0, listIndex),
                 Expanded(
                   flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Row(
-                      children: [
-                        labelText(match.homeGoals),
-                        labelText('-'),
-                        labelText(match.awayGoals),
-                      ],
-                    ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(flex: 1, child: goalText(match.homeGoals)),
+                      Expanded(flex: 1, child: goalText('-')),
+                      Expanded(flex: 1, child: goalText(match.awayGoals)),
+                    ],
                   ),
                 ),
                 customRadio(match.awayMatch, 1, listIndex),
