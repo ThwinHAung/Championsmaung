@@ -794,7 +794,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
 
   Future<void> _insertMatch() async {
     final response =
-        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingmatch'),
+        await http.post(Uri.parse('http://championmaung.com/api/addingmatch'),
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer $_token',
