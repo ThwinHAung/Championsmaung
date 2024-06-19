@@ -923,7 +923,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     );
 
     setState(() {
-      _dateTime = dateTime!;
+      _dateTime = dateTime;
     });
   }
 }
