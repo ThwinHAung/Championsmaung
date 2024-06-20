@@ -55,7 +55,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   }
 
   Future<void> _fetchLeagues() async {
-    final url = Uri.parse('http://127.0.0.1:8000/api/leagues');
+    final url = Uri.parse('http://championmaung.com/api/leagues');
     final response = await http.get(
       url,
       headers: {
@@ -923,7 +923,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     );
 
     setState(() {
-      _dateTime = dateTime;
+      _dateTime = dateTime!;
     });
   }
 }

@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const Text(
-                    'Remember me',
+                    'Remember',
                     style: TextStyle(
                       color: konPrimary,
                       fontSize: 10.0,
@@ -193,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     final response = await http.post(
-      Uri.parse('http://127.0.0.1:8000/api/login'),
+      Uri.parse('http://championmaung.com/api/login'),
       headers: <String, String>{
         'Accept': 'application/json',
         'Content-Type': 'application/json; charset=UTF-8',
