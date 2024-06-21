@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const Text(
-                    'Remember',
+                    'Remember Me',
                     style: TextStyle(
                       color: konPrimary,
                       fontSize: 10.0,
