@@ -606,7 +606,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   }
 
   Future<void> _register() async {
-    var url = Uri.parse('http://championmaung.com/api/register');
+    var url = Uri.parse('https://championmaung.com/api/register');
     var response = await http.post(url, headers: {
       'Accept': 'Application/json',
       'Authorization': 'Bearer $_token',

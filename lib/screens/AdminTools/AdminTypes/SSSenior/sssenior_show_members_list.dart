@@ -54,7 +54,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _fetchMemberList() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/getmemberlist');
+    var url = Uri.parse('https://127.0.0.1:8000/api/getmemberlist');
     final response = await http.get(
       url,
       headers: {
@@ -409,7 +409,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _reduceUnits(String userId) async {
-    var url = Uri.parse('http://championmaung.com/api/reducing_units');
+    var url = Uri.parse('https://championmaung.com/api/reducing_units');
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
@@ -484,7 +484,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _addUnits(String userId) async {
-    var url = Uri.parse('http://championmaung.com/api/adding_units');
+    var url = Uri.parse('https://championmaung.com/api/adding_units');
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
@@ -558,7 +558,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _setPP(String userId) async {
-    var url = Uri.parse('http://championmaung.com/api/postpone_user');
+    var url = Uri.parse('https://championmaung.com/api/postpone_user');
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
@@ -627,7 +627,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _unsetPP(String userId) async {
-    var url = Uri.parse('http://championmaung.com/api/unpostpone_user');
+    var url = Uri.parse('https://championmaung.com/api/unpostpone_user');
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
@@ -695,7 +695,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _delete(String userId) async {
-    var url = Uri.parse('http://championmaung.com/api/delete_user');
+    var url = Uri.parse('https://championmaung.com/api/delete_user');
     final response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {

@@ -87,7 +87,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://championmaung.com/api/logout');
+    var url = Uri.parse('https://championmaung.com/api/logout');
     var response = await http.get(
       url,
       headers: {

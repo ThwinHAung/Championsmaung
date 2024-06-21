@@ -55,7 +55,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   }
 
   Future<void> _fetchLeagues() async {
-    final url = Uri.parse('http://championmaung.com/api/leagues');
+    final url = Uri.parse('https://championmaung.com/api/leagues');
     final response = await http.get(
       url,
       headers: {
@@ -794,7 +794,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
 
   Future<void> _insertMatch() async {
     final response =
-        await http.post(Uri.parse('http://championmaung.com/api/addingmatch'),
+        await http.post(Uri.parse('https://championmaung.com/api/addingmatch'),
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer $_token',
