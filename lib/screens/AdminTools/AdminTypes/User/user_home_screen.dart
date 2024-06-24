@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/body_betting.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/maung_betting.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
@@ -55,7 +55,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var url = Uri.parse('https://championmaung.com/api/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -72,7 +72,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var url = Uri.parse('https://championmaung.com/api/logout');
     var response = await http.get(
       url,
       headers: {

@@ -94,7 +94,7 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://championmaung.com/api/get_balance');
+    var url = Uri.parse('https://championmaung.com/api/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -111,7 +111,7 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://championmaung.com/api/retrieve_match');
+    var url = Uri.parse('https://championmaung.com/api/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -511,7 +511,7 @@ class _BodyBettingState extends State<BodyBetting> {
       selectedOutcome = 'Under';
     }
     print(selectedOutcome);
-    var url = Uri.parse('http://championmaung.com/api/add_body_match');
+    var url = Uri.parse('https://championmaung.com/api/add_body_match');
     final response = await http.post(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

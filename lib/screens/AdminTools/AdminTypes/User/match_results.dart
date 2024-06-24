@@ -86,7 +86,7 @@ class _MatchResultsState extends State<MatchResults> {
   }
 
   Future<void> _fetchMatchesHistory() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_matchesHistory');
+    var url = Uri.parse('https://championmaung/api/retrieve_matchesHistory');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

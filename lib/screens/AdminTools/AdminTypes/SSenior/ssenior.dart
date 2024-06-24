@@ -85,7 +85,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://championmaung.com/api/get_balance');
+    var url = Uri.parse('https://championmaung.com/api/get_balance');
     var response = await http.get(
       url,
       headers: {
