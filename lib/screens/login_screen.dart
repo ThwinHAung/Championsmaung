@@ -192,63 +192,92 @@ class _LoginScreenState extends State<LoginScreen> {
       },
     );
 
-    final response = await http.post(
-      Uri.parse('https://championmaung.com/api/login'),
-      headers: <String, String>{
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'username': _usernameController.text,
-        'password': _passwordController.text,
-      }),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('https://championmaung.com/api/login'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+        }),
+      );
 
-    setState(() {
-      _isLoading = false;
-    });
+      setState(() {
+        _isLoading = false;
+      });
 
-    // Dismiss loading dialog
-    Navigator.of(context).pop();
+      // Dismiss loading dialog
+      Navigator.of(context).pop();
 
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final String token = responseData['token'];
-      final String role = responseData['role'];
-      final String username = responseData['username'];
+      if (response.statusCode == 200) {
+        // Attempt to parse the JSON response
+        try {
+          final Map<String, dynamic> responseData = json.decode(response.body);
+          final String token = responseData['token'];
+          final String role = responseData['role'];
+          final String username = responseData['username'];
 
-      const storage = FlutterSecureStorage();
-      await storage.write(key: 'token', value: token);
-      await storage.write(key: 'user_role', value: role);
-      await storage.write(key: 'user_name', value: username);
+          const storage = FlutterSecureStorage();
+          await storage.write(key: 'token', value: token);
+          await storage.write(key: 'user_role', value: role);
+          await storage.write(key: 'user_name', value: username);
 
-      if (_rememberMe) {
-        await storage.write(key: 'username', value: _usernameController.text);
-        await storage.write(key: 'password', value: _passwordController.text);
+          if (_rememberMe) {
+            await storage.write(
+                key: 'username', value: _usernameController.text);
+            await storage.write(
+                key: 'password', value: _passwordController.text);
+          } else {
+            await storage.delete(key: 'username');
+            await storage.delete(key: 'password');
+          }
+
+          if (role == 'SSSenior') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SSSeniorAdminScreen(),
+              ),
+            );
+          } else if (role == 'User') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RulesPage(),
+              ),
+            );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SSeniorAdminScreen(),
+              ),
+            );
+          }
+        } catch (e) {
+          // Handle JSON parsing error
+          _showErrorDialog('Invalid server response format');
+          print('Error parsing JSON: $e');
+        }
       } else {
-        await storage.delete(key: 'username');
-        await storage.delete(key: 'password');
+        final responseData = json.decode(response.body);
+        final message = responseData['message'];
+        _showErrorDialog(message);
+        print(message);
       }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
 
-      if (role == 'SSSenior') {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const SSSeniorAdminScreen()));
-      } else if (role == 'User') {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const RulesPage()));
-      } else {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const SSeniorAdminScreen()));
-      }
-    } else {
-      final responseData = json.decode(response.body);
-      final message = responseData['message'];
-      _showErrorDialog(message);
-      print(message);
+      // Dismiss loading dialog
+      Navigator.of(context).pop();
+
+      _showErrorDialog('An error occurred. Please try again.');
+      print('Error: $e');
     }
   }
 
