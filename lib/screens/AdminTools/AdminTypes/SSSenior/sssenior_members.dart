@@ -172,7 +172,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       // int userId = json.decode(response.body)['user_id'];
       // Insert commissions and their IDs if needed
 
-      Navigator.pop(context);
       // Show success dialog
       showDialog(
         context: context,
@@ -186,7 +185,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   flex: 1,
                   child: Container(),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
@@ -222,7 +221,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   flex: 1,
                   child: Container(),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {

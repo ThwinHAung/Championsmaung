@@ -223,7 +223,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),
@@ -260,9 +260,9 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Row(
                       children: [
-                        labelText(match.homeGoals),
-                        labelText('-'),
-                        labelText(match.awayGoals),
+                        Expanded(flex: 1, child: goalText(match.homeGoals)),
+                        Expanded(flex: 1, child: goalText('-')),
+                        Expanded(flex: 1, child: goalText(match.awayGoals)),
                       ],
                     ),
                   ),

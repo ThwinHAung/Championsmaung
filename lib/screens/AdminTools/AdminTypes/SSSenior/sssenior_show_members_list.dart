@@ -109,7 +109,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
       child: Column(
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.fromLTRB(15.0, 8.0, 8.0, 8.0),
             child: TextField(
               controller: _controller,
               decoration: const InputDecoration(
@@ -229,7 +229,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                               Navigator.pop(context);
                                             }),
                                           ),
-                                          SizedBox(width: 5.0),
+                                          const SizedBox(width: 5.0),
                                           Expanded(
                                               flex: 1,
                                               child: materialButton(
@@ -301,7 +301,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                                             Navigator.pop(context);
                                           }),
                                         ),
-                                        SizedBox(width: 5.0),
+                                        const SizedBox(width: 5.0),
                                         Expanded(
                                             flex: 1,
                                             child: materialButton(kBlue, 'Add',
@@ -442,7 +442,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -468,7 +468,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -516,7 +516,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -542,7 +542,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -585,7 +585,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -611,7 +611,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -653,7 +653,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -679,7 +679,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -721,7 +721,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {
@@ -747,7 +747,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
                     flex: 1,
                     child: Container(),
                   ),
-                  SizedBox(width: 5.0),
+                  const SizedBox(width: 5.0),
                   Expanded(
                       flex: 1,
                       child: materialButton(kBlue, 'OK', () {

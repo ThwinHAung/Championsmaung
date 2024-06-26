@@ -175,7 +175,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   flex: 1,
                   child: Container(),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
@@ -203,7 +203,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                   flex: 1,
                   child: Container(),
                 ),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
@@ -333,7 +333,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
                                 bool isLastMatch =
                                     matchIndex == leagueMatches.length - 1;
                                 return radioContainer(match, isLastMatch);
-                              }).toList(),
+                              }),
                             ],
                           ),
                         ),

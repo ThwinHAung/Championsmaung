@@ -398,7 +398,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kBlue,
                             ),
                           ),
@@ -472,7 +472,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kBlue,
                             ),
                           ),

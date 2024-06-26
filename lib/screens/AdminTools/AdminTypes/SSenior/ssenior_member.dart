@@ -625,14 +625,21 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
           title: const Text('Succeed.'),
           content: const Text('Click OK to close this dialog.'),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    })),
+              ],
             ),
           ],
         ),
       );
-      Navigator.pop(context);
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);
       final Map<String, dynamic> errors = responseData['errors'];
@@ -646,9 +653,16 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
           title: const Text('Errors'),
           content: Text(errorMessage),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      Navigator.pop(context);
+                    })),
+              ],
             ),
           ],
         ),

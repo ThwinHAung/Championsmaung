@@ -209,7 +209,7 @@ class _MatchResultsState extends State<MatchResults> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

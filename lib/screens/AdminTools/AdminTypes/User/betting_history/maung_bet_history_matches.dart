@@ -254,7 +254,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                                 bool isLastMatch =
                                     matchIndex == leagueMatches.length - 1;
                                 return radioContainer(match, isLastMatch);
-                              }).toList(),
+                              }),
                             ],
                           ),
                         ),
@@ -436,7 +436,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kBlue,
                             ),
                           ),
@@ -510,7 +510,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: kBlue,
                             ),
                           ),
