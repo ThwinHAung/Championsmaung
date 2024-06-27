@@ -60,26 +60,29 @@ class _RulesPageState extends State<RulesPage> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return Scaffold(
-        backgroundColor: kPrimary,
-        appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
           backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Rules and Regulations',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
+          appBar: AppBar(
+            backgroundColor: kPrimary,
+            centerTitle: true,
+            title: const Text(
+              'Rules and Regulations',
+              style: TextStyle(
+                color: kBlack,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
           ),
-        ),
-        body: _buildBody(w),
-        bottomNavigationBar: BottomAppBar(
-          color: kOnPrimaryContainer,
-          elevation: 1,
-          child: bottomBar(),
-        ));
+          body: _buildBody(w),
+          bottomNavigationBar: BottomAppBar(
+            color: kOnPrimaryContainer,
+            elevation: 1,
+            child: bottomBar(),
+          )),
+    );
   }
 
   Widget _buildBody(w) {

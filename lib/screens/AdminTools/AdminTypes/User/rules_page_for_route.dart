@@ -60,21 +60,24 @@ class _RulesPageForRouteState extends State<RulesPageForRoute> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Rules and Regulations',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Rules and Regulations',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
+        body: _buildBody(w),
       ),
-      body: _buildBody(w),
     );
   }
 

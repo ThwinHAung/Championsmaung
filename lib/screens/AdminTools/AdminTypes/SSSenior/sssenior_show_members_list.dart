@@ -74,29 +74,32 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Members List',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Members List',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: kPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: kOnPrimaryContainer,
-                borderRadius: BorderRadius.circular(10)),
-            child: view(),
+        body: Container(
+          color: kPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: kOnPrimaryContainer,
+                  borderRadius: BorderRadius.circular(10)),
+              child: view(),
+            ),
           ),
         ),
       ),

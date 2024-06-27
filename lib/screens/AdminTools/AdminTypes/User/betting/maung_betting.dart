@@ -152,173 +152,176 @@ class _MaungBettingState extends State<MaungBetting> {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
-    return Scaffold(
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Maung Betting',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: kPrimary,
+            centerTitle: true,
+            title: const Text(
+              'Maung Betting',
+              style: TextStyle(
+                color: kBlack,
+                fontWeight: FontWeight.bold,
+                fontSize: 20.0,
+              ),
             ),
           ),
-        ),
-        body: _buildBody(w),
-        bottomNavigationBar: BottomAppBar(
-          color: kOnPrimaryContainer,
-          elevation: 1,
-          child: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: Text('Maung ( ${selectedValues.length} )'),
-                ),
-                const SizedBox(width: 10.0),
-                Expanded(
-                  flex: 7,
-                  child: TextFormField(
-                    controller: _maungBettingEditingController,
-                    decoration: const InputDecoration(
-                      hintText: 'Enter amount to bet',
-                      border: OutlineInputBorder(),
+          body: _buildBody(w),
+          bottomNavigationBar: BottomAppBar(
+            color: kOnPrimaryContainer,
+            elevation: 1,
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Text('Maung ( ${selectedValues.length} )'),
+                  ),
+                  const SizedBox(width: 10.0),
+                  Expanded(
+                    flex: 7,
+                    child: TextFormField(
+                      controller: _maungBettingEditingController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter amount to bet',
+                        border: OutlineInputBorder(),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(width: 16.0),
-                Expanded(
-                  flex: 2,
-                  child: materialButton(kBlue, 'Bet', () {
-                    String text = _maungBettingEditingController.text;
-                    double amount = double.tryParse(text) ?? 0.0;
+                  const SizedBox(width: 16.0),
+                  Expanded(
+                    flex: 2,
+                    child: materialButton(kBlue, 'Bet', () {
+                      String text = _maungBettingEditingController.text;
+                      double amount = double.tryParse(text) ?? 0.0;
 
-                    // Check if the input amount is numeric
-                    if (text.isEmpty || amount <= 0) {
-                      // Show dialog for invalid bet amount
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Invalid Bet Amount'),
-                          content: const Text(
-                              'Please enter a valid numeric amount to bet.'),
-                          actions: <Widget>[
-                            materialButton(kError, 'OK', () {
-                              Navigator.pop(context);
-                            }),
-                          ],
-                        ),
-                      );
-                      return;
-                    }
-
-                    // Check if user has enough balance
-                    if (_balance == null || _balance! < amount) {
-                      // Show dialog for insufficient balance
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Insufficient Balance'),
-                          content: const Text(
-                              'You do not have enough balance to place this bet.'),
-                          actions: <Widget>[
-                            materialButton(kError, 'OK', () {
-                              Navigator.pop(context);
-                            }),
-                          ],
-                        ),
-                      );
-                      return;
-                    }
-
-                    // Check if user has selected a match
-                    if (selectedValues.isEmpty) {
-                      // Show dialog for no match selected
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('No Match Selected'),
-                          content: const Text(
-                              'Please select a match before placing the bet.'),
-                          actions: <Widget>[
-                            materialButton(kError, 'OK', () {
-                              Navigator.pop(context);
-                            }),
-                          ],
-                        ),
-                      );
-                      return;
-                    }
-                    // Both conditions are met, show confirmation dialog
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Confirm Bet'),
-                        content: Text(
-                            'Do you want to bet $text amount for maung(${selectedValues.length}) matches?'),
-                        actions: <Widget>[
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: materialButton(kError, 'Cancel', () {
-                                  Navigator.pop(context);
-                                }),
-                              ),
-                              const SizedBox(width: 5.0),
-                              Expanded(
-                                flex: 1,
-                                child: materialButton(kBlue, 'Bet', () {
-                                  // Check if user has selected the correct number of matches
-                                  if (selectedValues.length < minSelect ||
-                                      selectedValues.length > maxSelect) {
-                                    // Show dialog for invalid number of matches selected
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text(
-                                            'Invalid Number of Matches Selected.'),
-                                        content: const Text(
-                                            'Please select between $minSelect and $maxSelect matches before placing the bet.'),
-                                        actions: <Widget>[
-                                          Row(
-                                            children: [
-                                              Expanded(
-                                                flex: 1,
-                                                child: Container(),
-                                              ),
-                                              const SizedBox(width: 5.0),
-                                              Expanded(
-                                                flex: 1,
-                                                child: materialButton(
-                                                    kBlue, 'OK', () {
-                                                  Navigator.pop(context);
-                                                }),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                    return;
-                                  } else {
-                                    _placeAccumulatorBet(amount);
-                                  }
-                                }),
-                              )
+                      // Check if the input amount is numeric
+                      if (text.isEmpty || amount <= 0) {
+                        // Show dialog for invalid bet amount
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Invalid Bet Amount'),
+                            content: const Text(
+                                'Please enter a valid numeric amount to bet.'),
+                            actions: <Widget>[
+                              materialButton(kError, 'OK', () {
+                                Navigator.pop(context);
+                              }),
                             ],
-                          )
-                        ],
-                      ),
-                    );
-                  }),
-                )
-              ],
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Check if user has enough balance
+                      if (_balance == null || _balance! < amount) {
+                        // Show dialog for insufficient balance
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Insufficient Balance'),
+                            content: const Text(
+                                'You do not have enough balance to place this bet.'),
+                            actions: <Widget>[
+                              materialButton(kError, 'OK', () {
+                                Navigator.pop(context);
+                              }),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+
+                      // Check if user has selected a match
+                      if (selectedValues.isEmpty) {
+                        // Show dialog for no match selected
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('No Match Selected'),
+                            content: const Text(
+                                'Please select a match before placing the bet.'),
+                            actions: <Widget>[
+                              materialButton(kError, 'OK', () {
+                                Navigator.pop(context);
+                              }),
+                            ],
+                          ),
+                        );
+                        return;
+                      }
+                      // Both conditions are met, show confirmation dialog
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Confirm Bet'),
+                          content: Text(
+                              'Do you want to bet $text amount for maung(${selectedValues.length}) matches?'),
+                          actions: <Widget>[
+                            Row(
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: materialButton(kError, 'Cancel', () {
+                                    Navigator.pop(context);
+                                  }),
+                                ),
+                                const SizedBox(width: 5.0),
+                                Expanded(
+                                  flex: 1,
+                                  child: materialButton(kBlue, 'Bet', () {
+                                    // Check if user has selected the correct number of matches
+                                    if (selectedValues.length < minSelect ||
+                                        selectedValues.length > maxSelect) {
+                                      // Show dialog for invalid number of matches selected
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text(
+                                              'Invalid Number of Matches Selected.'),
+                                          content: const Text(
+                                              'Please select between $minSelect and $maxSelect matches before placing the bet.'),
+                                          actions: <Widget>[
+                                            Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Container(),
+                                                ),
+                                                const SizedBox(width: 5.0),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: materialButton(
+                                                      kBlue, 'OK', () {
+                                                    Navigator.pop(context);
+                                                  }),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                      return;
+                                    } else {
+                                      _placeAccumulatorBet(amount);
+                                    }
+                                  }),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      );
+                    }),
+                  )
+                ],
+              ),
             ),
-          ),
-        ));
+          )),
+    );
   }
 
   Widget _buildBody(double w) {

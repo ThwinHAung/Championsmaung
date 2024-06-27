@@ -24,17 +24,20 @@ class _MoreState extends State<More> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'More',
-          style: TextStyle(
-            color: konPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'More',
+            style: TextStyle(
+              color: konPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
       ),

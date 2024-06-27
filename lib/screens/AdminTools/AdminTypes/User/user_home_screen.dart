@@ -94,152 +94,156 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'CHAMPION MAUNG',
-          style: TextStyle(
-            color: konPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'CHAMPION MAUNG',
+            style: TextStyle(
+              color: konPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: kPrimary,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Container(
-                alignment: Alignment.bottomLeft,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: kBlue,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 25.0),
-                      Text(
-                        'Username : $_username',
-                        style: TextStyle(
-                          color: kWhite.withOpacity(.7),
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          const Text(
-                            'YOUR BALANCE',
-                            style: TextStyle(
-                              color: kOnPrimaryContainer,
-                              fontWeight: FontWeight.w500,
-                              letterSpacing: 3,
-                              fontSize: 14,
-                            ),
+        body: Container(
+          decoration: const BoxDecoration(
+            color: kPrimary,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Column(
+              children: [
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: kBlue,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 25.0),
+                        Text(
+                          'Username : $_username',
+                          style: TextStyle(
+                            color: kWhite.withOpacity(.7),
+                            fontWeight: FontWeight.w500,
                           ),
-                          const SizedBox(width: 10.0),
-                          IconButton(
-                            onPressed: () {
-                              _getBalance();
-                            },
-                            icon: const Icon(
-                              Icons.refresh_outlined,
-                              color: kOnPrimaryContainer,
-                            ),
-                            style: IconButton.styleFrom(
-                              iconSize: 20,
-                            ),
-                          )
-                        ],
-                      ),
-                      Text(
-                        '$_balance MMK',
-                        style: const TextStyle(
-                          color: kOnPrimaryContainer,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 50,
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10.0),
-              AnimatedTextKit(
-                repeatForever: true,
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                    'ဘယ်လိုလောင်းလောင်း PLUS ပေါင်း',
-                    speed: const Duration(milliseconds: 100),
-                    textStyle: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 10,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10.0),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10.0),
-                  child: Container(
-                    alignment: Alignment.topLeft,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: kOnPrimaryContainer,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
-                      child: ListView.separated(
-                          itemCount: list.length,
-                          separatorBuilder: (BuildContext context, int index) =>
-                              const Divider(),
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              child: ListTile(
-                                title: Text(
-                                  list[index],
-                                  style: const TextStyle(
-                                    color: kBlue,
-                                  ),
-                                ),
-                                leading: const Icon(
-                                  Icons.arrow_right,
-                                  color: konPrimary,
-                                ),
-                                onTap: () {
-                                  Navigator.pushNamed(
-                                      context, listRoutes[index]);
-                                },
+                        Row(
+                          children: [
+                            const Text(
+                              'YOUR BALANCE',
+                              style: TextStyle(
+                                color: kOnPrimaryContainer,
+                                fontWeight: FontWeight.w500,
+                                letterSpacing: 3,
+                                fontSize: 14,
                               ),
-                            );
-                          }),
+                            ),
+                            const SizedBox(width: 10.0),
+                            IconButton(
+                              onPressed: () {
+                                _getBalance();
+                              },
+                              icon: const Icon(
+                                Icons.refresh_outlined,
+                                color: kOnPrimaryContainer,
+                              ),
+                              style: IconButton.styleFrom(
+                                iconSize: 20,
+                              ),
+                            )
+                          ],
+                        ),
+                        Text(
+                          '$_balance MMK',
+                          style: const TextStyle(
+                            color: kOnPrimaryContainer,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 50,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 10.0),
+                AnimatedTextKit(
+                  repeatForever: true,
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'ဘယ်လိုလောင်းလောင်း PLUS ပေါင်း',
+                      speed: const Duration(milliseconds: 100),
+                      textStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 10.0),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 10.0),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: kOnPrimaryContainer,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: ListView.separated(
+                            itemCount: list.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) =>
+                                    const Divider(),
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              return Container(
+                                child: ListTile(
+                                  title: Text(
+                                    list[index],
+                                    style: const TextStyle(
+                                      color: kBlue,
+                                    ),
+                                  ),
+                                  leading: const Icon(
+                                    Icons.arrow_right,
+                                    color: konPrimary,
+                                  ),
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, listRoutes[index]);
+                                  },
+                                ),
+                              );
+                            }),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ),
-      drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: _userDrawerListView(),
+        drawer: Drawer(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: _userDrawerListView(),
+          ),
         ),
       ),
     );

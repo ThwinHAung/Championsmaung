@@ -90,92 +90,95 @@ class _LeagueScreenState extends State<LeagueScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Add League',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Add League',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: kPrimary,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    labelText('League'),
-                    const SizedBox(height: 10.0),
-                    TextFormField(
-                      controller: _leagueNameController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                          hintText: 'Enter league you want to add'),
-                    ),
-                    const SizedBox(height: 30.0),
-                    Container(
-                      alignment: Alignment.topRight,
-                      child: Material(
-                        color: kBlue,
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(10.0)),
-                        elevation: 5.0,
-                        child: MaterialButton(
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                title: const Text(
-                                  'Do you want to add league?',
-                                  style: kLabel,
-                                ),
-                                actions: <Widget>[
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        flex: 1,
-                                        child: materialButton(kError, 'Cancel',
-                                            () {
-                                          Navigator.pop(context);
-                                        }),
-                                      ),
-                                      const SizedBox(width: 5.0),
-                                      Expanded(
-                                        flex: 1,
-                                        child: materialButton(
-                                            kBlue, 'Enter', _insertLeague),
-                                      ),
-                                    ],
+        body: Container(
+          color: kPrimary,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      labelText('League'),
+                      const SizedBox(height: 10.0),
+                      TextFormField(
+                        controller: _leagueNameController,
+                        style: kTextFieldActiveStyle,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter league you want to add'),
+                      ),
+                      const SizedBox(height: 30.0),
+                      Container(
+                        alignment: Alignment.topRight,
+                        child: Material(
+                          color: kBlue,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10.0)),
+                          elevation: 5.0,
+                          child: MaterialButton(
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text(
+                                    'Do you want to add league?',
+                                    style: kLabel,
                                   ),
-                                ],
-                              ),
-                            ); //Implement registration functionality.
-                          },
-                          minWidth: 200.0,
-                          height: 42.0,
-                          child: const Text(
-                            'Add League',
-                            style: kButtonTextStyle,
+                                  actions: <Widget>[
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: materialButton(
+                                              kError, 'Cancel', () {
+                                            Navigator.pop(context);
+                                          }),
+                                        ),
+                                        const SizedBox(width: 5.0),
+                                        Expanded(
+                                          flex: 1,
+                                          child: materialButton(
+                                              kBlue, 'Enter', _insertLeague),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ); //Implement registration functionality.
+                            },
+                            minWidth: 200.0,
+                            height: 42.0,
+                            child: const Text(
+                              'Add League',
+                              style: kButtonTextStyle,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

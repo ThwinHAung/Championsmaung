@@ -69,57 +69,60 @@ class _SplashScreenState extends State<SplashScreen>
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return Scaffold(
-      backgroundColor: kPrimary,
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                AnimatedContainer(
-                    duration: const Duration(milliseconds: 1000),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    height: height / _fontSize),
-                AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: _textOpacity,
-                  child: Hero(
-                    tag: 'championmaung',
-                    child: Text(
-                      'CHAMPION MAUNG',
-                      style: TextStyle(
-                        color: konPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: animation1.value,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        backgroundColor: kPrimary,
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  AnimatedContainer(
+                      duration: const Duration(milliseconds: 1000),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      height: height / _fontSize),
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    opacity: _textOpacity,
+                    child: Hero(
+                      tag: 'championmaung',
+                      child: Text(
+                        'CHAMPION MAUNG',
+                        style: TextStyle(
+                          color: konPrimary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: animation1.value,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
-          Center(
-            child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 1000),
-              curve: Curves.fastLinearToSlowEaseIn,
-              opacity: _containerOpacity,
-              child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 1000),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  height: width / _containerSize,
-                  width: width / _containerSize,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: kOnPrimaryContainer,
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Image.asset(
-                    'images/logo.png',
-                    scale: 10,
-                  )),
+            Center(
+              child: AnimatedOpacity(
+                duration: const Duration(milliseconds: 1000),
+                curve: Curves.fastLinearToSlowEaseIn,
+                opacity: _containerOpacity,
+                child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 1000),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    height: width / _containerSize,
+                    width: width / _containerSize,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: kOnPrimaryContainer,
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Image.asset(
+                      'images/logo.png',
+                      scale: 10,
+                    )),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -132,59 +132,62 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
     List<String> sortedLeagueNames = matchesByLeague.keys.toList();
     sortedLeagueNames
         .sort((a, b) => a.toLowerCase().compareTo(b.toLowerCase()));
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
         backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Match Results',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Match Results',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: kPrimary,
-        child: AnimationLimiter(
-          child: SmartRefresher(
-            controller: _refreshController,
-            header: WaterDropHeader(
-              waterDropColor: kBlue,
-              refresh: const MyLoading(),
-              complete: Container(),
-              completeDuration: Duration.zero,
-            ),
-            onRefresh: () => getData(),
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
+        body: Container(
+          color: kPrimary,
+          child: AnimationLimiter(
+            child: SmartRefresher(
+              controller: _refreshController,
+              header: WaterDropHeader(
+                waterDropColor: kBlue,
+                refresh: const MyLoading(),
+                complete: Container(),
+                completeDuration: Duration.zero,
               ),
-              itemCount: sortedLeagueNames.length,
-              itemBuilder: (context, leagueIndex) {
-                String leagueName = sortedLeagueNames[leagueIndex];
-                List<Match> leagueMatches = matchesByLeague[leagueName]!;
-                return AnimationConfiguration.staggeredList(
-                  position: leagueIndex,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
+              onRefresh: () => getData(),
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                itemCount: sortedLeagueNames.length,
+                itemBuilder: (context, leagueIndex) {
+                  String leagueName = sortedLeagueNames[leagueIndex];
+                  List<Match> leagueMatches = matchesByLeague[leagueName]!;
+                  return AnimationConfiguration.staggeredList(
+                    position: leagueIndex,
+                    delay: const Duration(milliseconds: 100),
+                    child: SlideAnimation(
                       duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: leagueContainer(
-                            leagueName, leagueMatches, leagueIndex),
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      child: FadeInAnimation(
+                        curve: Curves.fastLinearToSlowEaseIn,
+                        duration: const Duration(milliseconds: 2500),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 5.0),
+                          child: leagueContainer(
+                              leagueName, leagueMatches, leagueIndex),
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
         ),
