@@ -38,6 +38,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   final TextEditingController _mixBet11Commision = TextEditingController();
   final storage = const FlutterSecureStorage();
 
+  String? selectedValue1;
+  String? selectedValue2;
   String? selectedValue;
   String? _token;
   String? _username;

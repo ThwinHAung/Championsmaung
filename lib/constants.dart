@@ -196,8 +196,6 @@ const List<String> userDropdownItems = [
   'Z'
 ];
 
-String? selectedValue1;
-String? selectedValue2;
 String? league_value;
 String? team_value;
 String? specialOdd_calcualte_value;
