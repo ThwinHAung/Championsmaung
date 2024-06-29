@@ -136,7 +136,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<List<TaxData>> _fetchTaxData() async {
-    var url = Uri.parse('https://championmaung.com/api/retrievetaxes');
+    var url = Uri.parse('https://www.championmaung.com/api/retrievetaxes');
     try {
       final response = await http.get(url, headers: {
         'Accept': 'application/json',
@@ -157,7 +157,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<void> _register() async {
-    var url = Uri.parse('https://championmaung.com/api/register');
+    var url = Uri.parse('https://www.championmaung.com/api/register');
     var response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
@@ -319,7 +319,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
   Future<void> _insertCommission(
       int userId, int matchCountId, String percent) async {
-    var url = Uri.parse('https://championmaung.com/api/commissions');
+    var url = Uri.parse('https://www.championmaung.com/api/commissions');
     var response = await http.post(url,
         headers: {
           'Authorization': 'Bearer $_token',

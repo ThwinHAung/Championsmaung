@@ -55,7 +55,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('https://championmaung.com/api/get_balance');
+    var url = Uri.parse('https://www.championmaung.com/api/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -72,7 +72,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('https://championmaung.com/api/logout');
+    var url = Uri.parse('https://www.championmaung.com/api/logout');
     var response = await http.get(
       url,
       headers: {

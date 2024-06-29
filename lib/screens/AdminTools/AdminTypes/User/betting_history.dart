@@ -120,7 +120,8 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Future<void> _fetchMatchesHistory(String username) async {
-    var url = Uri.parse('https://championmaung/api/getBetSlip/$username');
+    var url =
+        Uri.parse('https://www.championmaung.com/api/getBetSlip/$username');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

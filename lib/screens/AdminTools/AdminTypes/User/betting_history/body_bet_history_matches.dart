@@ -118,7 +118,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> _fetchBetDetails(int betId) async {
     var url =
-        Uri.parse('https://championmaung.com/api/getSingleBetSlip/$betId');
+        Uri.parse('https://www.championmaung.com/api/getSingleBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

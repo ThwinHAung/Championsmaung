@@ -78,7 +78,7 @@ class _SSSeniorMatchHistoryState extends State<SSSeniorMatchHistory> {
 
   Future<void> _fetchMatchesHistory() async {
     var url =
-        Uri.parse('https://championmaung.com/api/retrieve_matchesHistory');
+        Uri.parse('https://www.championmaung.com/api/retrieve_matchesHistory');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

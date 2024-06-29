@@ -194,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('https://championmaung.com/api/login'),
+        Uri.parse('https://www.championmaung.com/api/login'),
         headers: <String, String>{
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=UTF-8',

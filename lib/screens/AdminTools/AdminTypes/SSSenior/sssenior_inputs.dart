@@ -55,7 +55,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   }
 
   Future<void> _fetchLeagues() async {
-    final url = Uri.parse('https://championmaung.com/api/leagues');
+    final url = Uri.parse('https://www.championmaung.com/api/leagues');
     final response = await http.get(
       url,
       headers: {
@@ -793,25 +793,25 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
   }
 
   Future<void> _insertMatch() async {
-    final response =
-        await http.post(Uri.parse('https://championmaung.com/api/addingmatch'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $_token',
-            },
-            body: json.encode({
-              'league_id': league_value,
-              'home_match': _homeTeamController.text,
-              'away_match': _awayTeamController.text,
-              'match_time': _dateTime.toIso8601String(),
-              'special_odd_team': team_value,
-              "special_odd_first_digit": specialOdd_goals,
-              "special_odd_sign": specialOdd_calculate_value,
-              "special_odd_last_digit": _specialOddController.text,
-              "over_under_first_digit": overUnder_goals,
-              "over_under_sign": overUnder_calculate_value,
-              "over_under_last_digit": _overUnderOddController.text,
-            }));
+    final response = await http.post(
+        Uri.parse('https://www.championmaung.com/api/addingmatch'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          'league_id': league_value,
+          'home_match': _homeTeamController.text,
+          'away_match': _awayTeamController.text,
+          'match_time': _dateTime.toIso8601String(),
+          'special_odd_team': team_value,
+          "special_odd_first_digit": specialOdd_goals,
+          "special_odd_sign": specialOdd_calculate_value,
+          "special_odd_last_digit": _specialOddController.text,
+          "over_under_first_digit": overUnder_goals,
+          "over_under_sign": overUnder_calculate_value,
+          "over_under_last_digit": _overUnderOddController.text,
+        }));
     if (response.statusCode == 200) {
       Navigator.pop(context);
 

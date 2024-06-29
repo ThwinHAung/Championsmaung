@@ -106,8 +106,8 @@ class _SplashScreenState extends State<SplashScreen>
               child: AnimatedContainer(
                   duration: const Duration(milliseconds: 1000),
                   curve: Curves.fastLinearToSlowEaseIn,
-                  height: width / _containerSize,
-                  width: width / _containerSize,
+                  height: 200,
+                  width: 200,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: kOnPrimaryContainer,
@@ -115,7 +115,7 @@ class _SplashScreenState extends State<SplashScreen>
                   ),
                   child: Image.asset(
                     'images/logo.png',
-                    scale: 10,
+                    scale: 1,
                   )),
             ),
           ),

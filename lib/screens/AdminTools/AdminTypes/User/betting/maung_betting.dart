@@ -96,7 +96,7 @@ class _MaungBettingState extends State<MaungBetting> {
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('https://championmaung.com/api/get_balance');
+    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -113,7 +113,7 @@ class _MaungBettingState extends State<MaungBetting> {
   }
 
   Future<void> _fetchMatches() async {
-    var url = Uri.parse('https://championmaung.com/api/retrieve_match');
+    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -529,7 +529,7 @@ class _MaungBettingState extends State<MaungBetting> {
       };
     }).toList();
 
-    var url = Uri.parse('https://championmaung/api/add_maung_matches');
+    var url = Uri.parse('https://www.championmaung.com/api/add_maung_matches');
     var response = await http.post(
       url,
       headers: {

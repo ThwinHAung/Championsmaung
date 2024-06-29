@@ -39,7 +39,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   }
 
   Future<void> _passwordChange() async {
-    var url = Uri.parse('https://championmaung.com/api/change_password');
+    var url = Uri.parse('https://www.championmaung.com/api/change_password');
     final response = await http.post(
       url,
       headers: {
