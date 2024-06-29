@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -397,7 +398,9 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                         ],
                       ),
                     ),
-                    materialButton(kBlue, 'View Member List', () {}),
+                    materialButton(kBlue, 'View Member List', () {
+                      Navigator.pushNamed(context, SSSeniorShowMembersList.id);
+                    }),
                   ],
                 ),
               ),
@@ -556,16 +559,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10.0),
-                      labelText('Starting Balance'),
-                      TextFormField(
-                        controller: _balanceController,
-                        style: kTextFieldActiveStyle,
-                        decoration: kTextFieldDecoration.copyWith(
-                            hintText: 'Enter starting balance'),
-                      ),
                       const SizedBox(height: 30.0),
-                      bigCapText('Bet Limitation'),
+                      bigCapText('Single Bet Commision'),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -574,13 +569,17 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                labelText('Max for Mix Bet'),
+                                labelText('Commision'),
                                 TextFormField(
-                                  controller: _mixBetController,
-                                  obscureText: true,
+                                  controller: _singleBetCommisionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'Tax: 5',
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
                             ),
@@ -593,47 +592,67 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                labelText('Max for Single Bet'),
+                                labelText('High Commision'),
                                 TextFormField(
-                                  controller: _singleBetController,
-                                  obscureText: true,
+                                  controller: _singleBetHighCommisionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'High Tax: 8',
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      // const SizedBox(height: 30.0),
-                      // bigCapText('Single Bet Commision'),
-                      // FutureBuilder<List<TaxData>>(
-                      //   future: futureTaxData,
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return const Center(
-                      //           child: CircularProgressIndicator());
-                      //     } else if (snapshot.hasError) {
-                      //       return Center(
-                      //           child: Text('Error: ${snapshot.error}'));
-                      //     } else {
-                      //       List<TaxData> taxDataList = snapshot.data!;
-                      //       return Column(
-                      //         children: [
-                      //           for (var taxData in taxDataList)
-                      //             matchCounts(
-                      //               taxData.matchCount,
-                      //               taxData.taxRate.toInt(),
-                      //               taxData
-                      //                   .calculateOn, // Pass your controller here
-                      //             ),
-                      //         ],
-                      //       );
-                      //     }
-                      //   },
-                      // ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Mix Bet Commisions'),
+                      Column(
+                        children: [
+                          matchCounts(2, 15, _mixBet2Commision.toString()),
+                          matchCounts(3, 20, _mixBet3Commision.toString()),
+                          matchCounts(4, 20, _mixBet4Commision.toString()),
+                          matchCounts(5, 20, _mixBet5Commision.toString()),
+                          matchCounts(6, 20, _mixBet6Commision.toString()),
+                          matchCounts(7, 20, _mixBet7Commision.toString()),
+                          matchCounts(8, 20, _mixBet8Commision.toString()),
+                          matchCounts(9, 20, _mixBet9Commision.toString()),
+                          matchCounts(10, 20, _mixBet10Commision.toString()),
+                          matchCounts(11, 20, _mixBet11Commision.toString()),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Single Bet Commision'),
+                      FutureBuilder<List<TaxData>>(
+                        future: futureTaxData,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Error: ${snapshot.error}'));
+                          } else {
+                            List<TaxData> taxDataList = snapshot.data!;
+                            return Column(
+                              children: [
+                                for (var taxData in taxDataList)
+                                  matchCounts(
+                                    taxData.matchCount,
+                                    taxData.taxRate.toInt(),
+                                    taxData
+                                        .calculateOn, // Pass your controller here
+                                  ),
+                              ],
+                            );
+                          }
+                        },
+                      ),
                       const SizedBox(height: 30.0),
                       Container(
                         alignment: Alignment.topRight,
@@ -713,7 +732,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   labelText('Commision'),
                   TextFormField(
                     controller: controller,
-                    obscureText: true,
                     style: kTextFieldActiveStyle,
                     decoration: kTextFieldDecoration.copyWith(hintText: '0'),
                   ),
@@ -734,7 +752,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   labelText('High Commision'),
                   TextFormField(
                     controller: TextEditingController(),
-                    obscureText: true,
                     style: kTextFieldActiveStyle,
                     decoration: kTextFieldDecoration.copyWith(hintText: '0'),
                   ),
@@ -781,7 +798,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
               children: [
                 TextFormField(
                   controller: controller,
-                  obscureText: true,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(hintText: '0'),
                 ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -124,7 +125,9 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                         showAccountType(_role!)
                       ],
                     )),
-                    materialButton(kBlue, 'View Member List', () {}),
+                    materialButton(kBlue, 'View Member List', () {
+                      Navigator.pushNamed(context, SSSeniorShowMembersList.id);
+                    }),
                   ],
                 ),
               ),
@@ -403,7 +406,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 labelText('Max for Mix Bet'),
                                 TextFormField(
                                   controller: _mixBetController,
-                                  obscureText: true,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -422,7 +424,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 labelText('Max for Single Bet'),
                                 TextFormField(
                                   controller: _singleBetController,
-                                  obscureText: true,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -432,74 +433,72 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                           ),
                         ],
                       ),
-                      // const SizedBox(height: 30.0),
-                      // bigCapText('Single Bet Commision'),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.start,
-                      //   children: [
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           labelText('Commision'),
-                      //           TextFormField(
-                      //             controller: _singleBetCommisionController,
-                      //             obscureText: true,
-                      //             style: kTextFieldActiveStyle,
-                      //             decoration: kTextFieldDecoration.copyWith(
-                      //                 hintText: '0'),
-                      //           ),
-                      //           const SizedBox(height: 10.0),
-                      //           const Text(
-                      //             'Tax: 5',
-                      //             style: TextStyle(fontSize: 12.0),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //     const SizedBox(
-                      //       width: 5.0,
-                      //     ),
-                      //     Expanded(
-                      //       flex: 1,
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           labelText('High Commision'),
-                      //           TextFormField(
-                      //             controller: _singleBetHighCommisionController,
-                      //             obscureText: true,
-                      //             style: kTextFieldActiveStyle,
-                      //             decoration: kTextFieldDecoration.copyWith(
-                      //                 hintText: '0'),
-                      //           ),
-                      //           const SizedBox(height: 10.0),
-                      //           const Text(
-                      //             'High Tax: 8',
-                      //             style: TextStyle(fontSize: 12.0),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ],
-                      // ),
-                      // const SizedBox(height: 30.0),
-                      // bigCapText('Mix Bet Commisions'),
-                      // Column(
-                      //   children: [
-                      //     matchCounts(2, 15, _mixBet2Commision),
-                      //     matchCounts(3, 20, _mixBet3Commision),
-                      //     matchCounts(4, 20, _mixBet4Commision),
-                      //     matchCounts(5, 20, _mixBet5Commision),
-                      //     matchCounts(6, 20, _mixBet6Commision),
-                      //     matchCounts(7, 20, _mixBet7Commision),
-                      //     matchCounts(8, 20, _mixBet8Commision),
-                      //     matchCounts(9, 20, _mixBet9Commision),
-                      //     matchCounts(10, 20, _mixBet10Commision),
-                      //     matchCounts(11, 20, _mixBet11Commision),
-                      //   ],
-                      // ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Single Bet Commision'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Commision'),
+                                TextFormField(
+                                  controller: _singleBetCommisionController,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'Tax: 5',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('High Commision'),
+                                TextFormField(
+                                  controller: _singleBetHighCommisionController,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'High Tax: 8',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Mix Bet Commisions'),
+                      Column(
+                        children: [
+                          matchCounts(2, 15, _mixBet2Commision),
+                          matchCounts(3, 20, _mixBet3Commision),
+                          matchCounts(4, 20, _mixBet4Commision),
+                          matchCounts(5, 20, _mixBet5Commision),
+                          matchCounts(6, 20, _mixBet6Commision),
+                          matchCounts(7, 20, _mixBet7Commision),
+                          matchCounts(8, 20, _mixBet8Commision),
+                          matchCounts(9, 20, _mixBet9Commision),
+                          matchCounts(10, 20, _mixBet10Commision),
+                          matchCounts(11, 20, _mixBet11Commision),
+                        ],
+                      ),
                       const SizedBox(height: 30.0),
                       Container(
                         alignment: Alignment.topRight,
@@ -595,7 +594,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
             children: [
               TextFormField(
                 controller: controller,
-                obscureText: true,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(hintText: '0'),
               ),
