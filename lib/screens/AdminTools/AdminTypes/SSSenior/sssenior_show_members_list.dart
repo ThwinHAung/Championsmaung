@@ -54,7 +54,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _fetchMemberList() async {
-    var url = Uri.parse('https://127.0.0.1:8000/api/getmemberlist');
+    var url = Uri.parse('https://championmaung.com/api/getmemberlist');
     final response = await http.get(
       url,
       headers: {

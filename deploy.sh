@@ -9,7 +9,7 @@ SERVER_ADDRESS="championmaung.com"
 SERVER_PATH="/var/www/html/web"
 
 # Copy the build files to the server
-rsync -av --delete build/web/ $SERVER_USER@$SERVER_ADD RESS:$SERVER_PATH
+rsync -av --delete build/web/ $SERVER_USER@$SERVER_ADDRESS:$SERVER_PATH
 
 
 echo "Deployment completed successfully."

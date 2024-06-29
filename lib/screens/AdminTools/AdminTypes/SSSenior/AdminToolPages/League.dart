@@ -29,7 +29,7 @@ class _LeagueScreenState extends State<LeagueScreen> {
 
   Future<void> _insertLeague() async {
     final response =
-        await http.post(Uri.parse('http://championmaung.com/api/addingleague'),
+        await http.post(Uri.parse('https://championmaung.com/api/addingleague'),
             headers: {
               'Content-Type': 'application/json',
               'Authorization': 'Bearer $_token',
