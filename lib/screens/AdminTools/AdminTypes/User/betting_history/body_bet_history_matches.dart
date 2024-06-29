@@ -158,109 +158,105 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   Widget build(BuildContext context) {
     // Sort matches by time
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
         backgroundColor: kPrimary,
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Body Bet History',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+        centerTitle: true,
+        title: const Text(
+          'Body Bet History',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: Container(
-          color: kPrimary,
-          child: AnimationLimiter(
-            child: SmartRefresher(
-              controller: _refreshController,
-              header: WaterDropHeader(
-                waterDropColor: kBlue,
-                refresh: const MyLoading(),
-                complete: Container(),
-                completeDuration: Duration.zero,
+      ),
+      body: Container(
+        color: kPrimary,
+        child: AnimationLimiter(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: const MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
+            ),
+            onRefresh: () => getData(),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-              onRefresh: () => getData(),
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: body_matches.length,
-                itemBuilder: (context, index) {
-                  Body match = body_matches[index];
-                  bool isLastMatch = index == body_matches.length - 1;
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+              itemCount: body_matches.length,
+              itemBuilder: (context, index) {
+                Body match = body_matches[index];
+                bool isLastMatch = index == body_matches.length - 1;
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: kOnPrimaryContainer,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // League Name Header
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                  child: labelText(match.league_name),
-                                ),
-                                // Matches for the League
-                                radioContainer(match, isLastMatch),
-                              ],
-                            ),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                child: labelText(match.league_name),
+                              ),
+                              // Matches for the League
+                              radioContainer(match, isLastMatch),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              GestureDetector(
-                onTap: () {
-                  // Handle onTap for Home
-                },
-                child: Text(
-                    'Amount = ${body_matches.isNotEmpty ? body_matches[0].amount : ""}'),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Handle onTap for Search
-                },
-                child: Text(
-                    'Winning Amount = ${body_matches.isNotEmpty ? body_matches[0].winingAmount : ""}'),
-              ),
-              GestureDetector(
-                onTap: () {
-                  // Handle onTap for Profile
-                },
-                child: Text(
-                    'Status = ${body_matches.isNotEmpty ? body_matches[0].status : ""}'),
-              ),
-            ],
-          ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Home
+              },
+              child: Text(
+                  'Amount = ${body_matches.isNotEmpty ? body_matches[0].amount : ""}'),
+            ),
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Search
+              },
+              child: Text(
+                  'Winning Amount = ${body_matches.isNotEmpty ? body_matches[0].winingAmount : ""}'),
+            ),
+            GestureDetector(
+              onTap: () {
+                // Handle onTap for Profile
+              },
+              child: Text(
+                  'Status = ${body_matches.isNotEmpty ? body_matches[0].status : ""}'),
+            ),
+          ],
         ),
       ),
     );

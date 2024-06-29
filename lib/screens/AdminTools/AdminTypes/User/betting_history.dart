@@ -159,47 +159,44 @@ class _BettingHistoryState extends State<BettingHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
         backgroundColor: kPrimary,
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Betting History',
-            style: TextStyle(
-              color: konPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+        centerTitle: true,
+        title: const Text(
+          'Betting History',
+          style: TextStyle(
+            color: konPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: Center(
-          child: _widgetOptions.elementAt(_widgetSelectedIndex),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: kPrimary,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Text(
-                '',
-                style: TextStyle(fontSize: 0),
-              ),
-              label: 'BODY',
+      ),
+      body: Center(
+        child: _widgetOptions.elementAt(_widgetSelectedIndex),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: kPrimary,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 0),
             ),
-            BottomNavigationBarItem(
-              icon: Text(
-                '',
-                style: TextStyle(fontSize: 0),
-              ),
-              label: 'MAUNG',
+            label: 'BODY',
+          ),
+          BottomNavigationBarItem(
+            icon: Text(
+              '',
+              style: TextStyle(fontSize: 0),
             ),
-          ],
-          currentIndex: _widgetSelectedIndex,
-          selectedItemColor: kBlue,
-          onTap: _onItemTapped,
-        ),
+            label: 'MAUNG',
+          ),
+        ],
+        currentIndex: _widgetSelectedIndex,
+        selectedItemColor: kBlue,
+        onTap: _onItemTapped,
       ),
     );
   }

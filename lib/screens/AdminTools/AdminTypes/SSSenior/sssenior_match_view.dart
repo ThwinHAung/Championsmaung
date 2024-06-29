@@ -266,86 +266,82 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
     // Extract league names and sort them alphabetically
     List<String> sortedLeagueNames = groupedMatches.keys.toList()..sort();
 
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
         backgroundColor: kPrimary,
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Matches List',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+        centerTitle: true,
+        title: const Text(
+          'Matches List',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: Container(
-          color: kPrimary,
-          child: AnimationLimiter(
-            child: SmartRefresher(
-              controller: _refreshController,
-              header: WaterDropHeader(
-                waterDropColor: kBlue,
-                refresh: const MyLoading(),
-                complete: Container(),
-                completeDuration: Duration.zero,
+      ),
+      body: Container(
+        color: kPrimary,
+        child: AnimationLimiter(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: const MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
+            ),
+            onRefresh: () => getData(),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-              onRefresh: () => getData(),
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: sortedLeagueNames.length,
-                itemBuilder: (context, index) {
-                  String leagueName = sortedLeagueNames[index];
-                  List<Match> leagueMatches = groupedMatches[leagueName]!;
+              itemCount: sortedLeagueNames.length,
+              itemBuilder: (context, index) {
+                String leagueName = sortedLeagueNames[index];
+                List<Match> leagueMatches = groupedMatches[leagueName]!;
 
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10.0),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: kOnPrimaryContainer,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // League Name Header
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                  child: labelText(leagueName),
-                                ),
-                                // Matches for the League
-                                ...leagueMatches.asMap().entries.map((entry) {
-                                  int matchIndex = entry.key;
-                                  Match match = entry.value;
-                                  bool isLastMatch =
-                                      matchIndex == leagueMatches.length - 1;
-                                  return radioContainer(match, isLastMatch);
-                                }),
-                              ],
-                            ),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                                child: labelText(leagueName),
+                              ),
+                              // Matches for the League
+                              ...leagueMatches.asMap().entries.map((entry) {
+                                int matchIndex = entry.key;
+                                Match match = entry.value;
+                                bool isLastMatch =
+                                    matchIndex == leagueMatches.length - 1;
+                                return radioContainer(match, isLastMatch);
+                              }),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  );
-                },
-              ),
+                  ),
+                );
+              },
             ),
           ),
         ),

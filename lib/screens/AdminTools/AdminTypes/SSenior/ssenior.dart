@@ -125,119 +125,115 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
         backgroundColor: kPrimary,
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: Text(
-            'CHAMPION MAUNG ($_role)',
-            style: const TextStyle(
-              color: konPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+        centerTitle: true,
+        title: Text(
+          'CHAMPION MAUNG ($_role)',
+          style: const TextStyle(
+            color: konPrimary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: Container(
-          color: kPrimary,
-          child: AnimationLimiter(
-            child: ListView.builder(
-                padding: EdgeInsets.all(w / 50),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: list.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+      ),
+      body: Container(
+        color: kPrimary,
+        child: AnimationLimiter(
+          child: ListView.builder(
+              padding: EdgeInsets.all(w / 50),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Container(
-                          alignment: Alignment.topLeft,
-                          margin: EdgeInsets.only(bottom: w / 30),
-                          height: h / 5.5,
-                          decoration: const BoxDecoration(
-                            color: kOnPrimaryContainer,
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          list[index],
-                                          style: kTextFieldActiveStyle,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Container(
+                        alignment: Alignment.topLeft,
+                        margin: EdgeInsets.only(bottom: w / 30),
+                        height: h / 5.5,
+                        decoration: const BoxDecoration(
+                          color: kOnPrimaryContainer,
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        list[index],
+                                        style: kTextFieldActiveStyle,
+                                      ),
+                                      Text(
+                                        index == 1 && _balance != null
+                                            ? _balance!.toStringAsFixed(2)
+                                            : '0', // Display 'Loading...' while balance is being fetched
+                                        style: const TextStyle(
+                                          fontSize: 35,
+                                          color: kBlue,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(
-                                          index == 1 && _balance != null
-                                              ? _balance!.toStringAsFixed(2)
-                                              : '0', // Display 'Loading...' while balance is being fetched
-                                          style: const TextStyle(
-                                            fontSize: 35,
-                                            color: kBlue,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                Expanded(
-                                  child: Container(
-                                    alignment: Alignment.center,
-                                    child: showIcons[index],
-                                  ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  child: showIcons[index],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                  );
-                }),
-          ),
-        ),
-        drawer: Drawer(
-          child: Padding(
-            padding: const EdgeInsets.only(top: 30),
-            child: ListView.builder(
-              itemCount: drawerList.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(
-                    drawerList[index],
-                    style: const TextStyle(
-                      color: kBlue,
-                      fontWeight: FontWeight.w500,
-                    ),
                   ),
-                  onTap: () {
-                    if (drawerRoutes[index] == 'logout') {
-                      _logout();
-                    } else {
-                      Navigator.pushNamed(context, drawerRoutes[index]);
-                    }
-                  },
                 );
-              },
-            ),
+              }),
+        ),
+      ),
+      drawer: Drawer(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: ListView.builder(
+            itemCount: drawerList.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(
+                  drawerList[index],
+                  style: const TextStyle(
+                    color: kBlue,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                onTap: () {
+                  if (drawerRoutes[index] == 'logout') {
+                    _logout();
+                  } else {
+                    Navigator.pushNamed(context, drawerRoutes[index]);
+                  }
+                },
+              );
+            },
           ),
         ),
       ),
