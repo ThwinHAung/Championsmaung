@@ -138,7 +138,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _deleteMatch(int matchId) async {
-    var url = Uri.parse('https://www.championmaung.com/api/deleteMatch');
+    var url = Uri.parse('https://www.championmaung.comapi/deleteMatch');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',

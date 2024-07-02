@@ -16,13 +16,16 @@ class SSeniorMembers extends StatefulWidget {
 }
 
 class _SSeniorMembersState extends State<SSeniorMembers> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _balanceController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
-  final TextEditingController _mixBetController = TextEditingController();
-  final TextEditingController _singleBetController = TextEditingController();
+  final TextEditingController _maxMixBetController = TextEditingController();
+  final TextEditingController _maxSingleBetController = TextEditingController();
+  final TextEditingController _sharePercentageController =
+      TextEditingController();
   final TextEditingController _singleBetCommisionController =
       TextEditingController();
   final TextEditingController _singleBetHighCommisionController =
@@ -56,13 +59,15 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
     _balanceController.dispose();
     _confirmPasswordController.dispose();
 
-    _mixBetController.dispose();
-    _singleBetController.dispose();
+    _maxMixBetController.dispose();
+    _maxSingleBetController.dispose();
+    _sharePercentageController.dispose();
     _singleBetCommisionController.dispose();
     _singleBetHighCommisionController.dispose();
     _mixBet2Commision.dispose();
@@ -334,7 +339,14 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                         ),
                       ),
                       const SizedBox(height: 20.0),
-                      bigCapText('Basic Info'),
+                      labelText('Name'),
+                      TextFormField(
+                        controller: _nameController,
+                        style: kTextFieldActiveStyle,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter Name'),
+                      ),
+                      const SizedBox(height: 10.0),
                       labelText('Phone Number'),
                       TextFormField(
                         controller: _phoneNumberController,
@@ -342,9 +354,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter phone number'),
                       ),
-                      const SizedBox(
-                        height: 10.0,
-                      ),
+                      const SizedBox(height: 10.0),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
@@ -405,10 +415,15 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Max for Mix Bet'),
                                 TextFormField(
-                                  controller: _mixBetController,
+                                  controller: _maxMixBetController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'Max Bet Amount for Mix Bet : 000000',
+                                  style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
                             ),
@@ -423,13 +438,32 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Max for Single Bet'),
                                 TextFormField(
-                                  controller: _singleBetController,
+                                  controller: _maxSingleBetController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
                                 ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'Max Bet Amount for Single Bet : 000000',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
                               ],
                             ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Share Detail'),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          labelText('Share Percentage'),
+                          TextFormField(
+                            controller: _sharePercentageController,
+                            style: kTextFieldActiveStyle,
+                            decoration:
+                                kTextFieldDecoration.copyWith(hintText: '0'),
                           ),
                         ],
                       ),
