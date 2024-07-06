@@ -198,7 +198,6 @@ const List<String> userDropdownItems = [
 
 String? league_value;
 String? team_value;
-String? specialOdd_calcualte_value;
 String? overUnder_calculate_value;
 String? specialOdd_goals;
 String? overUnder_goals;
@@ -241,8 +240,8 @@ List<Map<String, String>> specialOddTeam = [
 ];
 
 List<Map<String, String>> calculatingSigns = [
-  {'name': '+', 'value': '1'},
-  {'name': '-', 'value': '2'},
+  {'name': '+', 'value': '0'},
+  {'name': '-', 'value': '1'},
 ];
 Widget listTitleText(String listTitleText) {
   return Text(

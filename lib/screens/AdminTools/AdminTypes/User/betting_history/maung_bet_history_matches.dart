@@ -122,8 +122,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
   }
 
   Future<void> _fetchBetDetails(int betId) async {
-    var url = Uri.parse(
-        'https://www.championmaung.com/api/getAccumulatorBetSlip/$betId');
+    var url = Uri.parse('http://127.0.0.1:8000/getAccumulatorBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

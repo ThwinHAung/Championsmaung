@@ -50,29 +50,29 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   final TextEditingController _maxSingleBetController = TextEditingController();
   final TextEditingController _sharePercentageController =
       TextEditingController();
-  final TextEditingController _singleBetCommisionController =
+  final TextEditingController _singleBetCommissionController =
       TextEditingController();
-  final TextEditingController _singleBetHighCommisionController =
+  final TextEditingController _singleBetHighCommissionController =
       TextEditingController();
-  final TextEditingController _mixBet2Commision =
+  final TextEditingController _mixBet2Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet3Commision =
+  final TextEditingController _mixBet3Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet4Commision =
+  final TextEditingController _mixBet4Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet5Commision =
+  final TextEditingController _mixBet5Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet6Commision =
+  final TextEditingController _mixBet6Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet7Commision =
+  final TextEditingController _mixBet7Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet8Commision =
+  final TextEditingController _mixBet8Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet9Commision =
+  final TextEditingController _mixBet9Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet10Commision =
+  final TextEditingController _mixBet10Commission =
       TextEditingController(text: '0');
-  final TextEditingController _mixBet11Commision =
+  final TextEditingController _mixBet11Commission =
       TextEditingController(text: '0');
   final storage = const FlutterSecureStorage();
 
@@ -112,18 +112,18 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     _maxSingleBetController.dispose();
     _sharePercentageController.dispose();
 
-    _singleBetCommisionController.dispose();
-    _singleBetHighCommisionController.dispose();
-    _mixBet2Commision.dispose();
-    _mixBet3Commision.dispose();
-    _mixBet4Commision.dispose();
-    _mixBet5Commision.dispose();
-    _mixBet6Commision.dispose();
-    _mixBet7Commision.dispose();
-    _mixBet8Commision.dispose();
-    _mixBet9Commision.dispose();
-    _mixBet10Commision.dispose();
-    _mixBet11Commision.dispose();
+    _singleBetCommissionController.dispose();
+    _singleBetHighCommissionController.dispose();
+    _mixBet2Commission.dispose();
+    _mixBet3Commission.dispose();
+    _mixBet4Commission.dispose();
+    _mixBet5Commission.dispose();
+    _mixBet6Commission.dispose();
+    _mixBet7Commission.dispose();
+    _mixBet8Commission.dispose();
+    _mixBet9Commission.dispose();
+    _mixBet10Commission.dispose();
+    _mixBet11Commission.dispose();
     super.dispose();
   }
 
@@ -145,7 +145,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<List<TaxData>> _fetchTaxData() async {
-    var url = Uri.parse('https://www.championmaung.com/api/retrievetaxes');
+    var url = Uri.parse('http://127.0.0.1:8000/api/retrievetaxes');
     try {
       final response = await http.get(url, headers: {
         'Accept': 'application/json',
@@ -166,10 +166,11 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<void> _register() async {
-    var url = Uri.parse('https://www.championmaung.com/api/register');
+    var url = Uri.parse('http://127.0.0.1:8000/api/register');
     var response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
+      'realname': '',
       'username': selectedValue,
       'password': _passwordController.text,
       'password_confirmation': _confirmPasswordController.text,
@@ -328,7 +329,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
   Future<void> _insertCommission(
       int userId, int matchCountId, String percent) async {
-    var url = Uri.parse('https://www.championmaung.com/api/commissions');
+    var url = Uri.parse('http://127.0.0.1:8000/api/commissions');
     var response = await http.post(url,
         headers: {
           'Authorization': 'Bearer $_token',
@@ -689,7 +690,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                               children: [
                                 labelText('Commision'),
                                 TextFormField(
-                                  controller: _singleBetCommisionController,
+                                  controller: _singleBetCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -712,7 +713,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                               children: [
                                 labelText('High Commision'),
                                 TextFormField(
-                                  controller: _singleBetHighCommisionController,
+                                  controller:
+                                      _singleBetHighCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -731,16 +733,16 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                       bigCapText('Mix Bet Commisions'),
                       Column(
                         children: [
-                          matchCounts(2, 15, _mixBet2Commision.toString()),
-                          matchCounts(3, 20, _mixBet3Commision.toString()),
-                          matchCounts(4, 20, _mixBet4Commision.toString()),
-                          matchCounts(5, 20, _mixBet5Commision.toString()),
-                          matchCounts(6, 20, _mixBet6Commision.toString()),
-                          matchCounts(7, 20, _mixBet7Commision.toString()),
-                          matchCounts(8, 20, _mixBet8Commision.toString()),
-                          matchCounts(9, 20, _mixBet9Commision.toString()),
-                          matchCounts(10, 20, _mixBet10Commision.toString()),
-                          matchCounts(11, 20, _mixBet11Commision.toString()),
+                          matchCounts(2, 15, _mixBet2Commission.toString()),
+                          matchCounts(3, 20, _mixBet3Commission.toString()),
+                          matchCounts(4, 20, _mixBet4Commission.toString()),
+                          matchCounts(5, 20, _mixBet5Commission.toString()),
+                          matchCounts(6, 20, _mixBet6Commission.toString()),
+                          matchCounts(7, 20, _mixBet7Commission.toString()),
+                          matchCounts(8, 20, _mixBet8Commission.toString()),
+                          matchCounts(9, 20, _mixBet9Commission.toString()),
+                          matchCounts(10, 20, _mixBet10Commission.toString()),
+                          matchCounts(11, 20, _mixBet11Commission.toString()),
                         ],
                       ),
                       const SizedBox(height: 30.0),

@@ -100,7 +100,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _fetchMatches() async {
-    var url = Uri.parse('https://www.championmaung.com/api/retrieve_match');
+    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -115,7 +115,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   Future<void> _editMatch(int matchId) async {
     final response = await http.put(
-        Uri.parse('https://www.championmaung.com/api/editMatches/$matchId'),
+        Uri.parse('http://127.0.0.1:8000/api/editMatches/$matchId'),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $_token',
@@ -138,7 +138,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _deleteMatch(int matchId) async {
-    var url = Uri.parse('https://www.championmaung.com/api/deleteMatch');
+    var url = Uri.parse('http://127.0.0.1:8000/api/deleteMatch');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    var url = Uri.parse('https://www.championmaung.com/api/matchupdateStatus');
+    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',

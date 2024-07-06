@@ -28,15 +28,15 @@ class _LeagueScreenState extends State<LeagueScreen> {
   }
 
   Future<void> _insertLeague() async {
-    final response = await http.post(
-        Uri.parse('https://www.championmaung.com/api/addingleague'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_token',
-        },
-        body: json.encode({
-          'name': _leagueNameController.text,
-        }));
+    final response =
+        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingleague'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'name': _leagueNameController.text,
+            }));
     if (response.statusCode == 200) {
       Navigator.pop(context);
       showDialog(
