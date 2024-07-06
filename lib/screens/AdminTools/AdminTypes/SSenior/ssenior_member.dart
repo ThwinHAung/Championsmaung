@@ -676,6 +676,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
       'Accept': 'Application/json',
       'Authorization': 'Bearer $_token',
     }, body: {
+      'realname': _nameController.text,
       'username': _username! + selectedValue1! + selectedValue2!,
       'password': _passwordController.text,
       'password_confirmation': _confirmPasswordController.text,

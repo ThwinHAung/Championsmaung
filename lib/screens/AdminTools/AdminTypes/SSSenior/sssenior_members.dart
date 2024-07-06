@@ -170,7 +170,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     var response = await http.post(url, headers: {
       'Authorization': 'Bearer $_token',
     }, body: {
-      'realname': '',
+      'realname': _nameController.text,
       'username': selectedValue,
       'password': _passwordController.text,
       'password_confirmation': _confirmPasswordController.text,
