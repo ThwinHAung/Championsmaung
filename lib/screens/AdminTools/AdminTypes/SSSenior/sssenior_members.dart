@@ -76,6 +76,9 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       TextEditingController(text: '0');
   final storage = const FlutterSecureStorage();
 
+  bool _passwordObsecureText = true;
+  bool _confirmPasswordObsecureText = true;
+
   String? selectedValue;
   String? _token;
   String? _username;
@@ -545,10 +548,24 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                 labelText('Password'),
                                 TextFormField(
                                   controller: _passwordController,
-                                  obscureText: true,
+                                  obscureText: _passwordObsecureText,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
-                                      hintText: 'Enter password'),
+                                    hintText: 'Enter password',
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _passwordObsecureText
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _passwordObsecureText =
+                                              !_passwordObsecureText;
+                                        });
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -564,15 +581,37 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                 labelText('Confirm Password'),
                                 TextFormField(
                                   controller: _confirmPasswordController,
-                                  obscureText: true,
+                                  obscureText: _confirmPasswordObsecureText,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
-                                      hintText: 'Confirm password'),
+                                    hintText: 'Confirm password',
+                                    suffixIcon: IconButton(
+                                      icon: Icon(
+                                        _confirmPasswordObsecureText
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
+                                      ),
+                                      onPressed: () {
+                                        setState(() {
+                                          _confirmPasswordObsecureText =
+                                              !_confirmPasswordObsecureText;
+                                        });
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 10.0),
+                      labelText('Starting Balance'),
+                      TextFormField(
+                        controller: _balanceController,
+                        style: kTextFieldActiveStyle,
+                        decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter Starting Balance'),
                       ),
                       const SizedBox(height: 30.0),
                       bigCapText('Bet Limitation'),

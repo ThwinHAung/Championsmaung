@@ -22,6 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _passwordController = TextEditingController();
   bool _rememberMe = false;
   bool _isLoading = false;
+  bool _passwordObsecureText = true;
 
   @override
   void initState() {
@@ -88,11 +89,26 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10.0,
               ),
+              labelText('Confirm Password'),
               TextFormField(
                 controller: _passwordController,
+                obscureText: _passwordObsecureText,
                 style: kTextFieldActiveStyle,
-                decoration: kTextFieldDecoration,
-                obscureText: true,
+                decoration: kTextFieldDecoration.copyWith(
+                  hintText: 'Confirm password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _passwordObsecureText
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _passwordObsecureText = !_passwordObsecureText;
+                      });
+                    },
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 10.0,

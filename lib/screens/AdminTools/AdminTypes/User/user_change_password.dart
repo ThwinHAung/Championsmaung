@@ -20,6 +20,10 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
 
+  bool _currentPasswordObsecureText = true;
+  bool _newPasswordObsecureText = true;
+  bool _confirmNewPasswordObsecureText = true;
+
   @override
   void initState() {
     _getToken();
@@ -85,25 +89,66 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                 const SizedBox(height: 10.0),
                 TextFormField(
                   controller: _currentPasswordController,
+                  obscureText: _currentPasswordObsecureText,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter Current Password',
+                    hintText: 'Enter Current password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _currentPasswordObsecureText
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _currentPasswordObsecureText =
+                              !_currentPasswordObsecureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _newPasswordController,
+                  obscureText: _newPasswordObsecureText,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Enter New Password',
+                    hintText: 'Enter New password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _newPasswordObsecureText
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _newPasswordObsecureText = !_newPasswordObsecureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 5.0),
                 TextFormField(
                   controller: _confirmPasswordController,
+                  obscureText: _confirmNewPasswordObsecureText,
                   style: kTextFieldActiveStyle,
                   decoration: kTextFieldDecoration.copyWith(
-                    hintText: 'Confirm New Password',
+                    hintText: 'Confirm New password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _confirmNewPasswordObsecureText
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _confirmNewPasswordObsecureText =
+                              !_confirmNewPasswordObsecureText;
+                        });
+                      },
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10.0),
