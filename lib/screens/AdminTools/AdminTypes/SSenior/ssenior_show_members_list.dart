@@ -23,6 +23,13 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
   String? _token;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+  }
+
+  @override
   void initState() {
     _getToken();
     super.initState();

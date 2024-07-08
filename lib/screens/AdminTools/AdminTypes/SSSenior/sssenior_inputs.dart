@@ -45,7 +45,20 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     _specialOddController.dispose();
     _homeTeamController.dispose();
     _awayTeamController.dispose();
+    league_value = null;
+    team_value = null;
+    specialOdd_goals = null;
+    specialOdd_calculate_value = null;
+    overUnder_goals = null;
+    overUnder_calculate_value = null;
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
   }
 
   Future<void> _getToken() async {
@@ -818,11 +831,6 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     if (response.statusCode == 200) {
       Navigator.pop(context);
 
-      _homeTeamController.clear();
-      _awayTeamController.clear();
-      _specialOddController.clear();
-      _overUnderOddController.clear();
-
       final responseData = json.decode(response.body);
       final message = responseData['message'];
       print(message);
@@ -851,6 +859,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
+                      _homeTeamController.clear();
+                      _awayTeamController.clear();
+                      _specialOddController.clear();
+                      _overUnderOddController.clear();
                       Navigator.pop(context);
                     })),
               ],

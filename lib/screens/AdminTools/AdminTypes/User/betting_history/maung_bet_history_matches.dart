@@ -114,6 +114,13 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null && betId != null) {
