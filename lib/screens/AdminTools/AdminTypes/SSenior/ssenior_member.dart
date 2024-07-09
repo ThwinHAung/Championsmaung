@@ -26,20 +26,30 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   final TextEditingController _maxSingleBetController = TextEditingController();
   final TextEditingController _sharePercentageController =
       TextEditingController();
-  final TextEditingController _singleBetCommisionController =
+  final TextEditingController _singleBetCommissionController =
       TextEditingController();
-  final TextEditingController _singleBetHighCommisionController =
+  final TextEditingController _singleBetHighCommissionController =
       TextEditingController();
-  final TextEditingController _mixBet2Commision = TextEditingController();
-  final TextEditingController _mixBet3Commision = TextEditingController();
-  final TextEditingController _mixBet4Commision = TextEditingController();
-  final TextEditingController _mixBet5Commision = TextEditingController();
-  final TextEditingController _mixBet6Commision = TextEditingController();
-  final TextEditingController _mixBet7Commision = TextEditingController();
-  final TextEditingController _mixBet8Commision = TextEditingController();
-  final TextEditingController _mixBet9Commision = TextEditingController();
-  final TextEditingController _mixBet10Commision = TextEditingController();
-  final TextEditingController _mixBet11Commision = TextEditingController();
+  final TextEditingController _mixBet2CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet3CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet4CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet5CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet6CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet7CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet8CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet9CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet10CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet11CommissionController =
+      TextEditingController();
   final storage = const FlutterSecureStorage();
 
   bool _passwordObsecureText = true;
@@ -51,11 +61,15 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
   String? _token;
   String? _username;
   String? _role;
+  String? _maxSingleBet;
+  String? _maxMixBet;
 
   @override
   void initState() {
     _role = 'Loading...';
     _username = 'Loading...';
+    _maxSingleBet = 'Loading...';
+    _maxMixBet = 'Loading...';
     _getToken();
     super.initState();
   }
@@ -71,18 +85,18 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
     _sharePercentageController.dispose();
-    _singleBetCommisionController.dispose();
-    _singleBetHighCommisionController.dispose();
-    _mixBet2Commision.dispose();
-    _mixBet3Commision.dispose();
-    _mixBet4Commision.dispose();
-    _mixBet5Commision.dispose();
-    _mixBet6Commision.dispose();
-    _mixBet7Commision.dispose();
-    _mixBet8Commision.dispose();
-    _mixBet9Commision.dispose();
-    _mixBet10Commision.dispose();
-    _mixBet11Commision.dispose();
+    _singleBetCommissionController.dispose();
+    _singleBetHighCommissionController.dispose();
+    _mixBet2CommissionController.dispose();
+    _mixBet3CommissionController.dispose();
+    _mixBet4CommissionController.dispose();
+    _mixBet5CommissionController.dispose();
+    _mixBet6CommissionController.dispose();
+    _mixBet7CommissionController.dispose();
+    _mixBet8CommissionController.dispose();
+    _mixBet9CommissionController.dispose();
+    _mixBet10CommissionController.dispose();
+    _mixBet11CommissionController.dispose();
     super.dispose();
   }
 
@@ -112,6 +126,32 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
       setState(() {
         _role = role;
         _username = username;
+      });
+      if (_token != null && _username != null) {
+        _getMaxBetAmount(_username!);
+      }
+    }
+  }
+
+  Future<void> _getMaxBetAmount(String username) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $_token',
+    });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        _maxSingleBet = data['maxSingleBet'].toString();
+        _maxMixBet = data['maxMixBet'].toString();
+      });
+    } else {
+      print(response.body);
+      setState(() {
+        _maxSingleBet = 'Error fetching data';
+        _maxMixBet = 'Error fetching data';
       });
     }
   }
@@ -469,8 +509,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                       hintText: '0'),
                                 ),
                                 const SizedBox(height: 10.0),
-                                const Text(
-                                  'Max Bet Amount for Mix Bet : 000000',
+                                Text(
+                                  'Max Bet Amount for Mix Bet : $_maxSingleBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -492,8 +532,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                       hintText: '0'),
                                 ),
                                 const SizedBox(height: 10.0),
-                                const Text(
-                                  'Max Bet Amount for Single Bet : 000000',
+                                Text(
+                                  'Max Bet Amount for Single Bet : $_maxMixBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -527,7 +567,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Commision'),
                                 TextFormField(
-                                  controller: _singleBetCommisionController,
+                                  controller: _singleBetCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -550,7 +590,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('High Commision'),
                                 TextFormField(
-                                  controller: _singleBetHighCommisionController,
+                                  controller:
+                                      _singleBetHighCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -569,16 +610,16 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                       bigCapText('Mix Bet Commisions'),
                       Column(
                         children: [
-                          matchCounts(2, 15, _mixBet2Commision),
-                          matchCounts(3, 20, _mixBet3Commision),
-                          matchCounts(4, 20, _mixBet4Commision),
-                          matchCounts(5, 20, _mixBet5Commision),
-                          matchCounts(6, 20, _mixBet6Commision),
-                          matchCounts(7, 20, _mixBet7Commision),
-                          matchCounts(8, 20, _mixBet8Commision),
-                          matchCounts(9, 20, _mixBet9Commision),
-                          matchCounts(10, 20, _mixBet10Commision),
-                          matchCounts(11, 20, _mixBet11Commision),
+                          matchCounts(2, 15, _mixBet2CommissionController),
+                          matchCounts(3, 20, _mixBet3CommissionController),
+                          matchCounts(4, 20, _mixBet4CommissionController),
+                          matchCounts(5, 20, _mixBet5CommissionController),
+                          matchCounts(6, 20, _mixBet6CommissionController),
+                          matchCounts(7, 20, _mixBet7CommissionController),
+                          matchCounts(8, 20, _mixBet8CommissionController),
+                          matchCounts(9, 20, _mixBet9CommissionController),
+                          matchCounts(10, 20, _mixBet10CommissionController),
+                          matchCounts(11, 20, _mixBet11CommissionController),
                         ],
                       ),
                       const SizedBox(height: 30.0),
@@ -689,17 +730,36 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
 
   Future<void> _register() async {
     var url = Uri.parse('http://127.0.0.1:8000/api/register');
-    var response = await http.post(url, headers: {
-      'Accept': 'Application/json',
-      'Authorization': 'Bearer $_token',
-    }, body: {
-      'realname': _nameController.text,
-      'username': _username! + selectedValue1! + selectedValue2!,
-      'password': _passwordController.text,
-      'password_confirmation': _confirmPasswordController.text,
-      'phone_number': _phoneNumberController.text,
-      'balance': _balanceController.text,
-    });
+    var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $_token',
+      },
+      body: jsonEncode({
+        'realname': _nameController.text,
+        'username': _username! + selectedValue1! + selectedValue2!,
+        'password': _passwordController.text,
+        'password_confirmation': _confirmPasswordController.text,
+        'phone_number': _phoneNumberController.text,
+        'balance': _balanceController.text,
+        'maxSingleBet': _maxSingleBetController.text,
+        'maxMixBet': _maxMixBetController.text,
+        'high': _singleBetHighCommissionController.text,
+        'low': _singleBetCommissionController.text,
+        'mixBet2Commission': _mixBet2CommissionController.text,
+        'mixBet3Commission': _mixBet3CommissionController.text,
+        'mixBet4Commission': _mixBet4CommissionController.text,
+        'mixBet5Commission': _mixBet5CommissionController.text,
+        'mixBet6Commission': _mixBet6CommissionController.text,
+        'mixBet7Commission': _mixBet7CommissionController.text,
+        'mixBet8Commission': _mixBet8CommissionController.text,
+        'mixBet9Commission': _mixBet9CommissionController.text,
+        'mixBet10Commission': _mixBet10CommissionController.text,
+        'mixBet11Commission': _mixBet11CommissionController.text,
+      }),
+    );
 
     if (response.statusCode == 200) {
       showDialog(
@@ -711,41 +771,47 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
             Row(
               children: [
                 Expanded(flex: 1, child: Container()),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
-                    flex: 1,
-                    child: materialButton(kBlue, 'OK', () {
-                      _resetDropdown();
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    })),
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    _resetDropdown();
+                    Navigator.pop(context);
+                  }),
+                ),
               ],
             ),
           ],
         ),
-      );
+      ).then((_) {
+        Navigator.pop(context);
+      });
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final Map<String, dynamic> errors = responseData['errors'];
+      final Map<String, dynamic> errors = responseData['message'];
+      print(response.body);
+      print(errors);
       String errorMessage = "";
       errors.forEach((key, value) {
         errorMessage += "$key: $value\n";
       });
+
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: const Text('Errors'),
+          title: const Text('Error'),
           content: Text(errorMessage),
           actions: <Widget>[
             Row(
               children: [
                 Expanded(flex: 1, child: Container()),
-                SizedBox(width: 5.0),
+                const SizedBox(width: 5.0),
                 Expanded(
-                    flex: 1,
-                    child: materialButton(kBlue, 'OK', () {
-                      Navigator.pop(context);
-                    })),
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
               ],
             ),
           ],

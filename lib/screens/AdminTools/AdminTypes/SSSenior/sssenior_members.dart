@@ -8,29 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-class TaxData {
-  final int id; // ID from the taxes table
-  final int matchCount;
-  final double taxRate;
-  final String? calculateOn;
-
-  TaxData({
-    required this.id,
-    required this.matchCount,
-    required this.taxRate,
-    this.calculateOn,
-  });
-
-  factory TaxData.fromJson(Map<String, dynamic> json) {
-    return TaxData(
-      id: json['id'],
-      matchCount: json['match_count'],
-      taxRate: double.parse(json['tax_rate']),
-      calculateOn: json['calculateOn'],
-    );
-  }
-}
-
 class SSSeniorMembers extends StatefulWidget {
   static String id = 'sssenior_member_page';
   const SSSeniorMembers({super.key});
@@ -54,26 +31,26 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
       TextEditingController();
   final TextEditingController _singleBetHighCommissionController =
       TextEditingController();
-  final TextEditingController _mixBet2Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet3Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet4Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet5Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet6Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet7Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet8Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet9Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet10Commission =
-      TextEditingController(text: '0');
-  final TextEditingController _mixBet11Commission =
-      TextEditingController(text: '0');
+  final TextEditingController _mixBet2CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet3CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet4CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet5CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet6CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet7CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet8CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet9CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet10CommissionController =
+      TextEditingController();
+  final TextEditingController _mixBet11CommissionController =
+      TextEditingController();
   final storage = const FlutterSecureStorage();
 
   bool _passwordObsecureText = true;
@@ -83,15 +60,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   String? _token;
   String? _username;
   String? _role;
-  late Future<List<TaxData>> futureTaxData = Future.value([]);
   List<TextEditingController> commissionControllers = [];
-
-  void createControllers(List<TaxData> taxDataList) {
-    commissionControllers.clear(); // Clear existing controllers
-    for (var i = 0; i < taxDataList.length; i++) {
-      commissionControllers.add(TextEditingController(text: '0'));
-    }
-  }
 
   @override
   void initState() {
@@ -114,16 +83,16 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
     _singleBetCommissionController.dispose();
     _singleBetHighCommissionController.dispose();
-    _mixBet2Commission.dispose();
-    _mixBet3Commission.dispose();
-    _mixBet4Commission.dispose();
-    _mixBet5Commission.dispose();
-    _mixBet6Commission.dispose();
-    _mixBet7Commission.dispose();
-    _mixBet8Commission.dispose();
-    _mixBet9Commission.dispose();
-    _mixBet10Commission.dispose();
-    _mixBet11Commission.dispose();
+    _mixBet2CommissionController.dispose();
+    _mixBet3CommissionController.dispose();
+    _mixBet4CommissionController.dispose();
+    _mixBet5CommissionController.dispose();
+    _mixBet6CommissionController.dispose();
+    _mixBet7CommissionController.dispose();
+    _mixBet8CommissionController.dispose();
+    _mixBet9CommissionController.dispose();
+    _mixBet10CommissionController.dispose();
+    _mixBet11CommissionController.dispose();
     super.dispose();
   }
 
@@ -146,10 +115,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
         _username = username;
       });
     }
-
-    if (_token != null) {
-      futureTaxData = _fetchTaxData();
-    }
   }
 
   void _resetDropdown() {
@@ -158,45 +123,40 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     });
   }
 
-  Future<List<TaxData>> _fetchTaxData() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrievetaxes');
-    try {
-      final response = await http.get(url, headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      });
-
-      if (response.statusCode == 200) {
-        List<dynamic> data = json.decode(response.body);
-        return data.map((item) => TaxData.fromJson(item)).toList();
-      } else {
-        // Handle other status codes appropriately, maybe return an empty list
-        return [];
-      }
-    } catch (e) {
-      // Handle any exceptions that occur during the request
-      return [];
-    }
-  }
-
   Future<void> _register() async {
     var url = Uri.parse('http://127.0.0.1:8000/api/register');
-    var response = await http.post(url, headers: {
-      'Authorization': 'Bearer $_token',
-    }, body: {
-      'realname': _nameController.text,
-      'username': selectedValue,
-      'password': _passwordController.text,
-      'password_confirmation': _confirmPasswordController.text,
-      'phone_number': _phoneNumberController.text,
-      'balance': _balanceController.text,
-    });
+    var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $_token',
+      },
+      body: jsonEncode({
+        'realname': _nameController.text,
+        'username': selectedValue,
+        'password': _passwordController.text,
+        'password_confirmation': _confirmPasswordController.text,
+        'phone_number': _phoneNumberController.text,
+        'balance': _balanceController.text,
+        'maxSingleBet': _maxSingleBetController.text,
+        'maxMixBet': _maxMixBetController.text,
+        'high': _singleBetHighCommissionController.text,
+        'low': _singleBetCommissionController.text,
+        'mixBet2Commission': _mixBet2CommissionController.text,
+        'mixBet3Commission': _mixBet3CommissionController.text,
+        'mixBet4Commission': _mixBet4CommissionController.text,
+        'mixBet5Commission': _mixBet5CommissionController.text,
+        'mixBet6Commission': _mixBet6CommissionController.text,
+        'mixBet7Commission': _mixBet7CommissionController.text,
+        'mixBet8Commission': _mixBet8CommissionController.text,
+        'mixBet9Commission': _mixBet9CommissionController.text,
+        'mixBet10Commission': _mixBet10CommissionController.text,
+        'mixBet11Commission': _mixBet11CommissionController.text,
+      }),
+    );
 
     if (response.statusCode == 200) {
-      // int userId = json.decode(response.body)['user_id'];
-      // Insert commissions and their IDs if needed
-
-      // Show success dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -205,10 +165,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
           actions: <Widget>[
             Row(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
+                Expanded(flex: 1, child: Container()),
                 const SizedBox(width: 5.0),
                 Expanded(
                   flex: 1,
@@ -222,18 +179,18 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
           ],
         ),
       ).then((_) {
-        // Navigate back after dialog is closed
         Navigator.pop(context);
       });
     } else {
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final Map<String, dynamic> errors = responseData['errors'];
+      final Map<String, dynamic> errors = responseData['message'];
+      print(response.body);
+      print(errors);
       String errorMessage = "";
       errors.forEach((key, value) {
         errorMessage += "$key: $value\n";
       });
 
-      // Show error dialog
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -242,144 +199,15 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
           actions: <Widget>[
             Row(
               children: [
-                Expanded(
-                  flex: 1,
-                  child: Container(),
-                ),
+                Expanded(flex: 1, child: Container()),
                 const SizedBox(width: 5.0),
                 Expanded(
-                    flex: 1,
-                    child: materialButton(kBlue, 'OK', () {
-                      Navigator.pop(context);
-                    }))
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
               ],
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  // Future<void> _register() async {
-  //   var url = Uri.parse('http://127.0.0.1:8000/api/register');
-  //   var response = await http.post(url, headers: {
-  //     'Authorization': 'Bearer $_token',
-  //   }, body: {
-  //     'username': selectedValue,
-  //     'password': _passwordController.text,
-  //     'password_confirmation': _confirmPasswordController.text,
-  //     'phone_number': _phoneNumberController.text,
-  //     'balance': _balanceController.text,
-  //   });
-
-  //   if (response.statusCode == 200) {
-  //     int userId = json.decode(response.body)['user_id'];
-
-  //     // Insert commissions and their IDs
-  //     // List<Map<String, dynamic>> commissionsList = [];
-  //     //
-  //     // List<TaxData> taxDataList = await futureTaxData;
-  //     //
-  //     // for (int i = 0; i < taxDataList.length; i++) {
-  //     //   TaxData taxData = taxDataList[i];
-  //     //   TextEditingController controller = commissionControllers[i];
-  //     //   if (controller.text.isNotEmpty) {
-  //     //     commissionsList.add({
-  //     //       'user_id': userId,
-  //     //       'match_count': taxData.id,
-  //     //       'percent': controller.text, // Use the controller value here
-  //     //     });
-  //     //   }
-  //     // }
-  //     //
-  //     // var commissionsUrl =
-  //     //     Uri.parse('http://127.0.0.1:8000/api/addingCommissions');
-  //     // var commissionsResponse = await http.post(commissionsUrl, headers: {
-  //     //   'Authorization': 'Bearer $_token',
-  //     // }, body: {
-  //     //   'commissions': json.encode(commissionsList),
-  //     // });
-  //     // if (response.statusCode == 200) {
-  //     //   print('hello');
-  //     // } else {
-  //     //   print(response.body);
-  //     // }
-
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text('Succeed.'),
-  //         content: const Text('Click OK to close this dialog.'),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //     Navigator.pop(context);
-  //   } else {
-  //     final Map<String, dynamic> responseData = json.decode(response.body);
-  //     final Map<String, dynamic> errors = responseData['errors'];
-  //     String errorMessage = "";
-  //     errors.forEach((key, value) {
-  //       errorMessage += "$key: $value\n";
-  //     });
-  //     showDialog(
-  //       context: context,
-  //       builder: (context) => AlertDialog(
-  //         title: const Text('Error'),
-  //         content: Text(errorMessage),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             onPressed: () => Navigator.pop(context),
-  //             child: const Text('OK'),
-  //           ),
-  //         ],
-  //       ),
-  //     );
-  //   }
-  // }
-
-  Future<void> _insertCommission(
-      int userId, int matchCountId, String percent) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/commissions');
-    var response = await http.post(url,
-        headers: {
-          'Authorization': 'Bearer $_token',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'user_id': userId,
-          'match_count': matchCountId,
-          'percent': percent,
-        }));
-
-    if (response.statusCode == 200) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Success'),
-          content: const Text('Commission added successfully'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } else {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Failed to add commission'),
-          actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
             ),
           ],
         ),
@@ -647,10 +475,10 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                       hintText: '0'),
                                 ),
                                 const SizedBox(height: 10.0),
-                                const Text(
-                                  'Max Bet Amount for Mix Bet : 000000',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
+                                // const Text(
+                                //   'Max Bet Amount for Mix Bet : 000000',
+                                //   style: TextStyle(fontSize: 12.0),
+                                // ),
                               ],
                             ),
                           ),
@@ -670,10 +498,10 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                                       hintText: '0'),
                                 ),
                                 const SizedBox(height: 10.0),
-                                const Text(
-                                  'Max Bet Amount for Single Bet : 000000',
-                                  style: TextStyle(fontSize: 12.0),
-                                ),
+                                // const Text(
+                                //   'Max Bet Amount for Single Bet : 000000',
+                                //   style: TextStyle(fontSize: 12.0),
+                                // ),
                               ],
                             ),
                           ),
@@ -748,44 +576,17 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                       bigCapText('Mix Bet Commisions'),
                       Column(
                         children: [
-                          matchCounts(2, 15, _mixBet2Commission.toString()),
-                          matchCounts(3, 20, _mixBet3Commission.toString()),
-                          matchCounts(4, 20, _mixBet4Commission.toString()),
-                          matchCounts(5, 20, _mixBet5Commission.toString()),
-                          matchCounts(6, 20, _mixBet6Commission.toString()),
-                          matchCounts(7, 20, _mixBet7Commission.toString()),
-                          matchCounts(8, 20, _mixBet8Commission.toString()),
-                          matchCounts(9, 20, _mixBet9Commission.toString()),
-                          matchCounts(10, 20, _mixBet10Commission.toString()),
-                          matchCounts(11, 20, _mixBet11Commission.toString()),
+                          matchCounts(2, 15, _mixBet2CommissionController),
+                          matchCounts(3, 20, _mixBet3CommissionController),
+                          matchCounts(4, 20, _mixBet4CommissionController),
+                          matchCounts(5, 20, _mixBet5CommissionController),
+                          matchCounts(6, 20, _mixBet6CommissionController),
+                          matchCounts(7, 20, _mixBet7CommissionController),
+                          matchCounts(8, 20, _mixBet8CommissionController),
+                          matchCounts(9, 20, _mixBet9CommissionController),
+                          matchCounts(10, 20, _mixBet10CommissionController),
+                          matchCounts(11, 20, _mixBet11CommissionController),
                         ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      FutureBuilder<List<TaxData>>(
-                        future: futureTaxData,
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(
-                                child: Text('Error: ${snapshot.error}'));
-                          } else {
-                            List<TaxData> taxDataList = snapshot.data!;
-                            return Column(
-                              children: [
-                                for (var taxData in taxDataList)
-                                  matchCounts(
-                                    taxData.matchCount,
-                                    taxData.taxRate.toInt(),
-                                    taxData
-                                        .calculateOn, // Pass your controller here
-                                  ),
-                              ],
-                            );
-                          }
-                        },
                       ),
                       const SizedBox(height: 30.0),
                       Container(
@@ -847,100 +648,48 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     );
   }
 
-  Widget matchCounts(int matchCountNumber, int tax, String? calculateOn) {
-    TextEditingController controller =
-        commissionControllers.length > matchCountNumber - 1
-            ? commissionControllers[matchCountNumber - 1]
-            : TextEditingController();
-
-    if (matchCountNumber == 1) {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          if (calculateOn == 'Low')
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  labelText('Commision'),
-                  TextFormField(
-                    controller: controller,
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(hintText: '0'),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Text(
-                    'Tax: $tax',
-                    style: const TextStyle(fontSize: 12.0),
-                  ),
-                ],
+  Widget matchCounts(
+      int matchCountNumber, int tax, TextEditingController controller) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labelText('Match Count'),
+              labelText(matchCountNumber.toString()),
+            ],
+          ),
+        ),
+        const SizedBox(width: 5.0),
+        Expanded(
+          flex: 1,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              labelText('Tax'),
+              labelText(tax.toString()),
+            ],
+          ),
+        ),
+        const SizedBox(width: 5.0),
+        Expanded(
+          flex: 2,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              TextFormField(
+                controller: controller,
+                style: kTextFieldActiveStyle,
+                decoration: kTextFieldDecoration.copyWith(hintText: '0'),
               ),
-            ),
-          if (calculateOn != 'Low')
-            Expanded(
-              flex: 1,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  labelText('High Commision'),
-                  TextFormField(
-                    controller: TextEditingController(),
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(hintText: '0'),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Text(
-                    'High Tax: $tax',
-                    style: const TextStyle(fontSize: 12.0),
-                  ),
-                ],
-              ),
-            ),
-        ],
-      );
-    } else {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                labelText('Match Count'),
-                labelText(matchCountNumber.toString()),
-              ],
-            ),
+              const SizedBox(height: 20.0),
+            ],
           ),
-          const SizedBox(width: 5.0),
-          Expanded(
-            flex: 1,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                labelText('Tax'),
-                labelText(tax.toString()),
-              ],
-            ),
-          ),
-          const SizedBox(width: 5.0),
-          Expanded(
-            flex: 2,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  controller: controller,
-                  style: kTextFieldActiveStyle,
-                  decoration: kTextFieldDecoration.copyWith(hintText: '0'),
-                ),
-                const SizedBox(height: 20.0),
-              ],
-            ),
-          ),
-        ],
-      );
-    }
+        ),
+      ],
+    );
   }
 }
