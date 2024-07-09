@@ -91,6 +91,16 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
     _getToken();
+    _resetDropdown();
+  }
+
+  void _resetDropdown() {
+    setState(() {
+      selectedValue = null;
+      selectedValue1 = null; // or set to a default value if required
+      selectedValue2 = null; // or set to a default value if required
+      // or set to a default value if required
+    });
   }
 
   Future<void> _getToken() async {
@@ -705,6 +715,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
+                      _resetDropdown();
                       Navigator.pop(context);
                       Navigator.pop(context);
                     })),

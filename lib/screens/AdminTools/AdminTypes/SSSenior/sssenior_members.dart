@@ -132,6 +132,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
     _getToken();
+    _resetDropdown();
   }
 
   Future<void> _getToken() async {
@@ -149,6 +150,12 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     if (_token != null) {
       futureTaxData = _fetchTaxData();
     }
+  }
+
+  void _resetDropdown() {
+    setState(() {
+      selectedValue = null; // or set to a default value if required
+    });
   }
 
   Future<List<TaxData>> _fetchTaxData() async {
@@ -206,6 +213,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
+                    _resetDropdown();
                     Navigator.pop(context);
                   }),
                 ),

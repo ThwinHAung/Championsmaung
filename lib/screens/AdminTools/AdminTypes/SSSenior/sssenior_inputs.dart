@@ -59,6 +59,18 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
     _getToken();
+    _resetDropdown();
+  }
+
+  void _resetDropdown() {
+    setState(() {
+      league_value = null;
+      team_value = null;
+      specialOdd_goals = null;
+      specialOdd_calculate_value = null;
+      overUnder_goals = null;
+      overUnder_calculate_value = null; // or set to a default value if required
+    });
   }
 
   Future<void> _getToken() async {
@@ -863,6 +875,7 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                       _awayTeamController.clear();
                       _specialOddController.clear();
                       _overUnderOddController.clear();
+                      _resetDropdown();
                       Navigator.pop(context);
                     })),
               ],
