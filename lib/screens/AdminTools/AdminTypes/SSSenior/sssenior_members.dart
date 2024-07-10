@@ -252,6 +252,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     ),
                     materialButton(kBlue, 'View Member List', () {
                       Navigator.pushNamed(context, SSSeniorShowMembersList.id);
+                      _resetDropdown();
                     }),
                   ],
                 ),
