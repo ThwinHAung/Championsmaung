@@ -7,6 +7,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.d
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
@@ -59,6 +60,7 @@ class ChampionMaung extends StatelessWidget {
         SSSeniorMatchHistory.id: (context) => const SSSeniorMatchHistory(),
         SSSeniorShowMembersList.id: (context) =>
             const SSSeniorShowMembersList(),
+        SSSeniorMemberDetails.id: (context) => const SSSeniorMemberDetails(),
         ActivityLogScreen.id: (context) => const ActivityLogScreen(),
         Report.id: (context) => const Report(),
         Deposit.id: (context) => const Deposit(),

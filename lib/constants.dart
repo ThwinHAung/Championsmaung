@@ -254,9 +254,12 @@ Widget listTitleText(String listTitleText) {
 }
 
 Widget listText(String listText) {
-  return Text(
-    listText,
-    style: const TextStyle(fontSize: 10.0),
+  return Padding(
+    padding: const EdgeInsets.only(top: 8.0),
+    child: Text(
+      listText,
+      style: const TextStyle(fontSize: 12.0),
+    ),
   );
 }
 

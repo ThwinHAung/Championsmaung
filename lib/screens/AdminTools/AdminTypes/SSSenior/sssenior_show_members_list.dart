@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
+import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -128,10 +130,15 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           ),
           const SizedBox(height: 15.0),
           Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 flex: 2,
-                child: listTitleText('ID'),
+                child: listTitleText('No.'),
+              ),
+              Expanded(
+                flex: 5,
+                child: listTitleText('Name'),
               ),
               Expanded(
                 flex: 5,
@@ -139,19 +146,11 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
               Expanded(
                 flex: 5,
-                child: listTitleText('Phone Number'),
+                child: listTitleText('Balance'),
               ),
               Expanded(
-                flex: 3,
-                child: listTitleText('Units'),
-              ),
-              Expanded(
-                flex: 7,
-                child: listTitleText('Add/Reduce units'),
-              ),
-              Expanded(
-                flex: 7,
-                child: listTitleText('Delete/Postpone'),
+                flex: 5,
+                child: listTitleText('Details'),
               ),
             ],
           ),
@@ -173,8 +172,8 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Widget ListCard(int index, Map<String, dynamic> userData) {
-    String userId = userData['id'].toString();
     return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
           flex: 2,
@@ -182,233 +181,32 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
         ),
         Expanded(
           flex: 5,
+          child: listText('name'),
+        ),
+        Expanded(
+          flex: 5,
           child: listText(userData['username']),
         ),
         Expanded(
           flex: 5,
-          child: listText(userData['phone_number']),
-        ),
-        Expanded(flex: 3, child: listText(userData['balance'].toString())),
-        Expanded(
-          flex: 7,
-          child: Row(
-            children: [
-              TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Reduce Unit'),
-                      content:
-                          const Text('Enter the amount of unit to reduce.'),
-                      actions: <Widget>[
-                        TextFormField(
-                          controller: _unitReduceController,
-                          style: kTextFieldActiveStyle,
-                          decoration: kTextFieldDecoration.copyWith(
-                              hintText: 'Enter unit amount'),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: materialButton(kError, 'Cancel', () {
-                                Navigator.pop(context);
-                              }),
-                            ),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                              flex: 1,
-                              child: materialButton(kBlue, 'Enter', () {
-                                showDialog(
-                                  context: context,
-                                  builder: (context) => AlertDialog(
-                                    title: const Text('Reduce Unit'),
-                                    content: Text(
-                                        'Do you really want to reduce ${_unitReduceController.text} units from this account?'),
-                                    actions: <Widget>[
-                                      Row(
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: materialButton(
-                                                kError, 'Cancel', () {
-                                              Navigator.pop(context);
-                                            }),
-                                          ),
-                                          const SizedBox(width: 5.0),
-                                          Expanded(
-                                              flex: 1,
-                                              child: materialButton(
-                                                  kBlue, 'Reduce', () {
-                                                _reduceUnits(userId);
-                                              })),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  fixedSize: const Size(5, 5),
-                ),
-                child: const Text(
-                  '-',
-                  style: TextStyle(
-                    color: kBlue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Add Unit'),
-                      content: const Text('Enter the amount of unit to add.'),
-                      actions: <Widget>[
-                        TextFormField(
-                          controller: _unitAddController,
-                          style: kTextFieldActiveStyle,
-                          decoration: kTextFieldDecoration.copyWith(
-                              hintText: 'Enter unit amount'),
-                        ),
-                        const SizedBox(height: 10.0),
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: materialButton(kError, 'Cancel', () {
-                                  Navigator.pop(context);
-                                })),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                                child: materialButton(kBlue, 'Enter', () {
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Add Unit'),
-                                  content: Text(
-                                      'Do you really want to add ${_unitAddController.text} units to this account?'),
-                                  actions: <Widget>[
-                                    Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: materialButton(
-                                              kError, 'Cancel', () {
-                                            Navigator.pop(context);
-                                          }),
-                                        ),
-                                        const SizedBox(width: 5.0),
-                                        Expanded(
-                                            flex: 1,
-                                            child: materialButton(kBlue, 'Add',
-                                                () {
-                                              _addUnits(userId);
-                                            })),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }))
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                  fixedSize: const Size(5, 5),
-                ),
-                child: const Text(
-                  '+',
-                  style: TextStyle(
-                    color: kBlue,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+          child: listText(
+            userData['balance'].toString(),
           ),
         ),
         Expanded(
-          flex: 7,
-          child: Row(
-            children: [
-              TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Delete Account'),
-                      content:
-                          const Text('Do you really want delete this account?'),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            Expanded(
-                                child: materialButton(kError, 'Cancel', () {
-                              Navigator.pop(context);
-                            })),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                                child: secondaryMaterialButton(
-                                    kOnPrimaryContainer, 'Delete', kError, () {
-                              _delete(userId);
-                            })),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                    fixedSize: const Size(5, 5), iconColor: kError),
-                child: const Icon(Icons.delete_outline_outlined),
+          flex: 5,
+          child: GestureDetector(
+            child: Container(
+              alignment: Alignment.topLeft,
+              child: Icon(
+                Icons.info_outline,
+                color: kBlue,
+                size: 20,
               ),
-              TextButton(
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) => AlertDialog(
-                      title: const Text('Postpone Account'),
-                      content: const Text(
-                          'Do you really want to postpone this account?'),
-                      actions: <Widget>[
-                        Row(
-                          children: [
-                            Expanded(
-                                child: materialButton(kError, 'Cancel', () {
-                              Navigator.pop(context);
-                            })),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                                child: secondaryMaterialButton(
-                                    kOnPrimaryContainer, 'Postpone', kError,
-                                    () {
-                              _setPP(userId);
-                            })),
-                          ],
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                style: TextButton.styleFrom(
-                    fixedSize: const Size(5, 5), iconColor: kError),
-                child: const Icon(Icons.error_outline),
-              ),
-            ],
+            ),
+            onTap: () {
+              Navigator.pushNamed(context, SSSeniorMemberDetails.id);
+            },
           ),
         ),
       ],
