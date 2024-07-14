@@ -156,6 +156,135 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     }
   }
 
+  Future<void> _register() async {
+    // Check if selectedValue1 or selectedValue2 is null
+    if (selectedValue1 == null || selectedValue2 == null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Please select both values for username.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      return; // Exit the method early if either value is null
+    }
+
+    var url = Uri.parse('http://127.0.0.1:8000/api/register');
+    var response = await http.post(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $_token',
+      },
+      body: jsonEncode({
+        'realname': _nameController.text,
+        'username': _username! + selectedValue1! + selectedValue2!,
+        'password': _passwordController.text,
+        'password_confirmation': _confirmPasswordController.text,
+        'phone_number': _phoneNumberController.text,
+        'balance': _balanceController.text,
+        'maxSingleBet': _maxSingleBetController.text,
+        'maxMixBet': _maxMixBetController.text,
+        'high': _singleBetHighCommissionController.text,
+        'low': _singleBetCommissionController.text,
+        'mixBet2Commission': _mixBet2CommissionController.text,
+        'mixBet3Commission': _mixBet3CommissionController.text,
+        'mixBet4Commission': _mixBet4CommissionController.text,
+        'mixBet5Commission': _mixBet5CommissionController.text,
+        'mixBet6Commission': _mixBet6CommissionController.text,
+        'mixBet7Commission': _mixBet7CommissionController.text,
+        'mixBet8Commission': _mixBet8CommissionController.text,
+        'mixBet9Commission': _mixBet9CommissionController.text,
+        'mixBet10Commission': _mixBet10CommissionController.text,
+        'mixBet11Commission': _mixBet11CommissionController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Succeed.'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    _resetDropdown();
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {
+        Navigator.pop(context);
+      });
+    } else {
+      print(response.body); // Log the complete response body for debugging
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      String errorMessage = "";
+
+      if (responseData['message'] == 'Fill all fields') {
+        errorMessage = 'Fill all fields';
+      } else {
+        if (responseData['message'] is String) {
+          errorMessage = responseData['message'];
+        } else if (responseData['message'] is List) {
+          responseData['message'].forEach((error) {
+            errorMessage += "$error\n";
+          });
+        } else if (responseData['message'] is Map) {
+          responseData['message'].forEach((key, value) {
+            errorMessage += "$key: $value\n";
+          });
+        }
+      }
+
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: Text(errorMessage),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,7 +321,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                     )),
                     materialButton(kBlue, 'View Member List', () {
                       Navigator.pushNamed(context, SSSeniorShowMembersList.id);
-                      _resetDropdown();
                     }),
                   ],
                 ),
@@ -654,6 +782,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                           flex: 1,
                                           child: materialButton(
                                               kBlue, 'Confirm', () {
+                                            Navigator.pop(context);
                                             (_register());
                                           }),
                                         ),
@@ -726,98 +855,5 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
         ),
       ],
     );
-  }
-
-  Future<void> _register() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/register');
-    var response = await http.post(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json; charset=UTF-8',
-        'Authorization': 'Bearer $_token',
-      },
-      body: jsonEncode({
-        'realname': _nameController.text,
-        'username': _username! + selectedValue1! + selectedValue2!,
-        'password': _passwordController.text,
-        'password_confirmation': _confirmPasswordController.text,
-        'phone_number': _phoneNumberController.text,
-        'balance': _balanceController.text,
-        'maxSingleBet': _maxSingleBetController.text,
-        'maxMixBet': _maxMixBetController.text,
-        'high': _singleBetHighCommissionController.text,
-        'low': _singleBetCommissionController.text,
-        'mixBet2Commission': _mixBet2CommissionController.text,
-        'mixBet3Commission': _mixBet3CommissionController.text,
-        'mixBet4Commission': _mixBet4CommissionController.text,
-        'mixBet5Commission': _mixBet5CommissionController.text,
-        'mixBet6Commission': _mixBet6CommissionController.text,
-        'mixBet7Commission': _mixBet7CommissionController.text,
-        'mixBet8Commission': _mixBet8CommissionController.text,
-        'mixBet9Commission': _mixBet9CommissionController.text,
-        'mixBet10Commission': _mixBet10CommissionController.text,
-        'mixBet11Commission': _mixBet11CommissionController.text,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Succeed.'),
-          content: const Text('Click OK to close this dialog.'),
-          actions: <Widget>[
-            Row(
-              children: [
-                Expanded(flex: 1, child: Container()),
-                const SizedBox(width: 5.0),
-                Expanded(
-                  flex: 1,
-                  child: materialButton(kBlue, 'OK', () {
-                    _resetDropdown();
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  }),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ).then((_) {
-        Navigator.pop(context);
-      });
-    } else {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-      final Map<String, dynamic> errors = responseData['message'];
-      print(response.body);
-      print(errors);
-      String errorMessage = "";
-      errors.forEach((key, value) {
-        errorMessage += "$key: $value\n";
-      });
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: Text(errorMessage),
-          actions: <Widget>[
-            Row(
-              children: [
-                Expanded(flex: 1, child: Container()),
-                const SizedBox(width: 5.0),
-                Expanded(
-                  flex: 1,
-                  child: materialButton(kBlue, 'OK', () {
-                    Navigator.pop(context);
-                  }),
-                ),
-              ],
-            ),
-          ],
-        ),
-      );
-    }
   }
 }

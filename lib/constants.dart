@@ -240,8 +240,8 @@ List<Map<String, String>> specialOddTeam = [
 ];
 
 List<Map<String, String>> calculatingSigns = [
-  {'name': '+', 'value': '0'},
-  {'name': '-', 'value': '1'},
+  {'name': '-', 'value': '-'},
+  {'name': '+', 'value': '+'},
 ];
 Widget listTitleText(String listTitleText) {
   return Text(

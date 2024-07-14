@@ -124,6 +124,32 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   }
 
   Future<void> _register() async {
+    // Check if selectedValue1 or selectedValue2 is null
+    if (selectedValue == null) {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Please select username.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+      return; // Exit the method early if either value is null
+    }
+
     var url = Uri.parse('http://127.0.0.1:8000/api/register');
     var response = await http.post(
       url,
@@ -182,14 +208,25 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
         Navigator.pop(context);
       });
     } else {
+      print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);
-      final Map<String, dynamic> errors = responseData['message'];
-      print(response.body);
-      print(errors);
       String errorMessage = "";
-      errors.forEach((key, value) {
-        errorMessage += "$key: $value\n";
-      });
+
+      if (responseData['message'] == 'Fill all fields') {
+        errorMessage = 'Fill all fields';
+      } else {
+        if (responseData['message'] is String) {
+          errorMessage = responseData['message'];
+        } else if (responseData['message'] is List) {
+          responseData['message'].forEach((error) {
+            errorMessage += "$error\n";
+          });
+        } else if (responseData['message'] is Map) {
+          responseData['message'].forEach((key, value) {
+            errorMessage += "$key: $value\n";
+          });
+        }
+      }
 
       showDialog(
         context: context,
@@ -252,7 +289,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                     ),
                     materialButton(kBlue, 'View Member List', () {
                       Navigator.pushNamed(context, SSSeniorShowMembersList.id);
-                      _resetDropdown();
                     }),
                   ],
                 ),

@@ -448,24 +448,23 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
                                   ),
                                   items: calculatingSigns.map((item) {
                                     return DropdownMenuItem<String>(
-                                      value: item['value']!,
+                                      value: item['value'],
                                       child: Text(
                                         item['name']!,
                                         style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: kPrimary,
-                                        ),
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w600,
+                                            color: kPrimary),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     );
                                   }).toList(),
                                   value: specialOdd_calculate_value,
                                   onChanged: (String? value) {
-                                    print(value);
                                     setState(() {
                                       specialOdd_calculate_value = value;
-                                      print(specialOdd_calculate_value);
+                                      print(
+                                          'Selected value: $specialOdd_calculate_value');
                                     });
                                   },
                                   buttonStyleData: ButtonStyleData(

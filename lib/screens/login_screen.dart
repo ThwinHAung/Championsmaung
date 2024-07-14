@@ -89,13 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
               const SizedBox(
                 height: 10.0,
               ),
-              labelText('Confirm Password'),
               TextFormField(
                 controller: _passwordController,
                 obscureText: _passwordObsecureText,
                 style: kTextFieldActiveStyle,
                 decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Confirm password',
+                  hintText: 'Enter your password',
                   suffixIcon: IconButton(
                     icon: Icon(
                       _passwordObsecureText
