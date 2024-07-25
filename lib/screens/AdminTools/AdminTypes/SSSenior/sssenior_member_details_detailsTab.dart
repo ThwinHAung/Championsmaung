@@ -1079,60 +1079,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
   }
 
-  void mixBetCommisionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Edit Basic Info'),
-                    Divider(),
-                    TextFormField(
-                      controller: _nameEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Name',
-                      ),
-                    ),
-                    SizedBox(height: 5.0),
-                    TextFormField(
-                      controller: _phoneNumberEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Phone Number',
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                        SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   ///MIXED BET COMMISION DIALOGS
   void mcTwoCommisionDialog(BuildContext context) {
     showDialog(

@@ -613,8 +613,6 @@ class _MasterDetailsTabState extends State<MasterDetailsTab> {
   final TextEditingController _nameEditController = TextEditingController();
   final TextEditingController _phoneNumberEditController =
       TextEditingController();
-  final TextEditingController _sharePercentageEditController =
-      TextEditingController();
   final TextEditingController _mixBetLimitationEditController =
       TextEditingController();
   final TextEditingController _singleBetLimitationEditController =
@@ -858,52 +856,6 @@ class _MasterDetailsTabState extends State<MasterDetailsTab> {
     );
   }
 
-  void shareDetailDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Edit Share Detail'),
-                    Divider(),
-                    TextFormField(
-                      controller: _sharePercentageEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Share Percentage',
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                        SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
   void betLimitationsDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -989,60 +941,6 @@ class _MasterDetailsTabState extends State<MasterDetailsTab> {
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'High Commision',
-                      ),
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                        SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void mixBetCommisionDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Edit Basic Info'),
-                    Divider(),
-                    TextFormField(
-                      controller: _nameEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Name',
-                      ),
-                    ),
-                    SizedBox(height: 5.0),
-                    TextFormField(
-                      controller: _phoneNumberEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Phone Number',
                       ),
                     ),
                     SizedBox(height: 10.0),
