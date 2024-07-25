@@ -1,17 +1,19 @@
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member_details_detailsTab.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member_details_transcationTab.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_detailsTab.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcationTab.dart';
 import 'package:flutter/material.dart';
 
-class SSSeniorMemberDetails extends StatefulWidget {
-  static String id = 'sssenior_member_details';
-  const SSSeniorMemberDetails({super.key});
+class AgentMemberDetails extends StatefulWidget {
+  static String id = 'agent_member_details';
+  const AgentMemberDetails({super.key});
 
   @override
-  State<SSSeniorMemberDetails> createState() => _SSSeniorMemberDetailsState();
+  State<AgentMemberDetails> createState() => _AgentMemberDetailsState();
 }
 
-class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
+class _AgentMemberDetailsState extends State<AgentMemberDetails>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int? _userId;
@@ -68,8 +70,8 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
           : TabBarView(
               controller: _tabController,
               children: [
-                SSSeniorDetailsTab(userId: _userId!),
-                SSSeniorTransactionsTab(userId: _userId!),
+                MasterDetailsTab(userId: _userId!),
+                MasterTransactionsTab(userId: _userId!),
               ],
             ),
     );

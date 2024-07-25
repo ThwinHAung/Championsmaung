@@ -92,15 +92,15 @@ class MixCommissions {
   }
 }
 
-class DetailsTab extends StatefulWidget {
+class SSSeniorDetailsTab extends StatefulWidget {
   final int userId;
-  const DetailsTab({Key? key, required this.userId}) : super(key: key);
+  const SSSeniorDetailsTab({Key? key, required this.userId}) : super(key: key);
 
   @override
-  State<DetailsTab> createState() => _DetailsTabState();
+  State<SSSeniorDetailsTab> createState() => _SSSeniorDetailsTabState();
 }
 
-class _DetailsTabState extends State<DetailsTab> {
+class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   String? _token;
   final storage = const FlutterSecureStorage();
   UserDetails? _userDetails;
@@ -675,6 +675,8 @@ class _DetailsTabState extends State<DetailsTab> {
   final TextEditingController _confirmNewPasswordController =
       TextEditingController();
 
+  final TextEditingController _amountController = TextEditingController();
+
   final TextEditingController _nameEditController = TextEditingController();
   final TextEditingController _phoneNumberEditController =
       TextEditingController();
@@ -771,102 +773,99 @@ class _DetailsTabState extends State<DetailsTab> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Reset password'),
-                    Divider(),
-                    // Add Radio widgets inside a Row
-                    Row(
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: IntrinsicWidth(
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio<int>(
-                                value: 1,
-                                groupValue: _radioValue,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    _radioValue = value!;
-                                  });
-                                },
+                        bigCapText('Reset password'),
+                        Divider(),
+                        // Add Radio widgets inside a Row
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Radio<int>(
+                                    value: 1,
+                                    groupValue: _radioValue,
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        _radioValue = value!;
+                                      });
+                                    },
+                                  ),
+                                  labelText('Add'),
+                                ],
                               ),
-                              labelText('Add'),
-                            ],
+                            ),
+                            SizedBox(width: 5.0),
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  Radio<int>(
+                                    value: 2,
+                                    groupValue: _radioValue,
+                                    onChanged: (int? value) {
+                                      setState(() {
+                                        _radioValue = value!;
+                                      });
+                                    },
+                                  ),
+                                  labelText('Remove'),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        SizedBox(height: 5.0),
+                        TextFormField(
+                          controller: _amountController,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Amount',
                           ),
                         ),
-                        SizedBox(width: 5.0),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Radio<int>(
-                                value: 2,
-                                groupValue: _radioValue,
-                                onChanged: (int? value) {
-                                  setState(() {
-                                    _radioValue = value!;
-                                  });
-                                },
-                              ),
-                              labelText('Remove'),
-                            ],
-                          ),
-                        )
+                        SizedBox(height: 5.0),
+                        // Add CheckboxListTile widget here
+                        CheckboxListTile(
+                          title: const Text('Credit'),
+                          value: _checkboxValue,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              _checkboxValue = value!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,
+                        ),
+                        SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: materialButton(kError, 'Cancel', () {
+                              Navigator.pop(context);
+                            })),
+                            SizedBox(width: 5.0),
+                            Expanded(
+                                child: materialButton(kBlue, 'Save', () {})),
+                          ],
+                        ),
                       ],
                     ),
-                    SizedBox(height: 5.0),
-                    TextFormField(
-                      controller: _newPasswordController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'New Password',
-                      ),
-                    ),
-                    SizedBox(height: 5.0),
-                    TextFormField(
-                      controller: _confirmNewPasswordController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Confrim New Password',
-                      ),
-                    ),
-                    SizedBox(height: 5.0),
-                    // Add CheckboxListTile widget here
-                    CheckboxListTile(
-                      title: const Text('Credit'),
-                      value: _checkboxValue,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          _checkboxValue = value!;
-                        });
-                      },
-                      controlAffinity: ListTileControlAffinity.leading,
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                        SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
-                      ],
-                    ),
-                  ],
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
     );

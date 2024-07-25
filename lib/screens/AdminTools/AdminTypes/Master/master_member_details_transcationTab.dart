@@ -2,16 +2,17 @@ import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class TransactionsTab extends StatefulWidget {
+class MasterTransactionsTab extends StatefulWidget {
   final int userId;
 
-  const TransactionsTab({Key? key, required this.userId}) : super(key: key);
+  const MasterTransactionsTab({Key? key, required this.userId})
+      : super(key: key);
 
   @override
-  State<TransactionsTab> createState() => _TransactionsTabState();
+  State<MasterTransactionsTab> createState() => _MasterTransactionsTabState();
 }
 
-class _TransactionsTabState extends State<TransactionsTab> {
+class _MasterTransactionsTabState extends State<MasterTransactionsTab> {
   DateTime? startDate;
   DateTime? endDate;
 
@@ -93,10 +94,6 @@ class _TransactionsTabState extends State<TransactionsTab> {
                 child: listTitleText('Transfer Out'),
               ),
               Expanded(
-                flex: 3,
-                child: Container(),
-              ),
-              Expanded(
                 flex: 5,
                 child: listTitleText('Commission Amount'),
               ),
@@ -139,10 +136,6 @@ class _TransactionsTabState extends State<TransactionsTab> {
         Expanded(
           flex: 5,
           child: listText('50000'),
-        ),
-        Expanded(
-          flex: 3,
-          child: Container(),
         ),
         Expanded(
           flex: 5,

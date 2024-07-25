@@ -1,20 +1,21 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-class SSeniorShowMembersList extends StatefulWidget {
-  static String id = "ssenior_show_members_list";
-  const SSeniorShowMembersList({super.key});
+class MasterShowMembersList extends StatefulWidget {
+  static String id = "master_show_members_list";
+  const MasterShowMembersList({super.key});
 
   @override
-  State<SSeniorShowMembersList> createState() => _SSeniorShowMembersListState();
+  State<MasterShowMembersList> createState() => _MasterShowMembersListState();
 }
 
-class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
+class _MasterShowMembersListState extends State<MasterShowMembersList> {
   final TextEditingController _unitReduceController = TextEditingController();
   final TextEditingController _unitAddController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
@@ -203,7 +204,7 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, SSSeniorMemberDetails.id,
+              Navigator.pushNamed(context, MasterMemberDetails.id,
                   arguments: userData['id']);
             },
           ),
