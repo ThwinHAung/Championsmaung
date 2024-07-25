@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class TransactionsTab extends StatefulWidget {
-  const TransactionsTab({super.key});
+  final int userId;
+
+  const TransactionsTab({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<TransactionsTab> createState() => _TransactionsTabState();

@@ -14,11 +14,21 @@ class SSSeniorMemberDetails extends StatefulWidget {
 class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  int? _userId;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args != null && args is int) {
+        setState(() {
+          _userId = args;
+        });
+      }
+    });
   }
 
   @override
@@ -53,13 +63,15 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _tabController,
-        children: const [
-          DetailsTab(),
-          TransactionsTab(),
-        ],
-      ),
+      body: _userId == null
+          ? Center(child: CircularProgressIndicator())
+          : TabBarView(
+              controller: _tabController,
+              children: [
+                DetailsTab(userId: _userId!),
+                TransactionsTab(userId: _userId!),
+              ],
+            ),
     );
   }
 }

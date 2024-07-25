@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
-import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -181,7 +180,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
         ),
         Expanded(
           flex: 5,
-          child: listText('name'),
+          child: listText(userData['realname']),
         ),
         Expanded(
           flex: 5,
@@ -205,7 +204,8 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
             ),
             onTap: () {
-              Navigator.pushNamed(context, SSSeniorMemberDetails.id);
+              Navigator.pushNamed(context, SSSeniorMemberDetails.id,
+                  arguments: userData['id']);
             },
           ),
         ),

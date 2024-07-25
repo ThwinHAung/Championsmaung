@@ -90,7 +90,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Body> body_matches = [];
-  int? betId;
+  int? _betId;
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     Future.microtask(() {
       final args = ModalRoute.of(context)?.settings.arguments;
       if (args != null) {
-        betId = args as int;
+        _betId = args as int;
         _getToken();
       }
     });
@@ -118,8 +118,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null && betId != null) {
-      _fetchBetDetails(betId!);
+    if (_token != null && _betId != null) {
+      _fetchBetDetails(_betId!);
     }
   }
 
@@ -145,7 +145,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
       body_matches.clear();
     });
 
-    await _fetchBetDetails(betId!);
+    await _fetchBetDetails(_betId!);
 
     _refreshController.refreshCompleted();
   }
@@ -155,7 +155,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
       body_matches.clear();
     });
 
-    await _fetchBetDetails(betId!);
+    await _fetchBetDetails(_betId!);
 
     _refreshController.refreshCompleted();
   }

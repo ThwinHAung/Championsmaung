@@ -257,7 +257,6 @@ class _BettingHistoryState extends State<BettingHistory> {
             String formattedMatchTime =
                 DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
             // Get current time
-            DateTime now = DateTime.now();
 
             return AnimationConfiguration.staggeredList(
               position: index,
@@ -390,7 +389,6 @@ class _BettingHistoryState extends State<BettingHistory> {
             String formattedMatchTime =
                 DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
             // Get current time
-            DateTime now = DateTime.now();
 
             return AnimationConfiguration.staggeredList(
               position: index,
