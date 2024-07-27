@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -321,7 +320,7 @@ class _AgentMembersState extends State<AgentMembers> {
                       ],
                     )),
                     materialButton(kBlue, 'View Member List', () {
-                      Navigator.pushNamed(context, AgentMemberDetails.id);
+                      Navigator.pushNamed(context, SSSeniorShowMembersList.id);
                     }),
                   ],
                 ),

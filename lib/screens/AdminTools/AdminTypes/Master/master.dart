@@ -2,13 +2,11 @@ import 'dart:convert';
 
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/deposit.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -46,7 +44,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen> {
   var drawerRoutes = [
     ActivityLogScreen.id,
     MasterMembers.id,
-    MasterShowMembersList.id,
+    SSSeniorShowMembersList.id,
     Report.id,
     Deposit.id,
     AccountSettings.id,

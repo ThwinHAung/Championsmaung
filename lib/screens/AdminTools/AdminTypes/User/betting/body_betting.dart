@@ -69,13 +69,17 @@ class _BodyBettingState extends State<BodyBetting> {
   int? selectedMatchIndex;
   String? selectedOutcome;
   List<Match> matches = [];
+  String? _username;
+  int? _maxSingleBet;
 
   final TextEditingController _bodyBettingEditingController =
       TextEditingController();
 
   @override
   void initState() {
+    _username = 'Loading...';
     _getToken();
+
     super.initState();
   }
 
@@ -94,9 +98,36 @@ class _BodyBettingState extends State<BodyBetting> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    final String? username = await storage.read(key: 'user_name');
+    if (username != null) {
+      setState(() {
+        _username = username;
+      });
+    }
     if (_token != null) {
       _fetchMatches();
       _getBalance();
+    }
+    if (_token != null && _username != null) {
+      _getMaxBetAmount(_username!);
+    }
+  }
+
+  Future<void> _getMaxBetAmount(String username) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $_token',
+    });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        _maxSingleBet = data['maxSingleBet'];
+      });
+    } else {
+      print(response.body);
     }
   }
 
@@ -235,6 +266,34 @@ class _BodyBettingState extends State<BodyBetting> {
                         title: const Text('Insufficient Balance'),
                         content: const Text(
                             'You do not have enough balance to place this bet.'),
+                        actions: <Widget>[
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              const SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'OK', () {
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    );
+                    return;
+                  }
+                  if (_balance != null || _balance! > _maxSingleBet!) {
+                    // Show dialog for insufficient balance
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text('Error'),
+                        content: const Text('You cannot bet more than limit.'),
                         actions: <Widget>[
                           Row(
                             children: [

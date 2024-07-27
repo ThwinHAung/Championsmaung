@@ -68,7 +68,8 @@ class _MaungBettingState extends State<MaungBetting> {
   double? _balance;
   Map<int, String> selectedValues = {};
   List<Match> matches = [];
-
+  int? _maxMixBet;
+  String? _username;
   final TextEditingController _maungBettingEditingController =
       TextEditingController();
 
@@ -77,6 +78,7 @@ class _MaungBettingState extends State<MaungBetting> {
 
   @override
   void initState() {
+    _username = 'Loading...';
     _getToken();
     super.initState();
   }
@@ -96,9 +98,36 @@ class _MaungBettingState extends State<MaungBetting> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    final String? username = await storage.read(key: 'user_name');
+    if (username != null) {
+      setState(() {
+        _username = username;
+      });
+    }
     if (_token != null) {
       _fetchMatches();
       _getBalance();
+    }
+    if (_token != null && _username != null) {
+      _getMaxBetAmount(_username!);
+    }
+  }
+
+  Future<void> _getMaxBetAmount(String username) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Authorization': 'Bearer $_token',
+    });
+
+    if (response.statusCode == 200) {
+      var data = json.decode(response.body);
+      setState(() {
+        _maxMixBet = data['maxMixBet'];
+      });
+    } else {
+      print(response.body);
     }
   }
 
@@ -249,6 +278,23 @@ class _MaungBettingState extends State<MaungBetting> {
                           title: const Text('No Match Selected'),
                           content: const Text(
                               'Please select a match before placing the bet.'),
+                          actions: <Widget>[
+                            materialButton(kError, 'OK', () {
+                              Navigator.pop(context);
+                            }),
+                          ],
+                        ),
+                      );
+                      return;
+                    }
+                    if (_balance != null || _balance! > _maxMixBet!) {
+                      // Show dialog for no match selected
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: const Text('Error'),
+                          content:
+                              const Text('You cannot bet more than limit.'),
                           actions: <Widget>[
                             materialButton(kError, 'OK', () {
                               Navigator.pop(context);

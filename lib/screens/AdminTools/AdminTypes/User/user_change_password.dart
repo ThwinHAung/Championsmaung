@@ -50,7 +50,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   }
 
   Future<void> _passwordChange() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/change_password');
+    var url = Uri.parse('http://127.0.0.1:8000/api/change_password_user');
     final response = await http.post(
       url,
       headers: {

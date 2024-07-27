@@ -27,9 +27,9 @@ class UserDetails {
       realname: json['realname'],
       username: json['username'],
       phoneNumber: json['phone_number'],
-      balance: json['balance'],
-      maxSingleBet: json['maxSingleBet'],
-      maxMixBet: json['maxMixBet'],
+      balance: json['balance'].toString(),
+      maxSingleBet: json['maxSingleBet'].toString(),
+      maxMixBet: json['maxMixBet'].toString(),
     );
   }
 }
@@ -139,6 +139,170 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         _mixCommissions = MixCommissions.fromJson(mixCommissionsJson);
       });
     } else {}
+  }
+
+  Future<void> _editBasicInfo(int userID) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/editBasicInfo/$userID');
+    final response = await http.post(url, headers: {
+      'Accept': 'Application/json',
+      'Authorization': 'Bearer $_token'
+    }, body: {
+      'realname': _nameEditController.text,
+      'phone_number': _phoneNumberEditController.text
+    });
+    if (response.statusCode == 200) {
+      print('success');
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future<void> _manageUnits() async {
+    final action = _radioValue == 1 ? 'add' : 'remove';
+    final amount = _amountController.text;
+
+    var url = Uri.parse('http://127.0.0.1:8000/api/manageUnits');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'amount': amount,
+        'action': action,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Units managed successfully');
+      Navigator.pop(context);
+    } else {
+      print('Error managing units: ${response.body}');
+    }
+  }
+
+  Future<void> _editMaxLimit() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/editBetLimit');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'maxSingleBet': _singleBetLimitationEditController.text,
+        'maxMixBet': _mixBetLimitationEditController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Units managed successfully');
+      Navigator.pop(context);
+    } else {
+      print('Error managing units: ${response.body}');
+    }
+  }
+
+  Future<void> _updateMixCommission(String matchType, String commission) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/editMix3to11Commissions');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'match_type': matchType,
+        'commission': commission,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Commission updated successfully');
+      Navigator.pop(context);
+    } else {
+      print('Error updating commission: ${response.body}');
+    }
+  }
+
+  Future<void> _updateMix2Commission(
+      String matchType, String commission) async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/editMix2Commissions');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'match_type': matchType,
+        'commission': commission,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Commission updated successfully');
+      Navigator.pop(context);
+    } else {
+      print('Error updating commission: ${response.body}');
+    }
+  }
+
+  Future<void> _SingleCommissions() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/SingleCommissions');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'commissions': _commisionEditController.text,
+        'high_commissions': _highCommisionEditController.text
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Commission updated successfully');
+      Navigator.pop(context);
+    } else {
+      print('Error updating commission: ${response.body}');
+    }
+  }
+
+  Future<void> _resetPassword() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/change_password');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+        'new_password': _newPasswordController.text,
+        'new_password_confirmation': _confirmNewPasswordController.text
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Password updated successfully');
+      Navigator.pop(context);
+    } else {
+      print('Updating new password: ${response.body}');
+    }
   }
 
   @override
@@ -710,6 +874,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
       TextEditingController();
   final TextEditingController _mcElevenCommisionEditController =
       TextEditingController();
+  int _radioValue = 0; // Default radio button value
 
   void resetPasswordDialog(BuildContext context) {
     showDialog(
@@ -752,7 +917,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _resetPassword();
+                        })),
                       ],
                     ),
                   ],
@@ -767,8 +935,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
 
   void manageBalanceDialog(BuildContext context) {
     // Define state variables for radio buttons and checkbox
-    int _radioValue = 0; // Default radio button value
-    bool _checkboxValue = false; // Default checkbox value
+    // Default checkbox value
+    bool _checkboxValue = false;
 
     showDialog(
       context: context,
@@ -856,7 +1024,9 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             })),
                             SizedBox(width: 5.0),
                             Expanded(
-                                child: materialButton(kBlue, 'Save', () {})),
+                                child: materialButton(kBlue, 'Save', () {
+                              _manageUnits();
+                            })),
                           ],
                         ),
                       ],
@@ -912,7 +1082,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _editBasicInfo(widget.userId);
+                        })),
                       ],
                     ),
                   ],
@@ -1012,7 +1185,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _editMaxLimit();
+                        })),
                       ],
                     ),
                   ],
@@ -1066,7 +1242,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _SingleCommissions();
+                        })),
                       ],
                     ),
                   ],
@@ -1113,7 +1292,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMix2Commission(
+                              'm2', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1159,7 +1342,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm3', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1205,7 +1392,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm4', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1251,7 +1442,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm5', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1297,7 +1492,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm6', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1343,7 +1542,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm7', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1389,7 +1592,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm8', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1435,7 +1642,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm9', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1481,7 +1692,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm10', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],
@@ -1527,7 +1742,11 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Navigator.pop(context);
                         })),
                         SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
+                        Expanded(
+                            child: materialButton(kBlue, 'Save', () {
+                          _updateMixCommission(
+                              'm11', _mcTwoCommisionEditController.text);
+                        })),
                       ],
                     ),
                   ],

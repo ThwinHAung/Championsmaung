@@ -198,8 +198,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
         'password_confirmation': _confirmPasswordController.text,
         'phone_number': _phoneNumberController.text,
         'balance': _balanceController.text,
-        'maxSingleBet': _maxSingleBetController.text,
-        'maxMixBet': _maxMixBetController.text,
+        'maxSingleBet': int.parse(_maxSingleBetController.text),
+        'maxMixBet': int.parse(_maxMixBetController.text),
         'high': _singleBetHighCommissionController.text,
         'low': _singleBetCommissionController.text,
         'mixBet2Commission': _mixBet2CommissionController.text,
@@ -639,7 +639,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Mix Bet : $_maxSingleBet',
+                                  'Max Bet Amount for Mix Bet : $_maxMixBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -662,7 +662,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Single Bet : $_maxMixBet',
+                                  'Max Bet Amount for Single Bet : $_maxSingleBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],

@@ -1,12 +1,7 @@
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member_details.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member_details.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member_details_detailsTab.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/League.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
@@ -82,13 +77,9 @@ class ChampionMaung extends StatelessWidget {
         //Master
         MasterAdminScreen.id: (context) => const MasterAdminScreen(),
         MasterMembers.id: (context) => const MasterMembers(),
-        MasterShowMembersList.id: (context) => MasterShowMembersList(),
-        MasterMemberDetails.id: (context) => MasterMemberDetails(),
         //Agent
         AgentAdminScreen.id: (context) => const AgentAdminScreen(),
         AgentMembers.id: (context) => const AgentMembers(),
-        AgentShowMembersList.id: (context) => const AgentShowMembersList(),
-        AgentMemberDetails.id: (context) => AgentMemberDetails(),
         //User
         RulesPage.id: (context) => const RulesPage(),
         RulesPageForRoute.id: (context) => const RulesPageForRoute(),

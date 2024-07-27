@@ -165,8 +165,8 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
         'password_confirmation': _confirmPasswordController.text,
         'phone_number': _phoneNumberController.text,
         'balance': _balanceController.text,
-        'maxSingleBet': _maxSingleBetController.text,
-        'maxMixBet': _maxMixBetController.text,
+        'maxSingleBet': int.parse(_maxSingleBetController.text),
+        'maxMixBet': int.parse(_maxMixBetController.text),
         'high': _singleBetHighCommissionController.text,
         'low': _singleBetCommissionController.text,
         'mixBet2Commission': _mixBet2CommissionController.text,
@@ -527,7 +527,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                labelText('Max for SIngle Bet'),
+                                labelText('Max for Single Bet'),
                                 TextFormField(
                                   controller: _maxSingleBetController,
                                   style: kTextFieldActiveStyle,
