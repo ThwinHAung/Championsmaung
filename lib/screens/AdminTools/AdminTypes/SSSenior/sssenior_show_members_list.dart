@@ -41,7 +41,9 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
-    _getToken();
+    setState(() {
+      _getToken();
+    });
   }
 
   Future<void> _getToken() async {

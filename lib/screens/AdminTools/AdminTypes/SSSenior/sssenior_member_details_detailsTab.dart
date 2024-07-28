@@ -113,6 +113,38 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     _getToken();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _newPasswordController.dispose();
+    _confirmNewPasswordController.dispose();
+    _amountController.dispose();
+    _nameEditController.dispose();
+    _phoneNumberEditController.dispose();
+    _sharePercentageEditController.dispose();
+    _mixBetLimitationEditController.dispose();
+    _singleBetLimitationEditController.dispose();
+    _commisionEditController.dispose();
+    _highCommisionEditController.dispose();
+    _mcTwoCommisionEditController.dispose();
+    _mcThreeCommisionEditController.dispose();
+    _mcFourCommisionEditController.dispose();
+    _mcFiveCommisionEditController.dispose();
+    _mcSixCommisionEditController.dispose();
+    _mcSevenCommisionEditController.dispose();
+    _mcEightCommisionEditController.dispose();
+    _mcNineCommisionEditController.dispose();
+    _mcTenCommisionEditController.dispose();
+    _mcElevenCommisionEditController.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {
@@ -307,6 +339,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
 
   @override
   Widget build(BuildContext context) {
+    int value = 0;
     return _userDetails == null ||
             _singleCommissions == null ||
             _mixCommissions == null
@@ -403,8 +436,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                               })),
                               SizedBox(width: 5.0),
                               Expanded(
-                                  child:
-                                      materialButton(kGreen, 'Suspend', () {})),
+                                  child: value == 0
+                                      ? materialButton(kGreen, 'Suspend', () {})
+                                      : materialButton(
+                                          kGrey, 'Unsuspend', () {})),
                             ],
                           ),
                         ],
@@ -919,7 +954,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
-                          _resetPassword();
+                          _resetPasswordAskDialog(context);
                         })),
                       ],
                     ),
@@ -928,6 +963,39 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
               ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  void _resetPasswordAskDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Reset Password?"),
+          content:
+              Text('Do you really want to reset password of this account?'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: materialButton(
+                      kError,
+                      'Cancel',
+                      () {},
+                    )),
+                const SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      _resetPassword();
+                      Navigator.pop(context);
+                    })),
+              ],
+            )
+          ],
         );
       },
     );
@@ -1025,7 +1093,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             SizedBox(width: 5.0),
                             Expanded(
                                 child: materialButton(kBlue, 'Save', () {
-                              _manageUnits();
+                              _manageBalanceAskDialog(context);
                             })),
                           ],
                         ),
@@ -1036,6 +1104,42 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
               ),
             );
           },
+        );
+      },
+    );
+  }
+
+  void _manageBalanceAskDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Manage Balance?"),
+          content: _radioValue == 1
+              ? Text(
+                  'Do you really want add ${_amountController.text} to this account?')
+              : Text(
+                  'Do you really want reduce ${_amountController.text} from this account?'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(
+                    flex: 1,
+                    child: materialButton(
+                      kError,
+                      'Cancel',
+                      () {},
+                    )),
+                const SizedBox(width: 5.0),
+                Expanded(
+                    flex: 1,
+                    child: materialButton(kBlue, 'OK', () {
+                      _manageUnits();
+                      Navigator.pop(context);
+                    })),
+              ],
+            )
+          ],
         );
       },
     );
