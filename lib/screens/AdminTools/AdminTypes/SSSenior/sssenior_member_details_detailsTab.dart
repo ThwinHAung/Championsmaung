@@ -12,6 +12,7 @@ class UserDetails {
   final String balance;
   final String maxSingleBet;
   final String maxMixBet;
+  String status;
 
   UserDetails({
     required this.realname,
@@ -20,17 +21,18 @@ class UserDetails {
     required this.balance,
     required this.maxSingleBet,
     required this.maxMixBet,
+    required this.status,
   });
 
   factory UserDetails.fromJson(Map<String, dynamic> json) {
     return UserDetails(
-      realname: json['realname'],
-      username: json['username'],
-      phoneNumber: json['phone_number'],
-      balance: json['balance'].toString(),
-      maxSingleBet: json['maxSingleBet'].toString(),
-      maxMixBet: json['maxMixBet'].toString(),
-    );
+        realname: json['realname'],
+        username: json['username'],
+        phoneNumber: json['phone_number'],
+        balance: json['balance'].toString(),
+        maxSingleBet: json['maxSingleBet'].toString(),
+        maxMixBet: json['maxMixBet'].toString(),
+        status: json['status']);
   }
 }
 
@@ -337,6 +339,56 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     }
   }
 
+  Future<void> _suspendUser() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/suspend_user');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('suspended successfully');
+      setState(() {
+        _userDetails!.status = 'suspended';
+      });
+      Navigator.pop(context);
+    } else {
+      print('Updating new password: ${response.body}');
+    }
+  }
+
+  Future<void> _unsuspendUser() async {
+    var url = Uri.parse('http://127.0.0.1:8000/api/unsuspend_user');
+    final response = await http.post(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+      body: json.encode({
+        'user_id': widget.userId,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('unsuspended successfully');
+      setState(() {
+        _userDetails!.status = 'active';
+      });
+      Navigator.pop(context);
+    } else {
+      print('Updating new password: ${response.body}');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     int value = 0;
@@ -436,10 +488,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                               })),
                               SizedBox(width: 5.0),
                               Expanded(
-                                  child: value == 0
-                                      ? materialButton(kGreen, 'Suspend', () {})
-                                      : materialButton(
-                                          kGrey, 'Unsuspend', () {})),
+                                  child: _userDetails!.status == 'active'
+                                      ? materialButton(kGreen, 'Suspend', () {
+                                          _suspendUser();
+                                        })
+                                      : materialButton(kError, 'Unsuspend', () {
+                                          _unsuspendUser();
+                                        })),
                             ],
                           ),
                         ],
