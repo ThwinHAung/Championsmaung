@@ -2,6 +2,7 @@ import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_detailsTab.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcationTab.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SSSeniorMemberDetails extends StatefulWidget {
   static String id = 'sssenior_member_details';
@@ -15,11 +16,14 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   int? _userId;
+  final storage = const FlutterSecureStorage();
+  String? _token;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _getToken();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final args = ModalRoute.of(context)?.settings.arguments;
@@ -29,6 +33,13 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
         });
       }
     });
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      //implements here
+    }
   }
 
   @override
