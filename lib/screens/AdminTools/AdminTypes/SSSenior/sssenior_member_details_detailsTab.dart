@@ -1346,6 +1346,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   int _radioValue = 0; // Default radio button value
 
   void resetPasswordDialog(BuildContext context) {
+    bool _newPasswordObsecureText = true;
+    bool _confirmNewPasswordObsecureText = true;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1365,17 +1367,45 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     Divider(),
                     TextFormField(
                       controller: _newPasswordController,
+                      obscureText: _newPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'New Password',
+                        hintText: 'Enter your password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _newPasswordObsecureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _newPasswordObsecureText =
+                                  !_newPasswordObsecureText;
+                            });
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 5.0),
                     TextFormField(
                       controller: _confirmNewPasswordController,
+                      obscureText: _confirmNewPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Confrim New Password',
+                        hintText: 'Enter your password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _confirmNewPasswordObsecureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _confirmNewPasswordObsecureText =
+                                  !_confirmNewPasswordObsecureText;
+                            });
+                          },
+                        ),
                       ),
                     ),
                     SizedBox(height: 10.0),
