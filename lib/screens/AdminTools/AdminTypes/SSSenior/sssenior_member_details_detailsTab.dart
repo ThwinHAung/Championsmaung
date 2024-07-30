@@ -118,26 +118,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   @override
   void dispose() {
     super.dispose();
-    _newPasswordController.dispose();
-    _confirmNewPasswordController.dispose();
-    _amountController.dispose();
-    _nameEditController.dispose();
-    _phoneNumberEditController.dispose();
-    _sharePercentageEditController.dispose();
-    _mixBetLimitationEditController.dispose();
-    _singleBetLimitationEditController.dispose();
-    _commisionEditController.dispose();
-    _highCommisionEditController.dispose();
-    _mcTwoCommisionEditController.dispose();
-    _mcThreeCommisionEditController.dispose();
-    _mcFourCommisionEditController.dispose();
-    _mcFiveCommisionEditController.dispose();
-    _mcSixCommisionEditController.dispose();
-    _mcSevenCommisionEditController.dispose();
-    _mcEightCommisionEditController.dispose();
-    _mcNineCommisionEditController.dispose();
-    _mcTenCommisionEditController.dispose();
-    _mcElevenCommisionEditController.dispose();
   }
 
   @override
@@ -145,6 +125,30 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
     _getToken();
+  }
+
+  @override
+  void clearForms() {
+    _newPasswordController.clear();
+    _confirmNewPasswordController.clear();
+    _amountController.clear();
+    _nameEditController.clear();
+    _phoneNumberEditController.clear();
+    _sharePercentageEditController.clear();
+    _mixBetLimitationEditController.clear();
+    _singleBetLimitationEditController.clear();
+    _commisionEditController.clear();
+    _highCommisionEditController.clear();
+    _mcTwoCommisionEditController.clear();
+    _mcThreeCommisionEditController.clear();
+    _mcFourCommisionEditController.clear();
+    _mcFiveCommisionEditController.clear();
+    _mcSixCommisionEditController.clear();
+    _mcSevenCommisionEditController.clear();
+    _mcEightCommisionEditController.clear();
+    _mcNineCommisionEditController.clear();
+    _mcTenCommisionEditController.clear();
+    _mcElevenCommisionEditController.clear();
   }
 
   Future<void> _getToken() async {
@@ -185,9 +189,53 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
       'phone_number': _phoneNumberEditController.text
     });
     if (response.statusCode == 200) {
-      print('success');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Editing Basic Info Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      clearForms();
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print(response.body);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Editing Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -211,10 +259,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Units managed successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Managing Units Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Error managing units: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Managing Units Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -235,10 +325,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Units managed successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Changing Max Limit Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Error managing units: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Changing Max Limit Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -259,10 +391,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Commission updated successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Mix Commision Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Error updating commission: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Mix Commision Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -284,10 +458,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Commission updated successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Mix Commision Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Error updating commission: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Mix Commision Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -308,10 +524,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Commission updated successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Single Commision Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Error updating commission: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Single Commision Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -332,10 +590,52 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('Password updated successfully');
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Password Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Updating new password: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Updating Password Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -354,13 +654,53 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('suspended successfully');
-      setState(() {
-        _userDetails!.status = 'suspended';
-      });
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Suspending Account Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    _userDetails!.status = 'suspended';
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Updating new password: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Suspending Account Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -379,19 +719,58 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     );
 
     if (response.statusCode == 200) {
-      print('unsuspended successfully');
-      setState(() {
-        _userDetails!.status = 'active';
-      });
-      Navigator.pop(context);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Unsuspending Account Succeed!'),
+          content: const Text('Click OK to close this dialog.'),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    _userDetails!.status = 'active';
+                    Navigator.pop(context);
+                    setState(() {
+                      _getToken();
+                    });
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ).then((_) {});
     } else {
-      print('Updating new password: ${response.body}');
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Unsuspending Account Failed!'),
+          content: Text(response.body),
+          actions: <Widget>[
+            Row(
+              children: [
+                Expanded(flex: 1, child: Container()),
+                const SizedBox(width: 5.0),
+                Expanded(
+                  flex: 1,
+                  child: materialButton(kBlue, 'OK', () {
+                    Navigator.pop(context);
+                  }),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    int value = 0;
     return _userDetails == null ||
             _singleCommissions == null ||
             _mixCommissions == null
@@ -492,7 +871,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                       ? materialButton(kGreen, 'Suspend', () {
                                           _suspendUser();
                                         })
-                                      : materialButton(kError, 'Unsuspend', () {
+                                      : materialButton(kGrey, 'Unsuspend', () {
                                           _unsuspendUser();
                                         })),
                             ],

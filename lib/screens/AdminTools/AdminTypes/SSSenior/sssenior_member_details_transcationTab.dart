@@ -83,7 +83,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                flex: 5,
+                flex: 4,
                 child: listTitleText('Date.'),
               ),
               Expanded(
@@ -95,16 +95,12 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                 child: listTitleText('Transfer Out'),
               ),
               Expanded(
-                flex: 5,
+                flex: 6,
                 child: listTitleText('Commission Amount'),
               ),
               Expanded(
                 flex: 5,
                 child: listTitleText('Balance'),
-              ),
-              Expanded(
-                flex: 5,
-                child: listTitleText('Action'),
               ),
             ],
           ),
@@ -127,7 +123,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          flex: 5,
+          flex: 4,
           child: listText('1.1.2024'),
         ),
         Expanded(
@@ -139,16 +135,12 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
           child: listText('50000'),
         ),
         Expanded(
-          flex: 5,
+          flex: 6,
           child: listText('15000'),
         ),
         Expanded(
           flex: 5,
           child: listText('500000'),
-        ),
-        Expanded(
-          flex: 5,
-          child: listText('Action'),
         ),
       ],
     );
