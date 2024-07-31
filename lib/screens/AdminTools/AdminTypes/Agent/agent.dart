@@ -21,7 +21,8 @@ class AgentAdminScreen extends StatefulWidget {
   State<AgentAdminScreen> createState() => _AgentAdminScreenState();
 }
 
-class _AgentAdminScreenState extends State<AgentAdminScreen> {
+class _AgentAdminScreenState extends State<AgentAdminScreen>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _role;
@@ -63,18 +64,26 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
     const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
     const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
+
   @override
   void initState() {
+    super.initState();
     _role = 'Loading...';
     _getToken();
-    super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _getToken();
+    }
   }
 
   Future<void> _getToken() async {
@@ -121,8 +130,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
+      Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       print(response.body);
     }
@@ -236,7 +244,9 @@ class _AgentAdminScreenState extends State<AgentAdminScreen> {
                   if (drawerRoutes[index] == 'logout') {
                     _logout();
                   } else {
-                    Navigator.pushNamed(context, drawerRoutes[index]);
+                    Navigator.pushNamed(context, drawerRoutes[index]).then((_) {
+                      _getToken();
+                    });
                   }
                 },
               );

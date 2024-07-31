@@ -22,7 +22,8 @@ class UserHomeScreen extends StatefulWidget {
   State<UserHomeScreen> createState() => _UserHomeScreenState();
 }
 
-class _UserHomeScreenState extends State<UserHomeScreen> {
+class _UserHomeScreenState extends State<UserHomeScreen>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _username = '';
@@ -35,22 +36,25 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
     BettingHistory.id,
     More.id,
   ];
+
   @override
   void initState() {
-    _getToken();
     super.initState();
+    _getToken();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _getToken();
+    }
   }
 
   Future<void> _getToken() async {
@@ -92,8 +96,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
       await storage.delete(key: 'username');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
+      Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       print(response.body);
     }
@@ -230,7 +233,10 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
                                 ),
                                 onTap: () {
                                   Navigator.pushNamed(
-                                      context, listRoutes[index]);
+                                          context, listRoutes[index])
+                                      .then((_) {
+                                    _getToken();
+                                  });
                                 },
                               ),
                             );
@@ -268,7 +274,9 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
             if (userDrawerRoutes[index] == 'logout') {
               _logout();
             } else {
-              Navigator.pushNamed(context, userDrawerRoutes[index]);
+              Navigator.pushNamed(context, userDrawerRoutes[index]).then((_) {
+                _getToken();
+              });
             }
           },
         );
@@ -278,7 +286,7 @@ class _UserHomeScreenState extends State<UserHomeScreen> {
 
   var userDrawerList = [
     'Rules and Regulations',
-    'Change Langugae',
+    'Change Language',
     'Change Password',
     'Log Out',
   ];

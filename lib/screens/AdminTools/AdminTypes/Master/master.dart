@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
@@ -21,7 +20,8 @@ class MasterAdminScreen extends StatefulWidget {
   State<MasterAdminScreen> createState() => _MasterAdminScreenState();
 }
 
-class _MasterAdminScreenState extends State<MasterAdminScreen> {
+class _MasterAdminScreenState extends State<MasterAdminScreen>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _role;
@@ -63,18 +63,26 @@ class _MasterAdminScreenState extends State<MasterAdminScreen> {
     const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
     const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
+
   @override
   void initState() {
+    super.initState();
     _role = 'Loading...';
     _getToken();
-    super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _getToken();
+    }
   }
 
   Future<void> _getToken() async {
@@ -121,8 +129,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen> {
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
+      Navigator.pushReplacementNamed(context, LoginScreen.id);
     } else {
       print(response.body);
     }
@@ -236,7 +243,9 @@ class _MasterAdminScreenState extends State<MasterAdminScreen> {
                   if (drawerRoutes[index] == 'logout') {
                     _logout();
                   } else {
-                    Navigator.pushNamed(context, drawerRoutes[index]);
+                    Navigator.pushNamed(context, drawerRoutes[index]).then((_) {
+                      _getToken();
+                    });
                   }
                 },
               );
