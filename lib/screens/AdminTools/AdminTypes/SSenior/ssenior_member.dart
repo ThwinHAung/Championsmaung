@@ -230,16 +230,13 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
                     _resetDropdown();
-                    Navigator.pop(context);
                   }),
                 ),
               ],
             ),
           ],
         ),
-      ).then((_) {
-        Navigator.pop(context);
-      });
+      );
     } else {
       print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);

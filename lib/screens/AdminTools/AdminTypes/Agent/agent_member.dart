@@ -237,9 +237,7 @@ class _AgentMembersState extends State<AgentMembers> {
             ),
           ],
         ),
-      ).then((_) {
-        Navigator.pop(context);
-      });
+      );
     } else {
       print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);

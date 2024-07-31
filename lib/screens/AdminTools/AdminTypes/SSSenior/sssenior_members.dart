@@ -204,9 +204,7 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
             ),
           ],
         ),
-      ).then((_) {
-        Navigator.pop(context);
-      });
+      );
     } else {
       print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);
