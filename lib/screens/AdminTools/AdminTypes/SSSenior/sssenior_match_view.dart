@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
@@ -95,6 +96,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    super.didChangeDependencies();
     // Refresh data or perform necessary actions
     _getToken();
   }
@@ -107,7 +109,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+    var url = Uri.parse('${Config.apiUrl}/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -121,31 +123,24 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _editMatch(int matchId) async {
-    final response = await http.put(
-        Uri.parse('http://127.0.0.1:8000/api/editMatches/$matchId'),
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $_token',
-        },
-        body: json.encode({
-          'home_match': _homeTeamEditingController.text,
-          'away_match': _awayTeamEditingController.text,
-          "special_odd_last_digit": _specialOddEditingController.text,
-          "over_under_last_digit": _overUnderOddEditingController.text,
-        }));
+    final response =
+        await http.put(Uri.parse('${Config.apiUrl}/editMatches/$matchId'),
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $_token',
+            },
+            body: json.encode({
+              'home_match': _homeTeamEditingController.text,
+              'away_match': _awayTeamEditingController.text,
+              "special_odd_last_digit": _specialOddEditingController.text,
+              "over_under_last_digit": _overUnderOddEditingController.text,
+            }));
     if (response.statusCode == 200) {
-      final responseData = json.decode(response.body);
-      final message = responseData['message'];
-      print(message);
-    } else {
-      final responseData = json.decode(response.body);
-      final message = responseData['message'];
-      print(message);
-    }
+    } else {}
   }
 
   Future<void> _deleteMatch(int matchId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/deleteMatch');
+    var url = Uri.parse('${Config.apiUrl}/deleteMatch');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',
@@ -158,7 +153,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   }
 
   Future<void> _matchStatusUpdate(int matchId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/matchupdateStatus');
+    var url = Uri.parse('${Config.apiUrl}/matchupdateStatus');
     final response = await http.post(url,
         headers: {
           'Content-Type': 'application/json',

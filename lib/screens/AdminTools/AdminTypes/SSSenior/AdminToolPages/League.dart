@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -35,15 +36,14 @@ class _LeagueScreenState extends State<LeagueScreen> {
   }
 
   Future<void> _insertLeague() async {
-    final response =
-        await http.post(Uri.parse('http://127.0.0.1:8000/api/addingleague'),
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $_token',
-            },
-            body: json.encode({
-              'name': _leagueNameController.text,
-            }));
+    final response = await http.post(Uri.parse('${Config.apiUrl}/addingleague'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: json.encode({
+          'name': _leagueNameController.text,
+        }));
     if (response.statusCode == 200) {
       Navigator.pop(context);
       showDialog(

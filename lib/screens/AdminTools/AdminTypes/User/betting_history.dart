@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
@@ -127,7 +128,7 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Future<void> _fetchMatchesHistory(String username) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/getBetSlip/$username');
+    var url = Uri.parse('${Config.apiUrl}/getBetSlip/$username');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -150,9 +151,7 @@ class _BettingHistoryState extends State<BettingHistory> {
           };
         }
       });
-    } else {
-      print('Error fetching data: ${response.statusCode}');
-    }
+    } else {}
   }
 
   Future<void> getData() async {

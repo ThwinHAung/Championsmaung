@@ -1,4 +1,6 @@
 import 'dart:convert';
+
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
@@ -100,7 +102,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen>
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var url = Uri.parse('${Config.apiUrl}/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -117,7 +119,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen>
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var url = Uri.parse('${Config.apiUrl}/logout');
     var response = await http.get(
       url,
       headers: {
@@ -130,9 +132,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen>
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
       Navigator.pushReplacementNamed(context, LoginScreen.id);
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
@@ -101,7 +102,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var url = Uri.parse('${Config.apiUrl}/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -118,7 +119,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var url = Uri.parse('${Config.apiUrl}/logout');
     var response = await http.get(
       url,
       headers: {

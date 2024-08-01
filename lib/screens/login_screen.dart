@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
@@ -209,7 +211,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:8000/api/login'),
+        Uri.parse('${Config.apiUrl}/login'),
         headers: <String, String>{
           'Accept': 'application/json',
           'Content-Type': 'application/json; charset=UTF-8',
@@ -264,24 +266,29 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const RulesPage(),
               ),
             );
-          } else {
+          } else if (role == 'SSenior' || role == 'Senior') {
             Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => const SSeniorAdminScreen(),
               ),
             );
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MasterAdminScreen(),
+              ),
+            );
           }
         } catch (e) {
           // Handle JSON parsing error
           _showErrorDialog('Invalid server response format');
-          print('Error parsing JSON: $e');
         }
       } else {
         final responseData = json.decode(response.body);
         final message = responseData['message'];
         _showErrorDialog(message);
-        print(message);
       }
     } catch (e) {
       setState(() {
@@ -292,7 +299,6 @@ class _LoginScreenState extends State<LoginScreen> {
       Navigator.of(context).pop();
 
       _showErrorDialog('An error occurred. Please try again.');
-      print('Error: $e');
     }
   }
 

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,6 @@ class SSSeniorShowMembersList extends StatefulWidget {
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
-  final TextEditingController _unitReduceController = TextEditingController();
-  final TextEditingController _unitAddController = TextEditingController();
   final TextEditingController _controller = TextEditingController();
   List<dynamic> _memberList = [];
   List<String> _filteredData = [];
@@ -61,7 +60,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   Future<void> _fetchMemberList() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/getmemberlist');
+    var url = Uri.parse('${Config.apiUrl}/getmemberlist');
     final response = await http.get(
       url,
       headers: {
@@ -74,9 +73,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
         _filteredData =
             _memberList.map((item) => item['username'].toString()).toList();
       });
-    } else {
-      print('xx');
-    }
+    } else {}
   }
 
   @override

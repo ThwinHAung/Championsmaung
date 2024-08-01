@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -24,8 +25,6 @@ class _MasterMembersState extends State<MasterMembers> {
       TextEditingController();
   final TextEditingController _maxMixBetController = TextEditingController();
   final TextEditingController _maxSingleBetController = TextEditingController();
-  final TextEditingController _sharePercentageController =
-      TextEditingController();
   final TextEditingController _singleBetCommissionController =
       TextEditingController();
   final TextEditingController _singleBetHighCommissionController =
@@ -84,7 +83,6 @@ class _MasterMembersState extends State<MasterMembers> {
 
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
-    _sharePercentageController.dispose();
     _singleBetCommissionController.dispose();
     _singleBetHighCommissionController.dispose();
     _mixBet2CommissionController.dispose();
@@ -134,7 +132,7 @@ class _MasterMembersState extends State<MasterMembers> {
   }
 
   Future<void> _getMaxBetAmount(String username) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var url = Uri.parse('${Config.apiUrl}/maxAmountBets/$username');
     var response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -148,7 +146,6 @@ class _MasterMembersState extends State<MasterMembers> {
         _maxMixBet = data['maxMixBet'].toString();
       });
     } else {
-      print(response.body);
       setState(() {
         _maxSingleBet = 'Error fetching data';
         _maxMixBet = 'Error fetching data';
@@ -183,7 +180,7 @@ class _MasterMembersState extends State<MasterMembers> {
       return; // Exit the method early if either value is null
     }
 
-    var url = Uri.parse('http://127.0.0.1:8000/api/register');
+    var url = Uri.parse('${Config.apiUrl}/register');
     var response = await http.post(
       url,
       headers: {
@@ -239,7 +236,6 @@ class _MasterMembersState extends State<MasterMembers> {
         ),
       );
     } else {
-      print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);
       String errorMessage = "";
 
@@ -637,7 +633,7 @@ class _MasterMembersState extends State<MasterMembers> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Mix Bet : $_maxSingleBet',
+                                  'Max Bet Amount for Mix Bet : $_maxMixBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -660,7 +656,7 @@ class _MasterMembersState extends State<MasterMembers> {
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Single Bet : $_maxMixBet',
+                                  'Max Bet Amount for Single Bet : $_maxSingleBet',
                                   style: TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -678,7 +674,7 @@ class _MasterMembersState extends State<MasterMembers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                labelText('Commision'),
+                                labelText('Commission'),
                                 TextFormField(
                                   controller: _singleBetCommissionController,
                                   style: kTextFieldActiveStyle,
@@ -701,7 +697,7 @@ class _MasterMembersState extends State<MasterMembers> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                labelText('High Commision'),
+                                labelText('High Commission'),
                                 TextFormField(
                                   controller:
                                       _singleBetHighCommissionController,
@@ -720,7 +716,7 @@ class _MasterMembersState extends State<MasterMembers> {
                         ],
                       ),
                       const SizedBox(height: 30.0),
-                      bigCapText('Mix Bet Commisions'),
+                      bigCapText('Mix Bet Commissions'),
                       Column(
                         children: [
                           matchCounts(2, 15, _mixBet2CommissionController),
@@ -766,7 +762,6 @@ class _MasterMembersState extends State<MasterMembers> {
                                           flex: 1,
                                           child: materialButton(
                                               kBlue, 'Confirm', () {
-                                            Navigator.pop(context);
                                             (_register());
                                           }),
                                         ),

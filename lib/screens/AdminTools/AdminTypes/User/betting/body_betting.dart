@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
@@ -114,7 +115,7 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> _getMaxBetAmount(String username) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var url = Uri.parse('${Config.apiUrl}/maxAmountBets/$username');
     var response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -126,13 +127,11 @@ class _BodyBettingState extends State<BodyBetting> {
       setState(() {
         _maxSingleBet = data['maxSingleBet'];
       });
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var url = Uri.parse('${Config.apiUrl}/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -149,7 +148,7 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> _fetchMatches() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/retrieve_match');
+    var url = Uri.parse('${Config.apiUrl}/retrieve_match');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -228,7 +227,7 @@ class _BodyBettingState extends State<BodyBetting> {
                   double amount = double.tryParse(text) ?? 0.0;
 
                   // Check if the input amount is numeric
-                  if (text.isEmpty || amount <= 0) {
+                  if (text.isEmpty || amount < 1000) {
                     // Show dialog for invalid bet amount
                     showDialog(
                       context: context,
@@ -287,7 +286,7 @@ class _BodyBettingState extends State<BodyBetting> {
                     );
                     return;
                   }
-                  if (_balance != null || _balance! > _maxSingleBet!) {
+                  if (_balance != null && amount > _maxSingleBet!) {
                     // Show dialog for insufficient balance
                     showDialog(
                       context: context,
@@ -576,8 +575,8 @@ class _BodyBettingState extends State<BodyBetting> {
     } else if (selectedTeam == 'Under') {
       selectedOutcome = 'Under';
     }
-    print(selectedOutcome);
-    var url = Uri.parse('http://127.0.0.1:8000/api/add_body_match');
+
+    var url = Uri.parse('${Config.apiUrl}/add_body_match');
     final response = await http.post(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

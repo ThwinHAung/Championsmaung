@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
@@ -129,7 +130,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
   }
 
   Future<void> _fetchBetDetails(int betId) async {
-    var url = Uri.parse('http://127.0.0.1:8000/getAccumulatorBetSlip/$betId');
+    var url = Uri.parse('${Config.apiUrl}/getAccumulatorBetSlip/$betId');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',

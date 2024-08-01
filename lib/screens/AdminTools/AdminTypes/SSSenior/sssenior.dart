@@ -1,3 +1,4 @@
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/League.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
@@ -94,7 +95,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var url = Uri.parse('${Config.apiUrl}/logout');
     var response = await http.get(
       url,
       headers: {
@@ -109,9 +110,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
       await storage.delete(key: 'username');
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const LoginScreen()));
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   @override

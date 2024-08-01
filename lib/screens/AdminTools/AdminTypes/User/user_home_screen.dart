@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/body_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/maung_betting.dart';
@@ -66,7 +67,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
   }
 
   Future<void> _getBalance() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/get_balance');
+    var url = Uri.parse('${Config.apiUrl}/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -83,7 +84,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
   }
 
   Future<void> _logout() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/logout');
+    var url = Uri.parse('${Config.apiUrl}/logout');
     var response = await http.get(
       url,
       headers: {
@@ -97,9 +98,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
       await storage.delete(key: 'role');
       await storage.delete(key: 'username');
       Navigator.pushReplacementNamed(context, LoginScreen.id);
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   @override

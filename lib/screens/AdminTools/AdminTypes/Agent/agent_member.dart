@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -134,7 +135,7 @@ class _AgentMembersState extends State<AgentMembers> {
   }
 
   Future<void> _getMaxBetAmount(String username) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/maxAmountBets/$username');
+    var url = Uri.parse('${Config.apiUrl}/maxAmountBets/$username');
     var response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json; charset=UTF-8',
@@ -183,7 +184,7 @@ class _AgentMembersState extends State<AgentMembers> {
       return; // Exit the method early if either value is null
     }
 
-    var url = Uri.parse('http://127.0.0.1:8000/api/register');
+    var url = Uri.parse('${Config.apiUrl}/register');
     var response = await http.post(
       url,
       headers: {
@@ -239,7 +240,6 @@ class _AgentMembersState extends State<AgentMembers> {
         ),
       );
     } else {
-      print(response.body); // Log the complete response body for debugging
       final Map<String, dynamic> responseData = json.decode(response.body);
       String errorMessage = "";
 

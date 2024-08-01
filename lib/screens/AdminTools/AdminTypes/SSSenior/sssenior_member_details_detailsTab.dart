@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -159,7 +160,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _fetchMemberDetails(int userID) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/getUserDetails/$userID');
+    var url = Uri.parse('${Config.apiUrl}/getUserDetails/$userID');
     final response = await http.get(
       url,
       headers: {
@@ -180,7 +181,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _editBasicInfo(int userID) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/editBasicInfo/$userID');
+    var url = Uri.parse('${Config.apiUrl}/editBasicInfo/$userID');
     final response = await http.post(url, headers: {
       'Accept': 'Application/json',
       'Authorization': 'Bearer $_token'
@@ -243,7 +244,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     final action = _radioValue == 1 ? 'add' : 'remove';
     final amount = _amountController.text;
 
-    var url = Uri.parse('http://127.0.0.1:8000/api/manageUnits');
+    var url = Uri.parse('${Config.apiUrl}/manageUnits');
     final response = await http.post(
       url,
       headers: {
@@ -309,7 +310,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _editMaxLimit() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/editBetLimit');
+    var url = Uri.parse('${Config.apiUrl}/editBetLimit');
     final response = await http.post(
       url,
       headers: {
@@ -375,7 +376,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _updateMixCommission(String matchType, String commission) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/editMix3to11Commissions');
+    var url = Uri.parse('${Config.apiUrl}/editMix3to11Commissions');
     final response = await http.post(
       url,
       headers: {
@@ -442,7 +443,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
 
   Future<void> _updateMix2Commission(
       String matchType, String commission) async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/editMix2Commissions');
+    var url = Uri.parse('${Config.apiUrl}/editMix2Commissions');
     final response = await http.post(
       url,
       headers: {
@@ -508,7 +509,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _SingleCommissions() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/SingleCommissions');
+    var url = Uri.parse('${Config.apiUrl}/SingleCommissions');
     final response = await http.post(
       url,
       headers: {
@@ -574,7 +575,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _resetPassword() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/change_password');
+    var url = Uri.parse('${Config.apiUrl}/change_password');
     final response = await http.post(
       url,
       headers: {
@@ -640,7 +641,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _suspendUser() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/suspend_user');
+    var url = Uri.parse('${Config.apiUrl}/suspend_user');
     final response = await http.post(
       url,
       headers: {
@@ -705,7 +706,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   }
 
   Future<void> _unsuspendUser() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/unsuspend_user');
+    var url = Uri.parse('${Config.apiUrl}/unsuspend_user');
     final response = await http.post(
       url,
       headers: {

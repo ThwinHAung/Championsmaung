@@ -1,3 +1,4 @@
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -50,7 +51,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
   }
 
   Future<void> _passwordChange() async {
-    var url = Uri.parse('http://127.0.0.1:8000/api/change_password_user');
+    var url = Uri.parse('${Config.apiUrl}/change_password_user');
     final response = await http.post(
       url,
       headers: {
@@ -63,9 +64,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
         'new_password_confirmation': _confirmPasswordController.text,
       },
     );
-    if (response.statusCode == 200) {
-      print('okay');
-    }
+    if (response.statusCode == 200) {}
   }
 
   @override
@@ -199,6 +198,7 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                                         'Enter',
                                         () {
                                           setState(() {
+                                            _passwordChange();
                                             Navigator.pop(context);
                                           });
                                         },
