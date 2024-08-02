@@ -77,7 +77,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
 
   @override
   void dispose() {
-    _clearForms();
     super.dispose();
   }
 
