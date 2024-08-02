@@ -75,6 +75,18 @@ class _MasterMembersState extends State<MasterMembers> {
 
   @override
   void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+    _resetDropdown();
+  }
+
+  void _clearForm() {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -95,15 +107,6 @@ class _MasterMembersState extends State<MasterMembers> {
     _mixBet9CommissionController.dispose();
     _mixBet10CommissionController.dispose();
     _mixBet11CommissionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
-    _resetDropdown();
   }
 
   void _resetDropdown() {
@@ -226,7 +229,9 @@ class _MasterMembersState extends State<MasterMembers> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
+                    _clearForm();
                     _resetDropdown();
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   }),
                 ),
