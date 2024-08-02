@@ -274,6 +274,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -319,8 +320,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
       },
       body: json.encode({
         'user_id': widget.userId,
-        'maxSingleBet': _singleBetLimitationEditController.text,
-        'maxMixBet': _mixBetLimitationEditController.text,
+        'maxSingleBet': _mixBetLimitationEditController.text,
+        'maxMixBet': _singleBetLimitationEditController.text,
       }),
     );
 
@@ -340,6 +341,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -406,6 +408,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -473,6 +476,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -539,6 +543,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -605,6 +610,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   child: materialButton(kBlue, 'OK', () {
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -670,6 +676,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     _userDetails!.status = 'suspended';
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -735,6 +742,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     _userDetails!.status = 'active';
                     Navigator.pop(context);
                     setState(() {
+                      clearForms();
                       _getToken();
                     });
                   }),
@@ -1460,6 +1468,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
+                      clearForms();
                       _resetPassword();
                       Navigator.pop(context);
                     })),
@@ -1604,6 +1613,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
+                      clearForms();
                       _manageUnits();
                       Navigator.pop(context);
                     })),
@@ -1761,6 +1771,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _editMaxLimit();
                         })),
                       ],
@@ -1818,6 +1829,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _SingleCommissions();
                         })),
                       ],
@@ -1868,6 +1880,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMix2Commission(
                               'm2', _mcTwoCommisionEditController.text);
                         })),
@@ -1918,6 +1931,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm3', _mcTwoCommisionEditController.text);
                         })),
@@ -1968,6 +1982,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm4', _mcTwoCommisionEditController.text);
                         })),
@@ -2018,6 +2033,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm5', _mcTwoCommisionEditController.text);
                         })),
@@ -2068,6 +2084,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm6', _mcTwoCommisionEditController.text);
                         })),
@@ -2118,6 +2135,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm7', _mcTwoCommisionEditController.text);
                         })),
@@ -2168,6 +2186,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm8', _mcTwoCommisionEditController.text);
                         })),
@@ -2218,6 +2237,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm9', _mcTwoCommisionEditController.text);
                         })),
@@ -2268,6 +2288,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm10', _mcTwoCommisionEditController.text);
                         })),
@@ -2318,6 +2339,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          clearForms();
                           _updateMixCommission(
                               'm11', _mcTwoCommisionEditController.text);
                         })),
