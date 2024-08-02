@@ -128,7 +128,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     _getToken();
   }
 
-  @override
   void clearForms() {
     _newPasswordController.clear();
     _confirmNewPasswordController.clear();
@@ -1053,12 +1052,35 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                           Row(
                             children: [
                               Expanded(
-                                flex: 7,
+                                flex: 1,
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    labelText('Commission'),
-                                    labelText('Tax'),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 5,
+                                            child: labelText('Commission')),
+                                        Expanded(
+                                            flex: 1, child: labelText('-')),
+                                        Expanded(
+                                          flex: 3,
+                                          child: labelText(_singleCommissions!
+                                              .low
+                                              .toString()),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 5, child: labelText('Tax')),
+                                        Expanded(
+                                            flex: 1, child: labelText('-')),
+                                        Expanded(
+                                            flex: 3, child: labelText('5')),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -1067,50 +1089,33 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    labelText('-'),
-                                    labelText('-'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText(
-                                        _singleCommissions!.low.toString()),
-                                    labelText('5'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 7,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText('High Commission'),
-                                    labelText('High Tax'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText('-'),
-                                    labelText('-'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText(
-                                        _singleCommissions!.high.toString()),
-                                    labelText('8'),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 5,
+                                            child:
+                                                labelText('High Commission')),
+                                        Expanded(
+                                            flex: 1, child: labelText('-')),
+                                        Expanded(
+                                          flex: 3,
+                                          child: labelText(_singleCommissions!
+                                              .high
+                                              .toString()),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                            flex: 5,
+                                            child: labelText('High Tax')),
+                                        Expanded(
+                                            flex: 1, child: labelText('-')),
+                                        Expanded(
+                                            flex: 3, child: labelText('8')),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),

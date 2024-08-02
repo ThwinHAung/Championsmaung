@@ -45,7 +45,7 @@ const kTextFieldActiveStyle = TextStyle(
 );
 
 const kButtonTextStyle = TextStyle(
-  fontSize: 12.0,
+  fontSize: 10.0,
   fontWeight: FontWeight.bold,
   color: kPrimary,
 );
@@ -78,8 +78,8 @@ const kTextFieldDecoration = InputDecoration(
 
 const kLabel = TextStyle(
   color: konPrimary,
-  fontSize: 14,
-  fontWeight: FontWeight.w600,
+  fontSize: 12,
+  fontWeight: FontWeight.w300,
 );
 
 Widget labelText(String labelText) {
