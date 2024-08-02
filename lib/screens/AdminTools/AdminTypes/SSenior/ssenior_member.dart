@@ -86,7 +86,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     // Refresh data or perform necessary actions
     _getToken();
     _resetDropdown();
-    _clearForms();
   }
 
   void _resetDropdown() {

@@ -107,7 +107,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     // Refresh data or perform necessary actions
     _getToken();
     _resetDropdown();
-    _clearForms();
   }
 
   Future<void> _getToken() async {
