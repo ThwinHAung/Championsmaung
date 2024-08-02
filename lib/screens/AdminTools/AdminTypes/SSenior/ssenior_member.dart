@@ -77,6 +77,29 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
 
   @override
   void dispose() {
+    _clearForms();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+    _resetDropdown();
+    _clearForms();
+  }
+
+  void _resetDropdown() {
+    setState(() {
+      selectedValue = null;
+      selectedValue1 = null; // or set to a default value if required
+      selectedValue2 = null; // or set to a default value if required
+      // or set to a default value if required
+    });
+  }
+
+  void _clearForms() {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -98,24 +121,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     _mixBet9CommissionController.dispose();
     _mixBet10CommissionController.dispose();
     _mixBet11CommissionController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
-    _resetDropdown();
-  }
-
-  void _resetDropdown() {
-    setState(() {
-      selectedValue = null;
-      selectedValue1 = null; // or set to a default value if required
-      selectedValue2 = null; // or set to a default value if required
-      // or set to a default value if required
-    });
   }
 
   Future<void> _getToken() async {
@@ -229,7 +234,9 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
+                    _clearForms();
                     _resetDropdown();
+                    Navigator.pop(context);
                     Navigator.pop(context);
                   }),
                 ),
