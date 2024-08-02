@@ -77,9 +77,8 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   @override
   void initState() {
-    _getToken();
-
     super.initState();
+    _getToken(); // Fetch token and matches on initialization
   }
 
   @override
@@ -96,9 +95,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
+    _getToken(); // Refresh matches when dependencies change
   }
 
   Future<void> _getToken() async {
@@ -119,7 +116,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       setState(() {
         matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
       });
-    } else {}
+    }
   }
 
   Future<void> _editMatch(int matchId) async {

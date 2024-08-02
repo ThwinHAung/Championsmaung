@@ -133,9 +133,11 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     if (response.statusCode == 200) {
       Map<String, dynamic> jsonResponse = jsonDecode(response.body);
       setState(() {
-        body_matches.add(Body.fromJson(jsonResponse['bet']));
+        body_matches = [Body.fromJson(jsonResponse['bet'])];
       });
-    } else {}
+    } else {
+      // Handle error case
+    }
   }
 
   final RefreshController _refreshController =

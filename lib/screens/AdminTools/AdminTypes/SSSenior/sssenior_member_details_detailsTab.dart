@@ -320,8 +320,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
       },
       body: json.encode({
         'user_id': widget.userId,
-        'maxSingleBet': _mixBetLimitationEditController.text,
-        'maxMixBet': _singleBetLimitationEditController.text,
+        'maxSingleBet': _singleBetLimitationEditController.text,
+        'maxMixBet': _mixBetLimitationEditController.text,
       }),
     );
 
@@ -994,8 +994,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    labelText('Mix Bet Limitation'),
                                     labelText('Single Bet Limitation'),
+                                    labelText('Mix Bet Limitation'),
                                   ],
                                 ),
                               ),

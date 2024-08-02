@@ -55,11 +55,13 @@ class _MatchResultsState extends State<MatchResults> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
+  final RefreshController _refreshController = RefreshController();
+  Map<String, List<Match>> matchesByLeague = {};
 
   @override
   void initState() {
-    _getToken();
     super.initState();
+    _getToken();
   }
 
   @override
@@ -77,11 +79,9 @@ class _MatchResultsState extends State<MatchResults> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {
-      _fetchMatchesHistory();
+      await _fetchMatchesHistory();
     }
   }
-
-  final RefreshController _refreshController = RefreshController();
 
   Future<void> getData() async {
     setState(() {
@@ -117,8 +117,6 @@ class _MatchResultsState extends State<MatchResults> {
       // Handle the error appropriately
     }
   }
-
-  Map<String, List<Match>> matchesByLeague = {};
 
   @override
   Widget build(BuildContext context) {
