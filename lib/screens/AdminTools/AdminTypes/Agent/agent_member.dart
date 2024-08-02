@@ -25,8 +25,6 @@ class _AgentMembersState extends State<AgentMembers> {
       TextEditingController();
   final TextEditingController _maxMixBetController = TextEditingController();
   final TextEditingController _maxSingleBetController = TextEditingController();
-  final TextEditingController _sharePercentageController =
-      TextEditingController();
   final TextEditingController _singleBetCommissionController =
       TextEditingController();
   final TextEditingController _singleBetHighCommissionController =
@@ -77,6 +75,25 @@ class _AgentMembersState extends State<AgentMembers> {
 
   @override
   void dispose() {
+    _nameController.dispose();
+    _phoneNumberController.dispose();
+    _passwordController.dispose();
+    _balanceController.dispose();
+    _confirmPasswordController.dispose();
+    _maxMixBetController.dispose();
+    _maxSingleBetController.dispose();
+    _singleBetCommissionController.dispose();
+    _singleBetHighCommissionController.dispose();
+    _mixBet2CommissionController.dispose();
+    _mixBet3CommissionController.dispose();
+    _mixBet4CommissionController.dispose();
+    _mixBet5CommissionController.dispose();
+    _mixBet6CommissionController.dispose();
+    _mixBet7CommissionController.dispose();
+    _mixBet8CommissionController.dispose();
+    _mixBet9CommissionController.dispose();
+    _mixBet10CommissionController.dispose();
+    _mixBet11CommissionController.dispose();
     super.dispose();
   }
 
@@ -88,7 +105,7 @@ class _AgentMembersState extends State<AgentMembers> {
     _resetDropdown();
   }
 
-  void _clearForm() {
+  void _clearForms() {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -97,7 +114,6 @@ class _AgentMembersState extends State<AgentMembers> {
 
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
-    _sharePercentageController.dispose();
     _singleBetCommissionController.dispose();
     _singleBetHighCommissionController.dispose();
     _mixBet2CommissionController.dispose();
@@ -220,6 +236,9 @@ class _AgentMembersState extends State<AgentMembers> {
     );
 
     if (response.statusCode == 200) {
+      setState(() {
+        _clearForms(); // Clear the form and update the UI
+      });
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -233,7 +252,6 @@ class _AgentMembersState extends State<AgentMembers> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
-                    _clearForm();
                     _resetDropdown();
                     Navigator.pop(context);
                     Navigator.pop(context);

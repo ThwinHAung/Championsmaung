@@ -75,24 +75,11 @@ class _MasterMembersState extends State<MasterMembers> {
 
   @override
   void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    _getToken();
-    _resetDropdown();
-  }
-
-  void _clearForm() {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
     _balanceController.dispose();
     _confirmPasswordController.dispose();
-
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
     _singleBetCommissionController.dispose();
@@ -107,6 +94,37 @@ class _MasterMembersState extends State<MasterMembers> {
     _mixBet9CommissionController.dispose();
     _mixBet10CommissionController.dispose();
     _mixBet11CommissionController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    // Refresh data or perform necessary actions
+    _getToken();
+    _resetDropdown();
+  }
+
+  void _clearForms() {
+    _nameController.clear();
+    _phoneNumberController.clear();
+    _passwordController.clear();
+    _balanceController.clear();
+    _confirmPasswordController.clear();
+    _maxMixBetController.clear();
+    _maxSingleBetController.clear();
+    _singleBetCommissionController.clear();
+    _singleBetHighCommissionController.clear();
+    _mixBet2CommissionController.clear();
+    _mixBet3CommissionController.clear();
+    _mixBet4CommissionController.clear();
+    _mixBet5CommissionController.clear();
+    _mixBet6CommissionController.clear();
+    _mixBet7CommissionController.clear();
+    _mixBet8CommissionController.clear();
+    _mixBet9CommissionController.clear();
+    _mixBet10CommissionController.clear();
+    _mixBet11CommissionController.clear();
   }
 
   void _resetDropdown() {
@@ -216,6 +234,9 @@ class _MasterMembersState extends State<MasterMembers> {
     );
 
     if (response.statusCode == 200) {
+      setState(() {
+        _clearForms(); // Clear the form and update the UI
+      });
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -229,7 +250,6 @@ class _MasterMembersState extends State<MasterMembers> {
                 Expanded(
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
-                    _clearForm();
                     _resetDropdown();
                     Navigator.pop(context);
                     Navigator.pop(context);

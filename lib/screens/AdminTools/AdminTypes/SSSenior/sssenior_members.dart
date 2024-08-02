@@ -73,10 +73,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
 
   @override
   void dispose() {
-    super.dispose();
-  }
-
-  void _clearForms() {
     _nameController.dispose();
     _phoneNumberController.dispose();
     _passwordController.dispose();
@@ -85,7 +81,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
     _sharePercentageController.dispose();
-
     _singleBetCommissionController.dispose();
     _singleBetHighCommissionController.dispose();
     _mixBet2CommissionController.dispose();
@@ -98,6 +93,30 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     _mixBet9CommissionController.dispose();
     _mixBet10CommissionController.dispose();
     _mixBet11CommissionController.dispose();
+    super.dispose();
+  }
+
+  void _clearForms() {
+    _nameController.clear();
+    _phoneNumberController.clear();
+    _passwordController.clear();
+    _balanceController.clear();
+    _confirmPasswordController.clear();
+    _maxMixBetController.clear();
+    _maxSingleBetController.clear();
+    _sharePercentageController.clear();
+    _singleBetCommissionController.clear();
+    _singleBetHighCommissionController.clear();
+    _mixBet2CommissionController.clear();
+    _mixBet3CommissionController.clear();
+    _mixBet4CommissionController.clear();
+    _mixBet5CommissionController.clear();
+    _mixBet6CommissionController.clear();
+    _mixBet7CommissionController.clear();
+    _mixBet8CommissionController.clear();
+    _mixBet9CommissionController.clear();
+    _mixBet10CommissionController.clear();
+    _mixBet11CommissionController.clear();
   }
 
   @override
@@ -188,6 +207,9 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
     );
 
     if (response.statusCode == 200) {
+      setState(() {
+        _clearForms(); // Clear the form and update the UI
+      });
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -202,7 +224,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
                   flex: 1,
                   child: materialButton(kBlue, 'OK', () {
                     _resetDropdown();
-                    _clearForms();
                     Navigator.pop(context);
                     Navigator.pop(context);
                   }),
