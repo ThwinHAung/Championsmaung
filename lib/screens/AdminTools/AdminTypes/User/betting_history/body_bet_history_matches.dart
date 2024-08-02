@@ -162,7 +162,6 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     // Sort matches by time
 
@@ -401,8 +400,10 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit == 0
-                                ? '='
+                            match.specialOddFirstDigit == '0'
+                                ? "=" +
+                                    match.specialOddSign +
+                                    match.specialOddLastDigit.toString()
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),
