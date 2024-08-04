@@ -1,6 +1,49 @@
+import 'dart:convert';
+
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+
+class Transaction {
+  final double transferIn;
+  final double transferOut;
+  final double Bet;
+  final double Win;
+  final double commissionAmount;
+  final double balance;
+  final String date;
+
+  Transaction({
+    required this.transferIn,
+    required this.transferOut,
+    required this.Bet,
+    required this.Win,
+    required this.commissionAmount,
+    required this.balance,
+    required this.date,
+  });
+
+  factory Transaction.fromJson(Map<String, dynamic> json) {
+    try {
+      return Transaction(
+        transferIn: double.parse(json['IN'] ?? '0'),
+        transferOut: double.parse(json['OUT'] ?? '0'),
+        Bet: double.parse(json['Bet'] ?? '0'),
+        Win: double.parse(json['Win'] ?? '0'),
+        commissionAmount: double.parse(json['commission'] ?? '0'),
+        balance: double.parse(json['balance'] ?? '0'),
+        date: json['created_at'] ?? '',
+      );
+    } catch (e) {
+      print('Error parsing Transaction from JSON: $e');
+      print('JSON data: $json');
+      rethrow;
+    }
+  }
+}
 
 class SSSeniorTransactionsTab extends StatefulWidget {
   final int userId;
@@ -16,6 +59,57 @@ class SSSeniorTransactionsTab extends StatefulWidget {
 class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
   DateTime? startDate;
   DateTime? endDate;
+  String? _token;
+  final storage = const FlutterSecureStorage();
+  List<Transaction> transactions = [];
+  List<Transaction> filteredTransactions = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getToken();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchTransaction(widget.userId);
+    }
+  }
+
+  Future<void> _fetchTransaction(int userId) async {
+    var url = Uri.parse('${Config.apiUrl}/getTransaction/$userId');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      List jsonResponse = json.decode(response.body);
+      print(jsonResponse);
+      setState(() {
+        transactions = jsonResponse
+            .map((transaction) => Transaction.fromJson(transaction))
+            .toList();
+        filteredTransactions = transactions;
+      });
+    } else {
+      // Handle error
+    }
+  }
+
+  void _filterTransactions() {
+    if (startDate != null && endDate != null) {
+      setState(() {
+        filteredTransactions = transactions.where((transaction) {
+          DateTime transactionDate = DateTime.parse(transaction.date);
+          return transactionDate.isAfter(startDate!) &&
+              transactionDate.isBefore(endDate!.add(Duration(days: 1)));
+        }).toList();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +159,9 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                           Expanded(
                               flex: 3,
                               child: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    _filterTransactions();
+                                  },
                                   icon: Icon(
                                     Icons.search_outlined,
                                     color: kBlue,
@@ -83,7 +179,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                flex: 4,
+                flex: 5,
                 child: listTitleText('Date.'),
               ),
               Expanded(
@@ -95,21 +191,33 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                 child: listTitleText('Transfer Out'),
               ),
               Expanded(
-                flex: 6,
-                child: listTitleText('Commission Amount'),
+                flex: 5,
+                child: listTitleText('Bet'),
               ),
               Expanded(
                 flex: 5,
+                child: listTitleText('Win'),
+              ),
+              Expanded(
+                flex: 4,
+                child: listTitleText('Commission'),
+              ),
+              Expanded(
+                flex: 6,
                 child: listTitleText('Balance'),
+              ),
+              Expanded(
+                flex: 3,
+                child: listTitleText('Action'),
               ),
             ],
           ),
           const SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(
-              itemCount: 5,
+              itemCount: filteredTransactions.length,
               itemBuilder: (context, index) {
-                return ListCard();
+                return ListCard(filteredTransactions[index]);
               },
             ),
           ),
@@ -118,29 +226,41 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
     );
   }
 
-  Widget ListCard() {
+  Widget ListCard(Transaction transaction) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
+          flex: 5,
+          child: listText(transaction.date),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText(transaction.transferIn.toString()),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText(transaction.transferOut.toString()),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText(transaction.Bet.toString()),
+        ),
+        Expanded(
+          flex: 5,
+          child: listText(transaction.Win.toString()),
+        ),
+        Expanded(
           flex: 4,
-          child: listText('1.1.2024'),
-        ),
-        Expanded(
-          flex: 5,
-          child: listText('100000'),
-        ),
-        Expanded(
-          flex: 5,
-          child: listText('50000'),
+          child: listText(transaction.commissionAmount.toString()),
         ),
         Expanded(
           flex: 6,
-          child: listText('15000'),
+          child: listText(transaction.balance.toString()),
         ),
         Expanded(
-          flex: 5,
-          child: listText('500000'),
+          flex: 3,
+          child: listText('Action'),
         ),
       ],
     );
@@ -163,5 +283,33 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
         endDate = selectedRange.end;
       });
     }
+  }
+
+  Widget materialButton(Color color, String text, VoidCallback onPressed) {
+    return MaterialButton(
+      color: color,
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(color: Colors.white),
+      ),
+    );
+  }
+
+  Widget listTitleText(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+      ),
+    );
+  }
+
+  Widget listText(String text) {
+    return Text(
+      text,
+      style: TextStyle(fontSize: 14),
+    );
   }
 }
