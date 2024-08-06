@@ -87,7 +87,6 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
     );
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      print(jsonResponse);
       setState(() {
         transactions = jsonResponse
             .map((transaction) => Transaction.fromJson(transaction))
@@ -262,8 +261,14 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
           flex: 3,
           child: IconButton(
             onPressed: () {
-              Navigator.pushNamed(
-                  context, TranscationsActionPage(userId: userId));
+              // userId: userId
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TranscationsActionPage(
+                          userId: widget.userId,
+                        )),
+              );
             },
             icon: Icon(
               Icons.remove_red_eye_outlined,

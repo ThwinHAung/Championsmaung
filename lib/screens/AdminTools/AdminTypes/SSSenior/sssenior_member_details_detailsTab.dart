@@ -134,7 +134,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     _amountController.clear();
     _nameEditController.clear();
     _phoneNumberEditController.clear();
-    _sharePercentageEditController.clear();
     _mixBetLimitationEditController.clear();
     _singleBetLimitationEditController.clear();
     _commisionEditController.clear();
@@ -903,73 +902,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             children: [
                               Expanded(
                                 flex: 7,
-                                child: bigCapText('Share Detail'),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: IconButton(
-                                  color: kBlue,
-                                  onPressed: () {
-                                    shareDetailDialog(context);
-                                  },
-                                  icon: const Icon(
-                                    Icons.edit_outlined,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          const Divider(),
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 7,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText('Share Percentage'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText('-'),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                flex: 7,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    labelText('0'),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: kOnPrimaryContainer,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Expanded(
-                                flex: 7,
                                 child: bigCapText('Bet Limitations'),
                               ),
                               Expanded(
@@ -1327,8 +1259,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   final TextEditingController _nameEditController = TextEditingController();
   final TextEditingController _phoneNumberEditController =
       TextEditingController();
-  final TextEditingController _sharePercentageEditController =
-      TextEditingController();
   final TextEditingController _mixBetLimitationEditController =
       TextEditingController();
   final TextEditingController _singleBetLimitationEditController =
@@ -1384,7 +1314,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       obscureText: newPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your password',
+                        hintText: 'Enter your new password',
                         suffixIcon: IconButton(
                           icon: Icon(
                             newPasswordObsecureText
@@ -1400,13 +1330,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 5.0),
+                    SizedBox(height: 16.0), // Add some space between the fields
                     TextFormField(
                       controller: _confirmNewPasswordController,
                       obscureText: confirmNewPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your password',
+                        hintText: 'Confirm your new password',
                         suffixIcon: IconButton(
                           icon: Icon(
                             confirmNewPasswordObsecureText
@@ -1428,10 +1358,12 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
+                          clearForms();
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _resetPasswordAskDialog(context);
                         })),
                       ],
@@ -1452,8 +1384,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Reset Password?"),
-          content:
-              const Text('Do you really want to reset password of this account?'),
+          content: const Text(
+              'Do you really want to reset password of this account?'),
           actions: <Widget>[
             Row(
               children: [
@@ -1462,14 +1394,17 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     child: materialButton(
                       kError,
                       'Cancel',
-                      () {},
+                      () {
+                        Navigator.pop(context);
+                        clearForms();
+                      },
                     )),
                 const SizedBox(width: 5.0),
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
-                      _resetPassword();
                       Navigator.pop(context);
+                      _resetPassword();
                     })),
               ],
             )
@@ -1501,7 +1436,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        bigCapText('Reset password'),
+                        bigCapText('Manage balance'),
                         const Divider(),
                         // Add Radio widgets inside a Row
                         Row(
@@ -1549,28 +1484,18 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             hintText: 'Amount',
                           ),
                         ),
-                        const SizedBox(height: 5.0),
-                        // Add CheckboxListTile widget here
-                        CheckboxListTile(
-                          title: const Text('Credit'),
-                          value: checkboxValue,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              checkboxValue = value!;
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,
-                        ),
                         const SizedBox(height: 10.0),
                         Row(
                           children: [
                             Expanded(
                                 child: materialButton(kError, 'Cancel', () {
+                              clearForms();
                               Navigator.pop(context);
                             })),
                             const SizedBox(width: 5.0),
                             Expanded(
                                 child: materialButton(kBlue, 'Save', () {
+                              Navigator.pop(context);
                               _manageBalanceAskDialog(context);
                             })),
                           ],
@@ -1606,14 +1531,17 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     child: materialButton(
                       kError,
                       'Cancel',
-                      () {},
+                      () {
+                        clearForms();
+                        Navigator.pop(context);
+                      },
                     )),
                 const SizedBox(width: 5.0),
                 Expanded(
                     flex: 1,
                     child: materialButton(kBlue, 'OK', () {
-                      _manageUnits();
                       Navigator.pop(context);
+                      _manageUnits();
                     })),
               ],
             )
@@ -1661,59 +1589,15 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _editBasicInfo(widget.userId);
                         })),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  void shareDetailDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          child: IntrinsicWidth(
-            child: IntrinsicHeight(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Edit Share Detail'),
-                    const Divider(),
-                    TextFormField(
-                      controller: _sharePercentageEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Share Percentage',
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                        })),
-                        const SizedBox(width: 5.0),
-                        Expanded(child: materialButton(kBlue, 'Save', () {})),
                       ],
                     ),
                   ],
@@ -1745,18 +1629,18 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                     bigCapText('Edit Bet Limitation'),
                     const Divider(),
                     TextFormField(
-                      controller: _mixBetLimitationEditController,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Mix Bet Limitation',
-                      ),
-                    ),
-                    const SizedBox(height: 5.0),
-                    TextFormField(
                       controller: _singleBetLimitationEditController,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Single Bet Limitation',
+                      ),
+                    ),
+                    const SizedBox(height: 5.0),
+                    TextFormField(
+                      controller: _mixBetLimitationEditController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Mix Bet Limitation',
                       ),
                     ),
                     const SizedBox(height: 10.0),
@@ -1764,11 +1648,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _editMaxLimit();
                         })),
                       ],
@@ -1821,11 +1707,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _SingleCommissions();
                         })),
                       ],
@@ -1871,11 +1759,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMix2Commission(
                               'm2', _mcTwoCommisionEditController.text);
                         })),
@@ -1921,11 +1811,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm3', _mcThreeCommisionEditController.text);
                         })),
@@ -1971,11 +1863,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm4', _mcFourCommisionEditController.text);
                         })),
@@ -2021,11 +1915,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm5', _mcFiveCommisionEditController.text);
                         })),
@@ -2071,11 +1967,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm6', _mcSixCommisionEditController.text);
                         })),
@@ -2121,11 +2019,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm7', _mcSevenCommisionEditController.text);
                         })),
@@ -2171,11 +2071,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm8', _mcEightCommisionEditController.text);
                         })),
@@ -2221,11 +2123,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
+                          Navigator.pop(context);
                           _updateMixCommission(
                               'm9', _mcNineCommisionEditController.text);
                         })),
@@ -2271,6 +2175,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
@@ -2278,6 +2183,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
                               'm10', _mcTenCommisionEditController.text);
+                          Navigator.pop(context);
                         })),
                       ],
                     ),
@@ -2321,6 +2227,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
+                          clearForms();
                           Navigator.pop(context);
                         })),
                         const SizedBox(width: 5.0),
@@ -2328,6 +2235,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
                               'm11', _mcElevenCommisionEditController.text);
+                          Navigator.pop(context);
                         })),
                       ],
                     ),

@@ -4,7 +4,6 @@ import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -47,6 +46,7 @@ class Transaction {
 }
 
 class TranscationsActionPage extends StatefulWidget {
+  static String id = 'transcations_action_page';
   final int userId;
   const TranscationsActionPage({super.key, required this.userId});
 

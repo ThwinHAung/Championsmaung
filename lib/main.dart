@@ -12,6 +12,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_i
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
@@ -74,6 +75,8 @@ class ChampionMaung extends StatelessWidget {
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
         SSeniorMembers.id: (context) => const SSeniorMembers(),
         SSeniorShowMembersList.id: (context) => const SSeniorShowMembersList(),
+        TranscationsActionPage.id: (context) =>
+            const TranscationsActionPage(userId: 0),
         //Master
         MasterAdminScreen.id: (context) => const MasterAdminScreen(),
         MasterMembers.id: (context) => const MasterMembers(),

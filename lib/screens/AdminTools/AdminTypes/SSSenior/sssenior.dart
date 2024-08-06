@@ -29,7 +29,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   var list = [
     'Members',
     'Balance',
-    'Downtime Balance',
+    'Downline Balance',
     'Outstanding Balance',
   ];
   var drawerList = [

@@ -336,7 +336,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 8.0),
                                     child: Text(
-                                      'Match Time : $formattedMatchTime', // Display match time
+                                      'Betting Time : $formattedMatchTime', // Display match time
                                       style: const TextStyle(
                                         color:
                                             kPrimary, // Change text color if selected
@@ -475,7 +475,7 @@ class _BettingHistoryState extends State<BettingHistory> {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 8.0),
                                     child: Text(
-                                      'Match Time :$formattedMatchTime', // Display match time
+                                      'Betting Time :$formattedMatchTime', // Display match time
                                       style: const TextStyle(
                                         color:
                                             kBlue, // Change text color if selected

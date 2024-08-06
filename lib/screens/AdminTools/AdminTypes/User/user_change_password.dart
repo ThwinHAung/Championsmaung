@@ -198,8 +198,8 @@ class _UserChangePasswordState extends State<UserChangePassword> {
                                         'Enter',
                                         () {
                                           setState(() {
-                                            _passwordChange();
                                             Navigator.pop(context);
+                                            _passwordChange();
                                           });
                                         },
                                       ),
