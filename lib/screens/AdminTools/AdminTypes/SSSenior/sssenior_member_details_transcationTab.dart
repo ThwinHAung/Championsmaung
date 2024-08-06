@@ -179,35 +179,35 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
             children: [
               Expanded(
                 flex: 5,
-                child: listTitleText('Date.'),
+                child: detailsListTitleText('Date.'),
               ),
               Expanded(
                 flex: 5,
-                child: listTitleText('Transfer In'),
+                child: detailsListTitleText('Transfer In'),
               ),
               Expanded(
                 flex: 5,
-                child: listTitleText('Transfer Out'),
+                child: detailsListTitleText('Transfer Out'),
               ),
               Expanded(
                 flex: 5,
-                child: listTitleText('Bet'),
+                child: detailsListTitleText('Bet'),
               ),
               Expanded(
                 flex: 5,
-                child: listTitleText('Win'),
+                child: detailsListTitleText('Win'),
               ),
               Expanded(
                 flex: 4,
-                child: listTitleText('Commission'),
+                child: detailsListTitleText('Commission'),
               ),
               Expanded(
                 flex: 6,
-                child: listTitleText('Balance'),
+                child: detailsListTitleText('Balance'),
               ),
               Expanded(
                 flex: 3,
-                child: listTitleText('Action'),
+                child: detailsListTitleText('Action'),
               ),
             ],
           ),
@@ -231,35 +231,40 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
       children: [
         Expanded(
           flex: 5,
-          child: listText(transaction.date),
+          child: detailsListText(transaction.date),
         ),
         Expanded(
           flex: 5,
-          child: listText(transaction.transferIn.toString()),
+          child: detailsListText(transaction.transferIn.toString()),
         ),
         Expanded(
           flex: 5,
-          child: listText(transaction.transferOut.toString()),
+          child: detailsListText(transaction.transferOut.toString()),
         ),
         Expanded(
           flex: 5,
-          child: listText(transaction.Bet.toString()),
+          child: detailsListText(transaction.Bet.toString()),
         ),
         Expanded(
           flex: 5,
-          child: listText(transaction.Win.toString()),
+          child: detailsListText(transaction.Win.toString()),
         ),
         Expanded(
           flex: 4,
-          child: listText(transaction.commissionAmount.toString()),
+          child: detailsListText(transaction.commissionAmount.toString()),
         ),
         Expanded(
           flex: 6,
-          child: listText(transaction.balance.toString()),
+          child: detailsListText(transaction.balance.toString()),
         ),
         Expanded(
           flex: 3,
-          child: listText('Action'),
+          child: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.remove_red_eye_outlined,
+            ),
+          ),
         ),
       ],
     );
@@ -295,20 +300,21 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
     );
   }
 
-  Widget listTitleText(String text) {
+  Widget detailsListTitleText(String text) {
     return Text(
       text,
       style: const TextStyle(
         fontWeight: FontWeight.bold,
+        color: kBlue,
         fontSize: 14,
       ),
     );
   }
 
-  Widget listText(String text) {
+  Widget detailsListText(String text) {
     return Text(
       text,
-      style: const TextStyle(fontSize: 14),
+      style: const TextStyle(fontSize: 12),
     );
   }
 }
