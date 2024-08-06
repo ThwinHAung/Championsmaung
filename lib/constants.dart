@@ -372,3 +372,21 @@ Widget showAccountType(String role) {
     ),
   );
 }
+
+Widget detailsListTitleText(String text) {
+  return Text(
+    text,
+    style: const TextStyle(
+      fontWeight: FontWeight.bold,
+      color: kBlue,
+      fontSize: 14,
+    ),
+  );
+}
+
+Widget detailsListText(String text) {
+  return Text(
+    text,
+    style: const TextStyle(fontSize: 12),
+  );
+}

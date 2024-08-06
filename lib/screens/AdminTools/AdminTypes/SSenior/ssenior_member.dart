@@ -25,8 +25,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
       TextEditingController();
   final TextEditingController _maxMixBetController = TextEditingController();
   final TextEditingController _maxSingleBetController = TextEditingController();
-  final TextEditingController _sharePercentageController =
-      TextEditingController();
+
   final TextEditingController _singleBetCommissionController =
       TextEditingController();
   final TextEditingController _singleBetHighCommissionController =
@@ -84,7 +83,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     _confirmPasswordController.dispose();
     _maxMixBetController.dispose();
     _maxSingleBetController.dispose();
-    _sharePercentageController.dispose();
     _singleBetCommissionController.dispose();
     _singleBetHighCommissionController.dispose();
     _mixBet2CommissionController.dispose();
@@ -108,7 +106,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
     _confirmPasswordController.clear();
     _maxMixBetController.clear();
     _maxSingleBetController.clear();
-    _sharePercentageController.clear();
     _singleBetCommissionController.clear();
     _singleBetHighCommissionController.clear();
     _mixBet2CommissionController.clear();
@@ -690,20 +687,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30.0),
-                      bigCapText('Share Detail'),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          labelText('Share Percentage'),
-                          TextFormField(
-                            controller: _sharePercentageController,
-                            style: kTextFieldActiveStyle,
-                            decoration:
-                                kTextFieldDecoration.copyWith(hintText: '0'),
                           ),
                         ],
                       ),

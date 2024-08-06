@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -46,17 +46,15 @@ class Transaction {
   }
 }
 
-class SSSeniorTransactionsTab extends StatefulWidget {
+class TranscationsActionPage extends StatefulWidget {
   final int userId;
-
-  const SSSeniorTransactionsTab({super.key, required this.userId});
+  const TranscationsActionPage({super.key, required this.userId});
 
   @override
-  State<SSSeniorTransactionsTab> createState() =>
-      _SSSeniorTransactionsTabState();
+  State<TranscationsActionPage> createState() => _TranscationsActionPageState();
 }
 
-class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
+class _TranscationsActionPageState extends State<TranscationsActionPage> {
   DateTime? startDate;
   DateTime? endDate;
   String? _token;
@@ -114,6 +112,19 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
+        backgroundColor: kPrimary,
+        centerTitle: true,
+        title: const Text(
+          'Transcation Actions',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
       body: Container(
         color: kPrimary,
         child: Padding(
@@ -206,10 +217,6 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                 flex: 6,
                 child: detailsListTitleText('Balance'),
               ),
-              Expanded(
-                flex: 3,
-                child: detailsListTitleText('Action'),
-              ),
             ],
           ),
           const SizedBox(height: 10.0),
@@ -257,18 +264,6 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
         Expanded(
           flex: 6,
           child: detailsListText(transaction.balance.toString()),
-        ),
-        Expanded(
-          flex: 3,
-          child: IconButton(
-            onPressed: () {
-              Navigator.pushNamed(
-                  context, TranscationsActionPage(userId: userId));
-            },
-            icon: Icon(
-              Icons.remove_red_eye_outlined,
-            ),
-          ),
         ),
       ],
     );
