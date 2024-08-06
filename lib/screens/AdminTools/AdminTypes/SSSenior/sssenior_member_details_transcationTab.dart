@@ -48,8 +48,7 @@ class Transaction {
 class SSSeniorTransactionsTab extends StatefulWidget {
   final int userId;
 
-  const SSSeniorTransactionsTab({Key? key, required this.userId})
-      : super(key: key);
+  const SSSeniorTransactionsTab({super.key, required this.userId});
 
   @override
   State<SSSeniorTransactionsTab> createState() =>
@@ -105,7 +104,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
         filteredTransactions = transactions.where((transaction) {
           DateTime transactionDate = DateTime.parse(transaction.date);
           return transactionDate.isAfter(startDate!) &&
-              transactionDate.isBefore(endDate!.add(Duration(days: 1)));
+              transactionDate.isBefore(endDate!.add(const Duration(days: 1)));
         }).toList();
       });
     }
@@ -155,14 +154,14 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                                   () {
                                 _selectDateRange(context);
                               })),
-                          SizedBox(width: 5.0),
+                          const SizedBox(width: 5.0),
                           Expanded(
                               flex: 3,
                               child: IconButton(
                                   onPressed: () {
                                     _filterTransactions();
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.search_outlined,
                                     color: kBlue,
                                   )))
@@ -270,7 +269,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
     final DateTimeRange? selectedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
+        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
         end: endDate ?? DateTime.now(),
       ),
       firstDate: DateTime(2000),
@@ -291,7 +290,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
       onPressed: onPressed,
       child: Text(
         text,
-        style: TextStyle(color: Colors.white),
+        style: const TextStyle(color: Colors.white),
       ),
     );
   }
@@ -299,7 +298,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
   Widget listTitleText(String text) {
     return Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 14,
       ),
@@ -309,7 +308,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
   Widget listText(String text) {
     return Text(
       text,
-      style: TextStyle(fontSize: 14),
+      style: const TextStyle(fontSize: 14),
     );
   }
 }

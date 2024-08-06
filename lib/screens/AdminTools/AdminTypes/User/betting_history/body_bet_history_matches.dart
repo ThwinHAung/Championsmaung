@@ -403,9 +403,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           child: Text(
                             textAlign: TextAlign.center,
                             match.specialOddFirstDigit == '0'
-                                ? "=" +
-                                    match.specialOddSign +
-                                    match.specialOddLastDigit.toString()
+                                ? "=${match.specialOddSign}${match.specialOddLastDigit}"
                                 : match.specialOddFirstDigit +
                                     match.specialOddSign +
                                     match.specialOddLastDigit.toString(),

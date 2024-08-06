@@ -663,7 +663,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 const SizedBox(height: 10.0),
                                 Text(
                                   'Max Bet Amount for Mix Bet : $_maxMixBet',
-                                  style: TextStyle(fontSize: 12.0),
+                                  style: const TextStyle(fontSize: 12.0),
                                 ),
                               ],
                             ),
@@ -686,7 +686,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                                 const SizedBox(height: 10.0),
                                 Text(
                                   'Max Bet Amount for Single Bet : $_maxSingleBet',
-                                  style: TextStyle(fontSize: 12.0),
+                                  style: const TextStyle(fontSize: 12.0),
                                 ),
                               ],
                             ),

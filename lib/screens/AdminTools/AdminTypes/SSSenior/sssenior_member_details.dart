@@ -75,7 +75,7 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
         ),
       ),
       body: _userId == null
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : TabBarView(
               controller: _tabController,
               children: [

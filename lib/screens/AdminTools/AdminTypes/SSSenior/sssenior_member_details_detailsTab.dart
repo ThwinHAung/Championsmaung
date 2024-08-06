@@ -97,7 +97,7 @@ class MixCommissions {
 
 class SSSeniorDetailsTab extends StatefulWidget {
   final int userId;
-  const SSSeniorDetailsTab({Key? key, required this.userId}) : super(key: key);
+  const SSSeniorDetailsTab({super.key, required this.userId});
 
   @override
   State<SSSeniorDetailsTab> createState() => _SSSeniorDetailsTabState();
@@ -782,10 +782,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
     return _userDetails == null ||
             _singleCommissions == null ||
             _mixCommissions == null
-        ? Center(child: CircularProgressIndicator())
+        ? const Center(child: CircularProgressIndicator())
         : SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
                   Container(
@@ -811,14 +811,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                   onPressed: () {
                                     basicInfoEditDialog(context);
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit_outlined,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             children: [
                               Expanded(
@@ -859,7 +859,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 10.0),
+                          const SizedBox(height: 10.0),
                           Row(
                             children: [
                               Expanded(
@@ -867,13 +867,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                       kSecondary, 'Reset Password', () {
                                 resetPasswordDialog(context);
                               })),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                   child: materialButton(
                                       kError, 'Manage Balance', () {
                                 manageBalanceDialog(context);
                               })),
-                              SizedBox(width: 5.0),
+                              const SizedBox(width: 5.0),
                               Expanded(
                                   child: _userDetails!.status == 'active'
                                       ? materialButton(kGreen, 'Suspend', () {
@@ -888,7 +888,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -912,14 +912,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                   onPressed: () {
                                     shareDetailDialog(context);
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit_outlined,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             children: [
                               Expanded(
@@ -955,7 +955,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -979,14 +979,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                   onPressed: () {
                                     betLimitationsDialog(context);
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit_outlined,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             children: [
                               Expanded(
@@ -1025,7 +1025,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1049,14 +1049,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                   onPressed: () {
                                     singleBetCommisionDialog(context);
                                   },
-                                  icon: Icon(
+                                  icon: const Icon(
                                     Icons.edit_outlined,
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          Divider(),
+                          const Divider(),
                           Row(
                             children: [
                               Expanded(
@@ -1133,7 +1133,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
@@ -1145,10 +1145,10 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       child: Column(
                         children: [
                           Container(
-                            child: bigCapText('Mix Bet Commission'),
                             alignment: Alignment.topLeft,
+                            child: bigCapText('Mix Bet Commission'),
                           ),
-                          Divider(),
+                          const Divider(),
                           Container(
                             child: MixBetCommissionView(),
                           ),
@@ -1156,7 +1156,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),
@@ -1191,7 +1191,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
             ],
           ),
           const SizedBox(height: 10.0),
-          Container(
+          SizedBox(
             height: 300, // Set a fixed height
             child: Column(
               children: [
@@ -1299,7 +1299,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
           child: GestureDetector(
             child: Container(
               alignment: Alignment.topLeft,
-              child: Icon(
+              child: const Icon(
                 Icons.edit_outlined,
                 color: kBlue,
                 size: 20,
@@ -1360,8 +1360,8 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   int _radioValue = 0; // Default radio button value
 
   void resetPasswordDialog(BuildContext context) {
-    bool _newPasswordObsecureText = true;
-    bool _confirmNewPasswordObsecureText = true;
+    bool newPasswordObsecureText = true;
+    bool confirmNewPasswordObsecureText = true;
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -1378,58 +1378,58 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Reset password'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _newPasswordController,
-                      obscureText: _newPasswordObsecureText,
+                      obscureText: newPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your password',
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _newPasswordObsecureText
+                            newPasswordObsecureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
-                              _newPasswordObsecureText =
-                                  !_newPasswordObsecureText;
+                              newPasswordObsecureText =
+                                  !newPasswordObsecureText;
                             });
                           },
                         ),
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     TextFormField(
                       controller: _confirmNewPasswordController,
-                      obscureText: _confirmNewPasswordObsecureText,
+                      obscureText: confirmNewPasswordObsecureText,
                       style: kTextFieldActiveStyle,
                       decoration: kTextFieldDecoration.copyWith(
                         hintText: 'Enter your password',
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _confirmNewPasswordObsecureText
+                            confirmNewPasswordObsecureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
                           ),
                           onPressed: () {
                             setState(() {
-                              _confirmNewPasswordObsecureText =
-                                  !_confirmNewPasswordObsecureText;
+                              confirmNewPasswordObsecureText =
+                                  !confirmNewPasswordObsecureText;
                             });
                           },
                         ),
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _resetPasswordAskDialog(context);
@@ -1453,7 +1453,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         return AlertDialog(
           title: const Text("Reset Password?"),
           content:
-              Text('Do you really want to reset password of this account?'),
+              const Text('Do you really want to reset password of this account?'),
           actions: <Widget>[
             Row(
               children: [
@@ -1482,7 +1482,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   void manageBalanceDialog(BuildContext context) {
     // Define state variables for radio buttons and checkbox
     // Default checkbox value
-    bool _checkboxValue = false;
+    bool checkboxValue = false;
 
     showDialog(
       context: context,
@@ -1502,7 +1502,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         bigCapText('Reset password'),
-                        Divider(),
+                        const Divider(),
                         // Add Radio widgets inside a Row
                         Row(
                           children: [
@@ -1522,7 +1522,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                                 ],
                               ),
                             ),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                               child: Row(
                                 children: [
@@ -1541,7 +1541,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             )
                           ],
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         TextFormField(
                           controller: _amountController,
                           style: kTextFieldActiveStyle,
@@ -1549,26 +1549,26 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             hintText: 'Amount',
                           ),
                         ),
-                        SizedBox(height: 5.0),
+                        const SizedBox(height: 5.0),
                         // Add CheckboxListTile widget here
                         CheckboxListTile(
                           title: const Text('Credit'),
-                          value: _checkboxValue,
+                          value: checkboxValue,
                           onChanged: (bool? value) {
                             setState(() {
-                              _checkboxValue = value!;
+                              checkboxValue = value!;
                             });
                           },
                           controlAffinity: ListTileControlAffinity.leading,
                         ),
-                        SizedBox(height: 10.0),
+                        const SizedBox(height: 10.0),
                         Row(
                           children: [
                             Expanded(
                                 child: materialButton(kError, 'Cancel', () {
                               Navigator.pop(context);
                             })),
-                            SizedBox(width: 5.0),
+                            const SizedBox(width: 5.0),
                             Expanded(
                                 child: materialButton(kBlue, 'Save', () {
                               _manageBalanceAskDialog(context);
@@ -1640,7 +1640,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Edit Basic Info'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _nameEditController,
                       style: kTextFieldActiveStyle,
@@ -1648,7 +1648,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Name',
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     TextFormField(
                       controller: _phoneNumberEditController,
                       style: kTextFieldActiveStyle,
@@ -1656,14 +1656,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Phone Number',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _editBasicInfo(widget.userId);
@@ -1697,7 +1697,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Edit Share Detail'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _sharePercentageEditController,
                       style: kTextFieldActiveStyle,
@@ -1705,14 +1705,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Share Percentage',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(child: materialButton(kBlue, 'Save', () {})),
                       ],
                     ),
@@ -1743,7 +1743,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Edit Bet Limitation'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mixBetLimitationEditController,
                       style: kTextFieldActiveStyle,
@@ -1751,7 +1751,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Mix Bet Limitation',
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     TextFormField(
                       controller: _singleBetLimitationEditController,
                       style: kTextFieldActiveStyle,
@@ -1759,14 +1759,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Single Bet Limitation',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _editMaxLimit();
@@ -1800,7 +1800,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Edit Single Bet Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _commisionEditController,
                       style: kTextFieldActiveStyle,
@@ -1808,7 +1808,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'Commision',
                       ),
                     ),
-                    SizedBox(height: 5.0),
+                    const SizedBox(height: 5.0),
                     TextFormField(
                       controller: _highCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -1816,14 +1816,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: 'High Commision',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _SingleCommissions();
@@ -1858,7 +1858,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 2 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcTwoCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -1866,14 +1866,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '7',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMix2Commission(
@@ -1908,7 +1908,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 3 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcThreeCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -1916,14 +1916,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -1958,7 +1958,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 4 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcFourCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -1966,14 +1966,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2008,7 +2008,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 5 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcFiveCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2016,14 +2016,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2058,7 +2058,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 6 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcSixCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2066,14 +2066,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2108,7 +2108,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 7 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcSevenCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2116,14 +2116,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2158,7 +2158,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 8 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcEightCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2166,14 +2166,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2208,7 +2208,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 9 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcNineCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2216,14 +2216,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2258,7 +2258,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 10 Matches Commision Controller'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcTenCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2266,14 +2266,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(
@@ -2308,7 +2308,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     bigCapText('Mix Bet 11 Matches Commision'),
-                    Divider(),
+                    const Divider(),
                     TextFormField(
                       controller: _mcElevenCommisionEditController,
                       style: kTextFieldActiveStyle,
@@ -2316,14 +2316,14 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                         hintText: '15',
                       ),
                     ),
-                    SizedBox(height: 10.0),
+                    const SizedBox(height: 10.0),
                     Row(
                       children: [
                         Expanded(
                             child: materialButton(kError, 'Cancel', () {
                           Navigator.pop(context);
                         })),
-                        SizedBox(width: 5.0),
+                        const SizedBox(width: 5.0),
                         Expanded(
                             child: materialButton(kBlue, 'Save', () {
                           _updateMixCommission(

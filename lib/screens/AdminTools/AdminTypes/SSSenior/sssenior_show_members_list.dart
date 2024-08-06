@@ -192,7 +192,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
           child: GestureDetector(
             child: Container(
               alignment: Alignment.topLeft,
-              child: Icon(
+              child: const Icon(
                 Icons.info_outline,
                 color: kBlue,
                 size: 20,
