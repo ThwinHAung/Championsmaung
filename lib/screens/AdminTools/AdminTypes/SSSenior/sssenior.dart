@@ -1,10 +1,6 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/League.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
@@ -31,32 +27,6 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     'Balance',
     'Downline Balance',
     'Outstanding Balance',
-  ];
-  var drawerList = [
-    'Transition Activity Log',
-    'Create Members',
-    'Members List',
-    'Input Leagues',
-    'Input Matches',
-    'View Matches List',
-    'View Matches History',
-    'Report',
-    'Deposit / Withdraw',
-    'Account',
-    'Log Out',
-  ];
-  var drawerRoutes = [
-    ActivityLogScreen.id,
-    SSSeniorMembers.id,
-    SSSeniorShowMembersList.id,
-    LeagueScreen.id,
-    SSSeniorInputsPage.id,
-    SSSeniorMatchView.id,
-    SSSeniorMatchHistory.id,
-    Report.id,
-    Deposit.id,
-    AccountSettings.id,
-    'logout'
   ];
   var showValues = [
     000000,
@@ -202,7 +172,108 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
         ),
       ),
       drawer: Drawer(
-        child: Padding(
+        backgroundColor: kOnPrimaryContainer,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: kOnPrimaryContainer,
+              ),
+              child: Text(
+                'More',
+                style: TextStyle(
+                  color: kBlue,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            ListTile(
+              title: drawerListMenuText('Dashboard'),
+              onTap: () {
+                // Handle menu 1 tap
+              },
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Members Management'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Create Member'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorMembers.id);
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('Members List'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorShowMembersList.id);
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Matches Management'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Add League Name'),
+                  onTap: () {
+                    Navigator.pushNamed(context, LeagueScreen.id);
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('Add Matches'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorInputsPage.id);
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('View Pending Matches'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorMatchView.id);
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('View Matches History'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorMatchHistory.id);
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Report'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Daily'),
+                  onTap: () {
+                    // Handle submenu 2.1 tap
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('Master'),
+                  onTap: () {
+                    // Handle submenu 2.2 tap
+                  },
+                ),
+              ],
+            ),
+            ListTile(
+              title: drawerListMenuText('Log Out'),
+              onTap: () {
+                _logout();
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+
+
+
+/* Padding(
           padding: const EdgeInsets.only(top: 30),
           child: ListView.builder(
             itemCount: drawerList.length,
@@ -225,8 +296,4 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
               );
             },
           ),
-        ),
-      ),
-    );
-  }
-}
+        ), */

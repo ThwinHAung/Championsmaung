@@ -279,6 +279,30 @@ List<Map<String, String>> calculatingSigns = [
   {'name': '-', 'value': '-'},
   {'name': '+', 'value': '+'},
 ];
+
+Widget drawerListMenuText(text) {
+  return Text(
+    text,
+    style: TextStyle(
+      color: kBlue,
+      fontSize: 14,
+    ),
+  );
+}
+
+Widget drawerListSubMenuText(text) {
+  return Padding(
+    padding: const EdgeInsets.only(left: 10.0),
+    child: Text(
+      text,
+      style: TextStyle(
+        color: kBlue,
+        fontSize: 14,
+      ),
+    ),
+  );
+}
+
 Widget listTitleText(String listTitleText) {
   return Text(
     listTitleText,

@@ -2,11 +2,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/League.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
@@ -27,7 +23,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_change_password.dart';
+import 'package:champion_maung/screens/AdminTools/change_password_self.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
@@ -56,6 +52,7 @@ class ChampionMaung extends StatelessWidget {
       routes: {
         LoginScreen.id: (context) => const LoginScreen(),
         MyLoading.id: (context) => const MyLoading(),
+        ChangePasswordSelf.id: (context) => const ChangePasswordSelf(),
 
         //SSSenior
         SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),
@@ -66,11 +63,7 @@ class ChampionMaung extends StatelessWidget {
         SSSeniorShowMembersList.id: (context) =>
             const SSSeniorShowMembersList(),
         SSSeniorMemberDetails.id: (context) => const SSSeniorMemberDetails(),
-        ActivityLogScreen.id: (context) => const ActivityLogScreen(),
-        Report.id: (context) => const Report(),
-        Deposit.id: (context) => const Deposit(),
-        LeagueScreen.id: (context) => const LeagueScreen(),
-        AccountSettings.id: (context) => const AccountSettings(),
+
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
         SSeniorMembers.id: (context) => const SSeniorMembers(),
@@ -93,7 +86,6 @@ class ChampionMaung extends StatelessWidget {
         BettingHistory.id: (context) => const BettingHistory(),
         BodyBetHistoryMatches.id: (context) => const BodyBetHistoryMatches(),
         MaungBetHistoryMatches.id: (context) => const MaungBetHistoryMatches(),
-        UserChangePassword.id: (context) => const UserChangePassword(),
         More.id: (context) => const More(),
       },
       home: const SplashScreen(),

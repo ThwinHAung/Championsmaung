@@ -3,11 +3,8 @@ import 'dart:convert';
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/account.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/activity_log.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/deposit.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/AdminToolPages/report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
+import 'package:champion_maung/screens/AdminTools/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -33,24 +30,6 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
     'Balance',
     'Downtime Balance',
     'Outstanding Balance',
-  ];
-  var drawerList = [
-    'Transition Activity Log',
-    'Members',
-    'Members List',
-    'Report',
-    'Deposit / Withdraw',
-    'Account',
-    'Log Out',
-  ];
-  var drawerRoutes = [
-    ActivityLogScreen.id,
-    AgentMembers.id,
-    SSSeniorShowMembersList.id,
-    Report.id,
-    Deposit.id,
-    AccountSettings.id,
-    'logout'
   ];
   var showValues = [
     000000,
@@ -228,31 +207,80 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
         ),
       ),
       drawer: Drawer(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: ListView.builder(
-            itemCount: drawerList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  drawerList[index],
-                  style: const TextStyle(
-                    color: kBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
+        backgroundColor: kOnPrimaryContainer,
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: kOnPrimaryContainer,
+              ),
+              child: Text(
+                'More',
+                style: TextStyle(
+                  color: kBlue,
+                  fontSize: 18,
                 ),
-                onTap: () {
-                  if (drawerRoutes[index] == 'logout') {
-                    _logout();
-                  } else {
-                    Navigator.pushNamed(context, drawerRoutes[index]).then((_) {
-                      _getToken();
-                    });
-                  }
-                },
-              );
-            },
-          ),
+              ),
+            ),
+            ListTile(
+              title: drawerListMenuText('Dashboard'),
+              onTap: () {
+                // Handle menu 1 tap
+              },
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Members Management'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Create Member'),
+                  onTap: () {
+                    Navigator.pushNamed(context, AgentMembers.id);
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('Members List'),
+                  onTap: () {
+                    Navigator.pushNamed(context, SSSeniorShowMembersList.id);
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Report'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Daily'),
+                  onTap: () {
+                    // Handle submenu 2.1 tap
+                  },
+                ),
+                ListTile(
+                  title: drawerListSubMenuText('Master'),
+                  onTap: () {
+                    // Handle submenu 2.2 tap
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              title: drawerListMenuText('Account'),
+              children: <Widget>[
+                ListTile(
+                  title: drawerListSubMenuText('Change Password'),
+                  onTap: () {
+                    Navigator.pushNamed(context, ChangePasswordSelf.id);
+                  },
+                ),
+              ],
+            ),
+            ListTile(
+              title: drawerListMenuText('Log Out'),
+              onTap: () {
+                _logout();
+              },
+            ),
+          ],
         ),
       ),
     );

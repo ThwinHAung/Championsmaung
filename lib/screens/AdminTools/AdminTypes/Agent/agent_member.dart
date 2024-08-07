@@ -785,6 +785,84 @@ class _AgentMembersState extends State<AgentMembers> {
                         ],
                       ),
                       const SizedBox(height: 30.0),
+                      bigCapText('Single Bet Commision'),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('Commission'),
+                                TextFormField(
+                                  controller: _singleBetCommissionController
+                                    ..text = '0',
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'Tax: 5',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                labelText('High Commission'),
+                                TextFormField(
+                                  controller:
+                                      _singleBetHighCommissionController,
+                                  style: kTextFieldActiveStyle,
+                                  decoration: kTextFieldDecoration.copyWith(
+                                      hintText: '0'),
+                                ),
+                                const SizedBox(height: 10.0),
+                                const Text(
+                                  'High Tax: 8',
+                                  style: TextStyle(fontSize: 12.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
+                      bigCapText('Mix Bet Commissions'),
+                      Column(
+                        children: [
+                          matchCounts(
+                              2, 15, _mixBet2CommissionController..text = '0'),
+                          matchCounts(
+                              3, 20, _mixBet3CommissionController..text = '0'),
+                          matchCounts(
+                              4, 20, _mixBet4CommissionController..text = '0'),
+                          matchCounts(
+                              5, 20, _mixBet5CommissionController..text = '0'),
+                          matchCounts(
+                              6, 20, _mixBet6CommissionController..text = '0'),
+                          matchCounts(
+                              7, 20, _mixBet7CommissionController..text = '0'),
+                          matchCounts(
+                              8, 20, _mixBet8CommissionController..text = '0'),
+                          matchCounts(
+                              9, 20, _mixBet9CommissionController..text = '0'),
+                          matchCounts(10, 20,
+                              _mixBet10CommissionController..text = '0'),
+                          matchCounts(11, 20,
+                              _mixBet11CommissionController..text = '0'),
+                        ],
+                      ),
+                      const SizedBox(height: 30.0),
                       Container(
                         alignment: Alignment.topRight,
                         child: Material(

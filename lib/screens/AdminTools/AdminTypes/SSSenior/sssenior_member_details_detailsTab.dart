@@ -1303,72 +1303,77 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
             child: IntrinsicHeight(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    bigCapText('Reset password'),
-                    const Divider(),
-                    TextFormField(
-                      controller: _newPasswordController,
-                      obscureText: newPasswordObsecureText,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Enter your new password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            newPasswordObsecureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              newPasswordObsecureText =
-                                  !newPasswordObsecureText;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0), // Add some space between the fields
-                    TextFormField(
-                      controller: _confirmNewPasswordController,
-                      obscureText: confirmNewPasswordObsecureText,
-                      style: kTextFieldActiveStyle,
-                      decoration: kTextFieldDecoration.copyWith(
-                        hintText: 'Confirm your new password',
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            confirmNewPasswordObsecureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              confirmNewPasswordObsecureText =
-                                  !confirmNewPasswordObsecureText;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10.0),
-                    Row(
+                child: StatefulBuilder(
+                  builder: (BuildContext context, StateSetter setState) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                            child: materialButton(kError, 'Cancel', () {
-                          Navigator.pop(context);
-                          clearForms();
-                        })),
-                        const SizedBox(width: 5.0),
-                        Expanded(
-                            child: materialButton(kBlue, 'Save', () {
-                          Navigator.pop(context);
-                          _resetPasswordAskDialog(context);
-                        })),
+                        bigCapText('Reset password'),
+                        const Divider(),
+                        TextFormField(
+                          controller: _newPasswordController,
+                          obscureText: newPasswordObsecureText,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Enter your new password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                newPasswordObsecureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  newPasswordObsecureText =
+                                      !newPasswordObsecureText;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                            height: 16.0), // Add some space between the fields
+                        TextFormField(
+                          controller: _confirmNewPasswordController,
+                          obscureText: confirmNewPasswordObsecureText,
+                          style: kTextFieldActiveStyle,
+                          decoration: kTextFieldDecoration.copyWith(
+                            hintText: 'Confirm your new password',
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                confirmNewPasswordObsecureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  confirmNewPasswordObsecureText =
+                                      !confirmNewPasswordObsecureText;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10.0),
+                        Row(
+                          children: [
+                            Expanded(
+                                child: materialButton(kError, 'Cancel', () {
+                              Navigator.pop(context);
+                              clearForms();
+                            })),
+                            const SizedBox(width: 5.0),
+                            Expanded(
+                                child: materialButton(kBlue, 'Save', () {
+                              Navigator.pop(context);
+                              _resetPasswordAskDialog(context);
+                            })),
+                          ],
+                        ),
                       ],
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
             ),
@@ -1417,7 +1422,6 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   void manageBalanceDialog(BuildContext context) {
     // Define state variables for radio buttons and checkbox
     // Default checkbox value
-    bool checkboxValue = false;
 
     showDialog(
       context: context,
@@ -1484,7 +1488,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
                             hintText: 'Amount',
                           ),
                         ),
-                        const SizedBox(height: 10.0),
+                        const SizedBox(height: 30.0),
                         Row(
                           children: [
                             Expanded(

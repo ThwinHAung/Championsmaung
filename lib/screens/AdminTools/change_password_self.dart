@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
-class UserChangePassword extends StatefulWidget {
-  static String id = 'user_change_password';
-  const UserChangePassword({super.key});
+class ChangePasswordSelf extends StatefulWidget {
+  static String id = 'change_password';
+  const ChangePasswordSelf({super.key});
 
   @override
-  State<UserChangePassword> createState() => _UserChangePasswordState();
+  State<ChangePasswordSelf> createState() => _ChangePasswordSelfState();
 }
 
-class _UserChangePasswordState extends State<UserChangePassword> {
+class _ChangePasswordSelfState extends State<ChangePasswordSelf> {
   final storage = const FlutterSecureStorage();
   String? _token;
   final TextEditingController _currentPasswordController =
