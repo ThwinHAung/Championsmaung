@@ -156,6 +156,7 @@ class _TranscationsActionPageState extends State<TranscationsActionPage> {
               },
             ),
           ),
+const SizedBox(height: 10.0),
         ],
       ),
     );
@@ -187,7 +188,7 @@ class _TranscationsActionPageState extends State<TranscationsActionPage> {
           flex: 3,
           child: detailsListText(transaction.balance.toString()),
         ),
-        const SizedBox(height: 10.0),
+        
       ],
     );
   }
