@@ -729,7 +729,7 @@ class _AgentMembersState extends State<AgentMembers> {
                       const SizedBox(height: 10.0),
                       labelText('Starting Balance'),
                       TextFormField(
-                        controller: _balanceController,
+                        controller: _balanceController..text = '0',
                         style: kTextFieldActiveStyle,
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter starting balance'),
@@ -746,7 +746,7 @@ class _AgentMembersState extends State<AgentMembers> {
                               children: [
                                 labelText('Max for Mix Bet'),
                                 TextFormField(
-                                  controller: _maxMixBetController,
+                                  controller: _maxMixBetController..text = '0',
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -769,7 +769,8 @@ class _AgentMembersState extends State<AgentMembers> {
                               children: [
                                 labelText('Max for Single Bet'),
                                 TextFormField(
-                                  controller: _maxSingleBetController,
+                                  controller: _maxSingleBetController
+                                    ..text = '0',
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -820,8 +821,8 @@ class _AgentMembersState extends State<AgentMembers> {
                               children: [
                                 labelText('High Commission'),
                                 TextFormField(
-                                  controller:
-                                      _singleBetHighCommissionController,
+                                  controller: _singleBetHighCommissionController
+                                    ..text = '0',
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),

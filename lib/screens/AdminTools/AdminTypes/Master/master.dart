@@ -209,18 +209,7 @@ class _MasterAdminScreenState extends State<MasterAdminScreen>
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
-              decoration: BoxDecoration(
-                color: kOnPrimaryContainer,
-              ),
-              child: Text(
-                'More',
-                style: TextStyle(
-                  color: kBlue,
-                  fontSize: 18,
-                ),
-              ),
-            ),
+            SizedBox(height: 30.0),
             ListTile(
               title: drawerListMenuText('Dashboard'),
               onTap: () {
