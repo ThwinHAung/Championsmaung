@@ -30,13 +30,20 @@ class Transaction {
   factory Transaction.fromJson(Map<String, dynamic> json) {
     try {
       return Transaction(
-        transferIn: double.parse(json['IN'] ?? '0'),
-        transferOut: double.parse(json['OUT'] ?? '0'),
-        Bet: double.parse(json['Bet'] ?? '0'),
-        Win: double.parse(json['Win'] ?? '0'),
-        commissionAmount: double.parse(json['commission'] ?? '0'),
-        balance: double.parse(json['balance'] ?? '0'),
-        date: json['created_at'] ?? '',
+        transferIn:
+            json['IN'] != null ? double.parse(json['IN'].toString()) : 0,
+        transferOut:
+            json['OUT'] != null ? double.parse(json['OUT'].toString()) : 0,
+        Bet: json['Bet'] != null ? double.parse(json['Bet'].toString()) : 0,
+        Win: json['Win'] != null ? double.parse(json['Win'].toString()) : 0,
+        commissionAmount: json['commission'] != null
+            ? double.parse(json['commission'].toString())
+            : 0,
+        balance: json['balance'] != null
+            ? double.parse(json['balance'].toString())
+            : 0,
+        date: json['date'] ??
+            '', // Make sure this matches the date field returned by the backend
       );
     } catch (e) {
       print('Error parsing Transaction from JSON: $e');
@@ -267,6 +274,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                 MaterialPageRoute(
                     builder: (context) => TranscationsActionPage(
                           userId: widget.userId,
+                          date: transaction.date,
                         )),
               );
             },

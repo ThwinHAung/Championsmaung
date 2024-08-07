@@ -2,8 +2,8 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
@@ -23,8 +23,8 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:champion_maung/screens/splash_screen.dart';
@@ -65,11 +65,14 @@ class ChampionMaung extends StatelessWidget {
         SSSeniorMemberDetails.id: (context) => const SSSeniorMemberDetails(),
 
         //SSenior
+        LeagueScreen.id: (context) => const LeagueScreen(),
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
         SSeniorMembers.id: (context) => const SSeniorMembers(),
         SSeniorShowMembersList.id: (context) => const SSeniorShowMembersList(),
-        TranscationsActionPage.id: (context) =>
-            const TranscationsActionPage(userId: 0),
+        TranscationsActionPage.id: (context) => const TranscationsActionPage(
+              userId: 0,
+              date: '',
+            ),
         //Master
         MasterAdminScreen.id: (context) => const MasterAdminScreen(),
         MasterMembers.id: (context) => const MasterMembers(),
