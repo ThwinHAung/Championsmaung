@@ -636,7 +636,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                       const SizedBox(height: 10.0),
                       labelText('Starting Balance'),
                       TextFormField(
-                        controller: _balanceController..text = '0',
+                        controller: _balanceController,
                         style: kTextFieldActiveStyle,
                         decoration: kTextFieldDecoration.copyWith(
                             hintText: 'Enter starting balance'),
@@ -653,7 +653,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Max for Mix Bet'),
                                 TextFormField(
-                                  controller: _maxMixBetController..text = '0',
+                                  controller: _maxMixBetController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -676,8 +676,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Max for Single Bet'),
                                 TextFormField(
-                                  controller: _maxSingleBetController
-                                    ..text = '0',
+                                  controller: _maxSingleBetController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -704,8 +703,7 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('Commision'),
                                 TextFormField(
-                                  controller: _singleBetCommissionController
-                                    ..text = '0',
+                                  controller: _singleBetCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -728,8 +726,8 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                               children: [
                                 labelText('High Commision'),
                                 TextFormField(
-                                  controller: _singleBetHighCommissionController
-                                    ..text = '0',
+                                  controller:
+                                      _singleBetHighCommissionController,
                                   style: kTextFieldActiveStyle,
                                   decoration: kTextFieldDecoration.copyWith(
                                       hintText: '0'),
@@ -748,26 +746,16 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                       bigCapText('Mix Bet Commisions'),
                       Column(
                         children: [
-                          matchCounts(
-                              2, 15, _mixBet2CommissionController..text = '0'),
-                          matchCounts(
-                              3, 20, _mixBet3CommissionController..text = '0'),
-                          matchCounts(
-                              4, 20, _mixBet4CommissionController..text = '0'),
-                          matchCounts(
-                              5, 20, _mixBet5CommissionController..text = '0'),
-                          matchCounts(
-                              6, 20, _mixBet6CommissionController..text = '0'),
-                          matchCounts(
-                              7, 20, _mixBet7CommissionController..text = '0'),
-                          matchCounts(
-                              8, 20, _mixBet8CommissionController..text = '0'),
-                          matchCounts(
-                              9, 20, _mixBet9CommissionController..text = '0'),
-                          matchCounts(10, 20,
-                              _mixBet10CommissionController..text = '0'),
-                          matchCounts(11, 20,
-                              _mixBet11CommissionController..text = '0'),
+                          matchCounts(2, 15, _mixBet2CommissionController),
+                          matchCounts(3, 20, _mixBet3CommissionController),
+                          matchCounts(4, 20, _mixBet4CommissionController),
+                          matchCounts(5, 20, _mixBet5CommissionController),
+                          matchCounts(6, 20, _mixBet6CommissionController),
+                          matchCounts(7, 20, _mixBet7CommissionController),
+                          matchCounts(8, 20, _mixBet8CommissionController),
+                          matchCounts(9, 20, _mixBet9CommissionController),
+                          matchCounts(10, 20, _mixBet10CommissionController),
+                          matchCounts(11, 20, _mixBet11CommissionController),
                         ],
                       ),
                       const SizedBox(height: 30.0),
