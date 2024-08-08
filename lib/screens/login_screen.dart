@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
@@ -71,10 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: const Text(
                     'CHAMPION MAUNG',
                     style: TextStyle(
-                      color: konPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0,
-                    ),
+                        color: konPrimary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0),
                   ),
                 ),
               ),
@@ -266,7 +265,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 builder: (context) => const RulesPage(),
               ),
             );
-          } else if (role == 'SSenior' || role == 'Senior') {
+          } else if (role == 'SSenior' ||
+              role == 'Senior' ||
+              role == 'Master') {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -277,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MasterAdminScreen(),
+                builder: (context) => const AgentAdminScreen(),
               ),
             );
           }

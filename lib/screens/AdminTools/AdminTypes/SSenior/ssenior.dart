@@ -25,6 +25,9 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
   String? _token;
   String? _role;
   double? _balance;
+  // double? _outstandingBalance;
+  // double? _downLineBalance;
+  // int? _memberCount;
   var list = [
     'Members',
     'Balance',
@@ -77,7 +80,10 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
       });
     }
     if (_token != null) {
-      _getBalance();
+      // _getBalance();
+      // _getMemberCount();
+      // _getDownLineBalance();
+      // _getOutStandingBalance();
     }
   }
 
@@ -96,6 +102,46 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
         _balance = double.parse(data['balance'].toString());
       });
     }
+  }
+
+  Future<void> _getMemberCount() async {
+    var url = Uri.parse('${Config.apiUrl}/getmemberCount');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+    } else {}
+  }
+
+  Future<void> _getDownLineBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {}
+  }
+
+  Future<void> _getOutStandingBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {}
   }
 
   Future<void> _logout() async {

@@ -133,7 +133,8 @@ class _AgentMembersState extends State<AgentMembers> {
     setState(() {
       selectedValue = null;
       selectedValue1 = null; // or set to a default value if required
-      selectedValue2 = null; // or set to a default value if required
+      selectedValue2 = null;
+      selectedValue3 = null; // or set to a default value if required
       // or set to a default value if required
     });
   }
@@ -179,7 +180,9 @@ class _AgentMembersState extends State<AgentMembers> {
 
   Future<void> _register() async {
     // Check if selectedValue1 or selectedValue2 is null
-    if (selectedValue1 == null || selectedValue2 == null) {
+    if (selectedValue1 == null ||
+        selectedValue2 == null ||
+        selectedValue3 == null) {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
@@ -214,7 +217,8 @@ class _AgentMembersState extends State<AgentMembers> {
       },
       body: jsonEncode({
         'realname': _nameController.text,
-        'username': _username! + selectedValue1! + selectedValue2!,
+        'username':
+            _username! + selectedValue1! + selectedValue2! + selectedValue3!,
         'password': _passwordController.text,
         'password_confirmation': _confirmPasswordController.text,
         'phone_number': _phoneNumberController.text,

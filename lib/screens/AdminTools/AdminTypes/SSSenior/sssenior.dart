@@ -61,7 +61,50 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {}
+    if (_token != null) {
+      // _getMemberCount();
+      // _getDownLineBalance();
+      // _getOutStandingBalance();
+    }
+  }
+
+  Future<void> _getMemberCount() async {
+    var url = Uri.parse('${Config.apiUrl}/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {}
+  }
+
+  Future<void> _getDownLineBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {}
+  }
+
+  Future<void> _getOutStandingBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/logout');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+    } else {}
   }
 
   Future<void> _logout() async {
@@ -258,9 +301,6 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     );
   }
 }
-
-
-
 
 /* Padding(
           padding: const EdgeInsets.only(top: 30),

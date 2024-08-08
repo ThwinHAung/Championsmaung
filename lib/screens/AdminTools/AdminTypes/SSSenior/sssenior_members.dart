@@ -120,7 +120,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    // Refresh data or perform necessary actions
     _getToken();
     _resetDropdown();
   }

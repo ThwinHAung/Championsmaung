@@ -1,7 +1,5 @@
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Master/master_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
@@ -73,9 +71,6 @@ class ChampionMaung extends StatelessWidget {
               userId: 0,
               date: '',
             ),
-        //Master
-        MasterAdminScreen.id: (context) => const MasterAdminScreen(),
-        MasterMembers.id: (context) => const MasterMembers(),
         //Agent
         AgentAdminScreen.id: (context) => const AgentAdminScreen(),
         AgentMembers.id: (context) => const AgentMembers(),

@@ -79,13 +79,12 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      _fetchTransaction(widget.userId);
-    }
   }
 
-  Future<void> _fetchTransaction(int userId) async {
-    var url = Uri.parse('${Config.apiUrl}/getTransaction/$userId');
+  Future<void> _fetchTransaction(
+      int userId, DateTime? start, DateTime? end) async {
+    var url = Uri.parse(
+        '${Config.apiUrl}/getTransaction/$userId?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -105,17 +104,17 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
     }
   }
 
-  void _filterTransactions() {
-    if (startDate != null && endDate != null) {
-      setState(() {
-        filteredTransactions = transactions.where((transaction) {
-          DateTime transactionDate = DateTime.parse(transaction.date);
-          return transactionDate.isAfter(startDate!) &&
-              transactionDate.isBefore(endDate!.add(const Duration(days: 1)));
-        }).toList();
-      });
-    }
-  }
+  // void _filterTransactions() {
+  //   if (startDate != null && endDate != null) {
+  //     setState(() {
+  //       filteredTransactions = transactions.where((transaction) {
+  //         DateTime transactionDate = DateTime.parse(transaction.date);
+  //         return transactionDate.isAfter(startDate!) &&
+  //             transactionDate.isBefore(endDate!.add(const Duration(days: 1)));
+  //       }).toList();
+  //     });
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +165,8 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
                               flex: 3,
                               child: IconButton(
                                   onPressed: () {
-                                    _filterTransactions();
+                                    _fetchTransaction(
+                                        widget.userId, startDate!, endDate!);
                                   },
                                   icon: const Icon(
                                     Icons.search_outlined,

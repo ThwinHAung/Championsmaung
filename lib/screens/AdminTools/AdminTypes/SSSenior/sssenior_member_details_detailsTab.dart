@@ -38,8 +38,8 @@ class UserDetails {
 }
 
 class SingleCommissions {
-  final int high;
-  final int low;
+  final double high;
+  final double low;
 
   SingleCommissions({
     required this.high,
@@ -48,23 +48,23 @@ class SingleCommissions {
 
   factory SingleCommissions.fromJson(Map<String, dynamic> json) {
     return SingleCommissions(
-      high: json['high'],
-      low: json['low'],
+      high: double.parse(json['high']),
+      low: double.parse(json['low']),
     );
   }
 }
 
 class MixCommissions {
-  final int m2;
-  final int m3;
-  final int m4;
-  final int m5;
-  final int m6;
-  final int m7;
-  final int m8;
-  final int m9;
-  final int m10;
-  final int m11;
+  final double m2;
+  final double m3;
+  final double m4;
+  final double m5;
+  final double m6;
+  final double m7;
+  final double m8;
+  final double m9;
+  final double m10;
+  final double m11;
 
   MixCommissions({
     required this.m2,
@@ -81,16 +81,16 @@ class MixCommissions {
 
   factory MixCommissions.fromJson(Map<String, dynamic> json) {
     return MixCommissions(
-      m2: json['m2'],
-      m3: json['m3'],
-      m4: json['m4'],
-      m5: json['m5'],
-      m6: json['m6'],
-      m7: json['m7'],
-      m8: json['m8'],
-      m9: json['m9'],
-      m10: json['m10'],
-      m11: json['m11'],
+      m2: double.parse(json['m2']),
+      m3: double.parse(json['m3']),
+      m4: double.parse(json['m4']),
+      m5: double.parse(json['m5']),
+      m6: double.parse(json['m6']),
+      m7: double.parse(json['m7']),
+      m8: double.parse(json['m8']),
+      m9: double.parse(json['m9']),
+      m10: double.parse(json['m10']),
+      m11: double.parse(json['m11']),
     );
   }
 }
@@ -165,17 +165,28 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         'Authorization': 'Bearer $_token',
       },
     );
+
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      final userDetailsJson = data['user_details'][0];
-      final singleCommissionsJson = data['single_commissions'][0];
-      final mixCommissionsJson = data['mix_commissions'][0];
-      setState(() {
-        _userDetails = UserDetails.fromJson(userDetailsJson);
-        _singleCommissions = SingleCommissions.fromJson(singleCommissionsJson);
-        _mixCommissions = MixCommissions.fromJson(mixCommissionsJson);
-      });
-    } else {}
+
+      if (data is Map<String, dynamic>) {
+        final userDetailsJson = data['user_details'][0];
+        final singleCommissionsJson = data['single_commissions'][0];
+        final mixCommissionsJson = data['mix_commissions'][0];
+
+        setState(() {
+          _userDetails = UserDetails.fromJson(userDetailsJson);
+          _singleCommissions =
+              SingleCommissions.fromJson(singleCommissionsJson);
+          _mixCommissions = MixCommissions.fromJson(mixCommissionsJson);
+        });
+      } else {
+        print(
+            'Error: Expected Map<String, dynamic> but got ${data.runtimeType}');
+      }
+    } else {
+      print('Failed to load member details: ${response.statusCode}');
+    }
   }
 
   Future<void> _editBasicInfo(int userID) async {
@@ -214,11 +225,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Editing Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -284,11 +297,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Managing Units Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -351,11 +366,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Changing Max Limit Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -418,11 +435,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Updating Mix Commision Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -486,11 +505,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Updating Mix Commision Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -553,11 +574,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Updating Single Commision Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [
@@ -620,11 +643,13 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
         ),
       ).then((_) {});
     } else {
+      final Map<String, dynamic> responseData = json.decode(response.body);
+      final String error = responseData['message'];
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Updating Password Failed!'),
-          content: Text(response.body),
+          content: Text(error),
           actions: <Widget>[
             Row(
               children: [

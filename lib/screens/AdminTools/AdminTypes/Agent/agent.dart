@@ -25,6 +25,9 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
   String? _token;
   String? _role;
   double? _balance;
+  double? _outstandingBalance;
+  double? _downLineBalance;
+  int? _memberCount;
   var list = [
     'Members',
     'Balance',
@@ -77,6 +80,10 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
     }
     if (_token != null) {
       _getBalance();
+      _getBalance();
+      _getMemberCount();
+      _getDownLineBalance();
+      _getOutStandingBalance();
     }
   }
 
@@ -94,6 +101,67 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
       setState(() {
         _balance = double.parse(data['balance'].toString());
       });
+    }
+  }
+
+  Future<void> _getMemberCount() async {
+    var url = Uri.parse('${Config.apiUrl}/getmemberCount');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('a');
+      var data = jsonDecode(response.body);
+      setState(() {
+        _memberCount = int.parse(data['userCount'].toString());
+      });
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future<void> _getDownLineBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/getdownlineBalance');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('b');
+      var data = jsonDecode(response.body);
+      setState(() {
+        _downLineBalance = double.parse(data['downlineBalance'].toString());
+      });
+    } else {
+      print(response.body);
+    }
+  }
+
+  Future<void> _getOutStandingBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/getoutstandingBalance');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      print('c');
+      var data = jsonDecode(response.body);
+      setState(() {
+        _outstandingBalance =
+            double.parse(data['outstandingBalance'].toString());
+      });
+    } else {
+      print(response.body);
     }
   }
 
@@ -138,72 +206,81 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-              padding: EdgeInsets.all(w / 50),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
+            padding: EdgeInsets.all(w / 50),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              String displayValue = '';
+              if (index == 0) {
+                displayValue = _memberCount?.toString() ?? '0';
+              } else if (index == 1) {
+                displayValue = _balance?.toStringAsFixed(2) ?? '0';
+              } else if (index == 2) {
+                displayValue = _downLineBalance?.toStringAsFixed(2) ?? '0';
+              } else if (index == 3) {
+                displayValue = _outstandingBalance?.toStringAsFixed(2) ?? '0';
+              }
+
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
                     curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(bottom: w / 30),
-                        height: h / 5.5,
-                        decoration: const BoxDecoration(
-                          color: kOnPrimaryContainer,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        list[index],
-                                        style: kTextFieldActiveStyle,
+                    duration: const Duration(milliseconds: 2500),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(bottom: w / 30),
+                      height: h / 5.5,
+                      decoration: const BoxDecoration(
+                        color: kOnPrimaryContainer,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      list[index],
+                                      style: kTextFieldActiveStyle,
+                                    ),
+                                    Text(
+                                      displayValue,
+                                      style: const TextStyle(
+                                        fontSize: 35,
+                                        color: kBlue,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Text(
-                                        index == 1 && _balance != null
-                                            ? _balance!.toStringAsFixed(2)
-                                            : '0', // Display 'Loading...' while balance is being fetched
-                                        style: const TextStyle(
-                                          fontSize: 35,
-                                          color: kBlue,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: showIcons[index],
-                                ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: showIcons[index],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
       ),
       drawer: Drawer(

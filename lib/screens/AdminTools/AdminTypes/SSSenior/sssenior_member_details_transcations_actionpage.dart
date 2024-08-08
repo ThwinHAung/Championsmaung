@@ -96,7 +96,7 @@ class _TranscationsActionPageState extends State<TranscationsActionPage> {
           style: TextStyle(
             color: kBlack,
             fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+            fontSize: 25.0,
           ),
         ),
       ),
@@ -147,16 +147,19 @@ class _TranscationsActionPageState extends State<TranscationsActionPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(
               itemCount: transactions.length,
               itemBuilder: (context, index) {
-                return ListCard(transactions[index]);
+                return Padding(
+                  padding: const EdgeInsets.only(
+                      bottom: 10.0), // Add vertical padding
+                  child: ListCard(transactions[index]),
+                );
               },
             ),
           ),
-const SizedBox(height: 10.0),
         ],
       ),
     );
@@ -188,7 +191,6 @@ const SizedBox(height: 10.0),
           flex: 3,
           child: detailsListText(transaction.balance.toString()),
         ),
-        
       ],
     );
   }
