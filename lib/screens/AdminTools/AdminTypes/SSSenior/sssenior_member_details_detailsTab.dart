@@ -96,6 +96,7 @@ class MixCommissions {
 }
 
 class SSSeniorDetailsTab extends StatefulWidget {
+  static const String id = 'sssenior_details_tab';
   final int userId;
   const SSSeniorDetailsTab({super.key, required this.userId});
 
@@ -114,6 +115,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
   void initState() {
     super.initState();
     _getToken();
+    print(widget.userId);
   }
 
   @override

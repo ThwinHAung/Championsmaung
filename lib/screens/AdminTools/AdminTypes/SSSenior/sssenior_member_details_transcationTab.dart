@@ -54,6 +54,7 @@ class Transaction {
 }
 
 class SSSeniorTransactionsTab extends StatefulWidget {
+  static const String id = 'sssenior_transition_tab';
   final int userId;
 
   const SSSeniorTransactionsTab({super.key, required this.userId});

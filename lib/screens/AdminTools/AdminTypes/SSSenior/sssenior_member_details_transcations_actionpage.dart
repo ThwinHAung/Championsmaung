@@ -34,7 +34,7 @@ class Transaction {
 }
 
 class TranscationsActionPage extends StatefulWidget {
-  static String id = 'transcations_action_page';
+  static const String id = 'transcations_action_page';
   final int userId;
   final String date;
 

@@ -56,7 +56,7 @@ class Match {
 }
 
 class BodyBetting extends StatefulWidget {
-  static String id = 'body_betting';
+  static const String id = 'body_betting';
   const BodyBetting({super.key});
 
   @override

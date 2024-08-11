@@ -56,7 +56,7 @@ class Match {
 }
 
 class SSSeniorMatchView extends StatefulWidget {
-  static String id = "sssenior_match_view";
+  static const String id = "sssenior_match_view";
 
   // constructor for custom radio button widget
 

@@ -5,6 +5,7 @@ import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {
+  static const String id = "splash_screen";
   const SplashScreen({super.key});
 
   @override

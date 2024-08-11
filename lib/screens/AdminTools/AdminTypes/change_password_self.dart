@@ -5,7 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class ChangePasswordSelf extends StatefulWidget {
-  static String id = 'change_password';
+  static const String id = 'change_password';
   const ChangePasswordSelf({super.key});
 
   @override

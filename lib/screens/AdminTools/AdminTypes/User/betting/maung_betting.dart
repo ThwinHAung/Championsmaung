@@ -56,7 +56,7 @@ class Match {
 }
 
 class MaungBetting extends StatefulWidget {
-  static String id = 'maung_betting';
+  static const String id = 'maung_betting';
   const MaungBetting({super.key});
 
   @override

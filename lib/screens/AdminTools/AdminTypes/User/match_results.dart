@@ -41,7 +41,7 @@ class Match {
 }
 
 class MatchResults extends StatefulWidget {
-  static String id = "match_results";
+  static const String id = "match_results";
 
   // constructor for custom radio button widget
 

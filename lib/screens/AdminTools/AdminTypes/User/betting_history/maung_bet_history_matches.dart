@@ -81,7 +81,7 @@ class Bet {
 }
 
 class MaungBetHistoryMatches extends StatefulWidget {
-  static String id = "maung_bet_history_matches";
+  static const String id = "maung_bet_history_matches";
 
   // constructor for custom radio button widget
 

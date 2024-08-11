@@ -12,7 +12,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 
 class AgentAdminScreen extends StatefulWidget {
-  static String id = 'agent_admin_screen';
+  static const String id = 'agent_admin_screen';
   const AgentAdminScreen({super.key});
 
   @override
@@ -114,7 +114,6 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
       },
     );
     if (response.statusCode == 200) {
-      print('a');
       var data = jsonDecode(response.body);
       setState(() {
         _memberCount = int.parse(data['userCount'].toString());
@@ -134,7 +133,6 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
       },
     );
     if (response.statusCode == 200) {
-      print('b');
       var data = jsonDecode(response.body);
       setState(() {
         _downLineBalance = double.parse(data['downlineBalance'].toString());
@@ -154,7 +152,6 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
       },
     );
     if (response.statusCode == 200) {
-      print('c');
       var data = jsonDecode(response.body);
       setState(() {
         _outstandingBalance =

@@ -1,9 +1,8 @@
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
-import 'dart:js';
 
 class MyLoading extends StatelessWidget {
-  static String id = 'my_loading';
+  static const String id = 'my_loading';
 
   const MyLoading({super.key});
 

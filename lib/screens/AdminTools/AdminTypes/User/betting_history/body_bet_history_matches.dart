@@ -77,7 +77,7 @@ class Body {
 }
 
 class BodyBetHistoryMatches extends StatefulWidget {
-  static String id = "body_bet_history_matches";
+  static const String id = "body_bet_history_matches";
 
   // constructor for custom radio button widget
 

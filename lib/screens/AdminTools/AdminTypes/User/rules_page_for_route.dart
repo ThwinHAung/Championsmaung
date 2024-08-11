@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class RulesPageForRoute extends StatefulWidget {
-  static String id = 'rules_page_for_route';
+  static const String id = 'rules_page_for_route';
   const RulesPageForRoute({super.key});
 
   @override

@@ -2,7 +2,7 @@ import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
 
 class More extends StatefulWidget {
-  static String id = 'more';
+  static const String id = 'more';
   const More({super.key});
 
   @override

@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class SSSeniorInputsPage extends StatefulWidget {
-  static String id = 'sssenior_input_page';
+  static const String id = 'sssenior_input_page';
   const SSSeniorInputsPage({super.key});
 
   @override

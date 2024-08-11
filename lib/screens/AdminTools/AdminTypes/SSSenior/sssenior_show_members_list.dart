@@ -8,7 +8,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorShowMembersList extends StatefulWidget {
-  static String id = "sssenior_show_members_list";
+  static const String id = "sssenior_show_members_list";
   const SSSeniorShowMembersList({super.key});
 
   @override
@@ -37,6 +37,13 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _getToken();
+    }
+  }
+
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     _getToken();
@@ -45,7 +52,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {
-      await _fetchMemberList();
+      _fetchMemberList();
     }
   }
 
@@ -199,9 +206,9 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
               ),
             ),
             onTap: () async {
+              print(userData['id']);
               await Navigator.pushNamed(context, SSSeniorMemberDetails.id,
                   arguments: userData['id']);
-              _fetchMemberList();
             },
           ),
         ),

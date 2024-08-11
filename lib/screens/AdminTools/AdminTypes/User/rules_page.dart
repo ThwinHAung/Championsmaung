@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class RulesPage extends StatefulWidget {
-  static String id = 'rules_page';
+  static const String id = 'rules_page';
   const RulesPage({super.key});
 
   @override

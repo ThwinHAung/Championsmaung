@@ -70,7 +70,7 @@ class AccumulatorBet {
 }
 
 class BettingHistory extends StatefulWidget {
-  static String id = 'betting_history';
+  static const String id = 'betting_history';
   const BettingHistory({super.key});
 
   @override

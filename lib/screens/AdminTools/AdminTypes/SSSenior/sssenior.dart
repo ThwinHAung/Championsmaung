@@ -13,7 +13,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorAdminScreen extends StatefulWidget {
-  static String id = 'sssenior_admin_screen';
+  static const String id = 'sssenior_admin_screen';
   const SSSeniorAdminScreen({super.key});
   @override
   State<SSSeniorAdminScreen> createState() => _SSSeniorAdminScreenState();
@@ -56,17 +56,28 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     // Refresh data or perform necessary actions
+    // Refresh data or perform necessary actions
     _getToken();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    if (_token != null) {
-      // _getMemberCount();
-      // _getDownLineBalance();
-      // _getOutStandingBalance();
-    }
+    // if (_token == null) {
+    //   _redirectToLogin();
+    // }
   }
+
+  // void _redirectToLogin() {
+  //   Navigator.pushNamedAndRemoveUntil(
+  //     context,
+  //     LoginScreen.id,
+  //     (Route<dynamic> route) => false,
+  //   );
+  // }
+
+  // _getMemberCount();
+  // _getDownLineBalance();
+  // _getOutStandingBalance();
 
   Future<void> _getMemberCount() async {
     var url = Uri.parse('${Config.apiUrl}/logout');
@@ -120,10 +131,15 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
-      await storage.delete(key: 'username');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const LoginScreen()));
-    } else {}
+      await storage.delete(key: 'user_name');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      print(response.body);
+    }
   }
 
   @override

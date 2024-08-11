@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -33,6 +34,17 @@ class _LeagueScreenState extends State<LeagueScreen> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token == null) {
+      _redirectToLogin();
+    }
+  }
+
+  void _redirectToLogin() {
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      LoginScreen.id,
+      (Route<dynamic> route) => false,
+    );
   }
 
   Future<void> _insertLeague() async {

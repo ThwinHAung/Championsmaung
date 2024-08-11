@@ -10,7 +10,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorMembers extends StatefulWidget {
-  static String id = 'sssenior_member_page';
+  static const String id = 'sssenior_member_page';
   const SSSeniorMembers({super.key});
 
   @override

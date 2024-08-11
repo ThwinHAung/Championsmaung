@@ -16,7 +16,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 class UserHomeScreen extends StatefulWidget {
-  static String id = 'userHome_screen';
+  static const String id = 'userHome_screen';
   const UserHomeScreen({super.key});
 
   @override
@@ -96,8 +96,12 @@ class _UserHomeScreenState extends State<UserHomeScreen>
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
-      await storage.delete(key: 'username');
-      Navigator.pushReplacementNamed(context, LoginScreen.id);
+      await storage.delete(key: 'user_name');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (Route<dynamic> route) => false,
+      );
     } else {}
   }
 

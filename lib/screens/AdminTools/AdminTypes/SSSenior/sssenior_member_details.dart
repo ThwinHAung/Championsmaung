@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class SSSeniorMemberDetails extends StatefulWidget {
-  static String id = 'sssenior_member_details';
+  static const String id = 'sssenior_member_details';
   const SSSeniorMemberDetails({super.key});
 
   @override
