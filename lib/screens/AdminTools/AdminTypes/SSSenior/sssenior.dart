@@ -1,9 +1,7 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -266,18 +264,6 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
                   title: drawerListSubMenuText('Add League Name'),
                   onTap: () {
                     Navigator.pushNamed(context, LeagueScreen.id);
-                  },
-                ),
-                ListTile(
-                  title: drawerListSubMenuText('Add Matches'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSSeniorInputsPage.id);
-                  },
-                ),
-                ListTile(
-                  title: drawerListSubMenuText('View Pending Matches'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSSeniorMatchView.id);
                   },
                 ),
                 ListTile(

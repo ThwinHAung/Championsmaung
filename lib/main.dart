@@ -116,9 +116,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_inputs.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
@@ -169,8 +167,6 @@ class ChampionMaung extends StatelessWidget {
         //SSSenior
         SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),
         SSSeniorMembers.id: (context) => const SSSeniorMembers(),
-        SSSeniorInputsPage.id: (context) => const SSSeniorInputsPage(),
-        SSSeniorMatchView.id: (context) => const SSSeniorMatchView(),
         SSSeniorMatchHistory.id: (context) => const SSSeniorMatchHistory(),
         SSSeniorShowMembersList.id: (context) =>
             const SSSeniorShowMembersList(),
