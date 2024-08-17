@@ -1,7 +1,5 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_add_league_name.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -253,23 +251,6 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
                   title: drawerListSubMenuText('Members List'),
                   onTap: () {
                     Navigator.pushNamed(context, SSSeniorShowMembersList.id);
-                  },
-                ),
-              ],
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Matches Management'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Add League Name'),
-                  onTap: () {
-                    Navigator.pushNamed(context, LeagueScreen.id);
-                  },
-                ),
-                ListTile(
-                  title: drawerListSubMenuText('View Matches History'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSSeniorMatchHistory.id);
                   },
                 ),
               ],
