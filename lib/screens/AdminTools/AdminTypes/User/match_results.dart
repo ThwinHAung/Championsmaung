@@ -30,12 +30,12 @@ class Match {
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
       id: json['id'],
-      league_name: json['league_name'],
-      homeMatch: json['home_match'],
-      awayMatch: json['away_match'],
-      matchTime: json['match_time'],
-      homeGoals: json['home_goals'].toString(),
-      awayGoals: json['away_goals'].toString(),
+      league_name: json['League'],
+      homeMatch: json['HomeTeam'],
+      awayMatch: json['AwayTeam'],
+      matchTime: json['MatchTime'],
+      homeGoals: json['HomeGoal'].toString(),
+      awayGoals: json['AwayGoal'].toString(),
     );
   }
 }

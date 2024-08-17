@@ -12,45 +12,41 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Match {
   final int id;
-  final String league_name;
-  final String homeMatch;
-  final String awayMatch;
-  final String matchTime;
-  final String specialOddTeam;
-  final String specialOddFirstDigit;
-  final String specialOddSign;
-  final int specialOddLastDigit;
-  final String overUnderFirstDigit;
-  final String overUnderSign;
-  final int overUnderLastDigit;
+  final DateTime matchTime;
+  final String league;
+  final String homeTeam;
+  final String awayTeam;
+  final int hdpGoal;
+  final int hdpUnit;
+  final int gpGoal;
+  final int gpUnit;
+  final bool homeUp;
+
   Match({
     required this.id,
-    required this.league_name,
-    required this.homeMatch,
-    required this.awayMatch,
     required this.matchTime,
-    required this.specialOddTeam,
-    required this.specialOddFirstDigit,
-    required this.specialOddSign,
-    required this.specialOddLastDigit,
-    required this.overUnderFirstDigit,
-    required this.overUnderSign,
-    required this.overUnderLastDigit,
+    required this.league,
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.hdpGoal,
+    required this.hdpUnit,
+    required this.gpGoal,
+    required this.gpUnit,
+    required this.homeUp,
   });
+
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
-      id: json['id'],
-      league_name: json['league_name'],
-      homeMatch: json['home_match'],
-      awayMatch: json['away_match'],
-      matchTime: json['match_time'],
-      specialOddTeam: json['special_odd_team'],
-      specialOddFirstDigit: json['special_odd_first_digit'],
-      specialOddSign: json['special_odd_sign'],
-      specialOddLastDigit: json['special_odd_last_digit'],
-      overUnderFirstDigit: json['over_under_first_digit'],
-      overUnderSign: json['over_under_sign'],
-      overUnderLastDigit: json['over_under_last_digit'],
+      id: json['id'] as int,
+      matchTime: DateTime.parse(json['MatchTime'] as String),
+      league: json['League'] as String,
+      homeTeam: json['HomeTeam'] as String,
+      awayTeam: json['AwayTeam'] as String,
+      hdpGoal: json['HdpGoal'] as int,
+      hdpUnit: json['HdpUnit'] as int,
+      gpGoal: json['GpGoal'] as int,
+      gpUnit: json['GpUnit'] as int,
+      homeUp: (json['HomeUp'] as int) == 1,
     );
   }
 }
@@ -417,15 +413,8 @@ class _MaungBettingState extends State<MaungBetting> {
 
   Widget radioContainer(int index) {
     Match match = matches[index];
-    // Parse match time
-    DateTime matchTime =
-        DateFormat("yyyy-MM-dd HH:mm:ss").parse(match.matchTime);
-    String formattedMatchTime =
-        DateFormat("dd MMM yyyy hh:mm a").format(matchTime);
-    // Get current time
     DateTime now = DateTime.now();
-    // Check if the match has started
-    bool matchStarted = now.isAfter(matchTime);
+    bool matchStarted = now.isAfter(match.matchTime);
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
@@ -437,90 +426,97 @@ class _MaungBettingState extends State<MaungBetting> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            labelText(match.league_name),
+            labelText(match.league),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        'Match Time: $formattedMatchTime',
-                        style: const TextStyle(color: kGrey, fontSize: 12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
+                      style: const TextStyle(color: kGrey, fontSize: 12),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      customRadio(match.homeTeam, 0, index, matchStarted),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.homeUp == true ? '<' : '',
+                            style: const TextStyle(
+                              color: kBlue,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: [
-                        customRadio(match.homeMatch, 0, index, matchStarted),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '<' : '',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            _formatHdpGoal(match),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            match.homeUp == true ? '' : '>',
+                            style: const TextStyle(
+                              color: kBlue,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddFirstDigit == '0'
-                                  ? '=${match.specialOddSign}${match.specialOddLastDigit}'
-                                  : match.specialOddFirstDigit +
-                                      match.specialOddSign +
-                                      match.specialOddLastDigit.toString(),
-                            ),
+                      ),
+                      customRadio(match.awayTeam, 1, index, matchStarted),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      customRadio("Over", 2, index, matchStarted),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Text(
+                            _formatOverUnder(match),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.specialOddTeam == 'H' ? '' : '>',
-                              style: const TextStyle(
-                                color: kBlue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                        customRadio(match.awayMatch, 1, index, matchStarted),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        customRadio("Over", 2, index, matchStarted),
-                        Expanded(
-                          flex: 1,
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: Text(
-                              match.overUnderFirstDigit +
-                                  match.overUnderSign +
-                                  match.overUnderLastDigit.toString(),
-                            ),
-                          ),
-                        ),
-                        customRadio("Under", 3, index, matchStarted),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      customRadio("Under", 3, index, matchStarted),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
         ),
       ),
     );
+  }
+
+  String _formatHdpGoal(Match match) {
+    if (match.hdpGoal == 0) {
+      String sign = match.hdpUnit > 0 ? '+' : '';
+      return '= $sign${match.hdpUnit}';
+    } else {
+      String sign = match.hdpUnit > 0 ? '+' : '';
+      return '${match.hdpGoal}($sign${match.hdpUnit})';
+    }
+  }
+
+  String _formatOverUnder(Match match) {
+    String sign = match.gpUnit > 0 ? '+' : '';
+    return '${match.gpGoal}($sign${match.gpUnit})';
   }
 
   Widget customRadio(
@@ -570,9 +566,9 @@ class _MaungBettingState extends State<MaungBetting> {
         selectedValues.entries.map((entry) {
       int matchId = matches[entry.key].id;
       String selectedOutcome = entry.value;
-      if (selectedOutcome == matches[entry.key].homeMatch) {
+      if (selectedOutcome == matches[entry.key].homeTeam) {
         selectedOutcome = 'W1';
-      } else if (selectedOutcome == matches[entry.key].awayMatch) {
+      } else if (selectedOutcome == matches[entry.key].awayTeam) {
         selectedOutcome = 'W2';
       }
       return {

@@ -17,13 +17,11 @@ class Maung {
   final String homeMatch;
   final String awayMatch;
   final String matchTime;
-  final String specialOddTeam;
-  final String specialOddFirstDigit;
-  final String specialOddSign;
-  final int specialOddLastDigit;
-  final String overUnderFirstDigit;
-  final String overUnderSign;
-  final int overUnderLastDigit;
+  final bool homeUp;
+  final int HdpGoal;
+  final int HdpUnit;
+  final int GpGoal;
+  final int GpUnit;
   final int? homeGoals;
   final int? awayGoals;
   Maung({
@@ -32,13 +30,11 @@ class Maung {
     required this.homeMatch,
     required this.awayMatch,
     required this.matchTime,
-    required this.specialOddTeam,
-    required this.specialOddFirstDigit,
-    required this.specialOddSign,
-    required this.specialOddLastDigit,
-    required this.overUnderFirstDigit,
-    required this.overUnderSign,
-    required this.overUnderLastDigit,
+    required this.homeUp,
+    required this.HdpGoal,
+    required this.HdpUnit,
+    required this.GpGoal,
+    required this.GpUnit,
     this.homeGoals,
     this.awayGoals,
   });
@@ -49,13 +45,11 @@ class Maung {
       homeMatch: json['home_match'],
       awayMatch: json['away_match'],
       matchTime: json['match_time'],
-      specialOddTeam: json['special_odd_team'],
-      specialOddFirstDigit: json['special_odd_first_digit'],
-      specialOddSign: json['special_odd_sign'],
-      specialOddLastDigit: json['special_odd_last_digit'],
-      overUnderFirstDigit: json['over_under_first_digit'],
-      overUnderSign: json['over_under_sign'],
-      overUnderLastDigit: json['over_under_last_digit'],
+      homeUp: (json['HomeUp'] as int) == 1,
+      HdpGoal: json['HdpGoal'],
+      HdpUnit: json['HdpUnit'],
+      GpGoal: json['GpGoal'],
+      GpUnit: json['GpUnit'],
       homeGoals: json['home_goals'],
       awayGoals: json['away_goals'],
     );
@@ -392,9 +386,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            match.overUnderFirstDigit +
-                                match.overUnderSign +
-                                match.overUnderLastDigit.toString(),
+                            _formatOverUnder(match),
                           ),
                         ),
                       ),
@@ -430,7 +422,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               children: [
                 Expanded(
                   flex: 1,
-                  child: match.specialOddTeam == 'H'
+                  child: match.homeUp
                       ? Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -438,11 +430,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit == 0
-                                ? '='
-                                : match.specialOddFirstDigit +
-                                    match.specialOddSign +
-                                    match.specialOddLastDigit.toString(),
+                            _formatHdpGoal(match),
                             style: const TextStyle(
                               color: kBlue,
                             ),
@@ -504,7 +492,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: match.specialOddTeam == 'A'
+                  child: match.homeUp == false
                       ? Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
@@ -512,11 +500,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                           ),
                           child: Text(
                             textAlign: TextAlign.center,
-                            match.specialOddFirstDigit == 0
-                                ? '='
-                                : match.specialOddFirstDigit +
-                                    match.specialOddSign +
-                                    match.specialOddLastDigit.toString(),
+                            _formatHdpGoal(match),
                             style: const TextStyle(
                               color: kBlue,
                             ),
@@ -530,6 +514,21 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
         ),
       ),
     );
+  }
+
+  String _formatHdpGoal(Maung match) {
+    if (match.HdpGoal == 0) {
+      String sign = match.HdpUnit > 0 ? '+' : '';
+      return '= $sign${match.HdpUnit}';
+    } else {
+      String sign = match.HdpUnit > 0 ? '+' : '';
+      return '${match.HdpGoal}($sign${match.HdpUnit})';
+    }
+  }
+
+  String _formatOverUnder(Maung match) {
+    String sign = match.GpUnit > 0 ? '+' : '';
+    return '${match.GpGoal}($sign${match.GpUnit})';
   }
 
   Widget customRadioLeft(

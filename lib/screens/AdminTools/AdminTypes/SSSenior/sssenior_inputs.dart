@@ -845,8 +845,10 @@ class _SSSeniorInputsPageState extends State<SSSeniorInputsPage> {
       _successDialog(context, message);
     } else {
       Navigator.pop(context);
+      print(response.body);
       final responseData = json.decode(response.body);
       final message = responseData['message'];
+      print(message);
       _failedDialog(context, message);
     }
   }

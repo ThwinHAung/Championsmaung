@@ -107,26 +107,25 @@ class _AgentMembersState extends State<AgentMembers> {
   }
 
   void _clearForms() {
-    _nameController.dispose();
-    _phoneNumberController.dispose();
-    _passwordController.dispose();
-    _balanceController.dispose();
-    _confirmPasswordController.dispose();
-
-    _maxMixBetController.dispose();
-    _maxSingleBetController.dispose();
-    _singleBetCommissionController.dispose();
-    _singleBetHighCommissionController.dispose();
-    _mixBet2CommissionController.dispose();
-    _mixBet3CommissionController.dispose();
-    _mixBet4CommissionController.dispose();
-    _mixBet5CommissionController.dispose();
-    _mixBet6CommissionController.dispose();
-    _mixBet7CommissionController.dispose();
-    _mixBet8CommissionController.dispose();
-    _mixBet9CommissionController.dispose();
-    _mixBet10CommissionController.dispose();
-    _mixBet11CommissionController.dispose();
+    _nameController.clear();
+    _phoneNumberController.clear();
+    _passwordController.clear();
+    _balanceController.clear();
+    _confirmPasswordController.clear();
+    _maxMixBetController.clear();
+    _maxSingleBetController.clear();
+    _singleBetCommissionController.clear();
+    _singleBetHighCommissionController.clear();
+    _mixBet2CommissionController.clear();
+    _mixBet3CommissionController.clear();
+    _mixBet4CommissionController.clear();
+    _mixBet5CommissionController.clear();
+    _mixBet6CommissionController.clear();
+    _mixBet7CommissionController.clear();
+    _mixBet8CommissionController.clear();
+    _mixBet9CommissionController.clear();
+    _mixBet10CommissionController.clear();
+    _mixBet11CommissionController.clear();
   }
 
   void _resetDropdown() {
