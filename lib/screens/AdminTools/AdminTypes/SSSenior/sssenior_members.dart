@@ -277,18 +277,6 @@ class _SSSeniorMembersState extends State<SSSeniorMembers> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimary,
-      appBar: AppBar(
-        backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Create Account',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Container(
           color: kPrimary,

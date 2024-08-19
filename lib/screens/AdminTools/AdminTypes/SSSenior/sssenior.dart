@@ -1,16 +1,19 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_master_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorAdminScreen extends StatefulWidget {
   static const String id = 'sssenior_admin_screen';
   const SSSeniorAdminScreen({super.key});
+
   @override
   State<SSSeniorAdminScreen> createState() => _SSSeniorAdminScreenState();
 }
@@ -18,100 +21,27 @@ class SSSeniorAdminScreen extends StatefulWidget {
 class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  var list = [
-    'Members',
-    'Balance',
-    'Downline Balance',
-    'Outstanding Balance',
-  ];
-  var showValues = [
-    000000,
-    000000,
-    000000,
-    000000,
-  ];
-  List showIcons = [
-    const Icon(Icons.people_alt_outlined, color: kBlue),
-    const Text('MMK',
-        style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
-    const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
-    const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
-  ];
+  int _selectedIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     _getToken();
     super.initState();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    // Refresh data or perform necessary actions
-    _getToken();
-  }
-
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    // if (_token == null) {
-    //   _redirectToLogin();
-    // }
   }
 
-  // void _redirectToLogin() {
-  //   Navigator.pushNamedAndRemoveUntil(
-  //     context,
-  //     LoginScreen.id,
-  //     (Route<dynamic> route) => false,
-  //   );
-  // }
-
-  // _getMemberCount();
-  // _getDownLineBalance();
-  // _getOutStandingBalance();
-
-  Future<void> _getMemberCount() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-    } else {}
-  }
-
-  Future<void> _getDownLineBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-    } else {}
-  }
-
-  Future<void> _getOutStandingBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-    } else {}
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (MediaQuery.of(context).size.width < 600) {
+      Navigator.of(context)
+          .pop(); // Close the drawer when an item is selected on small screens
+    }
   }
 
   Future<void> _logout() async {
@@ -138,11 +68,72 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     }
   }
 
+  Widget _buildDrawer() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        SizedBox(height: 30.0),
+        _buildListTile('Dashboard', 0),
+        _buildExpansionTile(
+          'Members Management',
+          [
+            _buildListTile('Create Member', 1),
+            _buildListTile('Members List', 2),
+          ],
+          [1, 2],
+        ),
+        _buildExpansionTile(
+          'Report',
+          [
+            _buildListTile('Daily', 3),
+            _buildListTile('Master', 4),
+          ],
+          [3, 4],
+        ),
+        ListTile(
+          title: drawerListMenuText('Log Out'),
+          onTap: () {
+            _logout();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildListTile(String title, int index) {
+    return ListTile(
+      tileColor: _selectedIndex == index ? kOnPrimaryContainer : null,
+      title: drawerListMenuText(title),
+      onTap: () {
+        _onItemSelected(index);
+      },
+    );
+  }
+
+  Widget _buildExpansionTile(
+      String title, List<Widget> children, List<int> expandedIndices) {
+    return ExpansionTile(
+      initiallyExpanded: expandedIndices.contains(_selectedIndex),
+      title: drawerListMenuText(title),
+      children: children,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
+
+    // List of widgets to display on the right side
+    final List<Widget> _widgets = [
+      SSSeniorDashboard(),
+      SSSeniorMembers(),
+      SSSeniorShowMembersList(),
+      SSSeniorDailyReport(),
+      SSSeniorMasterReport(),
+    ];
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
@@ -155,157 +146,36 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
             fontSize: 20.0,
           ),
         ),
+        leading: w < 600
+            ? IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  _scaffoldKey.currentState?.openDrawer();
+                },
+              )
+            : null,
       ),
-      body: Container(
-        color: kPrimary,
-        child: AnimationLimiter(
-          child: ListView.builder(
-              padding: const EdgeInsets.all(10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(bottom: w / 30),
-                        height: h / 5.5,
-                        decoration: const BoxDecoration(
-                          color: kOnPrimaryContainer,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        list[index],
-                                        style: kTextFieldActiveStyle,
-                                      ),
-                                      Text(
-                                        showValues[index].toString(),
-                                        style: const TextStyle(
-                                          fontSize: 35,
-                                          color: kBlue,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: showIcons[index],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        ),
-      ),
-      drawer: Drawer(
-        backgroundColor: kOnPrimaryContainer,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            SizedBox(height: 30.0),
-            ListTile(
-              title: drawerListMenuText('Dashboard'),
-              onTap: () {
-                // Handle menu 1 tap
-              },
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Members Management'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Create Member'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSSeniorMembers.id);
-                  },
+      drawer: w < 600 ? Drawer(child: _buildDrawer()) : null,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            return _widgets[_selectedIndex];
+          } else {
+            return Row(
+              children: [
+                Container(
+                  width: w * 0.15, // Adjust the width as needed
+                  color: kOnPrimaryContainer,
+                  child: _buildDrawer(),
                 ),
-                ListTile(
-                  title: drawerListSubMenuText('Members List'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSSeniorShowMembersList.id);
-                  },
+                Expanded(
+                  child: _widgets[_selectedIndex],
                 ),
               ],
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Report'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Daily'),
-                  onTap: () {
-                    // Handle submenu 2.1 tap
-                  },
-                ),
-                ListTile(
-                  title: drawerListSubMenuText('Master'),
-                  onTap: () {
-                    // Handle submenu 2.2 tap
-                  },
-                ),
-              ],
-            ),
-            ListTile(
-              title: drawerListMenuText('Log Out'),
-              onTap: () {
-                _logout();
-              },
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
 }
-
-/* Padding(
-          padding: const EdgeInsets.only(top: 30),
-          child: ListView.builder(
-            itemCount: drawerList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(
-                  drawerList[index],
-                  style: const TextStyle(
-                    color: kBlue,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                onTap: () {
-                  if (drawerRoutes[index] == 'logout') {
-                    _logout();
-                  } else {
-                    Navigator.pushNamed(context, drawerRoutes[index]);
-                  }
-                },
-              );
-            },
-          ),
-        ), */

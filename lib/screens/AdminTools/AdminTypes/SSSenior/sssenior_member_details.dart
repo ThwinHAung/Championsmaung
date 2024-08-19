@@ -55,14 +55,6 @@ class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: const Text(
-          'Members Details',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),
-        ),
         bottom: TabBar(
           controller: _tabController,
           labelColor: kBlue, // Active tab text color

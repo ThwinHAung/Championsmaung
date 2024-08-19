@@ -88,18 +88,6 @@ class _TranscationsActionPageState extends State<TranscationsActionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimary,
-      appBar: AppBar(
-        backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Transaction Details',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 25.0,
-          ),
-        ),
-      ),
       body: Container(
         color: kPrimary,
         child: Padding(

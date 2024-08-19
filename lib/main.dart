@@ -115,6 +115,7 @@
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
@@ -168,7 +169,7 @@ class ChampionMaung extends StatelessWidget {
         SSSeniorShowMembersList.id: (context) =>
             const SSSeniorShowMembersList(),
         SSSeniorMemberDetails.id: (context) => const SSSeniorMemberDetails(),
-
+        SSSeniorDailyReport.id: (context) => const SSSeniorDailyReport(),
         //SSenior
         SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
         SSeniorMembers.id: (context) => const SSeniorMembers(),
