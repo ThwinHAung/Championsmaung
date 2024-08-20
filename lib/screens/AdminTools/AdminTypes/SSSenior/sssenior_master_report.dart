@@ -104,23 +104,28 @@ class _SSSeniorMasterReportState extends State<SSSeniorMasterReport>
                       Row(
                         children: [
                           Expanded(
-                              flex: 5,
-                              child: materialButton(kBlue,
-                                  '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
-                                  () {
+                            flex: 5,
+                            child: materialButton(
+                              kBlue,
+                              '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
+                              () {
                                 _selectDateRange(context);
-                              })),
+                              },
+                            ),
+                          ),
                           const SizedBox(width: 5.0),
                           Expanded(
-                              flex: 3,
-                              child: IconButton(
-                                  onPressed: () {
-                                    _fetchTransaction(1, startDate!, endDate!);
-                                  },
-                                  icon: const Icon(
-                                    Icons.search_outlined,
-                                    color: kBlue,
-                                  )))
+                            flex: 3,
+                            child: IconButton(
+                              onPressed: () {
+                                _fetchTransaction(1, startDate!, endDate!);
+                              },
+                              icon: const Icon(
+                                Icons.search_outlined,
+                                color: kBlue,
+                              ),
+                            ),
+                          ),
                         ],
                       ),
                     ],
@@ -207,14 +212,81 @@ class _SSSeniorMasterReportState extends State<SSSeniorMasterReport>
             child: Divider(),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 3.0),
-                  child: ListCard(),
-                );
-              },
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 3.0),
+                        child: ListCard(),
+                      );
+                    },
+                  ),
+                ),
+                Container(
+                  color: Colors.grey[200], // Change as needed
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: detailsListText('total'),
+                      ),
+                      VerticalDivider(),
+                      Expanded(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: detailsListText('500'),
+                              ),
+                              Expanded(
+                                child: detailsListText('5'),
+                              ),
+                              Expanded(
+                                child: detailsListText('W'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      VerticalDivider(),
+                      Expanded(
+                        flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: detailsListText('500'),
+                              ),
+                              Expanded(
+                                child: detailsListText('7'),
+                              ),
+                              Expanded(
+                                child: detailsListText('L'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      VerticalDivider(),
+                      Expanded(
+                        flex: 4,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10.0),
+                          child: detailsListText('100'),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ],

@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-const kSendButtonTextStyle = TextStyle(
-  color: Colors.lightBlueAccent,
-  fontWeight: FontWeight.bold,
-  fontSize: 18.0,
-);
-
 const kMessageTextFieldDecoration = InputDecoration(
   contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   hintText: 'Type your message here...',
@@ -32,14 +26,14 @@ const Color kBlue = Color(0xFF0D47A1);
 const Color kGreen = Colors.green;
 
 const kTextFieldHintStyle = TextStyle(
-  fontSize: 12.0,
+  fontSize: 10.0,
   fontWeight: FontWeight.w500,
   color: konPrimary,
   letterSpacing: 2.0,
 );
 
 const kTextFieldActiveStyle = TextStyle(
-  fontSize: 12.0,
+  fontSize: 10.0,
   fontWeight: FontWeight.bold,
   color: kSecondary,
 );
@@ -51,7 +45,7 @@ const kButtonTextStyle = TextStyle(
 );
 
 const kButtonErrorStyle = TextStyle(
-  fontSize: 12.0,
+  fontSize: 10.0,
   fontWeight: FontWeight.bold,
   color: kError,
 );
@@ -104,7 +98,7 @@ Widget bigCapText(String text) {
   return Text(
     text,
     style: const TextStyle(
-      fontSize: 20,
+      fontSize: 16,
       fontWeight: FontWeight.bold,
       color: kBlue,
     ),
@@ -157,7 +151,7 @@ Widget secondaryMaterialButton(Color buttonColor, String buttonText,
       child: Text(
         buttonText,
         style: TextStyle(
-          fontSize: 12.0,
+          fontSize: 10.0,
           fontWeight: FontWeight.bold,
           color: kButtonTextColor,
         ),
@@ -285,7 +279,7 @@ Widget drawerListMenuText(text) {
     text,
     style: TextStyle(
       color: kBlue,
-      fontSize: 14,
+      fontSize: 12,
     ),
   );
 }
@@ -297,7 +291,7 @@ Widget drawerListSubMenuText(text) {
       text,
       style: TextStyle(
         color: kBlue,
-        fontSize: 14,
+        fontSize: 12,
       ),
     ),
   );
@@ -318,7 +312,7 @@ Widget listText(String listText) {
     padding: const EdgeInsets.only(top: 8.0),
     child: Text(
       listText,
-      style: const TextStyle(fontSize: 12.0),
+      style: const TextStyle(fontSize: 10.0),
     ),
   );
 }
@@ -345,7 +339,7 @@ Widget rulesText(String cap, String text) {
           child: Text(
             text,
             style: const TextStyle(
-              fontSize: 12,
+              fontSize: 10,
               color: kGrey,
               fontWeight: FontWeight.w500,
             ),
@@ -403,7 +397,7 @@ Widget detailsListTitleText(String text) {
     style: const TextStyle(
       fontWeight: FontWeight.bold,
       color: kBlue,
-      fontSize: 14,
+      fontSize: 12,
     ),
   );
 }
@@ -411,6 +405,6 @@ Widget detailsListTitleText(String text) {
 Widget detailsListText(String text) {
   return Text(
     text,
-    style: const TextStyle(fontSize: 12),
+    style: const TextStyle(fontSize: 10),
   );
 }

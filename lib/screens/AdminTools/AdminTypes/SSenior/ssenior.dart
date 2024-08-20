@@ -1,147 +1,52 @@
-import 'dart:convert';
-
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_master_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:http/http.dart' as http;
 
 class SSeniorAdminScreen extends StatefulWidget {
-  static String id = 'ssenior_admin_screen';
+  static const String id = 'ssenior_admin_screen';
   const SSeniorAdminScreen({super.key});
 
   @override
   State<SSeniorAdminScreen> createState() => _SSeniorAdminScreenState();
 }
 
-class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
-    with WidgetsBindingObserver {
+class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
-  String? _role;
-  double? _balance;
-  // double? _outstandingBalance;
-  // double? _downLineBalance;
-  // int? _memberCount;
-  var list = [
-    'Members',
-    'Balance',
-    'Downtime Balance',
-    'Outstanding Balance',
-  ];
-
-  var showValues = [
-    000000,
-    000000,
-    000000,
-    000000,
-  ];
-  List showIcons = [
-    const Icon(Icons.people_alt_outlined, color: kBlue),
-    const Text('MMK',
-        style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
-    const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
-    const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
-  ];
+  int _selectedIndex = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    super.initState();
-    _role = 'Loading...';
     _getToken();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) {
-      _getToken();
-    }
+    super.initState();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    final String? role = await storage.read(key: 'user_role');
+  }
 
-    if (role != null) {
-      setState(() {
-        _role = role;
+  void _onItemSelected(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (MediaQuery.of(context).size.width < 600) {
+      // Close the drawer after a short delay to ensure the widget is updated first
+      Future.delayed(Duration(milliseconds: 200), () {
+        if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+          Navigator.of(context).pop(); // Close the drawer
+        }
       });
     }
-    if (_token != null) {
-      // _getBalance();
-      // _getMemberCount();
-      // _getDownLineBalance();
-      // _getOutStandingBalance();
-    }
-  }
-
-  Future<void> _getBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/get_balance');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      setState(() {
-        _balance = double.parse(data['balance'].toString());
-      });
-    }
-  }
-
-  Future<void> _getMemberCount() async {
-    var url = Uri.parse('${Config.apiUrl}/getmemberCount');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-    } else {}
-  }
-
-  Future<void> _getDownLineBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-    } else {}
-  }
-
-  Future<void> _getOutStandingBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
-    var response = await http.get(
-      url,
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-    } else {}
   }
 
   Future<void> _logout() async {
@@ -157,165 +62,194 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     if (response.statusCode == 200) {
       await storage.delete(key: 'token');
       await storage.delete(key: 'role');
-      Navigator.pushReplacementNamed(context, LoginScreen.id);
-    } else {}
+      await storage.delete(key: 'user_name');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (Route<dynamic> route) => false,
+      );
+    } else {
+      print(response.body);
+    }
+  }
+
+  Widget _buildSmallDrawer() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        SizedBox(height: 30.0),
+        _buildIconTile(Icons.dashboard, '', 0),
+        _buildExpansionTile(
+          Icons.people,
+          '',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.add, '', 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.list, '', 2),
+            ),
+          ],
+          [1, 2],
+        ),
+        _buildExpansionTile(
+          Icons.report,
+          '',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.calendar_today, '', 3),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.date_range, '', 4),
+            ),
+          ],
+          [3, 4],
+        ),
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: drawerListMenuText(''),
+          onTap: () {
+            _logout();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDrawer() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        SizedBox(height: 30.0),
+        _buildIconTile(Icons.dashboard, 'Dashboard', 0),
+        _buildExpansionTile(
+          Icons.people,
+          'Members Management',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.add, 'Create Member', 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.list, 'Members List', 2),
+            ),
+          ],
+          [1, 2],
+        ),
+        _buildExpansionTile(
+          Icons.report,
+          'Report',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.calendar_today, 'Daily', 3),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.date_range, 'Master', 4),
+            ),
+          ],
+          [3, 4],
+        ),
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: drawerListMenuText('Log Out'),
+          onTap: () {
+            _logout();
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildIconTile(IconData icon, String title, int index) {
+    return ListTile(
+      leading:
+          Icon(icon, size: 20, color: _selectedIndex == index ? kBlue : null),
+      tileColor: _selectedIndex == index ? kOnPrimaryContainer : null,
+      title: drawerListMenuText(title),
+      onTap: () {
+        _onItemSelected(index);
+      },
+    );
+  }
+
+  Widget _buildExpansionTile(IconData icon, String title, List<Widget> children,
+      List<int> expandedIndices) {
+    return ExpansionTile(
+      leading: Icon(icon,
+          size: 20, color: _selectedIndex == expandedIndices[0] ? kBlue : null),
+      initiallyExpanded: expandedIndices.contains(_selectedIndex),
+      title: drawerListMenuText(title),
+      children: children,
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
+
+    // List of widgets to display on the right side
+    final List<Widget> _widgets = [
+      SSSeniorDashboard(),
+      SSeniorMembers(),
+      SSeniorShowMembersList(),
+      SSSeniorDailyReport(),
+      SSSeniorMasterReport(),
+    ];
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: kPrimary,
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: Text(
-          'CHAMPION MAUNG ($_role)',
-          style: const TextStyle(
+        title: const Text(
+          'CHAMPION MAUNG (SSenior)',
+          style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
           ),
         ),
       ),
-      body: Container(
-        color: kPrimary,
-        child: AnimationLimiter(
-          child: ListView.builder(
-              padding: EdgeInsets.all(w / 50),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(bottom: w / 30),
-                        height: h / 5.5,
-                        decoration: const BoxDecoration(
-                          color: kOnPrimaryContainer,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        list[index],
-                                        style: kTextFieldActiveStyle,
-                                      ),
-                                      Text(
-                                        index == 1 && _balance != null
-                                            ? _balance!.toStringAsFixed(2)
-                                            : '0', // Display 'Loading...' while balance is being fetched
-                                        style: const TextStyle(
-                                          fontSize: 35,
-                                          color: kBlue,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: showIcons[index],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              }),
-        ),
-      ),
-      drawer: Drawer(
-        backgroundColor: kOnPrimaryContainer,
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            SizedBox(height: 30.0),
-            ListTile(
-              title: drawerListMenuText('Dashboard'),
-              onTap: () {
-                // Handle menu 1 tap
-              },
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Members Management'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Create Member'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSeniorMembers.id);
-                  },
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            return Row(
+              children: [
+                Container(
+                  width: w * 0.20, // Adjust the width as needed
+                  color: kPrimary,
+                  child: _buildSmallDrawer(),
                 ),
-                ListTile(
-                  title: drawerListSubMenuText('Members List'),
-                  onTap: () {
-                    Navigator.pushNamed(context, SSeniorShowMembersList.id);
-                  },
+                VerticalDivider(),
+                Expanded(
+                  child: _widgets[_selectedIndex],
                 ),
               ],
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Report'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Daily'),
-                  onTap: () {
-                    // Handle submenu 2.1 tap
-                  },
+            );
+          } else {
+            return Row(
+              children: [
+                Container(
+                  width: w * 0.15, // Adjust the width as needed
+                  color: kPrimary,
+                  child: _buildDrawer(),
                 ),
-                ListTile(
-                  title: drawerListSubMenuText('Master'),
-                  onTap: () {
-                    // Handle submenu 2.2 tap
-                  },
+                VerticalDivider(),
+                Expanded(
+                  child: _widgets[_selectedIndex],
                 ),
               ],
-            ),
-            ExpansionTile(
-              title: drawerListMenuText('Account'),
-              children: <Widget>[
-                ListTile(
-                  title: drawerListSubMenuText('Change Password'),
-                  onTap: () {
-                    Navigator.pushNamed(context, ChangePasswordSelf.id);
-                  },
-                ),
-              ],
-            ),
-            ListTile(
-              title: drawerListMenuText('Log Out'),
-              onTap: () {
-                _logout();
-              },
-            ),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }

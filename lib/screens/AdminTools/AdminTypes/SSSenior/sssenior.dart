@@ -38,9 +38,14 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     setState(() {
       _selectedIndex = index;
     });
+
     if (MediaQuery.of(context).size.width < 600) {
-      Navigator.of(context)
-          .pop(); // Close the drawer when an item is selected on small screens
+      // Close the drawer after a short delay to ensure the widget is updated first
+      Future.delayed(Duration(milliseconds: 200), () {
+        if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+          Navigator.of(context).pop(); // Close the drawer
+        }
+      });
     }
   }
 
@@ -68,29 +73,91 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     }
   }
 
+  Widget _buildSmallDrawer() {
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: <Widget>[
+        SizedBox(height: 30.0),
+        _buildIconTile(Icons.dashboard, '', 0),
+        _buildExpansionTile(
+          Icons.people,
+          '',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.add, '', 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.list, '', 2),
+            ),
+          ],
+          [1, 2],
+        ),
+        _buildExpansionTile(
+          Icons.report,
+          '',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.calendar_today, '', 3),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.date_range, '', 4),
+            ),
+          ],
+          [3, 4],
+        ),
+        ListTile(
+          leading: Icon(Icons.logout),
+          title: drawerListMenuText(''),
+          onTap: () {
+            _logout();
+          },
+        ),
+      ],
+    );
+  }
+
   Widget _buildDrawer() {
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
         SizedBox(height: 30.0),
-        _buildListTile('Dashboard', 0),
+        _buildIconTile(Icons.dashboard, 'Dashboard', 0),
         _buildExpansionTile(
+          Icons.people,
           'Members Management',
           [
-            _buildListTile('Create Member', 1),
-            _buildListTile('Members List', 2),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.add, 'Create Member', 1),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.list, 'Members List', 2),
+            ),
           ],
           [1, 2],
         ),
         _buildExpansionTile(
+          Icons.report,
           'Report',
           [
-            _buildListTile('Daily', 3),
-            _buildListTile('Master', 4),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.calendar_today, 'Daily', 3),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.date_range, 'Master', 4),
+            ),
           ],
           [3, 4],
         ),
         ListTile(
+          leading: Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),
           onTap: () {
             _logout();
@@ -100,8 +167,10 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     );
   }
 
-  Widget _buildListTile(String title, int index) {
+  Widget _buildIconTile(IconData icon, String title, int index) {
     return ListTile(
+      leading:
+          Icon(icon, size: 20, color: _selectedIndex == index ? kBlue : null),
       tileColor: _selectedIndex == index ? kOnPrimaryContainer : null,
       title: drawerListMenuText(title),
       onTap: () {
@@ -110,9 +179,11 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
     );
   }
 
-  Widget _buildExpansionTile(
-      String title, List<Widget> children, List<int> expandedIndices) {
+  Widget _buildExpansionTile(IconData icon, String title, List<Widget> children,
+      List<int> expandedIndices) {
     return ExpansionTile(
+      leading: Icon(icon,
+          size: 20, color: _selectedIndex == expandedIndices[0] ? kBlue : null),
       initiallyExpanded: expandedIndices.contains(_selectedIndex),
       title: drawerListMenuText(title),
       children: children,
@@ -146,28 +217,32 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
             fontSize: 20.0,
           ),
         ),
-        leading: w < 600
-            ? IconButton(
-                icon: Icon(Icons.menu),
-                onPressed: () {
-                  _scaffoldKey.currentState?.openDrawer();
-                },
-              )
-            : null,
       ),
-      drawer: w < 600 ? Drawer(child: _buildDrawer()) : null,
       body: LayoutBuilder(
         builder: (context, constraints) {
           if (constraints.maxWidth < 600) {
-            return _widgets[_selectedIndex];
+            return Row(
+              children: [
+                Container(
+                  width: w * 0.20, // Adjust the width as needed
+                  color: kPrimary,
+                  child: _buildSmallDrawer(),
+                ),
+                VerticalDivider(),
+                Expanded(
+                  child: _widgets[_selectedIndex],
+                ),
+              ],
+            );
           } else {
             return Row(
               children: [
                 Container(
                   width: w * 0.15, // Adjust the width as needed
-                  color: kOnPrimaryContainer,
+                  color: kPrimary,
                   child: _buildDrawer(),
                 ),
+                VerticalDivider(),
                 Expanded(
                   child: _widgets[_selectedIndex],
                 ),
