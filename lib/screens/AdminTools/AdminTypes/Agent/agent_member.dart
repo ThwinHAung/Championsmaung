@@ -258,7 +258,6 @@ class _AgentMembersState extends State<AgentMembers> {
                   child: materialButton(kBlue, 'OK', () {
                     _resetDropdown();
                     Navigator.pop(context);
-                    Navigator.pop(context);
                   }),
                 ),
               ],

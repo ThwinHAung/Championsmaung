@@ -1,9 +1,7 @@
+import 'dart:convert';
+
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
-import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -19,6 +17,9 @@ class SSSeniorDashboard extends StatefulWidget {
 class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  int? _memberCount;
+  String? _role = '';
+  double? _balance, _downLineBalance, _outstandingBalance;
   var list = [
     'Members',
     'Balance',
@@ -59,9 +60,14 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    // if (_token == null) {
-    //   _redirectToLogin();
-    // }
+
+    if (_token != null) {
+      // _redirectToLogin();
+      _getBalance();
+      _getMemberCount();
+      _getDownLineBalance();
+      _getOutStandingBalance();
+    }
   }
 
   // void _redirectToLogin() {
@@ -72,12 +78,8 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
   //   );
   // }
 
-  // _getMemberCount();
-  // _getDownLineBalance();
-  // _getOutStandingBalance();
-
-  Future<void> _getMemberCount() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
+  Future<void> _getBalance() async {
+    var url = Uri.parse('${Config.apiUrl}/get_balance');
     var response = await http.get(
       url,
       headers: {
@@ -86,11 +88,32 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
       },
     );
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _balance = double.parse(data['balance'].toString());
+      });
+    }
+  }
+
+  Future<void> _getMemberCount() async {
+    var url = Uri.parse('${Config.apiUrl}/getmemberCount');
+    var response = await http.get(
+      url,
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _memberCount = int.parse(data['userCount'].toString());
+      });
     } else {}
   }
 
   Future<void> _getDownLineBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
+    var url = Uri.parse('${Config.apiUrl}/getdownlineBalance');
     var response = await http.get(
       url,
       headers: {
@@ -99,11 +122,15 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
       },
     );
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _downLineBalance = double.parse(data['downlineBalance'].toString());
+      });
     } else {}
   }
 
   Future<void> _getOutStandingBalance() async {
-    var url = Uri.parse('${Config.apiUrl}/logout');
+    var url = Uri.parse('${Config.apiUrl}/getoutstandingBalance');
     var response = await http.get(
       url,
       headers: {
@@ -112,6 +139,11 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
       },
     );
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      setState(() {
+        _outstandingBalance =
+            double.parse(data['outstandingBalance'].toString());
+      });
     } else {}
   }
 
@@ -125,70 +157,81 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-              padding: const EdgeInsets.all(10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: list.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
+            padding: EdgeInsets.all(w / 50),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            itemCount: list.length,
+            itemBuilder: (context, index) {
+              String displayValue = '';
+              if (index == 0) {
+                displayValue = _memberCount?.toString() ?? '0';
+              } else if (index == 1) {
+                displayValue = _balance?.toStringAsFixed(2) ?? '0';
+              } else if (index == 2) {
+                displayValue = _downLineBalance?.toStringAsFixed(2) ?? '0';
+              } else if (index == 3) {
+                displayValue = _outstandingBalance?.toStringAsFixed(2) ?? '0';
+              }
+
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
                     curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Container(
-                        alignment: Alignment.topLeft,
-                        margin: EdgeInsets.only(bottom: 20),
-                        height: h / 5.5,
-                        decoration: const BoxDecoration(
-                          color: kOnPrimaryContainer,
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Container(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        list[index],
-                                        style: kTextFieldActiveStyle,
+                    duration: const Duration(milliseconds: 2500),
+                    child: Container(
+                      alignment: Alignment.topLeft,
+                      margin: EdgeInsets.only(bottom: w / 30),
+                      height: h / 5.5,
+                      decoration: const BoxDecoration(
+                        color: kOnPrimaryContainer,
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(30, 0, 0, 0),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      list[index],
+                                      style: kTextFieldActiveStyle,
+                                    ),
+                                    Text(
+                                      displayValue,
+                                      style: const TextStyle(
+                                        fontSize: 35,
+                                        color: kBlue,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                      Text(
-                                        showValues[index].toString(),
-                                        style: const TextStyle(
-                                          fontSize: 35,
-                                          color: kBlue,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                child: Container(
-                                  alignment: Alignment.center,
-                                  child: showIcons[index],
-                                ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: showIcons[index],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              }),
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

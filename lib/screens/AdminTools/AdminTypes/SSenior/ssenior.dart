@@ -21,6 +21,7 @@ class SSeniorAdminScreen extends StatefulWidget {
 class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
+  String? _role = '';
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -32,6 +33,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    _role = await storage.read(key: 'user_role');
   }
 
   void _onItemSelected(int index) {
@@ -210,7 +212,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (SSenior)',
+          'CHAMPION MAUNG ()',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,

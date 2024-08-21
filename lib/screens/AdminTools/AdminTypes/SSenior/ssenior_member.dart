@@ -253,7 +253,6 @@ class _SSeniorMembersState extends State<SSeniorMembers> {
                   child: materialButton(kBlue, 'OK', () {
                     _resetDropdown();
                     Navigator.pop(context);
-                    Navigator.pop(context);
                   }),
                 ),
               ],

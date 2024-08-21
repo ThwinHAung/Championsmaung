@@ -21,6 +21,7 @@ class SSSeniorAdminScreen extends StatefulWidget {
 class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
   final storage = const FlutterSecureStorage();
   String? _token;
+
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -209,7 +210,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           'CHAMPION MAUNG (SSSenior)',
           style: TextStyle(
             color: konPrimary,
