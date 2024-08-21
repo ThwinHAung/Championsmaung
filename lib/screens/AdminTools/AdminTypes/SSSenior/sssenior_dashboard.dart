@@ -14,7 +14,8 @@ class SSSeniorDashboard extends StatefulWidget {
   State<SSSeniorDashboard> createState() => _SSSeniorDashboardState();
 }
 
-class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
+class _SSSeniorDashboardState extends State<SSSeniorDashboard>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   int? _memberCount;

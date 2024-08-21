@@ -18,7 +18,8 @@ class SSSeniorAdminScreen extends StatefulWidget {
   State<SSSeniorAdminScreen> createState() => _SSSeniorAdminScreenState();
 }
 
-class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen> {
+class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
 

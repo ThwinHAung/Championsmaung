@@ -13,7 +13,7 @@ class SSSeniorMemberDetails extends StatefulWidget {
 }
 
 class _SSSeniorMemberDetailsState extends State<SSSeniorMemberDetails>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   late TabController _tabController;
   int? _userId;
   final storage = const FlutterSecureStorage();

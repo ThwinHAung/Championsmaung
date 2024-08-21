@@ -20,7 +20,7 @@ class SSSeniorMasterReport extends StatefulWidget {
 }
 
 class _SSSeniorMasterReportState extends State<SSSeniorMasterReport>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;

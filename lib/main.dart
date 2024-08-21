@@ -142,7 +142,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
 
-class ChampionMaung extends StatelessWidget {
+class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
   const ChampionMaung({super.key});
 
   @override

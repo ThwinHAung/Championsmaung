@@ -64,7 +64,8 @@ class SSSeniorTransactionsTab extends StatefulWidget {
       _SSSeniorTransactionsTabState();
 }
 
-class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab> {
+class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab>
+    with WidgetsBindingObserver {
   DateTime? startDate;
   DateTime? endDate;
   String? _token;

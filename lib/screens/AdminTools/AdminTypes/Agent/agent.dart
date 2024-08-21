@@ -18,7 +18,8 @@ class AgentAdminScreen extends StatefulWidget {
   State<AgentAdminScreen> createState() => _AgentAdminScreenState();
 }
 
-class _AgentAdminScreenState extends State<AgentAdminScreen> {
+class _AgentAdminScreenState extends State<AgentAdminScreen>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   int _selectedIndex = 0;

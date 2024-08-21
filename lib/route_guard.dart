@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'auth_service.dart';
 
-class RouteGuard extends StatelessWidget {
+class RouteGuard extends StatelessWidget with WidgetsBindingObserver {
   final Widget child;
   final AuthService authService;
 

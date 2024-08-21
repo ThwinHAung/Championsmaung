@@ -17,7 +17,8 @@ class SSSeniorMembers extends StatefulWidget {
   State<SSSeniorMembers> createState() => _SSSeniorMembersState();
 }
 
-class _SSSeniorMembersState extends State<SSSeniorMembers> {
+class _SSSeniorMembersState extends State<SSSeniorMembers>
+    with WidgetsBindingObserver {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

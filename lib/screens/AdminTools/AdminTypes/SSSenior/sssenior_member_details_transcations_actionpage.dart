@@ -45,7 +45,8 @@ class TranscationsActionPage extends StatefulWidget {
   State<TranscationsActionPage> createState() => _TranscationsActionPageState();
 }
 
-class _TranscationsActionPageState extends State<TranscationsActionPage> {
+class _TranscationsActionPageState extends State<TranscationsActionPage>
+    with WidgetsBindingObserver {
   String? _token;
   final storage = const FlutterSecureStorage();
   List<Transaction> transactions = [];

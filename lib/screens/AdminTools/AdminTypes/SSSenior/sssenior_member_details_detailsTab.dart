@@ -104,7 +104,8 @@ class SSSeniorDetailsTab extends StatefulWidget {
   State<SSSeniorDetailsTab> createState() => _SSSeniorDetailsTabState();
 }
 
-class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab> {
+class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab>
+    with WidgetsBindingObserver {
   String? _token;
   final storage = const FlutterSecureStorage();
   UserDetails? _userDetails;

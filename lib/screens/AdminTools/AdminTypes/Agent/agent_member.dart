@@ -16,7 +16,8 @@ class AgentMembers extends StatefulWidget {
   State<AgentMembers> createState() => _AgentMembersState();
 }
 
-class _AgentMembersState extends State<AgentMembers> {
+class _AgentMembersState extends State<AgentMembers>
+    with WidgetsBindingObserver {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();

@@ -12,7 +12,8 @@ class ChangePasswordSelf extends StatefulWidget {
   State<ChangePasswordSelf> createState() => _ChangePasswordSelfState();
 }
 
-class _ChangePasswordSelfState extends State<ChangePasswordSelf> {
+class _ChangePasswordSelfState extends State<ChangePasswordSelf>
+    with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
   final TextEditingController _currentPasswordController =

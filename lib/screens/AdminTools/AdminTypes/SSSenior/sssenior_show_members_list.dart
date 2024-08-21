@@ -16,7 +16,8 @@ class SSSeniorShowMembersList extends StatefulWidget {
       _SSSeniorShowMembersListState();
 }
 
-class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList> {
+class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
+    with WidgetsBindingObserver {
   final TextEditingController _controller = TextEditingController();
   List<dynamic> _memberList = [];
   List<String> _filteredData = [];

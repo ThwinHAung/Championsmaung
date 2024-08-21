@@ -20,7 +20,7 @@ class SSSeniorDailyReport extends StatefulWidget {
 }
 
 class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;
