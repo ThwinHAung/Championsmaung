@@ -211,8 +211,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen> {
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: const Text(
-          'CHAMPION MAUNG ()',
+        title: Text(
+          'CHAMPION MAUNG ($_role)',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,

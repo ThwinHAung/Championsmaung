@@ -4,7 +4,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_master_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';

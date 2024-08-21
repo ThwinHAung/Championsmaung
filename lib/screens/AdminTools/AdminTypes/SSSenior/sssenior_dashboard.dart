@@ -18,7 +18,6 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard> {
   final storage = const FlutterSecureStorage();
   String? _token;
   int? _memberCount;
-  String? _role = '';
   double? _balance, _downLineBalance, _outstandingBalance;
   var list = [
     'Members',
