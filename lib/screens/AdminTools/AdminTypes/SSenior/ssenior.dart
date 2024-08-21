@@ -28,8 +28,23 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
 
   @override
   void initState() {
-    _getToken();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _getToken(); // Initial token fetch
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getToken(); // Fetch token when dependencies change
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _getToken(); // Fetch token when app resumes
+    }
   }
 
   Future<void> _getToken() async {
