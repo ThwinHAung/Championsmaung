@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/checkRow.dart';
 import 'package:champion_maung/screens/my_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -182,6 +183,9 @@ class _MaungBettingState extends State<MaungBetting> {
 
   @override
   Widget build(BuildContext context) {
+    bool _option1 = false;
+    bool _option2 = false;
+    bool _option3 = false;
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
@@ -195,6 +199,78 @@ class _MaungBettingState extends State<MaungBetting> {
               fontSize: 20.0,
             ),
           ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.sort),
+              color: kBlack,
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Filter'),
+                      content: StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CheckRow(
+                                label: 'Option 1',
+                                value: _option1,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _option1 = value!;
+                                  });
+                                },
+                              ),
+                              CheckRow(
+                                label: 'Option 2',
+                                value: _option2,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _option2 = value!;
+                                  });
+                                },
+                              ),
+                              CheckRow(
+                                label: 'Option 3',
+                                value: _option3,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    _option3 = value!;
+                                  });
+                                },
+                              ),
+                              // Add more CheckRow widgets as needed
+                            ],
+                          );
+                        },
+                      ),
+                      actions: [
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: materialButton(kError, 'Cancel', () {
+                                Navigator.pop(context);
+                              }),
+                            ),
+                            const SizedBox(width: 5.0),
+                            Expanded(
+                              flex: 1,
+                              child: materialButton(kBlue, 'OK', () {
+                                Navigator.pop(context);
+                              }),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ],
         ),
         body: _buildBody(w),
         bottomNavigationBar: BottomAppBar(

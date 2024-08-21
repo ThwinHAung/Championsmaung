@@ -112,6 +112,7 @@
 //     );
 //   }
 // }
+import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
@@ -150,6 +151,7 @@ class ChampionMaung extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        primaryColor: kBlue,
         brightness: Brightness.light,
         textTheme: ThemeData.light().textTheme.apply(
               fontFamily: 'TimesNewRoman',

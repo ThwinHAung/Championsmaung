@@ -21,6 +21,9 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
   List<String> _filteredData = [];
   final storage = const FlutterSecureStorage();
   String? _token;
+  int _currentPage = 1;
+  int _totalPages = 1;
+  final int _pageSize = 10;
 
   @override
   void initState() {
@@ -38,7 +41,6 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Refresh data or perform necessary actions
     _getToken();
   }
 
@@ -56,6 +58,8 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
           .map((item) => item['username'].toString())
           .where((item) => item.toLowerCase().contains(query))
           .toList();
+      _currentPage = 1;
+      _calculateTotalPages();
     });
   }
 
@@ -72,8 +76,19 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
         _memberList = jsonDecode(response.body)['created_users'];
         _filteredData =
             _memberList.map((item) => item['username'].toString()).toList();
+        _calculateTotalPages();
       });
-    } else {}
+    }
+  }
+
+  void _calculateTotalPages() {
+    _totalPages = (_filteredData.length / _pageSize).ceil();
+  }
+
+  void _goToPage(int page) {
+    setState(() {
+      _currentPage = page;
+    });
   }
 
   @override
@@ -117,7 +132,6 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
             child: TextField(
               controller: _controller,
               decoration: const InputDecoration(
-                // labelText: 'Search',
                 hintText: 'Search...',
                 prefixIcon: Icon(Icons.search),
               ),
@@ -152,18 +166,52 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList> {
           const SizedBox(height: 10.0),
           Expanded(
             child: ListView.builder(
-                itemCount: _filteredData.length,
+                itemCount: _pageItems().length,
                 itemBuilder: (context, index) {
                   Map<String, dynamic> user = _memberList.firstWhere(
-                    (element) => element['username'] == _filteredData[index],
+                    (element) => element['username'] == _pageItems()[index],
                     orElse: () => {},
                   );
-                  return ListCard(index + 1, user);
+                  return ListCard(
+                      index + 1 + (_currentPage - 1) * _pageSize, user);
                 }),
+          ),
+          const SizedBox(height: 10.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(
+              _totalPages,
+              (index) => GestureDetector(
+                onTap: () => _goToPage(index + 1),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 5),
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color:
+                        _currentPage == index + 1 ? kBlue : kOnPrimaryContainer,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: Text(
+                    '${index + 1}',
+                    style: TextStyle(
+                        color: _currentPage == index + 1
+                            ? Colors.white
+                            : Colors.black),
+                  ),
+                ),
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  List<String> _pageItems() {
+    final startIndex = (_currentPage - 1) * _pageSize;
+    final endIndex = startIndex + _pageSize;
+    return _filteredData.sublist(startIndex,
+        endIndex > _filteredData.length ? _filteredData.length : endIndex);
   }
 
   Widget ListCard(int index, Map<String, dynamic> userData) {
