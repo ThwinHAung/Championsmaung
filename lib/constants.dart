@@ -340,7 +340,7 @@ Widget rulesText(String cap, String text) {
             text,
             style: const TextStyle(
               fontSize: 10,
-              color: kGrey,
+              color: kBlack,
               fontWeight: FontWeight.w500,
             ),
           ),

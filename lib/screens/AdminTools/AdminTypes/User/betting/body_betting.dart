@@ -229,38 +229,58 @@ class _BodyBettingState extends State<BodyBetting> {
             icon: const Icon(Icons.sort),
             color: kBlack,
             onPressed: () {
+              // Inside the showDialog method where the AlertDialog is created
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('${selectedLeagues.length} Leagues'),
+                    title: Row(
+                      children: [
+                        Expanded(
+                          child: Text('${selectedLeagues.length} Leagues'),
+                        ),
+                        Expanded(child: Container()),
+                        Expanded(
+                          child: StatefulBuilder(
+                            builder: (BuildContext context,
+                                StateSetter setDialogState) {
+                              return CheckRow(
+                                label: selectedLeagues.values.every((v) => v)
+                                    ? 'Uncheck All'
+                                    : 'Check All',
+                                value: selectedLeagues.values.every((v) => v),
+                                onChanged: (bool? value) {
+                                  setDialogState(() {
+                                    _toggleAll(value!); // Toggle all leagues
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                     content: StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            CheckRow(
-                              label: selectedLeagues.values.every((v) => v)
-                                  ? 'Uncheck All'
-                                  : 'Check All',
-                              value: selectedLeagues.values.every((v) => v),
-                              onChanged: (bool? value) {
-                                _toggleAll(value ?? false);
-                                setState(() {}); // Rebuild the UI
-                              },
-                            ),
-                            ...selectedLeagues.keys.map((league) {
+                      builder:
+                          (BuildContext context, StateSetter setDialogState) {
+                        return SingleChildScrollView(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: selectedLeagues.keys.map((league) {
                               return CheckRow(
                                 label: league,
                                 value: selectedLeagues[league]!,
                                 onChanged: (bool? value) {
-                                  setState(() {
+                                  setDialogState(() {
                                     selectedLeagues[league] = value!;
+                                  });
+                                  setState(() {
+                                    _applyFilters(); // Ensure the parent state is updated
                                   });
                                 },
                               );
                             }).toList(),
-                          ],
+                          ),
                         );
                       },
                     ),
@@ -277,7 +297,9 @@ class _BodyBettingState extends State<BodyBetting> {
                           Expanded(
                             flex: 1,
                             child: materialButton(kBlue, 'OK', () {
-                              _applyFilters();
+                              setState(() {
+                                _applyFilters();
+                              });
                               Navigator.pop(context);
                             }),
                           ),
