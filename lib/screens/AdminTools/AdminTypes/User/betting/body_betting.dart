@@ -67,6 +67,8 @@ class _BodyBettingState extends State<BodyBetting> {
   int? selectedMatchIndex;
   String? selectedOutcome;
   List<Match> matches = [];
+  List<Match> filteredMatches = [];
+  Map<String, bool> selectedLeagues = {};
   String? _username;
   int? _maxSingleBet;
 
@@ -154,8 +156,27 @@ class _BodyBettingState extends State<BodyBetting> {
       List jsonResponse = jsonDecode(response.body);
       setState(() {
         matches = jsonResponse.map((match) => Match.fromJson(match)).toList();
+        filteredMatches = matches;
+        _initLeagues();
       });
     } else {}
+  }
+
+  void _initLeagues() {
+    Set<String> uniqueLeagues = matches.map((match) => match.league).toSet();
+    selectedLeagues = {for (var league in uniqueLeagues) league: false};
+  }
+
+  void _applyFilters() {
+    setState(() {
+      if (selectedLeagues.containsValue(true)) {
+        filteredMatches = matches.where((match) {
+          return selectedLeagues[match.league] ?? false;
+        }).toList();
+      } else {
+        filteredMatches = matches;
+      }
+    });
   }
 
   final RefreshController _refreshController =
@@ -181,12 +202,14 @@ class _BodyBettingState extends State<BodyBetting> {
     _refreshController.refreshCompleted();
   }
 
+  void _toggleAll(bool isSelected) {
+    setState(() {
+      selectedLeagues.updateAll((key, value) => isSelected);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    bool _option1 = false;
-    bool _option2 = false;
-    bool _option3 = false;
-
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: kPrimary,
@@ -210,40 +233,33 @@ class _BodyBettingState extends State<BodyBetting> {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('Filter'),
+                    title: Text('${selectedLeagues.length} Leagues'),
                     content: StatefulBuilder(
                       builder: (BuildContext context, StateSetter setState) {
                         return Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             CheckRow(
-                              label: 'Option 1',
-                              value: _option1,
+                              label: selectedLeagues.values.every((v) => v)
+                                  ? 'Uncheck All'
+                                  : 'Check All',
+                              value: selectedLeagues.values.every((v) => v),
                               onChanged: (bool? value) {
-                                setState(() {
-                                  _option1 = value!;
-                                });
+                                _toggleAll(value ?? false);
+                                setState(() {}); // Rebuild the UI
                               },
                             ),
-                            CheckRow(
-                              label: 'Option 2',
-                              value: _option2,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _option2 = value!;
-                                });
-                              },
-                            ),
-                            CheckRow(
-                              label: 'Option 3',
-                              value: _option3,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _option3 = value!;
-                                });
-                              },
-                            ),
-                            // Add more CheckRow widgets as needed
+                            ...selectedLeagues.keys.map((league) {
+                              return CheckRow(
+                                label: league,
+                                value: selectedLeagues[league]!,
+                                onChanged: (bool? value) {
+                                  setState(() {
+                                    selectedLeagues[league] = value!;
+                                  });
+                                },
+                              );
+                            }).toList(),
                           ],
                         );
                       },
@@ -261,6 +277,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           Expanded(
                             flex: 1,
                             child: materialButton(kBlue, 'OK', () {
+                              _applyFilters();
                               Navigator.pop(context);
                             }),
                           ),
@@ -446,7 +463,7 @@ class _BodyBettingState extends State<BodyBetting> {
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            itemCount: matches.length, // Use matches.length
+            itemCount: filteredMatches.length, // Use matches.length
             itemBuilder: (context, index) {
               return AnimationConfiguration.staggeredList(
                 position: index,
@@ -476,7 +493,7 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Widget radioContainer(int index) {
-    Match match = matches[index];
+    Match match = filteredMatches[index];
     DateTime now = DateTime.now();
     bool matchStarted = now.isAfter(match.matchTime);
     return Container(

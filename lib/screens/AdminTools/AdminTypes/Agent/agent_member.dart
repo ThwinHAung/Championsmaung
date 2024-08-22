@@ -170,7 +170,6 @@ class _AgentMembersState extends State<AgentMembers>
         _maxMixBet = data['maxMixBet'].toString();
       });
     } else {
-      print(response.body);
       setState(() {
         _maxSingleBet = 'Error fetching data';
         _maxMixBet = 'Error fetching data';

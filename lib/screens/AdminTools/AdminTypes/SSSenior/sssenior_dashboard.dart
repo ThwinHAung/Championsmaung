@@ -19,50 +19,45 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
   final storage = const FlutterSecureStorage();
   String? _token;
   int? _memberCount;
+  String? _role = '';
   double? _balance, _downLineBalance, _outstandingBalance;
+  String firstItem = 'Members'; // Default value
+
   var list = [
-    'Members',
+    'Loading...',
     'Balance',
     'Downline Balance',
     'Outstanding Balance',
   ];
-  var showValues = [
+
+  final showValues = [
     000000,
     000000,
     000000,
     000000,
   ];
-  List showIcons = [
+  final List showIcons = [
     const Icon(Icons.people_alt_outlined, color: kBlue),
     const Text('MMK',
         style: TextStyle(color: kBlue, fontWeight: FontWeight.bold)),
     const Icon(Icons.stacked_bar_chart_outlined, color: kBlue),
     const Icon(Icons.stacked_line_chart_outlined, color: kBlue),
   ];
+
   @override
   void initState() {
-    _getToken();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Refresh data or perform necessary actions
-    // Refresh data or perform necessary actions
     _getToken();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    _role = await storage.read(key: 'user_role');
 
     if (_token != null) {
-      // _redirectToLogin();
+      setState(() {
+        list[0] = _getFirstItem();
+      });
       _getBalance();
       _getMemberCount();
       _getDownLineBalance();
@@ -70,13 +65,17 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
     }
   }
 
-  // void _redirectToLogin() {
-  //   Navigator.pushNamedAndRemoveUntil(
-  //     context,
-  //     LoginScreen.id,
-  //     (Route<dynamic> route) => false,
-  //   );
-  // }
+  String _getFirstItem() {
+    return _role == 'SSSenior'
+        ? 'SSenior'
+        : _role == 'SSenior'
+            ? 'Senior'
+            : _role == 'Senior'
+                ? 'Master'
+                : _role == 'Master'
+                    ? 'Agent'
+                    : 'Members';
+  }
 
   Future<void> _getBalance() async {
     var url = Uri.parse('${Config.apiUrl}/get_balance');
@@ -109,7 +108,7 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
       setState(() {
         _memberCount = int.parse(data['userCount'].toString());
       });
-    } else {}
+    }
   }
 
   Future<void> _getDownLineBalance() async {
@@ -126,7 +125,7 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
       setState(() {
         _downLineBalance = double.parse(data['downlineBalance'].toString());
       });
-    } else {}
+    }
   }
 
   Future<void> _getOutStandingBalance() async {
@@ -144,13 +143,14 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
         _outstandingBalance =
             double.parse(data['outstandingBalance'].toString());
       });
-    } else {}
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: kPrimary,
       body: Container(

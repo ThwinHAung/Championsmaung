@@ -211,7 +211,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
         backgroundColor: kPrimary,
         centerTitle: true,
         title: const Text(
-          'CHAMPION MAUNG (SSenior)',
+          'CHAMPION MAUNG (Agent)',
           style: TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,

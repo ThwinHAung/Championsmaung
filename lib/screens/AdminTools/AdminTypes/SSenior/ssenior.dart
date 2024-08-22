@@ -22,19 +22,25 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     with WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
-  String? _role = '';
+  String? _role;
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
+    _role = 'Loading...';
     _getToken();
     super.initState();
   }
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
-    _role = await storage.read(key: 'user_role');
+    final String? role = await storage.read(key: 'user_role');
+    if (role != null) {
+      setState(() {
+        _role = role;
+      });
+    }
   }
 
   void _onItemSelected(int index) {
@@ -71,9 +77,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
         MaterialPageRoute(builder: (context) => const LoginScreen()),
         (Route<dynamic> route) => false,
       );
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   Widget _buildSmallDrawer() {

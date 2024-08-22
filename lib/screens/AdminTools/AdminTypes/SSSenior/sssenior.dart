@@ -70,9 +70,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
         MaterialPageRoute(builder: (context) => const LoginScreen()),
         (Route<dynamic> route) => false,
       );
-    } else {
-      print(response.body);
-    }
+    } else {}
   }
 
   Widget _buildSmallDrawer() {
