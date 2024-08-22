@@ -29,8 +29,23 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
   @override
   void initState() {
     _role = 'Loading...';
-    _getToken();
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+    _getToken();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getToken(); // Fetch token when dependencies change
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _getToken(); // Fetch token when app resumes
+    }
   }
 
   Future<void> _getToken() async {
@@ -75,9 +90,23 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const LoginScreen()),
-        (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
       );
     } else {}
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getToken(); // Fetch token when dependencies change
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    if (state == AppLifecycleState.resumed) {
+      _getToken(); // Fetch token when app resumes
+    }
   }
 
   Widget _buildSmallDrawer() {
@@ -177,7 +206,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
   Widget _buildIconTile(IconData icon, String title, int index) {
     return ListTile(
       leading:
-          Icon(icon, size: 20, color: _selectedIndex == index ? kBlue : null),
+      Icon(icon, size: 20, color: _selectedIndex == index ? kBlue : null),
       tileColor: _selectedIndex == index ? kOnPrimaryContainer : null,
       title: drawerListMenuText(title),
       onTap: () {
