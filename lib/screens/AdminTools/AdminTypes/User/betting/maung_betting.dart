@@ -162,12 +162,10 @@ class _MaungBettingState extends State<MaungBetting> {
       RefreshController(initialRefresh: false);
 
   Future<void> getData() async {
-    setState(() {
-      matches.clear();
-    });
-
+    // Fetch new matches data
     await _fetchMatches();
 
+    // Indicate that the refresh process is completed
     _refreshController.refreshCompleted();
   }
 
