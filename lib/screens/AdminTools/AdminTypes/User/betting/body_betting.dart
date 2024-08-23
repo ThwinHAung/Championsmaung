@@ -203,6 +203,7 @@ class _BodyBettingState extends State<BodyBetting> {
   void _toggleAll(bool isSelected) {
     setState(() {
       selectedLeagues.updateAll((key, value) => isSelected);
+      _applyFilters(); // Apply filters after toggling
     });
   }
 
@@ -231,37 +232,38 @@ class _BodyBettingState extends State<BodyBetting> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          child: Text('${selectedLeagues.length} Leagues'),
-                        ),
-                        Expanded(child: Container()),
-                        Expanded(
-                          child: StatefulBuilder(
-                            builder: (BuildContext context,
-                                StateSetter setDialogState) {
-                              return CheckRow(
+                  return StatefulBuilder(
+                    builder:
+                        (BuildContext context, StateSetter setDialogState) {
+                      return AlertDialog(
+                        title: Row(
+                          children: [
+                            Expanded(
+                              child: Text('${selectedLeagues.length} Leagues'),
+                            ),
+                            Expanded(child: Container()), // Spacer
+                            Expanded(
+                              child: CheckRow(
                                 label: selectedLeagues.values.every((v) => v)
                                     ? 'Uncheck All'
                                     : 'Check All',
                                 value: selectedLeagues.values.every((v) => v),
                                 onChanged: (bool? value) {
                                   setDialogState(() {
-                                    _toggleAll(value!); // Toggle all leagues
+                                    // Update all checkboxes in the dialog
+                                    selectedLeagues
+                                        .updateAll((key, val) => value!);
+                                    // Trigger a rebuild in the parent widget
+                                    setState(() {
+                                      _applyFilters();
+                                    });
                                   });
                                 },
-                              );
-                            },
-                          ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    content: StatefulBuilder(
-                      builder:
-                          (BuildContext context, StateSetter setDialogState) {
-                        return SingleChildScrollView(
+                        content: SingleChildScrollView(
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
                             children: selectedLeagues.keys.map((league) {
@@ -270,40 +272,41 @@ class _BodyBettingState extends State<BodyBetting> {
                                 value: selectedLeagues[league]!,
                                 onChanged: (bool? value) {
                                   setDialogState(() {
+                                    // Update the specific league checkbox
                                     selectedLeagues[league] = value!;
-                                  });
-                                  setState(() {
-                                    _applyFilters(); // Ensure the parent state is updated
+                                    // Trigger a rebuild in the parent widget
+                                    setState(() {
+                                      _applyFilters();
+                                    });
                                   });
                                 },
                               );
                             }).toList(),
                           ),
-                        );
-                      },
-                    ),
-                    actions: [
-                      Row(
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: materialButton(kError, 'Cancel', () {
-                              Navigator.pop(context);
-                            }),
-                          ),
-                          const SizedBox(width: 5.0),
-                          Expanded(
-                            flex: 1,
-                            child: materialButton(kBlue, 'OK', () {
-                              setState(() {
-                                _applyFilters();
-                              });
-                              Navigator.pop(context);
-                            }),
+                        ),
+                        actions: [
+                          Row(
+                            children: [
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              const SizedBox(width: 5.0),
+                              Expanded(
+                                flex: 1,
+                                child: materialButton(kBlue, 'Close', () {
+                                  // Trigger filters before closing the dialog
+                                  setState(() {
+                                    _applyFilters();
+                                  });
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                            ],
                           ),
                         ],
-                      ),
-                    ],
+                      );
+                    },
                   );
                 },
               );
