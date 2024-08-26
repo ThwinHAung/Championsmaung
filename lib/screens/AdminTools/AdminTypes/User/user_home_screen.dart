@@ -126,7 +126,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
           color: kPrimary,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           child: Column(
             children: [
               Container(
@@ -227,8 +227,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
                                 title: Text(
                                   list[index],
                                   style: const TextStyle(
-                                    color: kBlue,
-                                  ),
+                                      color: kBlue, fontSize: 14),
                                 ),
                                 leading: const Icon(
                                   Icons.arrow_right,

@@ -82,7 +82,7 @@ class _RulesPageForRouteState extends State<RulesPageForRoute> {
     return Container(
       color: kPrimary,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

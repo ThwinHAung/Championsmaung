@@ -140,44 +140,42 @@ class _MatchResultsState extends State<MatchResults> {
       ),
       body: Container(
         color: kPrimary,
-        child: AnimationLimiter(
-          child: SmartRefresher(
-            controller: _refreshController,
-            header: WaterDropHeader(
-              waterDropColor: kBlue,
-              refresh: const MyLoading(),
-              complete: Container(),
-              completeDuration: Duration.zero,
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: WaterDropHeader(
+            waterDropColor: kBlue,
+            refresh: const MyLoading(),
+            complete: Container(),
+            completeDuration: Duration.zero,
+          ),
+          onRefresh: () => getData(),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
             ),
-            onRefresh: () => getData(),
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: sortedLeagueNames.length,
-              itemBuilder: (context, leagueIndex) {
-                String leagueName = sortedLeagueNames[leagueIndex];
-                List<Match> leagueMatches = matchesByLeague[leagueName]!;
-                return AnimationConfiguration.staggeredList(
-                  position: leagueIndex,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
+            itemCount: sortedLeagueNames.length,
+            itemBuilder: (context, leagueIndex) {
+              String leagueName = sortedLeagueNames[leagueIndex];
+              List<Match> leagueMatches = matchesByLeague[leagueName]!;
+              return AnimationConfiguration.staggeredList(
+                position: leagueIndex,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
                     curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: leagueContainer(
-                            leagueName, leagueMatches, leagueIndex),
-                      ),
+                    duration: const Duration(milliseconds: 2500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child: leagueContainer(
+                          leagueName, leagueMatches, leagueIndex),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -269,7 +267,7 @@ class _MatchResultsState extends State<MatchResults> {
 
   Widget customRadio(String item, int itemIndex, int listIndex) {
     return Expanded(
-      flex: 4,
+      flex: 5,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Container(
@@ -282,7 +280,8 @@ class _MatchResultsState extends State<MatchResults> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: const TextStyle(
+              style: TextStyle(
+                fontSize: 10,
                 color: kBlue, // Change text color if selected
               ),
             ),

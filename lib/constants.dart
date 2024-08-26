@@ -72,7 +72,7 @@ const kTextFieldDecoration = InputDecoration(
 
 const kLabel = TextStyle(
   color: konPrimary,
-  fontSize: 12,
+  fontSize: 10,
   fontWeight: FontWeight.w300,
 );
 

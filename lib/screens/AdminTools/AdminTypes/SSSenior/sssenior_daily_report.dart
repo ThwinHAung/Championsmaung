@@ -69,7 +69,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
       body: Container(
         color: kPrimary,
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Container(
             decoration: BoxDecoration(
               color: kOnPrimaryContainer,

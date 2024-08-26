@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
         body: Container(
           color: kPrimary,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,

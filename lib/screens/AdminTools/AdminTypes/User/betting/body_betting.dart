@@ -225,6 +225,13 @@ class _BodyBettingState extends State<BodyBetting> {
         ),
         actions: [
           IconButton(
+              onPressed: () {
+                setState(() {
+                  refreshPage();
+                });
+              },
+              icon: Icon(Icons.refresh_outlined)),
+          IconButton(
             icon: const Icon(Icons.sort),
             color: kBlack,
             onPressed: () {
@@ -471,45 +478,42 @@ class _BodyBettingState extends State<BodyBetting> {
   Widget _buildBody(double w) {
     return Container(
       color: kPrimary,
-      child: AnimationLimiter(
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
+      child: SmartRefresher(
+        controller: _refreshController,
+        header: WaterDropHeader(
+          waterDropColor: kBlue,
+          refresh: const MyLoading(),
+          complete: Container(),
+          completeDuration: Duration.zero,
+        ),
+        onRefresh: () => getData(),
+        child: ListView.builder(
+          padding: const EdgeInsets.all(5.0),
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
           ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.all(10.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            itemCount: filteredMatches.length, // Use matches.length
-            itemBuilder: (context, index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  verticalOffset:
-                      50.0, // Adjust the vertical offset for sliding effect
-                  duration: const Duration(
-                      milliseconds: 500), // Adjust the duration for smoothness
-                  curve: Curves.easeInOut, // Use a smooth curve
-                  child: FadeInAnimation(
-                    curve: Curves.easeInOut,
-                    duration: const Duration(milliseconds: 500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5.0),
-                      child:
-                          radioContainer(index), // Use index to access matches
-                    ),
+          itemCount: filteredMatches.length, // Use matches.length
+          itemBuilder: (context, index) {
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              delay: const Duration(milliseconds: 100),
+              child: SlideAnimation(
+                verticalOffset:
+                    50.0, // Adjust the vertical offset for sliding effect
+                duration: const Duration(
+                    milliseconds: 500), // Adjust the duration for smoothness
+                curve: Curves.easeInOut, // Use a smooth curve
+                child: FadeInAnimation(
+                  curve: Curves.easeInOut,
+                  duration: const Duration(milliseconds: 500),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 2.0),
+                    child: radioContainer(index), // Use index to access matches
                   ),
                 ),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
@@ -525,7 +529,7 @@ class _BodyBettingState extends State<BodyBetting> {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(5.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -565,6 +569,9 @@ class _BodyBettingState extends State<BodyBetting> {
                           alignment: Alignment.center,
                           child: Text(
                             _formatHdpGoal(match),
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
                           ),
                         ),
                       ),
@@ -593,6 +600,7 @@ class _BodyBettingState extends State<BodyBetting> {
                           alignment: Alignment.center,
                           child: Text(
                             _formatOverUnder(match),
+                            style: TextStyle(fontSize: 10),
                           ),
                         ),
                       ),
@@ -626,7 +634,7 @@ class _BodyBettingState extends State<BodyBetting> {
   Widget customRadio(
       String item, int itemIndex, int listIndex, bool matchStarted) {
     return Expanded(
-      flex: 3,
+      flex: 5,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
@@ -659,6 +667,7 @@ class _BodyBettingState extends State<BodyBetting> {
               child: Text(
                 item,
                 style: TextStyle(
+                  fontSize: 10,
                   color:
                       selectedMatchIndex == listIndex && selectedOutcome == item
                           ? kWhite

@@ -243,7 +243,7 @@ class _BettingHistoryState extends State<BettingHistory> {
       color: kPrimary,
       child: AnimationLimiter(
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),
@@ -375,7 +375,7 @@ class _BettingHistoryState extends State<BettingHistory> {
       color: kPrimary,
       child: AnimationLimiter(
         child: ListView.builder(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           physics: const BouncingScrollPhysics(
             parent: AlwaysScrollableScrollPhysics(),
           ),

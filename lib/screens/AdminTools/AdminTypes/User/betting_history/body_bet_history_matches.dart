@@ -175,60 +175,58 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
       ),
       body: Container(
         color: kPrimary,
-        child: AnimationLimiter(
-          child: SmartRefresher(
-            controller: _refreshController,
-            header: WaterDropHeader(
-              waterDropColor: kBlue,
-              refresh: const MyLoading(),
-              complete: Container(),
-              completeDuration: Duration.zero,
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: WaterDropHeader(
+            waterDropColor: kBlue,
+            refresh: const MyLoading(),
+            complete: Container(),
+            completeDuration: Duration.zero,
+          ),
+          onRefresh: () => getData(),
+          child: ListView.builder(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
             ),
-            onRefresh: () => getData(),
-            child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: body_matches.length,
-              itemBuilder: (context, index) {
-                Body match = body_matches[index];
-                bool isLastMatch = index == body_matches.length - 1;
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
+            itemCount: body_matches.length,
+            itemBuilder: (context, index) {
+              Body match = body_matches[index];
+              bool isLastMatch = index == body_matches.length - 1;
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  duration: const Duration(milliseconds: 2500),
+                  curve: Curves.fastLinearToSlowEaseIn,
+                  child: FadeInAnimation(
                     curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: kOnPrimaryContainer,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // League Name Header
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(10, 5, 0, 0),
-                                child: labelText(match.league_name),
-                              ),
-                              // Matches for the League
-                              radioContainer(match, isLastMatch),
-                            ],
-                          ),
+                    duration: const Duration(milliseconds: 2500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: kOnPrimaryContainer,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // League Name Header
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(10, 2, 0, 0),
+                              child: labelText(match.league_name),
+                            ),
+                            // Matches for the League
+                            radioContainer(match, isLastMatch),
+                          ],
                         ),
                       ),
                     ),
                   ),
-                );
-              },
-            ),
+                ),
+              );
+            },
           ),
         ),
       ),
@@ -307,6 +305,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           child: Text(
                             '$homeGoals',
                             style: const TextStyle(
+                              fontSize: 10,
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -321,6 +320,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                             '-',
                             style: TextStyle(
                               color: kBlack,
+                              fontSize: 10,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -333,6 +333,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           child: Text(
                             '$awayGoals',
                             style: const TextStyle(
+                              fontSize: 10,
                               color: kBlack,
                               fontWeight: FontWeight.bold,
                             ),
@@ -351,6 +352,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           alignment: Alignment.center,
                           child: Text(
                             _formatOverUnder(match),
+                            style: TextStyle(fontSize: 10),
                           ),
                         ),
                       ),
@@ -396,6 +398,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                             textAlign: TextAlign.center,
                             style: const TextStyle(
                               color: kBlue,
+                              fontSize: 10,
                             ),
                           ),
                         )
@@ -408,8 +411,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                     item,
                     textAlign: TextAlign.right,
                     style: TextStyle(
-                      color: match.selectedOutcome == 'W1' ? kWhite : kBlue,
-                    ),
+                        color: match.selectedOutcome == 'W1' ? kWhite : kBlue,
+                        fontSize: 10),
                   ),
                 ),
               ],
@@ -442,6 +445,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                   child: Text(
                     item,
                     style: TextStyle(
+                      fontSize: 10,
                       color: match.selectedOutcome == 'W2' ? kWhite : kBlue,
                     ),
                   ),
@@ -463,6 +467,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                             _formatHdpGoal(match),
                             style: const TextStyle(
                               color: kBlue,
+                              fontSize: 10,
                             ),
                           ),
                         )
@@ -508,6 +513,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
             child: Text(
               item,
               style: TextStyle(
+                fontSize: 10,
                 color: match.selectedOutcome == 'Over' ? kWhite : kBlue,
               ),
             ),
@@ -534,6 +540,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
             child: Text(
               item,
               style: TextStyle(
+                fontSize: 10,
                 color: match.selectedOutcome == 'Under' ? kWhite : kBlue,
               ),
             ),

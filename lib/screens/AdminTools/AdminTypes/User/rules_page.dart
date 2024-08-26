@@ -53,7 +53,6 @@ class _RulesPageState extends State<RulesPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -61,32 +60,33 @@ class _RulesPageState extends State<RulesPage> {
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: kPrimary,
+      appBar: AppBar(
         backgroundColor: kPrimary,
-        appBar: AppBar(
-          backgroundColor: kPrimary,
-          centerTitle: true,
-          title: const Text(
-            'Rules and Regulations',
-            style: TextStyle(
-              color: kBlack,
-              fontWeight: FontWeight.bold,
-              fontSize: 20.0,
-            ),
+        centerTitle: true,
+        title: const Text(
+          'Rules and Regulations',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
           ),
         ),
-        body: _buildBody(w),
-        bottomNavigationBar: BottomAppBar(
-          color: kOnPrimaryContainer,
-          elevation: 1,
-          child: bottomBar(),
-        ));
+      ),
+      body: _buildBody(w),
+      bottomNavigationBar: BottomAppBar(
+        color: kOnPrimaryContainer,
+        elevation: 1,
+        child: bottomBar(),
+      ),
+    );
   }
 
-  Widget _buildBody(w) {
+  Widget _buildBody(double w) {
     return Container(
       color: kPrimary,
       child: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -94,34 +94,35 @@ class _RulesPageState extends State<RulesPage> {
           ),
           child: AnimationLimiter(
             child: ListView.builder(
-                padding: EdgeInsets.all(w / 50),
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                itemCount: rulesList.length,
-                itemBuilder: (context, index) {
-                  return AnimationConfiguration.staggeredList(
-                    position: index,
-                    delay: const Duration(milliseconds: 100),
-                    child: SlideAnimation(
-                      duration: const Duration(milliseconds: 2500),
+              padding: EdgeInsets.all(w / 50),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: rulesList.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
                       curve: Curves.fastLinearToSlowEaseIn,
-                      child: FadeInAnimation(
-                        curve: Curves.fastLinearToSlowEaseIn,
-                        duration: const Duration(milliseconds: 2500),
-                        child: Container(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              rulesText(rulesList[index], ruleText[index]),
-                            ],
-                          ),
+                      duration: const Duration(milliseconds: 2500),
+                      child: Container(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            rulesText(rulesList[index], ruleText[index]),
+                          ],
                         ),
                       ),
                     ),
-                  );
-                }),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),
@@ -129,30 +130,33 @@ class _RulesPageState extends State<RulesPage> {
   }
 
   Widget bottomBar() {
-    return Column(
-      children: [
-        const Text(
-          'Accept the Rules and Regulations?',
-          style: TextStyle(
-            color: kGrey,
-            fontSize: 14.0,
-            fontWeight: FontWeight.w600,
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            'Accept the Rules and Regulations?',
+            style: TextStyle(
+              color: kGrey,
+              fontSize: 14.0,
+              fontWeight: FontWeight.w600,
+            ),
           ),
-        ),
-        const SizedBox(height: 2.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            materialButton(kError, 'Cancel', () {
-              Navigator.pop(context);
-            }),
-            const SizedBox(width: 10.0),
-            materialButton(kBlue, 'Accept', () {
-              Navigator.pushNamed(context, UserHomeScreen.id);
-            })
-          ],
-        )
-      ],
+          const SizedBox(height: 2.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              materialButton(kError, 'Cancel', () {
+                Navigator.pop(context);
+              }),
+              const SizedBox(width: 10.0),
+              materialButton(kBlue, 'Accept', () {
+                Navigator.pushNamed(context, UserHomeScreen.id);
+              }),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

@@ -86,7 +86,7 @@ class _ChangePasswordSelfState extends State<ChangePasswordSelf>
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
           child: Container(
             color: kPrimary,
             child: Column(
