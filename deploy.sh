@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the Flutter web application
-flutter build web --release --source-maps
+flutter build web --release
 
 # Define your server details
 SERVER_USER="root"

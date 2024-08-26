@@ -200,12 +200,12 @@ class _BodyBettingState extends State<BodyBetting> {
     _refreshController.refreshCompleted();
   }
 
-  void _toggleAll(bool isSelected) {
-    setState(() {
-      selectedLeagues.updateAll((key, value) => isSelected);
-      _applyFilters(); // Apply filters after toggling
-    });
-  }
+  // void _toggleAll(bool isSelected) {
+  //   setState(() {
+  //     selectedLeagues.updateAll((key, value) => isSelected);
+  //     _applyFilters(); // Apply filters after toggling
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
