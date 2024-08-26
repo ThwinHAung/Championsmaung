@@ -506,7 +506,7 @@ class _BodyBettingState extends State<BodyBetting> {
           complete: Container(),
           completeDuration: Duration.zero,
         ),
-        onRefresh: () => getData(),
+        onRefresh: () => refreshPage(),
         child: ListView.builder(
           padding: const EdgeInsets.all(5.0),
           physics: const BouncingScrollPhysics(
