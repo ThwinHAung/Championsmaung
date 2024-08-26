@@ -191,11 +191,31 @@ class _BodyBettingState extends State<BodyBetting> {
   }
 
   Future<void> refreshPage() async {
+    Map<String, bool> previousSelectedLeagues = Map.from(selectedLeagues);
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+
     setState(() {
       matches.clear();
     });
 
     await _fetchMatches();
+
+    setState(() {
+      selectedLeagues = previousSelectedLeagues;
+
+      _applyFilters();
+    });
+
+    Navigator.pop(context);
 
     _refreshController.refreshCompleted();
   }
@@ -303,9 +323,9 @@ class _BodyBettingState extends State<BodyBetting> {
                                 flex: 1,
                                 child: materialButton(kBlue, 'Close', () {
                                   // Trigger filters before closing the dialog
-                                  setState(() {
-                                    _applyFilters();
-                                  });
+                                  // setState(() {
+                                  //   _applyFilters();
+                                  // });
                                   Navigator.pop(context);
                                 }),
                               ),
