@@ -567,7 +567,7 @@ class _BodyBettingState extends State<BodyBetting> {
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
                       'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
-                      style: const TextStyle(color: kGrey, fontSize: 12),
+                      style: const TextStyle(color: kGrey, fontSize: 10),
                     ),
                   ),
                   Row(

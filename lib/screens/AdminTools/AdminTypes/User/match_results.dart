@@ -240,7 +240,7 @@ class _MatchResultsState extends State<MatchResults> {
               padding: const EdgeInsets.only(left: 8.0),
               child: Text(
                 'Match Time: $formattedMatchTime',
-                style: const TextStyle(color: kGrey, fontSize: 12),
+                style: const TextStyle(color: kGrey, fontSize: 10),
               ),
             ),
             Row(

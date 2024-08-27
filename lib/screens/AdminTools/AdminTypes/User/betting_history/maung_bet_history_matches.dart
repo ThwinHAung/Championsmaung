@@ -313,7 +313,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                     padding: const EdgeInsets.fromLTRB(17.0, 10, 0, 10),
                     child: Text(
                       'Match Time: $formattedMatchTime',
-                      style: const TextStyle(color: kGrey, fontSize: 12),
+                      style: const TextStyle(color: kGrey, fontSize: 10),
                     ),
                   ),
                 ),
