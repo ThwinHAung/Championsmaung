@@ -175,58 +175,60 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
       ),
       body: Container(
         color: kPrimary,
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
-          ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
+        child: AnimationLimiter(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: const MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
             ),
-            itemCount: body_matches.length,
-            itemBuilder: (context, index) {
-              Body match = body_matches[index];
-              bool isLastMatch = index == body_matches.length - 1;
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
+            onRefresh: () => getData(),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: body_matches.length,
+              itemBuilder: (context, index) {
+                Body match = body_matches[index];
+                bool isLastMatch = index == body_matches.length - 1;
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
                     duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: kOnPrimaryContainer,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // League Name Header
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 2, 0, 0),
-                              child: labelText(match.league_name),
-                            ),
-                            // Matches for the League
-                            radioContainer(match, isLastMatch),
-                          ],
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 2, 0, 0),
+                                child: labelText(match.league_name),
+                              ),
+                              // Matches for the League
+                              radioContainer(match, isLastMatch),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

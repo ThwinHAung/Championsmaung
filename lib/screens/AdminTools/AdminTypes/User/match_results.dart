@@ -140,42 +140,44 @@ class _MatchResultsState extends State<MatchResults> {
       ),
       body: Container(
         color: kPrimary,
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
-          ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
+        child: AnimationLimiter(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: const MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
             ),
-            itemCount: sortedLeagueNames.length,
-            itemBuilder: (context, leagueIndex) {
-              String leagueName = sortedLeagueNames[leagueIndex];
-              List<Match> leagueMatches = matchesByLeague[leagueName]!;
-              return AnimationConfiguration.staggeredList(
-                position: leagueIndex,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
+            onRefresh: () => getData(),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: sortedLeagueNames.length,
+              itemBuilder: (context, leagueIndex) {
+                String leagueName = sortedLeagueNames[leagueIndex];
+                List<Match> leagueMatches = matchesByLeague[leagueName]!;
+                return AnimationConfiguration.staggeredList(
+                  position: leagueIndex,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
                     duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: leagueContainer(
-                          leagueName, leagueMatches, leagueIndex),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: leagueContainer(
+                            leagueName, leagueMatches, leagueIndex),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

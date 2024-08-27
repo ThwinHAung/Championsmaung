@@ -509,39 +509,41 @@ class _MaungBettingState extends State<MaungBetting> {
   Widget _buildBody(double w) {
     return Container(
       color: kPrimary,
-      child: SmartRefresher(
-        controller: _refreshController,
-        header: WaterDropHeader(
-          waterDropColor: kBlue,
-          refresh: const MyLoading(),
-          complete: Container(),
-          completeDuration: Duration.zero,
-        ),
-        onRefresh: () => refreshPage(),
-        child: ListView.builder(
-            padding: const EdgeInsets.all(5.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
-            ),
-            itemCount: matches.length,
-            itemBuilder: (context, index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
+      child: AnimationLimiter(
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: WaterDropHeader(
+            waterDropColor: kBlue,
+            refresh: const MyLoading(),
+            complete: Container(),
+            completeDuration: Duration.zero,
+          ),
+          onRefresh: () => refreshPage(),
+          child: ListView.builder(
+              padding: const EdgeInsets.all(5.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: matches.length,
+              itemBuilder: (context, index) {
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
                     duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child: radioContainer(index),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 2.0),
+                        child: radioContainer(index),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }),
+                );
+              }),
+        ),
       ),
     );
   }

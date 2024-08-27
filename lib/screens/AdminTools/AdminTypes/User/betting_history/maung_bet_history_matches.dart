@@ -204,65 +204,67 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
       ),
       body: Container(
         color: kPrimary,
-        child: SmartRefresher(
-          controller: _refreshController,
-          header: WaterDropHeader(
-            waterDropColor: kBlue,
-            refresh: const MyLoading(),
-            complete: Container(),
-            completeDuration: Duration.zero,
-          ),
-          onRefresh: () => getData(),
-          child: ListView.builder(
-            padding: const EdgeInsets.symmetric(horizontal: 5.0),
-            physics: const BouncingScrollPhysics(
-              parent: AlwaysScrollableScrollPhysics(),
+        child: AnimationLimiter(
+          child: SmartRefresher(
+            controller: _refreshController,
+            header: WaterDropHeader(
+              waterDropColor: kBlue,
+              refresh: const MyLoading(),
+              complete: Container(),
+              completeDuration: Duration.zero,
             ),
-            itemCount: sortedLeagueNames.length,
-            itemBuilder: (context, index) {
-              String leagueName = sortedLeagueNames[index];
-              List<Maung> leagueMatches = groupedMatches[leagueName]!;
+            onRefresh: () => getData(),
+            child: ListView.builder(
+              padding: const EdgeInsets.symmetric(horizontal: 5.0),
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              itemCount: sortedLeagueNames.length,
+              itemBuilder: (context, index) {
+                String leagueName = sortedLeagueNames[index];
+                List<Maung> leagueMatches = groupedMatches[leagueName]!;
 
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  duration: const Duration(milliseconds: 2500),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  child: FadeInAnimation(
-                    curve: Curves.fastLinearToSlowEaseIn,
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
                     duration: const Duration(milliseconds: 2500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: kOnPrimaryContainer,
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            // League Name Header
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 2, 0, 0),
-                              child: labelText(leagueName),
-                            ),
-                            // Matches for the League
-                            ...leagueMatches.asMap().entries.map((entry) {
-                              int matchIndex = entry.key;
-                              Maung match = entry.value;
-                              bool isLastMatch =
-                                  matchIndex == leagueMatches.length - 1;
-                              return radioContainer(match, isLastMatch);
-                            }),
-                          ],
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: kOnPrimaryContainer,
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // League Name Header
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(10, 2, 0, 0),
+                                child: labelText(leagueName),
+                              ),
+                              // Matches for the League
+                              ...leagueMatches.asMap().entries.map((entry) {
+                                int matchIndex = entry.key;
+                                Maung match = entry.value;
+                                bool isLastMatch =
+                                    matchIndex == leagueMatches.length - 1;
+                                return radioContainer(match, isLastMatch);
+                              }),
+                            ],
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
       ),

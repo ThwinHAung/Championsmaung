@@ -498,42 +498,45 @@ class _BodyBettingState extends State<BodyBetting> {
   Widget _buildBody(double w) {
     return Container(
       color: kPrimary,
-      child: SmartRefresher(
-        controller: _refreshController,
-        header: WaterDropHeader(
-          waterDropColor: kBlue,
-          refresh: const MyLoading(),
-          complete: Container(),
-          completeDuration: Duration.zero,
-        ),
-        onRefresh: () => refreshPage(),
-        child: ListView.builder(
-          padding: const EdgeInsets.all(5.0),
-          physics: const BouncingScrollPhysics(
-            parent: AlwaysScrollableScrollPhysics(),
+      child: AnimationLimiter(
+        child: SmartRefresher(
+          controller: _refreshController,
+          header: WaterDropHeader(
+            waterDropColor: kBlue,
+            refresh: const MyLoading(),
+            complete: Container(),
+            completeDuration: Duration.zero,
           ),
-          itemCount: filteredMatches.length, // Use matches.length
-          itemBuilder: (context, index) {
-            return AnimationConfiguration.staggeredList(
-              position: index,
-              delay: const Duration(milliseconds: 100),
-              child: SlideAnimation(
-                verticalOffset:
-                    50.0, // Adjust the vertical offset for sliding effect
-                duration: const Duration(
-                    milliseconds: 500), // Adjust the duration for smoothness
-                curve: Curves.easeInOut, // Use a smooth curve
-                child: FadeInAnimation(
-                  curve: Curves.easeInOut,
-                  duration: const Duration(milliseconds: 500),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 2.0),
-                    child: radioContainer(index), // Use index to access matches
+          onRefresh: () => refreshPage(),
+          child: ListView.builder(
+            padding: const EdgeInsets.all(5.0),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            itemCount: filteredMatches.length, // Use matches.length
+            itemBuilder: (context, index) {
+              return AnimationConfiguration.staggeredList(
+                position: index,
+                delay: const Duration(milliseconds: 100),
+                child: SlideAnimation(
+                  verticalOffset:
+                      50.0, // Adjust the vertical offset for sliding effect
+                  duration: const Duration(
+                      milliseconds: 500), // Adjust the duration for smoothness
+                  curve: Curves.easeInOut, // Use a smooth curve
+                  child: FadeInAnimation(
+                    curve: Curves.easeInOut,
+                    duration: const Duration(milliseconds: 500),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2.0),
+                      child:
+                          radioContainer(index), // Use index to access matches
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
