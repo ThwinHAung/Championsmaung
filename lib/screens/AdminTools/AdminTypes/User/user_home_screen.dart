@@ -11,6 +11,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
+import 'package:champion_maung/screens/slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -234,8 +235,10 @@ class _UserHomeScreenState extends State<UserHomeScreen>
                                   color: konPrimary,
                                 ),
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                          context, listRoutes[index])
+                                  Navigator.push(
+                                          context,
+                                          SlideTransition1(
+                                              routeId: listRoutes[index]))
                                       .then((_) {
                                     _getToken();
                                   });
@@ -276,7 +279,9 @@ class _UserHomeScreenState extends State<UserHomeScreen>
             if (userDrawerRoutes[index] == 'logout') {
               _logout();
             } else {
-              Navigator.pushNamed(context, userDrawerRoutes[index]).then((_) {
+              Navigator.push(context,
+                      SlideTransition1(routeId: userDrawerRoutes[index]))
+                  .then((_) {
                 _getToken();
               });
             }

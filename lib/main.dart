@@ -137,7 +137,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_scre
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
-import 'package:champion_maung/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
@@ -195,7 +194,7 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
         MaungBetHistoryMatches.id: (context) => const MaungBetHistoryMatches(),
         More.id: (context) => const More(),
       },
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     ); //hello
   }
 }

@@ -4,6 +4,7 @@ import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
+import 'package:champion_maung/screens/slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -268,11 +269,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        BodyBetHistoryMatches.id,
-                        arguments:
-                            singleBet.id, // Pass the accumulatorBet.id here
+                        SlideTransition1withID(
+                            routeId: BodyBetHistoryMatches.id,
+                            id: singleBet.id),
+                        // Pass the accumulatorBet.id here
                       );
                     },
                     child: Container(
@@ -400,11 +402,12 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(
+                      Navigator.push(
                         context,
-                        MaungBetHistoryMatches.id,
-                        arguments: accumulatorBet
-                            .id, // Pass the accumulatorBet.id here
+                        SlideTransition1withID(
+                            routeId: MaungBetHistoryMatches.id,
+                            id: accumulatorBet.id),
+                        // Pass the accumulatorBet.id here
                       );
                     },
                     child: Container(

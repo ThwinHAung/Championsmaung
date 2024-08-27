@@ -1,5 +1,6 @@
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
+import 'package:champion_maung/screens/slide_transition.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
@@ -151,7 +152,8 @@ class _RulesPageState extends State<RulesPage> {
               }),
               const SizedBox(width: 10.0),
               materialButton(kBlue, 'Accept', () {
-                Navigator.pushNamed(context, UserHomeScreen.id);
+                Navigator.push(
+                    context, SlideTransition1(routeId: UserHomeScreen.id));
               }),
             ],
           ),
