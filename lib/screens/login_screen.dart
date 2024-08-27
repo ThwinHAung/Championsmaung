@@ -80,10 +80,10 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
             // Background Image with Opacity
             Positioned.fill(
               child: Opacity(
-                opacity: 0.075, // Adjust the opacity here
+                opacity: 0.1, // Adjust the opacity here
                 child: Image.asset(
                   'images/logo.png', // Replace with your image path
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
