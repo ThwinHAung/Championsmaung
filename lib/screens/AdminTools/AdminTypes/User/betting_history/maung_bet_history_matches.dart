@@ -145,16 +145,6 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  Future<void> getData() async {
-    setState(() {
-      maung_matches.clear();
-    });
-
-    await _fetchBetDetails(betId!);
-
-    _refreshController.refreshCompleted();
-  }
-
   Future<void> refreshPage() async {
     setState(() {
       maung_matches.clear();
@@ -213,7 +203,7 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
               complete: Container(),
               completeDuration: Duration.zero,
             ),
-            onRefresh: () => getData(),
+            onRefresh: () => refreshPage(),
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               physics: const BouncingScrollPhysics(

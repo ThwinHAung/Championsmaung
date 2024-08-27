@@ -269,11 +269,10 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        SlideTransition1withID(
-                            routeId: BodyBetHistoryMatches.id,
-                            id: singleBet.id),
+                        BodyBetHistoryMatches.id,
+                        arguments: singleBet.id,
                         // Pass the accumulatorBet.id here
                       );
                     },
@@ -402,11 +401,11 @@ class _BettingHistoryState extends State<BettingHistory> {
                   duration: const Duration(milliseconds: 2500),
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushNamed(
                         context,
-                        SlideTransition1withID(
-                            routeId: MaungBetHistoryMatches.id,
-                            id: accumulatorBet.id),
+
+                        MaungBetHistoryMatches.id,
+                        arguments: accumulatorBet.id,
                         // Pass the accumulatorBet.id here
                       );
                     },

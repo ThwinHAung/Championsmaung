@@ -12,7 +12,7 @@ const kMessageContainerDecoration = BoxDecoration(
   ),
 );
 
-const Color kPrimary = Color.fromARGB(255, 244, 245, 255);
+const Color kPrimary = Color.fromARGB(255, 249, 249, 255);
 const Color konPrimary = Color.fromARGB(255, 0, 0, 0);
 const Color kOnPrimaryContainer = Color.fromARGB(255, 230, 230, 230);
 const Color kSecondary = Color.fromARGB(255, 48, 48, 48);
@@ -376,6 +376,7 @@ Widget showUsername(String username) {
     'Username : $username',
     style: const TextStyle(
       color: kBlue,
+      fontSize: 12,
       fontWeight: FontWeight.w500,
     ),
   );
@@ -386,6 +387,7 @@ Widget showAccountType(String role) {
     'Your account type : $role',
     style: const TextStyle(
       color: kBlue,
+      fontSize: 12,
       fontWeight: FontWeight.w500,
     ),
   );

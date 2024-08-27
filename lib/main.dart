@@ -112,6 +112,7 @@
 //     );
 //   }
 // }
+import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
@@ -137,7 +138,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_scre
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
-import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
 
@@ -159,42 +159,160 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
               fontFamily: 'TimesNewRoman',
             ),
       ),
-      routes: {
-        LoginScreen.id: (context) => const LoginScreen(),
-        MyLoading.id: (context) => const MyLoading(),
-        ChangePasswordSelf.id: (context) => const ChangePasswordSelf(),
-
-        //SSSenior
-        SSSeniorAdminScreen.id: (context) => const SSSeniorAdminScreen(),
-        SSSeniorMembers.id: (context) => const SSSeniorMembers(),
-        SSSeniorShowMembersList.id: (context) =>
-            const SSSeniorShowMembersList(),
-        SSSeniorMemberDetails.id: (context) => const SSSeniorMemberDetails(),
-        SSSeniorDailyReport.id: (context) => const SSSeniorDailyReport(),
-        //SSenior
-        SSeniorAdminScreen.id: (context) => const SSeniorAdminScreen(),
-        SSeniorMembers.id: (context) => const SSeniorMembers(),
-        SSeniorShowMembersList.id: (context) => const SSeniorShowMembersList(),
-        TranscationsActionPage.id: (context) => const TranscationsActionPage(
-              userId: 0,
-              date: '',
-            ),
-        //Agent
-        AgentAdminScreen.id: (context) => const AgentAdminScreen(),
-        AgentMembers.id: (context) => const AgentMembers(),
-        //User
-        RulesPage.id: (context) => const RulesPage(),
-        RulesPageForRoute.id: (context) => const RulesPageForRoute(),
-        UserHomeScreen.id: (context) => const UserHomeScreen(),
-        BodyBetting.id: (context) => const BodyBetting(),
-        MaungBetting.id: (context) => const MaungBetting(),
-        MatchResults.id: (context) => const MatchResults(),
-        BettingHistory.id: (context) => const BettingHistory(),
-        BodyBetHistoryMatches.id: (context) => const BodyBetHistoryMatches(),
-        MaungBetHistoryMatches.id: (context) => const MaungBetHistoryMatches(),
-        More.id: (context) => const More(),
+      onGenerateRoute: (settings) {
+        // Define your route transitions here
+        switch (settings.name) {
+          case LoginScreen.id:
+            return _buildSlideTransition(
+              page: const LoginScreen(),
+              settings: settings,
+            );
+          case MyLoading.id:
+            return _buildSlideTransition(
+              page: const MyLoading(),
+              settings: settings,
+            );
+          case ChangePasswordSelf.id:
+            return _buildSlideTransition(
+              page: const ChangePasswordSelf(),
+              settings: settings,
+            );
+          case SSSeniorAdminScreen.id:
+            return _buildSlideTransition(
+              page: const SSSeniorAdminScreen(),
+              settings: settings,
+            );
+          case SSSeniorMembers.id:
+            return _buildSlideTransition(
+              page: const SSSeniorMembers(),
+              settings: settings,
+            );
+          case SSSeniorShowMembersList.id:
+            return _buildSlideTransition(
+              page: const SSSeniorShowMembersList(),
+              settings: settings,
+            );
+          case SSSeniorMemberDetails.id:
+            return _buildSlideTransition(
+              page: const SSSeniorMemberDetails(),
+              settings: settings,
+            );
+          case SSSeniorDailyReport.id:
+            return _buildSlideTransition(
+              page: const SSSeniorDailyReport(),
+              settings: settings,
+            );
+          case SSeniorAdminScreen.id:
+            return _buildSlideTransition(
+              page: const SSeniorAdminScreen(),
+              settings: settings,
+            );
+          case SSeniorMembers.id:
+            return _buildSlideTransition(
+              page: const SSeniorMembers(),
+              settings: settings,
+            );
+          case SSeniorShowMembersList.id:
+            return _buildSlideTransition(
+              page: const SSeniorShowMembersList(),
+              settings: settings,
+            );
+          case TranscationsActionPage.id:
+            return _buildSlideTransition(
+              page: TranscationsActionPage(
+                userId: 0,
+                date: '',
+              ),
+              settings: settings,
+            );
+          case AgentAdminScreen.id:
+            return _buildSlideTransition(
+              page: const AgentAdminScreen(),
+              settings: settings,
+            );
+          case AgentMembers.id:
+            return _buildSlideTransition(
+              page: const AgentMembers(),
+              settings: settings,
+            );
+          case RulesPage.id:
+            return _buildSlideTransition(
+              page: const RulesPage(),
+              settings: settings,
+            );
+          case RulesPageForRoute.id:
+            return _buildSlideTransition(
+              page: const RulesPageForRoute(),
+              settings: settings,
+            );
+          case UserHomeScreen.id:
+            return _buildSlideTransition(
+              page: const UserHomeScreen(),
+              settings: settings,
+            );
+          case BodyBetting.id:
+            return _buildSlideTransition(
+              page: const BodyBetting(),
+              settings: settings,
+            );
+          case MaungBetting.id:
+            return _buildSlideTransition(
+              page: const MaungBetting(),
+              settings: settings,
+            );
+          case MatchResults.id:
+            return _buildSlideTransition(
+              page: const MatchResults(),
+              settings: settings,
+            );
+          case BettingHistory.id:
+            return _buildSlideTransition(
+              page: const BettingHistory(),
+              settings: settings,
+            );
+          case BodyBetHistoryMatches.id:
+            return _buildSlideTransition(
+              page: const BodyBetHistoryMatches(),
+              settings: settings,
+            );
+          case MaungBetHistoryMatches.id:
+            return _buildSlideTransition(
+              page: const MaungBetHistoryMatches(),
+              settings: settings,
+            );
+          case More.id:
+            return _buildSlideTransition(
+              page: const More(),
+              settings: settings,
+            );
+          default:
+            return MaterialPageRoute(
+              builder: (context) => const Scaffold(
+                body: Center(child: Text('Unknown route')),
+              ),
+            );
+        }
       },
       home: const LoginScreen(),
-    ); //hello
+    );
+  }
+
+  PageRouteBuilder _buildSlideTransition({
+    required Widget page,
+    required RouteSettings settings,
+  }) {
+    return PageRouteBuilder(
+      pageBuilder: (context, animation, secondaryAnimation) => page,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(1.0, 0.0);
+        const end = Offset.zero;
+        const curve = Curves.easeInOut;
+        var tween = Tween(begin: begin, end: end);
+        var offsetAnimation =
+            animation.drive(tween.chain(CurveTween(curve: curve)));
+        return SlideTransition(position: offsetAnimation, child: child);
+      },
+      settings: settings,
+    );
   }
 }

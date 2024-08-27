@@ -235,11 +235,10 @@ class _UserHomeScreenState extends State<UserHomeScreen>
                                   color: konPrimary,
                                 ),
                                 onTap: () {
-                                  Navigator.push(
-                                          context,
-                                          SlideTransition1(
-                                              routeId: listRoutes[index]))
-                                      .then((_) {
+                                  Navigator.pushNamed(
+                                    context,
+                                    listRoutes[index],
+                                  ).then((_) {
                                     _getToken();
                                   });
                                 },
@@ -279,9 +278,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
             if (userDrawerRoutes[index] == 'logout') {
               _logout();
             } else {
-              Navigator.push(context,
-                      SlideTransition1(routeId: userDrawerRoutes[index]))
-                  .then((_) {
+              Navigator.pushNamed(context, userDrawerRoutes[index]).then((_) {
                 _getToken();
               });
             }

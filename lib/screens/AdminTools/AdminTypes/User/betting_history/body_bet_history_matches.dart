@@ -135,16 +135,6 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  Future<void> getData() async {
-    setState(() {
-      body_matches.clear();
-    });
-
-    await _fetchBetDetails(_betId!);
-
-    _refreshController.refreshCompleted();
-  }
-
   Future<void> refreshPage() async {
     setState(() {
       body_matches.clear();
@@ -184,7 +174,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
               complete: Container(),
               completeDuration: Duration.zero,
             ),
-            onRefresh: () => getData(),
+            onRefresh: () => refreshPage(),
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 5.0),
               physics: const BouncingScrollPhysics(

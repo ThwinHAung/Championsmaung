@@ -152,8 +152,7 @@ class _RulesPageState extends State<RulesPage> {
               }),
               const SizedBox(width: 10.0),
               materialButton(kBlue, 'Accept', () {
-                Navigator.push(
-                    context, SlideTransition1(routeId: UserHomeScreen.id));
+                Navigator.pushNamed(context, UserHomeScreen.id);
               }),
             ],
           ),

@@ -9,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
 class SSSeniorDailyReport extends StatefulWidget {
-  static String id = 'sssenior_daily_report';
+  static const String id = 'sssenior_daily_report';
 
   const SSSeniorDailyReport({
     super.key,
