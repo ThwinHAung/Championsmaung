@@ -12,7 +12,7 @@ const kMessageContainerDecoration = BoxDecoration(
   ),
 );
 
-const Color kPrimary = Color.fromARGB(5, 0, 38, 255);
+const Color kPrimary = Color.fromARGB(255, 244, 245, 255);
 const Color konPrimary = Color.fromARGB(255, 0, 0, 0);
 const Color kOnPrimaryContainer = Color.fromARGB(255, 230, 230, 230);
 const Color kSecondary = Color.fromARGB(255, 48, 48, 48);
@@ -41,7 +41,7 @@ const kTextFieldActiveStyle = TextStyle(
 const kButtonTextStyle = TextStyle(
   fontSize: 10.0,
   fontWeight: FontWeight.bold,
-  color: kWhite,
+  color: kPrimary,
 );
 
 const kButtonErrorStyle = TextStyle(
