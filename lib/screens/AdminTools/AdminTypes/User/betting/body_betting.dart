@@ -22,6 +22,7 @@ class Match {
   final int gpGoal;
   final int gpUnit;
   final bool homeUp;
+  final bool high;
 
   Match({
     required this.id,
@@ -34,6 +35,7 @@ class Match {
     required this.gpGoal,
     required this.gpUnit,
     required this.homeUp,
+    required this.high,
   });
 
   factory Match.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class Match {
       gpGoal: json['GpGoal'] as int,
       gpUnit: json['GpUnit'] as int,
       homeUp: (json['HomeUp'] as int) == 1,
+      high: (json['high'] as int) == 1,
     );
   }
 }
