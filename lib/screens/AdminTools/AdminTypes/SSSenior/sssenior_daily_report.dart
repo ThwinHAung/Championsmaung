@@ -66,16 +66,25 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: kPrimary,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          child: Container(
-            decoration: BoxDecoration(
-              color: kOnPrimaryContainer,
-              borderRadius: BorderRadius.circular(10),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal, // Allow horizontal scrolling
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width, // Fixed width
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical, // Allow vertical scrolling
+            child: Container(
+              color: kPrimary,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kOnPrimaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: view(),
+                ),
+              ),
             ),
-            child: view(),
           ),
         ),
       ),
@@ -85,139 +94,159 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   Widget view() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 18, bottom: 16),
-            child: Material(
-              color: Colors.transparent,
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-                child: Center(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          maxWidth: 1200, // Set a maximum height for the content
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            // Your existing content here
+            Padding(
+              padding: const EdgeInsets.only(left: 18, bottom: 16),
+              child: Material(
+                color: Colors.transparent,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 8, right: 8, top: 4, bottom: 4),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 5,
+                                child: materialButton(kBlue,
+                                    '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
+                                    () {
+                                  _selectDateRange(context);
+                                })),
+                            const SizedBox(width: 5.0),
+                            Expanded(
+                                flex: 3,
+                                child: IconButton(
+                                    onPressed: () {
+                                      _fetchTransaction(
+                                          1, startDate!, endDate!);
+                                    },
+                                    icon: const Icon(
+                                      Icons.search_outlined,
+                                      color: kBlue,
+                                    )))
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 15.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: detailsListTitleText('Account'),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: detailsListTitleText('Contact'),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: detailsListTitleText('Turnover'),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: detailsListTitleText('Valid Amount'),
+                ),
+                VerticalDivider(),
+                Expanded(
+                  flex: 8,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
+                    children: [
+                      detailsListTitleText('Company'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Divider(),
+                      ),
                       Row(
                         children: [
                           Expanded(
-                              flex: 5,
-                              child: materialButton(kBlue,
-                                  '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
-                                  () {
-                                _selectDateRange(context);
-                              })),
-                          const SizedBox(width: 5.0),
+                            child: detailsListTitleText('W/L'),
+                          ),
                           Expanded(
-                              flex: 3,
-                              child: IconButton(
-                                  onPressed: () {
-                                    _fetchTransaction(1, startDate!, endDate!);
-                                  },
-                                  icon: const Icon(
-                                    Icons.search_outlined,
-                                    color: kBlue,
-                                  )))
+                            child: detailsListTitleText('Com'),
+                          ),
+                          Expanded(
+                            child: detailsListTitleText('W/L + Com'),
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
+                VerticalDivider(),
+                Expanded(
+                  flex: 8,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      detailsListTitleText('Senior Master'),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: Divider(),
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: detailsListTitleText('W/L'),
+                          ),
+                          Expanded(
+                            child: detailsListTitleText('Com'),
+                          ),
+                          Expanded(
+                            child: detailsListTitleText('W/L + Com'),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                VerticalDivider(),
+                Expanded(
+                  flex: 4,
+                  child: detailsListTitleText('View Details'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Divider(),
+            ),
+            SizedBox(
+              height: 400, // Fixed height for the list view
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 3.0),
+                    child: ListCard(),
+                  );
+                },
               ),
             ),
-          ),
-          const SizedBox(height: 15.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 5,
-                child: detailsListTitleText('Date.'),
-              ),
-              VerticalDivider(),
-              Expanded(
-                flex: 8,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    detailsListTitleText('Company'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Divider(),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: detailsListTitleText('Bet'),
-                        ),
-                        Expanded(
-                          child: detailsListTitleText('Commision'),
-                        ),
-                        Expanded(
-                          child: detailsListTitleText('W/L'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              VerticalDivider(),
-              Expanded(
-                flex: 8,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    detailsListTitleText('Senior Master'),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: Divider(),
-                    ),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: detailsListTitleText('Bet'),
-                        ),
-                        Expanded(
-                          child: detailsListTitleText('Commision'),
-                        ),
-                        Expanded(
-                          child: detailsListTitleText('W/L'),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              VerticalDivider(),
-              Expanded(
-                flex: 4,
-                child: detailsListTitleText('Commission'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10.0),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Divider(),
-          ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 3.0),
-                  child: ListCard(),
-                );
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -228,6 +257,18 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        Expanded(
+          flex: 5,
+          child: detailsListText('2.2.2024'),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText('2.2.2024'),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText('2.2.2024'),
+        ),
         Expanded(
           flex: 5,
           child: detailsListText('2.2.2024'),
