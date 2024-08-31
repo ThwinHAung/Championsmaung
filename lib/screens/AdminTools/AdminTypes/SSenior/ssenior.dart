@@ -2,7 +2,6 @@ import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_master_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -124,12 +123,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
               padding: const EdgeInsets.only(left: 10.0),
               child: _buildIconTile(Icons.calendar_today, '', 3),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.date_range, '', 4),
-            ),
           ],
-          [3, 4],
+          [3],
         ),
         ListTile(
           leading: Icon(Icons.logout),
@@ -171,12 +166,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
               padding: const EdgeInsets.only(left: 10.0),
               child: _buildIconTile(Icons.calendar_today, 'Daily', 3),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.date_range, 'Master', 4),
-            ),
           ],
-          [3, 4],
+          [3],
         ),
         ListTile(
           leading: Icon(Icons.logout),
@@ -222,7 +213,6 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
       SSeniorMembers(),
       SSeniorShowMembersList(),
       SSSeniorDailyReport(),
-      SSSeniorMasterReport(),
     ];
 
     return Scaffold(
