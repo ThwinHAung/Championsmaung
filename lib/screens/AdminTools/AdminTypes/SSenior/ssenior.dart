@@ -1,6 +1,6 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';

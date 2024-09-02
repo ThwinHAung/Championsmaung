@@ -199,10 +199,9 @@ class _BodyBettingState extends State<BodyBetting> {
     showDialog(
       context: context,
       barrierDismissible: false,
+      barrierColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
+        return Center();
       },
     );
 

@@ -1,9 +1,14 @@
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/agent_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/master_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/senior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/ssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
@@ -86,6 +91,31 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
           case SSSeniorDailyReport.id:
             return _buildSlideTransition(
               page: const SSSeniorDailyReport(),
+              settings: settings,
+            );
+          case SSeniorDailyReport.id:
+            return _buildSlideTransition(
+              page: const SSeniorDailyReport(),
+              settings: settings,
+            );
+          case SeniorDailyReport.id:
+            return _buildSlideTransition(
+              page: const SeniorDailyReport(),
+              settings: settings,
+            );
+          case MasterDailyReport.id:
+            return _buildSlideTransition(
+              page: const MasterDailyReport(),
+              settings: settings,
+            );
+          case AgentDailyReport.id:
+            return _buildSlideTransition(
+              page: const AgentDailyReport(),
+              settings: settings,
+            );
+          case UserDailyReport.id:
+            return _buildSlideTransition(
+              page: const UserDailyReport(),
               settings: settings,
             );
           case SSeniorAdminScreen.id:

@@ -2,24 +2,25 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
-class SSSeniorDailyReport extends StatefulWidget {
-  static const String id = 'sssenior_daily_report';
+class AgentDailyReport extends StatefulWidget {
+  static const String id = 'agent_daily_report';
 
-  const SSSeniorDailyReport({
+  const AgentDailyReport({
     super.key,
   });
 
   @override
-  State<SSSeniorDailyReport> createState() => _SSSeniorDailyReportState();
+  State<AgentDailyReport> createState() => _AgentDailyReportState();
 }
 
-class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
+class _AgentDailyReportState extends State<AgentDailyReport>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int? userId;
   final storage = const FlutterSecureStorage();
@@ -66,6 +67,48 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: const EdgeInsets.only(left: 18, bottom: 16),
+          child: Material(
+            color: Colors.transparent,
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      children: [
+                        Expanded(
+                            flex: 5,
+                            child: materialButton(kBlue,
+                                '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
+                                () {
+                              _selectDateRange(context);
+                            })),
+                        const SizedBox(width: 5.0),
+                        Expanded(
+                            flex: 3,
+                            child: IconButton(
+                                onPressed: () {
+                                  _fetchTransaction(1, startDate!, endDate!);
+                                },
+                                icon: const Icon(
+                                  Icons.search_outlined,
+                                  color: kBlue,
+                                )))
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal, // Allow horizontal scrolling
         child: SizedBox(
@@ -103,47 +146,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             // Your existing content here
-            Padding(
-              padding: const EdgeInsets.only(left: 18, bottom: 16),
-              child: Material(
-                color: Colors.transparent,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 8, right: 8, top: 4, bottom: 4),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Expanded(
-                                flex: 5,
-                                child: materialButton(kBlue,
-                                    '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
-                                    () {
-                                  _selectDateRange(context);
-                                })),
-                            const SizedBox(width: 5.0),
-                            Expanded(
-                                flex: 3,
-                                child: IconButton(
-                                    onPressed: () {
-                                      _fetchTransaction(
-                                          1, startDate!, endDate!);
-                                    },
-                                    icon: const Icon(
-                                      Icons.search_outlined,
-                                      color: kBlue,
-                                    )))
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
+
             const SizedBox(height: 15.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -172,7 +175,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      detailsListTitleText('Company'),
+                      detailsListTitleText('Agent'),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
@@ -200,7 +203,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      detailsListTitleText('Senior Master'),
+                      detailsListTitleText('User'),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
@@ -315,7 +318,14 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
           flex: 4,
           child: Padding(
             padding: const EdgeInsets.only(left: 10.0),
-            child: detailsListText('100'),
+            child: IconButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, UserDailyReport.id);
+                },
+                icon: Icon(
+                  Icons.remove_red_eye_outlined,
+                  size: 15,
+                )),
           ),
         ),
       ],
