@@ -165,17 +165,6 @@ class _MaungBettingState extends State<MaungBetting> {
     } else {}
   }
 
-  final RefreshController _refreshController =
-      RefreshController(initialRefresh: false);
-
-  Future<void> getData() async {
-    // Fetch new matches data
-    await _fetchMatches();
-
-    // Indicate that the refresh process is completed
-    _refreshController.refreshCompleted();
-  }
-
   void _initLeagues() {
     Set<String> uniqueLeagues = matches.map((match) => match.league).toSet();
     selectedLeagues = {for (var league in uniqueLeagues) league: false};
@@ -191,6 +180,17 @@ class _MaungBettingState extends State<MaungBetting> {
         filteredMatches = matches;
       }
     });
+  }
+
+  final RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
+
+  Future<void> getData() async {
+    // Fetch new matches data
+    await _fetchMatches();
+
+    // Indicate that the refresh process is completed
+    _refreshController.refreshCompleted();
   }
 
   Future<void> refreshPage() async {
@@ -526,7 +526,7 @@ class _MaungBettingState extends State<MaungBetting> {
               physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
-              itemCount: matches.length,
+              itemCount: filteredMatches.length,
               itemBuilder: (context, index) {
                 return AnimationConfiguration.staggeredList(
                   position: index,
@@ -551,7 +551,7 @@ class _MaungBettingState extends State<MaungBetting> {
   }
 
   Widget radioContainer(int index) {
-    Match match = matches[index];
+    Match match = filteredMatches[index];
     DateTime now = DateTime.now();
     bool matchStarted = now.isAfter(match.matchTime);
     return Container(
