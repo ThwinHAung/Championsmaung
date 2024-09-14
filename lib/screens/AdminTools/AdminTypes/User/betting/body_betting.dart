@@ -497,7 +497,23 @@ class _BodyBettingState extends State<BodyBetting> {
     );
   }
 
+  Map<String, List<Match>> groupMatchesByLeague(List<Match> matches) {
+    Map<String, List<Match>> groupedMatches = {};
+
+    for (var match in matches) {
+      if (!groupedMatches.containsKey(match.league)) {
+        groupedMatches[match.league] = [];
+      }
+      groupedMatches[match.league]!.add(match);
+    }
+
+    return groupedMatches;
+  }
+
   Widget _buildBody(double w) {
+    Map<String, List<Match>> groupedMatches =
+        groupMatchesByLeague(filteredMatches);
+
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -510,34 +526,86 @@ class _BodyBettingState extends State<BodyBetting> {
             completeDuration: Duration.zero,
           ),
           onRefresh: () => refreshPage(),
-          child: ListView.builder(
+          child: ListView(
             padding: const EdgeInsets.all(5.0),
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            itemCount: filteredMatches.length, // Use matches.length
-            itemBuilder: (context, index) {
-              return AnimationConfiguration.staggeredList(
-                position: index,
-                delay: const Duration(milliseconds: 100),
-                child: SlideAnimation(
-                  verticalOffset:
-                      50.0, // Adjust the vertical offset for sliding effect
-                  duration: const Duration(
-                      milliseconds: 500), // Adjust the duration for smoothness
-                  curve: Curves.easeInOut, // Use a smooth curve
-                  child: FadeInAnimation(
-                    curve: Curves.easeInOut,
-                    duration: const Duration(milliseconds: 500),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0),
-                      child:
-                          radioContainer(index), // Use index to access matches
+            children: groupedMatches.keys.map((league) {
+              // Get the matches for the current league
+              List<Match> matches = groupedMatches[league]!;
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Container for league header
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: kOnPrimaryContainer,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // League name header
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0, left: 10.0),
+                          child: Text(
+                            league,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              fontWeight: FontWeight.bold,
+                              color: kBlack,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(
+                            height: 3.0), // Space after the league name
+
+                        // List of matches under the league
+                        ...matches.asMap().entries.map((entry) {
+                          int matchIndex = filteredMatches.indexOf(entry.value);
+                          int matchListLength = matches.length;
+
+                          return AnimationConfiguration.staggeredList(
+                            position: matchIndex,
+                            delay: const Duration(milliseconds: 100),
+                            child: SlideAnimation(
+                              verticalOffset: 50.0,
+                              duration: const Duration(milliseconds: 500),
+                              curve: Curves.easeInOut,
+                              child: FadeInAnimation(
+                                curve: Curves.easeInOut,
+                                duration: const Duration(milliseconds: 500),
+                                child: Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Column(
+                                    children: [
+                                      // Container for each match
+                                      radioContainer(matchIndex),
+                                      // Divider to separate matches, except after the last match
+                                      if (entry.key != matchListLength - 1)
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20.0),
+                                          child: const Divider(),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                      ],
                     ),
                   ),
-                ),
+                  // Gap between leagues
+                  const SizedBox(height: 5.0),
+                ],
               );
-            },
+            }).toList(),
           ),
         ),
       ),
@@ -548,92 +616,87 @@ class _BodyBettingState extends State<BodyBetting> {
     Match match = filteredMatches[index];
     DateTime now = DateTime.now();
     bool matchStarted = now.isAfter(match.matchTime);
+
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            labelText(match.league),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
-                      style: const TextStyle(color: kGrey, fontSize: 10),
+            // Match information
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
+                    style: const TextStyle(color: kGrey, fontSize: 12),
+                  ),
+                ),
+                Row(
+                  children: [
+                    customRadio(match.homeTeam, 0, index, matchStarted),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          match.homeUp == true ? '<' : '',
+                          style: const TextStyle(
+                            color: kBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      customRadio(match.homeTeam, 0, index, matchStarted),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            match.homeUp == true ? '<' : '',
-                            style: const TextStyle(
-                              color: kBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _formatHdpGoal(match),
+                          style: const TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          match.homeUp == true ? '' : '>',
+                          style: const TextStyle(
+                            color: kBlue,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _formatHdpGoal(match),
-                            style: TextStyle(
-                              fontSize: 10,
-                            ),
-                          ),
+                    ),
+                    customRadio(match.awayTeam, 1, index, matchStarted),
+                  ],
+                ),
+                Row(
+                  children: [
+                    customRadio("Over", 2, index, matchStarted),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _formatOverUnder(match),
+                          style: const TextStyle(fontSize: 10),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            match.homeUp == true ? '' : '>',
-                            style: const TextStyle(
-                              color: kBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      customRadio(match.awayTeam, 1, index, matchStarted),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      customRadio("Over", 2, index, matchStarted),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _formatOverUnder(match),
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ),
-                      ),
-                      customRadio("Under", 3, index, matchStarted),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    customRadio("Under", 3, index, matchStarted),
+                  ],
+                ),
+              ],
             ),
           ],
         ),

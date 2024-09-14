@@ -508,7 +508,24 @@ class _MaungBettingState extends State<MaungBetting> {
         ));
   }
 
+  Map<String, List<Match>> groupMatchesByLeague(List<Match> matches) {
+    Map<String, List<Match>> groupedMatches = {};
+
+    for (var match in matches) {
+      if (!groupedMatches.containsKey(match.league)) {
+        groupedMatches[match.league] = [];
+      }
+      groupedMatches[match.league]!.add(match);
+    }
+
+    return groupedMatches;
+  }
+
   Widget _buildBody(double w) {
+    // Group the matches by league
+    Map<String, List<Match>> groupedMatches =
+        groupMatchesByLeague(filteredMatches);
+
     return Container(
       color: kPrimary,
       child: AnimationLimiter(
@@ -521,30 +538,88 @@ class _MaungBettingState extends State<MaungBetting> {
             completeDuration: Duration.zero,
           ),
           onRefresh: () => refreshPage(),
-          child: ListView.builder(
-              padding: const EdgeInsets.all(5.0),
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
-              ),
-              itemCount: filteredMatches.length,
-              itemBuilder: (context, index) {
-                return AnimationConfiguration.staggeredList(
-                  position: index,
-                  delay: const Duration(milliseconds: 100),
-                  child: SlideAnimation(
-                    duration: const Duration(milliseconds: 2500),
-                    curve: Curves.fastLinearToSlowEaseIn,
-                    child: FadeInAnimation(
-                      curve: Curves.fastLinearToSlowEaseIn,
-                      duration: const Duration(milliseconds: 2500),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 2.0),
-                        child: radioContainer(index),
+          child: ListView(
+            padding: const EdgeInsets.all(5.0),
+            physics: const BouncingScrollPhysics(
+              parent: AlwaysScrollableScrollPhysics(),
+            ),
+            children: [
+              // Iterate over the grouped matches and build the UI
+              ...groupedMatches.keys.map((league) {
+                final matches = groupedMatches[league]!;
+                return Column(
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10.0),
+                        color: kOnPrimaryContainer,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // League name header
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 10.0, left: 10.0),
+                            child: Text(
+                              league,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.bold,
+                                color: kBlack,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                              height:
+                                  3.0), // Optional spacing after the league name
+
+                          // Build each match within the current league
+                          ...matches.asMap().entries.map((entry) {
+                            int index = entry.key;
+                            Match match = entry.value;
+                            int globalIndex = filteredMatches.indexOf(match);
+
+                            return AnimationConfiguration.staggeredList(
+                              position: globalIndex,
+                              delay: const Duration(milliseconds: 100),
+                              child: SlideAnimation(
+                                duration: const Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                child: FadeInAnimation(
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: const Duration(milliseconds: 2500),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    child: Column(
+                                      children: [
+                                        radioContainer(globalIndex),
+                                        // Add Divider if it's not the last match in the group
+                                        if (index != matches.length - 1)
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20.0),
+                                            child: const Divider(),
+                                          ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ],
                       ),
                     ),
-                  ),
+
+                    // Add gap between leagues
+                    const SizedBox(height: 5.0),
+                  ],
                 );
-              }),
+              }).toList(),
+            ],
+          ),
         ),
       ),
     );
@@ -554,90 +629,88 @@ class _MaungBettingState extends State<MaungBetting> {
     Match match = filteredMatches[index];
     DateTime now = DateTime.now();
     bool matchStarted = now.isAfter(match.matchTime);
+
     return Container(
       decoration: BoxDecoration(
         color: kOnPrimaryContainer,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            labelText(match.league),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8.0),
-                    child: Text(
-                      'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
-                      style: const TextStyle(color: kGrey, fontSize: 12),
+            // Match information
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    'Match Time: ${DateFormat("dd MMM yyyy hh:mm a").format(match.matchTime)}',
+                    style: const TextStyle(color: kGrey, fontSize: 12),
+                  ),
+                ),
+                Row(
+                  children: [
+                    customRadio(match.homeTeam, 0, index, matchStarted),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          match.homeUp == true ? '<' : '',
+                          style: const TextStyle(
+                            color: kBlue,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
-                  Row(
-                    children: [
-                      customRadio(match.homeTeam, 0, index, matchStarted),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            match.homeUp == true ? '<' : '',
-                            style: const TextStyle(
-                              color: kBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _formatHdpGoal(match),
+                          style: const TextStyle(fontSize: 10),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          match.homeUp == true ? '' : '>',
+                          style: const TextStyle(
+                            color: kBlue,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _formatHdpGoal(match),
-                            style: TextStyle(fontSize: 10),
-                          ),
+                    ),
+                    customRadio(match.awayTeam, 1, index, matchStarted),
+                  ],
+                ),
+                Row(
+                  children: [
+                    customRadio("Over", 2, index, matchStarted),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          _formatOverUnder(match),
+                          style: const TextStyle(fontSize: 10),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            match.homeUp == true ? '' : '>',
-                            style: const TextStyle(
-                              color: kBlue,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      customRadio(match.awayTeam, 1, index, matchStarted),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      customRadio("Over", 2, index, matchStarted),
-                      Expanded(
-                        flex: 1,
-                        child: Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _formatOverUnder(match),
-                            style: TextStyle(fontSize: 10),
-                          ),
-                        ),
-                      ),
-                      customRadio("Under", 3, index, matchStarted),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                    customRadio("Under", 3, index, matchStarted),
+                  ],
+                ),
+              ],
             ),
           ],
         ),
