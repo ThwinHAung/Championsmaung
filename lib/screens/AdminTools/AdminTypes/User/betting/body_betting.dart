@@ -532,17 +532,23 @@ class _BodyBettingState extends State<BodyBetting> {
               parent: AlwaysScrollableScrollPhysics(),
             ),
             children: groupedMatches.keys.map((league) {
-              // Get the matches for the current league
+              // Get the matches for the current league and sort them by matchTime
               List<Match> matches = groupedMatches[league]!;
+              matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+
+              // Check if the "high" property of the first match in the league is true
+              bool isHigh = matches[0].high;
 
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Container for league header
+                  // Container for league header, with color based on the "high" property
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10.0),
-                      color: kOnPrimaryContainer,
+                      color: isHigh
+                          ? kHigh
+                          : kOnPrimaryContainer, // Ternary operator here
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -552,10 +558,10 @@ class _BodyBettingState extends State<BodyBetting> {
                           padding: const EdgeInsets.only(top: 10.0, left: 10.0),
                           child: Text(
                             league,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.bold,
-                              color: kBlack,
+                              color: isHigh ? kPrimary : kBlack,
                             ),
                           ),
                         ),
@@ -583,7 +589,7 @@ class _BodyBettingState extends State<BodyBetting> {
                                   child: Column(
                                     children: [
                                       // Container for each match
-                                      radioContainer(matchIndex),
+                                      radioContainer(matchIndex, isHigh),
                                       // Divider to separate matches, except after the last match
                                       if (entry.key != matchListLength - 1)
                                         Padding(
@@ -612,14 +618,14 @@ class _BodyBettingState extends State<BodyBetting> {
     );
   }
 
-  Widget radioContainer(int index) {
+  Widget radioContainer(int index, bool isHigh) {
     Match match = filteredMatches[index];
     DateTime now = DateTime.now();
     bool matchStarted = now.isAfter(match.matchTime);
 
     return Container(
       decoration: BoxDecoration(
-        color: kOnPrimaryContainer,
+        color: isHigh ? kHigh : kOnPrimaryContainer,
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
@@ -647,8 +653,8 @@ class _BodyBettingState extends State<BodyBetting> {
                         alignment: Alignment.center,
                         child: Text(
                           match.homeUp == true ? '<' : '',
-                          style: const TextStyle(
-                            color: kBlue,
+                          style: TextStyle(
+                            color: isHigh ? kPrimary : kBlue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -660,7 +666,10 @@ class _BodyBettingState extends State<BodyBetting> {
                         alignment: Alignment.center,
                         child: Text(
                           _formatHdpGoal(match),
-                          style: const TextStyle(fontSize: 10),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isHigh ? kPrimary : kBlack,
+                          ),
                         ),
                       ),
                     ),
@@ -670,8 +679,8 @@ class _BodyBettingState extends State<BodyBetting> {
                         alignment: Alignment.center,
                         child: Text(
                           match.homeUp == true ? '' : '>',
-                          style: const TextStyle(
-                            color: kBlue,
+                          style: TextStyle(
+                            color: isHigh ? kPrimary : kBlue,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -689,7 +698,10 @@ class _BodyBettingState extends State<BodyBetting> {
                         alignment: Alignment.center,
                         child: Text(
                           _formatOverUnder(match),
-                          style: const TextStyle(fontSize: 10),
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: isHigh ? kPrimary : kBlack,
+                          ),
                         ),
                       ),
                     ),

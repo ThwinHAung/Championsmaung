@@ -12,15 +12,17 @@ const kMessageContainerDecoration = BoxDecoration(
   ),
 );
 
-const Color kPrimary = Color.fromARGB(255, 249, 249, 255);
+const Color kPrimary = Color.fromARGB(255, 230, 230, 230);
 const Color konPrimary = Color.fromARGB(255, 0, 0, 0);
-const Color kOnPrimaryContainer = Color.fromARGB(255, 230, 230, 230);
+const Color kOnPrimaryContainer = Color.fromARGB(255, 249, 249, 255);
 const Color kSecondary = Color.fromARGB(255, 48, 48, 48);
 
 const Color kError = Color(0xFFFD1F4A);
 
 const Color kWhite = Colors.white;
 const Color kBlack = Colors.black;
+
+const Color kHigh = Color.fromARGB(255, 58, 58, 58);
 const Color kGrey = Colors.grey;
 const Color kBlue = Color(0xFF0D47A1);
 const Color kGreen = Colors.green;
@@ -159,6 +161,8 @@ Widget secondaryMaterialButton(Color buttonColor, String buttonText,
     ),
   );
 }
+
+const List<String> bigLeagues = [];
 
 //username selection dropdown
 const List<String> userDropdownItems = [

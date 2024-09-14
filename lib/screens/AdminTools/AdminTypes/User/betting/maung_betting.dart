@@ -546,7 +546,10 @@ class _MaungBettingState extends State<MaungBetting> {
             children: [
               // Iterate over the grouped matches and build the UI
               ...groupedMatches.keys.map((league) {
+                // Sort the matches by matchTime before displaying
                 final matches = groupedMatches[league]!;
+                matches.sort((a, b) => a.matchTime.compareTo(b.matchTime));
+
                 return Column(
                   children: [
                     Container(
