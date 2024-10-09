@@ -2,12 +2,45 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
+class AgentReport {
+  final String username;
+  final String realname;
+  final double turnover;
+  final double validAmount;
+  final double adjustedWinLoss;
+  final double master;
+  final double agent;
+  final int betId;
+
+  AgentReport({
+    required this.username,
+    required this.realname,
+    required this.turnover,
+    required this.validAmount,
+    required this.adjustedWinLoss,
+    required this.master,
+    required this.agent,
+    required this.betId,
+  });
+
+  factory AgentReport.fromJson(Map<String, dynamic> json) {
+    return AgentReport(
+      username: json['username'],
+      realname: json['realname'],
+      turnover: double.parse(json['turnover']),
+      validAmount: double.parse(json['valid_amount']),
+      adjustedWinLoss: double.parse(json['adjusted_win_loss']),
+      master: double.parse(json['master']),
+      agent: double.parse(json['agent']),
+      betId: json['bet_id'],
+    );
+  }
+}
 
 class AgentDailyReport extends StatefulWidget {
   static const String id = 'agent_daily_report';
@@ -25,11 +58,10 @@ class _AgentDailyReportState extends State<AgentDailyReport>
   int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;
+  List<AgentReport> _reports = [];
 
   DateTime? startDate;
   DateTime? endDate;
-  List<Transaction> transactions = [];
-  List<Transaction> filteredTransactions = [];
 
   @override
   void initState() {
@@ -41,10 +73,10 @@ class _AgentDailyReportState extends State<AgentDailyReport>
     _token = await storage.read(key: 'token');
   }
 
-  Future<void> _fetchTransaction(
-      int userId, DateTime? start, DateTime? end) async {
+  Future<void> _fetchAgentReport(
+      int agentId, DateTime? start, DateTime? end) async {
     var url = Uri.parse(
-        '${Config.apiUrl}/getTransaction/$userId?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+        '${Config.apiUrl}/agentReport/$agentId?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -53,12 +85,8 @@ class _AgentDailyReportState extends State<AgentDailyReport>
     );
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      setState(() {
-        transactions = jsonResponse
-            .map((transaction) => Transaction.fromJson(transaction))
-            .toList();
-        filteredTransactions = transactions;
-      });
+      print(jsonResponse);
+      setState(() {});
     } else {
       // Handle error
     }
@@ -94,7 +122,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  _fetchTransaction(1, startDate!, endDate!);
+                                  // _fetchAgentReport(1, startDate!, endDate!);
                                 },
                                 icon: const Icon(
                                   Icons.search_outlined,
@@ -320,7 +348,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
             padding: const EdgeInsets.only(left: 10.0),
             child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, UserDailyReport.id);
+                  // Navigator.pushNamed(context, UserDailyReport.id);
                 },
                 icon: Icon(
                   Icons.remove_red_eye_outlined,

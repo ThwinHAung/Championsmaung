@@ -2,12 +2,11 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/master_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 class SeniorDailyReport extends StatefulWidget {
   static const String id = 'senior_daily_report';
@@ -94,7 +93,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  _fetchTransaction(1, startDate!, endDate!);
+                                  // _fetchTransaction(1, startDate!, endDate!);
                                 },
                                 icon: const Icon(
                                   Icons.search_outlined,
@@ -320,7 +319,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
             padding: const EdgeInsets.only(left: 10.0),
             child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, MasterDailyReport.id);
+                  // Navigator.pushNamed(context, MasterDailyReport.id);
                 },
                 icon: Icon(
                   Icons.remove_red_eye_outlined,
