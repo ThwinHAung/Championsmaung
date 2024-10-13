@@ -3,6 +3,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/master_dail
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/senior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/ssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report_details.dart';
 import 'package:flutter/material.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
