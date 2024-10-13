@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -348,7 +349,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
             padding: const EdgeInsets.only(left: 10.0),
             child: IconButton(
                 onPressed: () {
-                  // Navigator.pushNamed(context, UserDailyReport.id);
+                  Navigator.pushNamed(context, UserReportDetails.id);
                 },
                 icon: Icon(
                   Icons.remove_red_eye_outlined,
