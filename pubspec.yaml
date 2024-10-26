@@ -38,11 +38,10 @@ flutter:
 
   # Fonts
   fonts:
-    - family: TimesNewRoman
+    - family: SF-Pro
       fonts:
-        - asset: assets/fonts/TimesNewRoman-Bold.ttf
-        - asset: assets/fonts/TimesNewRoman-Bold.ttf
-          weight: 500
+        - asset: assets/fonts\SF-Pro.ttf
+        - weight: 500
 
   # To add assets to your application, add an assets section, like this:
   assets:

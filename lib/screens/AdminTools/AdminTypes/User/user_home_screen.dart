@@ -7,7 +7,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/body_b
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/maung_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/pending_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -29,13 +29,13 @@ class _UserHomeScreenState extends State<UserHomeScreen>
   String? _token;
   String? _username = '';
   double? _balance = 0;
-  var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'MORE'];
+  var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'PENDING MATCHES'];
   var listRoutes = [
     BodyBetting.id,
     MaungBetting.id,
     MatchResults.id,
     BettingHistory.id,
-    More.id,
+    PendingMatches.id,
   ];
 
   @override

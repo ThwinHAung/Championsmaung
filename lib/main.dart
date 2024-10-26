@@ -23,7 +23,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_histor
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/User/more.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/pending_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
@@ -45,10 +45,10 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
         primaryColor: kBlue,
         brightness: Brightness.light,
         textTheme: ThemeData.light().textTheme.apply(
-              fontFamily: 'TimesNewRoman',
+              fontFamily: 'SF-Pro',
             ),
         primaryTextTheme: ThemeData.light().textTheme.apply(
-              fontFamily: 'TimesNewRoman',
+              fontFamily: 'SF-Pro',
             ),
       ),
       onGenerateRoute: (settings) {
@@ -197,9 +197,9 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
               page: const MaungBetHistoryMatches(),
               settings: settings,
             );
-          case More.id:
+          case PendingMatches.id:
             return _buildSlideTransition(
-              page: const More(),
+              page: const PendingMatches(),
               settings: settings,
             );
           default:
