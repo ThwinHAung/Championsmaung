@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report_details.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class AgentReport {
   final double adjustedWinLoss;
   final double master;
   final double agent;
-  // final int betId;
+  final int betId;
 
   AgentReport({
     required this.username,
@@ -25,7 +26,7 @@ class AgentReport {
     required this.adjustedWinLoss,
     required this.master,
     required this.agent,
-    // required this.betId,
+    required this.betId,
   });
 
   factory AgentReport.fromJson(Map<String, dynamic> json) {
@@ -37,23 +38,23 @@ class AgentReport {
       adjustedWinLoss: double.parse(json['adjusted_win_loss']),
       master: double.parse(json['master']),
       agent: double.parse(json['agent']),
-      // betId: json['bet_id'],
+      betId: json['bet_id'],
     );
   }
 }
 
-class AgentDailyReport extends StatefulWidget {
+class CommonDailyReport extends StatefulWidget {
   static const String id = 'agent_daily_report';
+  final String name;
+  final String date;
 
-  const AgentDailyReport({
-    super.key,
-  });
+  const CommonDailyReport({super.key, required this.name, required this.date});
 
   @override
-  State<AgentDailyReport> createState() => _AgentDailyReportState();
+  State<CommonDailyReport> createState() => _AgentDailyReportState();
 }
 
-class _AgentDailyReportState extends State<AgentDailyReport>
+class _AgentDailyReportState extends State<CommonDailyReport>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   int? userId;
   final storage = const FlutterSecureStorage();
@@ -126,8 +127,6 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  print(startDate);
-                                  print(endDate);
                                   _fetchAgentReport(1, startDate!, endDate!);
                                 },
                                 icon: const Icon(
@@ -169,14 +168,6 @@ class _AgentDailyReportState extends State<AgentDailyReport>
   }
 
   Widget view() {
-    double totalTurnover = _reports.fold(0, (sum, item) => sum + item.turnover);
-    double totalValidAmount =
-        _reports.fold(0, (sum, item) => sum + item.validAmount);
-    double totalAdjustedWinLoss =
-        _reports.fold(0, (sum, item) => sum + item.adjustedWinLoss);
-    double totalMasterCom = _reports.fold(0, (sum, item) => sum + item.master);
-    double totalAgentCom = _reports.fold(0, (sum, item) => sum + item.agent);
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -249,85 +240,13 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                         );
                       },
                     )
-                  : const Center(child: Text("No data available")),
+                  : const Center(
+                      child: Text("No data available"),
+                    ),
             ),
-            TotalRow(
-                totalTurnover: totalTurnover,
-                totalValidAmount: totalValidAmount,
-                totalAdjustedWinLoss: totalAdjustedWinLoss,
-                totalMasterCom: totalMasterCom,
-                totalAgentCom: totalAgentCom),
           ],
         ),
       ),
-    );
-  }
-
-  Widget TotalRow({
-    required double totalTurnover,
-    required double totalValidAmount,
-    required double totalAdjustedWinLoss,
-    required double totalMasterCom,
-    required double totalAgentCom,
-  }) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(
-          flex: 5,
-          child: detailsListText('Total'),
-        ),
-        Expanded(
-          flex: 5,
-          child: detailsListText(''),
-        ),
-        Expanded(
-          flex: 5,
-          child: detailsListText(totalTurnover.toStringAsFixed(2)),
-        ),
-        Expanded(
-          flex: 5,
-          child: detailsListText(totalValidAmount.toStringAsFixed(2)),
-        ),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              Expanded(
-                  child:
-                      detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(totalMasterCom
-                      .toStringAsFixed(2))), // Placeholder for other columns
-              Expanded(
-                child: detailsListText(
-                    (totalAdjustedWinLoss + totalMasterCom).toStringAsFixed(2)),
-              )
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              Expanded(
-                  child:
-                      detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(totalAgentCom.toStringAsFixed(2))),
-              Expanded(
-                child: detailsListText(
-                  (totalAdjustedWinLoss + totalAgentCom).toStringAsFixed(2),
-                ),
-              ),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: const SizedBox(), // Empty for view details column
-        ),
-      ],
     );
   }
 
@@ -367,12 +286,12 @@ class _AgentDailyReportState extends State<AgentDailyReport>
           flex: 4,
           child: IconButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => UserReportDetails(betId: report.betId),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => UserReportDetails(betId: report.betId),
+                ),
+              );
             },
             icon: Icon(Icons.remove_red_eye_outlined, size: 15),
           ),

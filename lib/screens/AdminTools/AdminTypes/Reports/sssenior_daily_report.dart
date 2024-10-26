@@ -73,7 +73,6 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     if (start == null || end == null || _token == null) {
       return; // Ensure the dates and token are set before making the request
     }
-
     var url = Uri.parse(
         '${Config.apiUrl}/ssseniorReport?start_date=${start.toIso8601String()}&end_date=${end.toIso8601String()}');
 
@@ -85,12 +84,11 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     );
 
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      setState(() {
-        _reports = jsonResponse
-            .map((report) => SSSeniorReport.fromJson(report))
-            .toList();
-      });
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> reportsData = jsonResponse['data'];
+      _reports =
+          reportsData.map((json) => SSSeniorReport.fromJson(json)).toList();
+      setState(() {});
     } else {
       // Handle error
       print('Failed to load reports');
@@ -275,9 +273,10 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                   ? ListView.builder(
                       itemCount: _reports.length,
                       itemBuilder: (context, index) {
+                        final report = _reports[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 3.0),
-                          child: ListCard(_reports[index]),
+                          child: ListCard(report),
                         );
                       },
                     )
@@ -311,23 +310,24 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
         ),
         Expanded(
           flex: 8,
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: detailsListText(report.adjustedWinLoss.toString()),
-                ),
-                Expanded(
-                  child: detailsListText(report.ssenior_com.toString()),
-                ),
-                Expanded(
+          child: Row(
+            children: [
+              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
+              Expanded(child: detailsListText('0')),
+              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
+              Expanded(child: detailsListText('${report.ssenior_com}')),
+              Expanded(
                   child: detailsListText(
-                    (report.adjustedWinLoss + report.ssenior_com).toString(),
-                  ),
-                ),
-              ],
-            ),
+                      '${report.ssenior_com + report.adjustedWinLoss}')),
+            ],
           ),
         ),
         Expanded(

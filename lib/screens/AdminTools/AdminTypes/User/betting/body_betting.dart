@@ -222,13 +222,6 @@ class _BodyBettingState extends State<BodyBetting> {
     _refreshController.refreshCompleted();
   }
 
-  // void _toggleAll(bool isSelected) {
-  //   setState(() {
-  //     selectedLeagues.updateAll((key, value) => isSelected);
-  //     _applyFilters(); // Apply filters after toggling
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
@@ -477,7 +470,8 @@ class _BodyBettingState extends State<BodyBetting> {
                               child: materialButton(kBlue, 'Bet', () {
                                 if (selectedMatchIndex != null &&
                                     selectedOutcome != null) {
-                                  int matchId = matches[selectedMatchIndex!].id;
+                                  int matchId =
+                                      filteredMatches[selectedMatchIndex!].id;
                                   _placeSingleBet(
                                       matchId, selectedOutcome!, amount);
                                 }
@@ -783,7 +777,7 @@ class _BodyBettingState extends State<BodyBetting> {
 
   Future<void> _placeSingleBet(
       int matchId, String selectedTeam, double amount) async {
-    Match? selectedMatch = matches.firstWhere(
+    Match? selectedMatch = filteredMatches.firstWhere(
       (match) => match.id == matchId,
       orElse: () => null as Match,
     );

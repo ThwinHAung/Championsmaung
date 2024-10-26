@@ -2,6 +2,7 @@ import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -137,15 +138,26 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
           [1, 2],
         ),
         _buildExpansionTile(
+          Icons.settings,
+          'Matches Management',
+          [
+            Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: _buildIconTile(Icons.access_alarm, 'View Matches', 3),
+            )
+          ],
+          [3],
+        ),
+        _buildExpansionTile(
           Icons.report,
           'Report',
           [
             Padding(
               padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.calendar_today, 'Daily', 3),
+              child: _buildIconTile(Icons.calendar_today, 'Daily', 4),
             ),
           ],
-          [3],
+          [4],
         ),
         ListTile(
           leading: Icon(Icons.logout),
@@ -190,6 +202,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
       SSSeniorDashboard(),
       SSSeniorMembers(),
       SSSeniorShowMembersList(),
+      SSSeniorMatchView(),
       SSSeniorDailyReport(),
     ];
 

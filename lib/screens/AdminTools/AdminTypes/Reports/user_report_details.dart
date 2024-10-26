@@ -2,14 +2,80 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+
+class MatchDetail {
+  final String homeTeam;
+  final String awayTeam;
+  final String goalScore;
+  final String odd;
+  final String selectedOutcome;
+
+  MatchDetail({
+    required this.homeTeam,
+    required this.awayTeam,
+    required this.goalScore,
+    required this.odd,
+    required this.selectedOutcome,
+  });
+
+  factory MatchDetail.fromJson(Map<String, dynamic> json) {
+    return MatchDetail(
+      homeTeam: json['home_team'],
+      awayTeam: json['away_team'],
+      goalScore: json['goal_score'],
+      odd: json['odd'],
+      selectedOutcome: json['selected_outcome'],
+    );
+  }
+}
+
+class UserReportDetail {
+  final int betId;
+  final DateTime betTime;
+  final String betAmount;
+  final String betStatus;
+  final String winingAmount;
+  final String userCommission;
+  final String masterCommission;
+  final List<MatchDetail> matches;
+
+  UserReportDetail({
+    required this.betId,
+    required this.betTime,
+    required this.betAmount,
+    required this.betStatus,
+    required this.winingAmount,
+    required this.userCommission,
+    required this.masterCommission,
+    required this.matches,
+  });
+
+  factory UserReportDetail.fromJson(Map<String, dynamic> json) {
+    var matchesList = (json['matches'] as List)
+        .map((match) => MatchDetail.fromJson(match))
+        .toList();
+
+    return UserReportDetail(
+      betId: json['bet_id'],
+      betTime: DateTime.parse(json['bet_time']),
+      betAmount: json['bet_amount'],
+      betStatus: json['bet_status'],
+      winingAmount: json['wining_amount'],
+      userCommission: json['user_commission'],
+      masterCommission: json['master_commission'],
+      matches: matchesList,
+    );
+  }
+}
 
 class UserReportDetails extends StatefulWidget {
+  final int betId;
   const UserReportDetails({
+    required this.betId,
     super.key,
   });
 
@@ -21,19 +87,51 @@ class UserReportDetails extends StatefulWidget {
 
 class _UserReportDetailsState extends State<UserReportDetails>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  DateTime? endDate;
-  List<Transaction> filteredTransactions = [];
-  DateTime? startDate;
   final storage = const FlutterSecureStorage();
-  List<Transaction> transactions = [];
-  int? userId;
 
   String? _token;
+  List<UserReportDetail> _reports = [];
 
   @override
   void initState() {
     super.initState();
     _getToken();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchDetails(widget.betId);
+    }
+  }
+
+  Future<void> _fetchDetails(int betId) async {
+    var url = Uri.parse('${Config.apiUrl}/report_getBetDetail/$betId');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      // Convert the JSON data to a UserReportDetail object
+      UserReportDetail reportDetail = UserReportDetail.fromJson(jsonData);
+      // Update the state with the fetched report detail
+      setState(() {
+        _reports = [reportDetail]; // Store it in the list as a single item
+      });
+    } else {
+      // Handle error
+    }
+  }
+
+  String formatBetTime(DateTime betTime) {
+    // Convert the UTC bet time to Myanmar time (UTC+6:30)
+    final myanmarTime = betTime.add(Duration(hours: 6, minutes: 30));
+
+    // Format the time in Myanmar timezone with AM/PM format
+    return DateFormat('yyyy-MM-dd hh:mm:ss a').format(myanmarTime);
   }
 
   Widget view() {
@@ -65,21 +163,19 @@ class _UserReportDetailsState extends State<UserReportDetails>
                 Expanded(
                   flex: 5,
                   child: Align(
-                    alignment: Alignment.centerRight,
-                    child: detailsListTitleText('Away')),
+                      alignment: Alignment.centerRight,
+                      child: detailsListTitleText('Away')),
                 ),
-                Expanded(flex: 2,
-                child: Container()),
+                Expanded(flex: 2, child: Container()),
                 Expanded(
                   flex: 4,
                   child: detailsListTitleText('Goal Price'),
                 ),
-                
                 Expanded(
                   flex: 4,
                   child: Align(
-                    alignment: Alignment.centerRight,
-                    child: detailsListTitleText('Bet Choice')),
+                      alignment: Alignment.centerRight,
+                      child: detailsListTitleText('Bet Choice')),
                 ),
               ],
             ),
@@ -90,15 +186,20 @@ class _UserReportDetailsState extends State<UserReportDetails>
             ),
             SizedBox(
               height: 400, // Fixed height for the list view
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 3.0),
-                    child: ListCard(),
-                  );
-                },
-              ),
+              child: _reports.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _reports.length,
+                      itemBuilder: (context, index) {
+                        final report = _reports[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 3.0),
+                          child: ListCard(report),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: Text("No data available"),
+                    ),
             ),
           ],
         ),
@@ -106,87 +207,43 @@ class _UserReportDetailsState extends State<UserReportDetails>
     );
   }
 
-  Widget ListCard() {
-    // String formattedDate =
-    //     DateFormat('yyyy-MM-dd hh:mm a').format(transaction.date);
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-                Expanded(
-                  flex: 5,
-                  child: detailsListText('Home'),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: detailsListText('Goal'),
-                ),
-                Expanded(
-                  flex: 5,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: detailsListText('Away')),
-                ),
-                Expanded(flex: 2,
-                child: Container()),
-                Expanded(
-                  flex: 4,
-                  child: detailsListText('Goal Price'),
-                ),
-                
-                Expanded(
-                  flex: 4,
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: detailsListText('Bet Choice')),
-                ),
-      ],
+  Widget ListCard(UserReportDetail report) {
+    return Column(
+      children: report.matches.map((match) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              flex: 5,
+              child: detailsListText(match.homeTeam),
+            ),
+            Expanded(
+              flex: 4,
+              child: detailsListText(match.goalScore),
+            ),
+            Expanded(
+              flex: 5,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: detailsListText(match.awayTeam),
+              ),
+            ),
+            Expanded(flex: 2, child: Container()),
+            Expanded(
+              flex: 4,
+              child: detailsListText(match.odd),
+            ),
+            Expanded(
+              flex: 4,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: detailsListText(match.selectedOutcome),
+              ),
+            ),
+          ],
+        );
+      }).toList(),
     );
-  }
-
-  Future<void> _getToken() async {
-    _token = await storage.read(key: 'token');
-  }
-
-  Future<void> _fetchTransaction(
-      int userId, DateTime? start, DateTime? end) async {
-    var url = Uri.parse(
-        '${Config.apiUrl}/getTransaction/$userId?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
-    final response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $_token',
-      },
-    );
-    if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
-      setState(() {
-        transactions = jsonResponse
-            .map((transaction) => Transaction.fromJson(transaction))
-            .toList();
-        filteredTransactions = transactions;
-      });
-    } else {
-      // Handle error
-    }
-  }
-
-  Future<void> _selectDateRange(BuildContext context) async {
-    final DateTimeRange? selectedRange = await showDateRangePicker(
-      context: context,
-      initialDateRange: DateTimeRange(
-        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
-        end: endDate ?? DateTime.now(),
-      ),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (selectedRange != null) {
-      setState(() {
-        startDate = selectedRange.start;
-        endDate = selectedRange.end;
-      });
-    }
   }
 
   @override
@@ -198,62 +255,75 @@ class _UserReportDetailsState extends State<UserReportDetails>
           child: Material(
             color: Colors.transparent,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4),
               child: Center(
                 child: Column(
                   children: <Widget>[
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                    _reports.isNotEmpty
+                        ? Row(
                             children: [
-                              listText('Bet ID:'),
-                              listText('Time:'),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    listText('Bet ID: ${_reports.first.betId}'),
+                                    listText(
+                                        'Time: ${formatBetTime(_reports.first.betTime)}'),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    listText(
+                                        'Master Bet: ${_reports.first.betAmount}'),
+                                    listText(
+                                        'User Bet: ${_reports.first.betAmount}'),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    listText(
+                                        'Master %: ${_reports.first.masterCommission}%'),
+                                    listText(
+                                        'User %: ${_reports.first.userCommission}%'),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    listText(
+                                        'Master Win: ${_reports.first.winingAmount}'),
+                                    listText(
+                                        'User Win: ${_reports.first.winingAmount}'),
+                                  ],
+                                ),
+                              ),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    listText(
+                                        'Status: ${_reports.first.betStatus}'),
+                                  ],
+                                ),
+                              ),
                             ],
+                          )
+                        : Center(
+                            child: Text("Loading..."),
                           ),
-                        ),Expanded(
-                          child: Column(
-                            
-                            mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              listText('Master Bet:'),
-                              listText('User Bet:'),
-                            ],
-                          ),
-                        ),Expanded(
-                          child: Column(
-                            
-                            mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              listText('Master %:'),
-                              listText('User %:'),
-                            ],
-                          ),
-                        ),Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              listText('Master Win:'),
-                              listText('User Win:'),
-                            ],
-                          ),
-                        ),Expanded(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              listText('Status:'),
-                              ],
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),

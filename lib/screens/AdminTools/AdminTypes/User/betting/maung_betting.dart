@@ -782,11 +782,11 @@ class _MaungBettingState extends State<MaungBetting> {
   Future<void> _placeAccumulatorBet(double amount) async {
     List<Map<String, dynamic>> accumulatorData =
         selectedValues.entries.map((entry) {
-      int matchId = matches[entry.key].id;
+      int matchId = filteredMatches[entry.key].id;
       String selectedOutcome = entry.value;
-      if (selectedOutcome == matches[entry.key].homeTeam) {
+      if (selectedOutcome == filteredMatches[entry.key].homeTeam) {
         selectedOutcome = 'W1';
-      } else if (selectedOutcome == matches[entry.key].awayTeam) {
+      } else if (selectedOutcome == filteredMatches[entry.key].awayTeam) {
         selectedOutcome = 'W2';
       }
       return {
