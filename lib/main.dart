@@ -1,15 +1,13 @@
+import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/agent_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/master_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/senior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/ssenior_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report_details.dart';
-import 'package:flutter/material.dart';
-import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
@@ -30,6 +28,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_scre
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(const ChampionMaung());
 

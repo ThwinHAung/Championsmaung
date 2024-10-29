@@ -4,7 +4,6 @@ import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/body_bet_history_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_history/maung_bet_history_matches.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -82,6 +81,8 @@ class _BettingHistoryState extends State<BettingHistory> {
   final storage = const FlutterSecureStorage();
   String? _token;
   String? _username;
+  DateTime? startDate;
+  DateTime? endDate;
   Map<String, List<SingleBet>> singleSlip = {};
   Map<String, List<AccumulatorBet>> accumulatorSlip = {};
 
@@ -123,13 +124,12 @@ class _BettingHistoryState extends State<BettingHistory> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     _username = await storage.read(key: 'user_name');
-    if (_token != null && _username != null) {
-      _fetchMatchesHistory(_username!);
-    }
   }
 
-  Future<void> _fetchMatchesHistory(String username) async {
-    var url = Uri.parse('${Config.apiUrl}/getBetSlip/$username');
+  Future<void> _fetchMatchesHistory(
+      String username, DateTime? start, DateTime? end) async {
+    var url = Uri.parse(
+        '${Config.apiUrl}/getPayoutBetSlip/$username?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
@@ -156,7 +156,7 @@ class _BettingHistoryState extends State<BettingHistory> {
   }
 
   Future<void> getData() async {
-    await _fetchMatchesHistory(_username!);
+    // await _fetchMatchesHistory(_username!,s);
     _refreshController.refreshCompleted();
   }
 
@@ -180,8 +180,50 @@ class _BettingHistoryState extends State<BettingHistory> {
           ),
         ),
       ),
-      body: Center(
-        child: _widgetOptions.elementAt(_widgetSelectedIndex),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          // Add your custom Row here
+          Row(
+            children: [
+              Expanded(
+                flex: 5,
+                child: materialButton(
+                  kBlue,
+                  '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
+                  () {
+                    _selectDateRange(context);
+                  },
+                ),
+              ),
+              const SizedBox(width: 5.0),
+              Expanded(
+                flex: 3,
+                child: IconButton(
+                  onPressed: () {
+                    if (startDate != null && endDate != null) {
+                      _fetchMatchesHistory(_username!, startDate!, endDate!);
+                    }
+                  },
+                  icon: const Icon(
+                    Icons.search_outlined,
+                    color: kBlue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          // Add some space between the Row and the main widget if needed
+          const SizedBox(height: 20.0),
+
+          // Display the main widget options
+          Expanded(
+            child: Center(
+              child: _widgetOptions.elementAt(_widgetSelectedIndex),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: kPrimary,
@@ -499,5 +541,24 @@ class _BettingHistoryState extends State<BettingHistory> {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDateRange(BuildContext context) async {
+    final DateTimeRange? selectedRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: DateTimeRange(
+        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
+        end: endDate ?? DateTime.now(),
+      ),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (selectedRange != null) {
+      setState(() {
+        startDate = selectedRange.start;
+        endDate = selectedRange.end;
+      });
+    }
   }
 }
