@@ -122,6 +122,7 @@ class _UserReportDetailsState extends State<UserReportDetails>
         _reports = [reportDetail]; // Store it in the list as a single item
       });
     } else {
+      print(response.body);
       // Handle error
     }
   }

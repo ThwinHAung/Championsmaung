@@ -6,7 +6,6 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 
 class AgentReport {
   final String username;
@@ -46,9 +45,15 @@ class AgentReport {
 class CommonDailyReport extends StatefulWidget {
   static const String id = 'agent_daily_report';
   final String name;
-  final String date;
+  final DateTime startDate;
+  final DateTime endDate;
 
-  const CommonDailyReport({super.key, required this.name, required this.date});
+  const CommonDailyReport({
+    super.key,
+    required this.name,
+    required this.startDate,
+    required this.endDate,
+  });
 
   @override
   State<CommonDailyReport> createState() => _AgentDailyReportState();
@@ -60,8 +65,6 @@ class _AgentDailyReportState extends State<CommonDailyReport>
   final storage = const FlutterSecureStorage();
   String? _token;
   List<AgentReport> _reports = [];
-  DateTime? startDate;
-  DateTime? endDate;
 
   @override
   void initState() {
@@ -71,15 +74,15 @@ class _AgentDailyReportState extends State<CommonDailyReport>
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchAgentReport(widget.name, widget.startDate, widget.endDate);
+    }
   }
 
   Future<void> _fetchAgentReport(
-      int agentId, DateTime? start, DateTime? end) async {
-    if (start == null || end == null || _token == null) {
-      return; // Ensure the dates and token are set before making the request
-    }
+      String name, DateTime? start, DateTime? end) async {
     var url = Uri.parse(
-        '${Config.apiUrl}/agentReport?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+        '${Config.apiUrl}/agentReport/$name?start_date=${start!.toIso8601String()}&end_date=${end!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -100,48 +103,6 @@ class _AgentDailyReportState extends State<CommonDailyReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Padding(
-          padding: const EdgeInsets.only(left: 18, bottom: 16),
-          child: Material(
-            color: Colors.transparent,
-            child: Padding(
-              padding:
-                  const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        Expanded(
-                            flex: 5,
-                            child: materialButton(kBlue,
-                                '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
-                                () {
-                              _selectDateRange(context);
-                            })),
-                        const SizedBox(width: 5.0),
-                        Expanded(
-                            flex: 3,
-                            child: IconButton(
-                                onPressed: () {
-                                  _fetchAgentReport(1, startDate!, endDate!);
-                                },
-                                icon: const Icon(
-                                  Icons.search_outlined,
-                                  color: kBlue,
-                                )))
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: SizedBox(
@@ -298,24 +259,5 @@ class _AgentDailyReportState extends State<CommonDailyReport>
         ),
       ],
     );
-  }
-
-  Future<void> _selectDateRange(BuildContext context) async {
-    final DateTimeRange? selectedRange = await showDateRangePicker(
-      context: context,
-      initialDateRange: DateTimeRange(
-        start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
-        end: endDate ?? DateTime.now(),
-      ),
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2101),
-    );
-
-    if (selectedRange != null) {
-      setState(() {
-        startDate = selectedRange.start;
-        endDate = selectedRange.end;
-      });
-    }
   }
 }

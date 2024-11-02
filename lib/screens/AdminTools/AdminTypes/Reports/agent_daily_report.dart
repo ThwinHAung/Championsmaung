@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/common_daily_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class AgentReport {
   final double adjustedWinLoss;
   final double master;
   final double agent;
-  // final int betId;
+  // final String createdAt;
 
   AgentReport({
     required this.username,
@@ -25,19 +26,20 @@ class AgentReport {
     required this.adjustedWinLoss,
     required this.master,
     required this.agent,
-    // required this.betId,
+    // required this.createdAt,
   });
 
   factory AgentReport.fromJson(Map<String, dynamic> json) {
     return AgentReport(
-      username: json['username'],
-      realname: json['realname'],
-      turnover: double.parse(json['turnover']),
-      validAmount: double.parse(json['valid_amount']),
-      adjustedWinLoss: double.parse(json['adjusted_win_loss']),
-      master: double.parse(json['master']),
-      agent: double.parse(json['agent']),
-      // betId: json['bet_id'],
+      username: json['username'] ?? '', // Default to an empty string if null
+      realname: json['realname'] ?? '',
+      turnover: double.tryParse(json['total_turnover'] ?? '0') ?? 0.0,
+      validAmount: double.tryParse(json['total_valid_amount'] ?? '0') ?? 0.0,
+      adjustedWinLoss:
+          double.tryParse(json['total_adjusted_win_loss'] ?? '0') ?? 0.0,
+      master: double.tryParse(json['total_master'] ?? '0') ?? 0.0,
+      agent: double.tryParse(json['total_agent'] ?? '0') ?? 0.0,
+      // createdAt: json['created_at'] ?? '',
     );
   }
 }
@@ -78,7 +80,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
       return; // Ensure the dates and token are set before making the request
     }
     var url = Uri.parse(
-        '${Config.apiUrl}/agentReport?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+        '${Config.apiUrl}/agentReportGroup?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -126,8 +128,6 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  print(startDate);
-                                  print(endDate);
                                   _fetchAgentReport(1, startDate!, endDate!);
                                 },
                                 icon: const Icon(
@@ -367,12 +367,16 @@ class _AgentDailyReportState extends State<AgentDailyReport>
           flex: 4,
           child: IconButton(
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => UserReportDetails(betId: report.betId),
-              //   ),
-              // );
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CommonDailyReport(
+                    name: report.username,
+                    startDate: startDate!,
+                    endDate: endDate!,
+                  ),
+                ),
+              );
             },
             icon: Icon(Icons.remove_red_eye_outlined, size: 15),
           ),
