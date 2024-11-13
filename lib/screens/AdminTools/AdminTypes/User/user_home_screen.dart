@@ -9,6 +9,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_histor
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/pending_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_payment_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,14 @@ class _UserHomeScreenState extends State<UserHomeScreen>
   String? _token;
   String? _username = '';
   double? _balance = 0;
-  var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'PENDING MATCHES'];
+  var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'PENDING MATCHES', 'PAYMENT HISTORY'];
   var listRoutes = [
     BodyBetting.id,
     MaungBetting.id,
     MatchResults.id,
     BettingHistory.id,
     PendingMatches.id,
+    UserPaymentHistory.id,
   ];
 
   @override
@@ -214,7 +216,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
                       color: kOnPrimaryContainer,
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 10),
+                      padding: const EdgeInsets.only(top: 2),
                       child: ListView.separated(
                           itemCount: list.length,
                           separatorBuilder: (BuildContext context, int index) =>

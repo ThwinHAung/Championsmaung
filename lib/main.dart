@@ -25,6 +25,8 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/pending_matche
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_home_screen.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_payment_history.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_payment_history_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:champion_maung/screens/my_loading.dart';
@@ -200,6 +202,14 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
             return _buildSlideTransition(
               page: const PendingMatches(),
               settings: settings,
+            );
+            case UserPaymentHistory.id:
+            return _buildSlideTransition(page: const UserPaymentHistory(),
+            settings: settings,
+            );
+            case UserPaymentHistoryDetails.id:
+            return _buildSlideTransition(page: const UserPaymentHistoryDetails(),
+            settings: settings,
             );
           default:
             return MaterialPageRoute(
