@@ -138,7 +138,7 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
             );
           case TranscationsActionPage.id:
             return _buildSlideTransition(
-              page: TranscationsActionPage(
+              page: const TranscationsActionPage(
                 userId: 0,
                 date: '',
               ),

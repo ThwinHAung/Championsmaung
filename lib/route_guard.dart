@@ -8,7 +8,7 @@ class RouteGuard extends StatelessWidget with WidgetsBindingObserver {
   final Widget child;
   final AuthService authService;
 
-  RouteGuard({required this.child, required this.authService});
+  RouteGuard({super.key, required this.child, required this.authService});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +16,11 @@ class RouteGuard extends StatelessWidget with WidgetsBindingObserver {
       future: authService.isAuthenticated(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // Loading indicator
+          return const CircularProgressIndicator(); // Loading indicator
         } else if (snapshot.hasData && snapshot.data == true) {
           return child; // The protected route's page
         } else {
-          return LoginScreen(); // Redirect to login if not authenticated
+          return const LoginScreen(); // Redirect to login if not authenticated
         }
       },
     );

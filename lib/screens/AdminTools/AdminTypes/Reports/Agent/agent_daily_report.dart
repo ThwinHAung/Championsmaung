@@ -211,7 +211,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200,
         ),
         child: Column(
@@ -227,13 +227,13 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                 Expanded(flex: 5, child: detailsListTitleText('Contact')),
                 Expanded(flex: 5, child: detailsListTitleText('Turnover')),
                 Expanded(flex: 5, child: detailsListTitleText('Valid Amount')),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
                     children: [
                       detailsListTitleText('Master'),
-                      Divider(),
+                      const Divider(),
                       Row(
                         children: [
                           Expanded(child: detailsListTitleText('W/L')),
@@ -244,13 +244,13 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
                     children: [
                       detailsListTitleText('Agent'),
-                      Divider(),
+                      const Divider(),
                       Row(
                         children: [
                           Expanded(child: detailsListTitleText('W/L')),
@@ -261,12 +261,12 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(flex: 4, child: detailsListTitleText('View Details')),
               ],
             ),
             const SizedBox(height: 10.0),
-            Divider(),
+            const Divider(),
             SizedBox(
               height: 400,
               child: _reports.isNotEmpty
@@ -354,9 +354,9 @@ class _AgentDailyReportState extends State<AgentDailyReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -419,7 +419,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                 ),
               );
             },
-            icon: Icon(Icons.remove_red_eye_outlined, size: 15),
+            icon: const Icon(Icons.remove_red_eye_outlined, size: 15),
           ),
         ),
       ],
@@ -430,7 +430,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
     final DateTimeRange? selectedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
+        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
         end: endDate ?? DateTime.now(),
       ),
       firstDate: DateTime(2021),

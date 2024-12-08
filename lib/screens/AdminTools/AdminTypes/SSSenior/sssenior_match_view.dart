@@ -72,7 +72,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
       TextEditingController();
   final TextEditingController _awayGoalEditingController =
       TextEditingController();
-  bool _isPostponed = false;
+  final bool _isPostponed = false;
 
   List<Match> matches = [];
 
@@ -473,7 +473,7 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
 
   Widget finishedDialog(Match match) {
     // Clear the controllers when the dialog is opened
-    bool _isPostponed = false;
+    bool isPostponed = false;
     _homeGoalEditingController.clear();
     _awayGoalEditingController.clear();
 
@@ -506,10 +506,10 @@ class _SSSeniorMatchViewState extends State<SSSeniorMatchView> {
               Row(
                 children: [
                   Checkbox(
-                    value: _isPostponed,
+                    value: isPostponed,
                     onChanged: (bool? value) {
                       setState(() {
-                        _isPostponed = value!;
+                        isPostponed = value!;
                       });
                     },
                   ),

@@ -114,7 +114,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        SizedBox(height: 30.0),
+        const SizedBox(height: 30.0),
         _buildIconTile(Icons.dashboard, '', 0),
         _buildExpansionTile(
           Icons.people,
@@ -143,7 +143,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
           [3],
         ),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: const Icon(Icons.logout),
           title: drawerListMenuText(''),
           onTap: () {
             _logout();
@@ -157,7 +157,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        SizedBox(height: 30.0),
+        const SizedBox(height: 30.0),
         _buildIconTile(Icons.dashboard, 'Dashboard', 0),
         _buildExpansionTile(
           Icons.people,
@@ -186,7 +186,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
           [3],
         ),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: const Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),
           onTap: () {
             _logout();
@@ -224,17 +224,17 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     double w = MediaQuery.of(context).size.width;
 
     // List of widgets to display on the right side
-    final List<Widget> _widgets = [
-      SSSeniorDashboard(),
-      SSeniorMembers(),
-      SSeniorShowMembersList(),
+    final List<Widget> widgets = [
+      const SSSeniorDashboard(),
+      const SSeniorMembers(),
+      const SSeniorShowMembersList(),
       _role == 'SSenior'
-          ? SSeniorDailyReport()
+          ? const SSeniorDailyReport()
           : _role == 'Senior'
-              ? SeniorDailyReport() // Replace with the correct widget for Senior
+              ? const SeniorDailyReport() // Replace with the correct widget for Senior
               : _role == 'Master'
-                  ? MasterDailyReport() // Replace with the correct widget for Master
-                  : Center(
+                  ? const MasterDailyReport() // Replace with the correct widget for Master
+                  : const Center(
                       child: Text(
                         'Unauthorized Role',
                         style: TextStyle(fontSize: 20, color: Colors.red),
@@ -264,7 +264,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
         centerTitle: true,
         title: Text(
           'CHAMPION MAUNG ($_role)',
-          style: TextStyle(
+          style: const TextStyle(
             color: konPrimary,
             fontWeight: FontWeight.bold,
             fontSize: 20.0,
@@ -281,9 +281,9 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
                   color: kPrimary,
                   child: _buildSmallDrawer(),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
-                  child: _widgets[_selectedIndex],
+                  child: widgets[_selectedIndex],
                 ),
               ],
             );
@@ -295,9 +295,9 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
                   color: kPrimary,
                   child: _buildDrawer(),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
-                  child: _widgets[_selectedIndex],
+                  child: widgets[_selectedIndex],
                 ),
               ],
             );

@@ -109,7 +109,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous screen
           },
@@ -154,7 +154,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200, // Set a maximum height for the content
         ),
         child: Column(
@@ -184,7 +184,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                   flex: 5,
                   child: detailsListTitleText('Valid Amount'),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -192,8 +192,8 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Senior'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -212,7 +212,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -220,8 +220,8 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Master'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -240,7 +240,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 4,
                   child: detailsListTitleText('View Details'),
@@ -248,8 +248,8 @@ class _MasterDailyReport extends State<SeniorMasterReport>
               ],
             ),
             const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Divider(),
             ),
             SizedBox(
@@ -341,9 +341,9 @@ class _MasterDailyReport extends State<SeniorMasterReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -434,7 +434,7 @@ class _MasterDailyReport extends State<SeniorMasterReport>
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove_red_eye_outlined,
                   size: 15,
                 )),

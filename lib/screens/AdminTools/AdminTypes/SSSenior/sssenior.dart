@@ -43,7 +43,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
 
     if (MediaQuery.of(context).size.width < 600) {
       // Close the drawer after a short delay to ensure the widget is updated first
-      Future.delayed(Duration(milliseconds: 200), () {
+      Future.delayed(const Duration(milliseconds: 200), () {
         if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
           Navigator.of(context).pop(); // Close the drawer
         }
@@ -77,7 +77,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        SizedBox(height: 30.0),
+        const SizedBox(height: 30.0),
         _buildIconTile(Icons.dashboard, '', 0),
         _buildExpansionTile(
           Icons.people,
@@ -106,7 +106,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
           [3],
         ),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: const Icon(Icons.logout),
           title: drawerListMenuText(''),
           onTap: () {
             _logout();
@@ -120,7 +120,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        SizedBox(height: 30.0),
+        const SizedBox(height: 30.0),
         _buildIconTile(Icons.dashboard, 'Dashboard', 0),
         _buildExpansionTile(
           Icons.people,
@@ -160,7 +160,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
           [4],
         ),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: const Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),
           onTap: () {
             _logout();
@@ -198,12 +198,12 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
     double w = MediaQuery.of(context).size.width;
 
     // List of widgets to display on the right side
-    final List<Widget> _widgets = [
-      SSSeniorDashboard(),
-      SSSeniorMembers(),
-      SSSeniorShowMembersList(),
-      SSSeniorMatchView(),
-      SSSeniorDailyReport(),
+    final List<Widget> widgets = [
+      const SSSeniorDashboard(),
+      const SSSeniorMembers(),
+      const SSSeniorShowMembersList(),
+      const SSSeniorMatchView(),
+      const SSSeniorDailyReport(),
     ];
 
     return Scaffold(
@@ -212,7 +212,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
       appBar: AppBar(
         backgroundColor: kPrimary,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'CHAMPION MAUNG (SSSenior)',
           style: TextStyle(
             color: konPrimary,
@@ -231,9 +231,9 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
                   color: kPrimary,
                   child: _buildSmallDrawer(),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
-                  child: _widgets[_selectedIndex],
+                  child: widgets[_selectedIndex],
                 ),
               ],
             );
@@ -245,9 +245,9 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
                   color: kPrimary,
                   child: _buildDrawer(),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
-                  child: _widgets[_selectedIndex],
+                  child: widgets[_selectedIndex],
                 ),
               ],
             );

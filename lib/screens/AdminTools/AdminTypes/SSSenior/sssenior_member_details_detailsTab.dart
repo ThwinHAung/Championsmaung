@@ -1360,7 +1360,7 @@ class _SSSeniorDetailsTabState extends State<SSSeniorDetailsTab>
                             ),
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                             height: 16.0), // Add some space between the fields
                         TextFormField(
                           controller: _confirmNewPasswordController,

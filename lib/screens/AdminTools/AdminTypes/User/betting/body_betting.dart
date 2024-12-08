@@ -201,7 +201,7 @@ class _BodyBettingState extends State<BodyBetting> {
       barrierDismissible: false,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Center();
+        return const Center();
       },
     );
 
@@ -245,7 +245,7 @@ class _BodyBettingState extends State<BodyBetting> {
                   refreshPage();
                 });
               },
-              icon: Icon(Icons.refresh_outlined)),
+              icon: const Icon(Icons.refresh_outlined)),
           IconButton(
             icon: const Icon(Icons.sort),
             color: kBlack,
@@ -586,10 +586,10 @@ class _BodyBettingState extends State<BodyBetting> {
                                       radioContainer(matchIndex, isHigh),
                                       // Divider to separate matches, except after the last match
                                       if (entry.key != matchListLength - 1)
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                        const Padding(
+                                          padding: EdgeInsets.symmetric(
                                               horizontal: 20.0),
-                                          child: const Divider(),
+                                          child: Divider(),
                                         ),
                                     ],
                                   ),
@@ -597,7 +597,7 @@ class _BodyBettingState extends State<BodyBetting> {
                               ),
                             ),
                           );
-                        }).toList(),
+                        }),
                       ],
                     ),
                   ),

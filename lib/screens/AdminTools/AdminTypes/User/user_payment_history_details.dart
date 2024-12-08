@@ -107,8 +107,8 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
             // Top Container
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
                 color: kBlue,
                 boxShadow: [
                   BoxShadow(
@@ -116,8 +116,8 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
                   ),
                 ],
               ),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 15.0),
+              child: const Padding(
+                padding: EdgeInsets.only(left: 15.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -151,7 +151,7 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
                 ),
               ),
             ),
-            SizedBox(height: 10.0), // Spacer between top and ListView
+            const SizedBox(height: 10.0), // Spacer between top and ListView
 
             // Middle ListView
             Expanded(
@@ -160,7 +160,7 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
                 itemBuilder: (context, index) {
                   UserTransitionDetails transition = _transitions[index];
                   return Container(
-                    padding: EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
                         Row(
@@ -188,14 +188,14 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
               ),
             ),
 
-            SizedBox(
+            const SizedBox(
                 height: 10.0), // Spacer between ListView and bottom container
 
             // Bottom Container
             Container(
               width: double.infinity,
-              padding: EdgeInsets.all(10.0),
-              decoration: BoxDecoration(
+              padding: const EdgeInsets.all(10.0),
+              decoration: const BoxDecoration(
                 color: kGrey,
                 boxShadow: [
                   BoxShadow(
@@ -206,7 +206,7 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
+                  const Text(
                     'Total =      ', // Add your desired content here
                     style: TextStyle(
                       fontSize: 14.0,
@@ -218,7 +218,7 @@ class _UserPaymentHistoryDetailsState extends State<UserPaymentHistoryDetails> {
                     _transitions
                         .fold(0.0, (sum, item) => sum + item.amount)
                         .toStringAsFixed(2), // Add your desired content here
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 14.0,
                       color: kBlue,
                       fontWeight: FontWeight.bold,

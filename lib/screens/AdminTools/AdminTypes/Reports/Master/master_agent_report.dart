@@ -92,7 +92,7 @@ class _AgentDailyReportState extends State<Master_agent_report>
       return; // Ensure the dates and token are set before making the request
     }
     var url = Uri.parse(
-        '${Config.apiUrl}/master_agentReportWithDate/$name?start_date=${start!.toIso8601String()}&end_date=${end!.toIso8601String()}');
+        '${Config.apiUrl}/master_agentReportWithDate/$name?start_date=${start.toIso8601String()}&end_date=${end.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -117,7 +117,7 @@ class _AgentDailyReportState extends State<Master_agent_report>
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous screen
           },
@@ -160,7 +160,7 @@ class _AgentDailyReportState extends State<Master_agent_report>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200,
         ),
         child: Column(
@@ -176,13 +176,13 @@ class _AgentDailyReportState extends State<Master_agent_report>
                 Expanded(flex: 5, child: detailsListTitleText('Contact')),
                 Expanded(flex: 5, child: detailsListTitleText('Turnover')),
                 Expanded(flex: 5, child: detailsListTitleText('Valid Amount')),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
                     children: [
                       detailsListTitleText('Master'),
-                      Divider(),
+                      const Divider(),
                       Row(
                         children: [
                           Expanded(child: detailsListTitleText('W/L')),
@@ -193,13 +193,13 @@ class _AgentDailyReportState extends State<Master_agent_report>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
                     children: [
                       detailsListTitleText('Agent'),
-                      Divider(),
+                      const Divider(),
                       Row(
                         children: [
                           Expanded(child: detailsListTitleText('W/L')),
@@ -210,12 +210,12 @@ class _AgentDailyReportState extends State<Master_agent_report>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(flex: 4, child: detailsListTitleText('View Details')),
               ],
             ),
             const SizedBox(height: 10.0),
-            Divider(),
+            const Divider(),
             SizedBox(
               height: 400,
               child: _reports.isNotEmpty
@@ -303,9 +303,9 @@ class _AgentDailyReportState extends State<Master_agent_report>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -368,7 +368,7 @@ class _AgentDailyReportState extends State<Master_agent_report>
                 ),
               );
             },
-            icon: Icon(Icons.remove_red_eye_outlined, size: 15),
+            icon: const Icon(Icons.remove_red_eye_outlined, size: 15),
           ),
         ),
       ],

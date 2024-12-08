@@ -106,7 +106,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
       return;
     }
     var url = Uri.parse(
-        '${Config.apiUrl}/masterReportWithDate?start_date=${start!.toIso8601String()}&end_date=${end!.toIso8601String()}');
+        '${Config.apiUrl}/masterReportWithDate?start_date=${start.toIso8601String()}&end_date=${end.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -210,7 +210,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200, // Set a maximum height for the content
         ),
         child: Column(
@@ -240,7 +240,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                   flex: 5,
                   child: detailsListTitleText('Valid Amount'),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -248,8 +248,8 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Senior'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -268,7 +268,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -276,8 +276,8 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Master'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -296,7 +296,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 4,
                   child: detailsListTitleText('View Details'),
@@ -304,8 +304,8 @@ class _MasterDailyReport extends State<MasterDailyReport>
               ],
             ),
             const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Divider(),
             ),
             SizedBox(
@@ -397,9 +397,9 @@ class _MasterDailyReport extends State<MasterDailyReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -490,7 +490,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove_red_eye_outlined,
                   size: 15,
                 )),

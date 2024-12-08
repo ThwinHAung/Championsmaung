@@ -137,7 +137,7 @@ class _UserDailyReportState extends State<UserDailyReport>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200, // Set a maximum height for the content
         ),
         child: Column(
@@ -167,7 +167,7 @@ class _UserDailyReportState extends State<UserDailyReport>
                   flex: 5,
                   child: detailsListTitleText('Valid Amount'),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -175,8 +175,8 @@ class _UserDailyReportState extends State<UserDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Agent'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -195,7 +195,7 @@ class _UserDailyReportState extends State<UserDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -203,8 +203,8 @@ class _UserDailyReportState extends State<UserDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('User'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -223,12 +223,12 @@ class _UserDailyReportState extends State<UserDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
               ],
             ),
             const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Divider(),
             ),
             SizedBox(

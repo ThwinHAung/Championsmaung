@@ -380,7 +380,7 @@ class _MaungBetPendingMatchesState extends State<MaungBetPendingMatches> {
                           alignment: Alignment.center,
                           child: Text(
                             _formatOverUnder(match),
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: 10),
                           ),
                         ),
                       ),

@@ -344,7 +344,7 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                           alignment: Alignment.center,
                           child: Text(
                             _formatOverUnder(match),
-                            style: TextStyle(fontSize: 10),
+                            style: const TextStyle(fontSize: 10),
                           ),
                         ),
                       ),

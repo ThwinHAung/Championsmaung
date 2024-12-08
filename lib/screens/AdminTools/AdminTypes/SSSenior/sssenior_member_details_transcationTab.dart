@@ -280,7 +280,7 @@ class _SSSeniorTransactionsTabState extends State<SSSeniorTransactionsTab>
                         )),
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.remove_red_eye_outlined,
             ),
           ),

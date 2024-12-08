@@ -208,7 +208,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200, // Set a maximum height for the content
         ),
         child: Column(
@@ -238,7 +238,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                   flex: 5,
                   child: detailsListTitleText('Valid Amount'),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -246,8 +246,8 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('SSenior'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -266,7 +266,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -274,8 +274,8 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       detailsListTitleText('Senior'),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
                       ),
                       Row(
@@ -294,7 +294,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     ],
                   ),
                 ),
-                VerticalDivider(),
+                const VerticalDivider(),
                 Expanded(
                   flex: 4,
                   child: detailsListTitleText('View Details'),
@@ -302,8 +302,8 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
               ],
             ),
             const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Divider(),
             ),
             SizedBox(
@@ -395,9 +395,9 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -488,7 +488,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove_red_eye_outlined,
                   size: 15,
                 )),

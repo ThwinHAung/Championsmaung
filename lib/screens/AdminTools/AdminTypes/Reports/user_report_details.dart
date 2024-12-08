@@ -129,7 +129,7 @@ class _UserReportDetailsState extends State<UserReportDetails>
 
   String formatBetTime(DateTime betTime) {
     // Convert the UTC bet time to Myanmar time (UTC+6:30)
-    final myanmarTime = betTime.add(Duration(hours: 6, minutes: 30));
+    final myanmarTime = betTime.add(const Duration(hours: 6, minutes: 30));
 
     // Format the time in Myanmar timezone with AM/PM format
     return DateFormat('yyyy-MM-dd hh:mm:ss a').format(myanmarTime);
@@ -139,7 +139,7 @@ class _UserReportDetailsState extends State<UserReportDetails>
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
           maxWidth: 1200, // Set a maximum height for the content
         ),
         child: Column(
@@ -181,8 +181,8 @@ class _UserReportDetailsState extends State<UserReportDetails>
               ],
             ),
             const SizedBox(height: 10.0),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
               child: Divider(),
             ),
             SizedBox(
@@ -322,7 +322,7 @@ class _UserReportDetailsState extends State<UserReportDetails>
                               ),
                             ],
                           )
-                        : Center(
+                        : const Center(
                             child: Text("Loading..."),
                           ),
                   ],

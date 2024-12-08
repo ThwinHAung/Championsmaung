@@ -121,7 +121,7 @@ class _SSSeniorDailyReportState extends State<Sssenior_SseniorReport>
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             Navigator.pop(context); // Navigate back to the previous screen
           },
@@ -349,9 +349,9 @@ class _SSSeniorDailyReportState extends State<Sssenior_SseniorReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -442,7 +442,7 @@ class _SSSeniorDailyReportState extends State<Sssenior_SseniorReport>
                     ),
                   );
                 },
-                icon: Icon(
+                icon: const Icon(
                   Icons.remove_red_eye_outlined,
                   size: 15,
                 )),

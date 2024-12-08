@@ -41,7 +41,7 @@ flutter:
     - family: SF-Pro
       fonts:
         - asset: assets/fonts/SF-Pro.ttf
-        - weight: 500
+          weight: 500
 
   # To add assets to your application, add an assets section, like this:
   assets:

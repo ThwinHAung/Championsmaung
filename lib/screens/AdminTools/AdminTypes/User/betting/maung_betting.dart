@@ -201,7 +201,7 @@ class _MaungBettingState extends State<MaungBetting> {
       barrierDismissible: false,
       barrierColor: Colors.transparent,
       builder: (BuildContext context) {
-        return Center();
+        return const Center();
       },
     );
 
@@ -244,7 +244,7 @@ class _MaungBettingState extends State<MaungBetting> {
                     refreshPage();
                   });
                 },
-                icon: Icon(Icons.refresh_outlined)),
+                icon: const Icon(Icons.refresh_outlined)),
             IconButton(
               icon: const Icon(Icons.sort),
               color: kBlack,
@@ -600,10 +600,10 @@ class _MaungBettingState extends State<MaungBetting> {
                                         radioContainer(globalIndex),
                                         // Add Divider if it's not the last match in the group
                                         if (index != matches.length - 1)
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
+                                          const Padding(
+                                            padding: EdgeInsets.symmetric(
                                                 horizontal: 20.0),
-                                            child: const Divider(),
+                                            child: Divider(),
                                           ),
                                       ],
                                     ),
@@ -611,7 +611,7 @@ class _MaungBettingState extends State<MaungBetting> {
                                 ),
                               ),
                             );
-                          }).toList(),
+                          }),
                         ],
                       ),
                     ),
@@ -620,7 +620,7 @@ class _MaungBettingState extends State<MaungBetting> {
                     const SizedBox(height: 5.0),
                   ],
                 );
-              }).toList(),
+              }),
             ],
           ),
         ),

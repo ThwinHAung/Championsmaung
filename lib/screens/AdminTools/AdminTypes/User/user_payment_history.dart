@@ -50,8 +50,8 @@ class UserPaymentHistory extends StatefulWidget {
 }
 
 class _UserPaymentHistoryState extends State<UserPaymentHistory> {
-  TextEditingController _dateRangeFromController = TextEditingController();
-  TextEditingController _dateRangetoController = TextEditingController();
+  final TextEditingController _dateRangeFromController = TextEditingController();
+  final TextEditingController _dateRangetoController = TextEditingController();
   String _selectedSortOption = 'Date'; // Default selected option
 
   final storage = const FlutterSecureStorage();
@@ -119,8 +119,8 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Select Date Range.'),
-            SizedBox(height: 20.0),
+            const Text('Select Date Range.'),
+            const SizedBox(height: 20.0),
             TextFormField(
               controller: _dateRangeFromController,
               style: kTextFieldActiveStyle,
@@ -141,7 +141,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                 }
               },
             ),
-            SizedBox(height: 10.0),
+            const SizedBox(height: 10.0),
             TextFormField(
               controller: _dateRangetoController,
               style: kTextFieldActiveStyle,
@@ -172,7 +172,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                   Navigator.pop(context);
                 }),
               ),
-              SizedBox(width: 5.0),
+              const SizedBox(width: 5.0),
               Expanded(
                 child: materialButton(kBlue, 'Submit', () {
                   String startDate = _dateRangeFromController.text;
@@ -183,7 +183,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                     Navigator.pop(context); // Close the dialog
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text("Please select both dates")),
+                      const SnackBar(content: Text("Please select both dates")),
                     );
                   }
                 }),
@@ -224,7 +224,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
               ),
             ),
             child: PopupMenuButton<String>(
-              icon: Icon(Icons.sort, color: konPrimary),
+              icon: const Icon(Icons.sort, color: konPrimary),
               onSelected: (String value) {
                 setState(() {
                   _selectedSortOption = value;
@@ -264,7 +264,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                   labelText(_transitions.length.toString()),
                 ],
               ),
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Expanded(
                 child: ListView.builder(
                   itemCount: _transitions.length,
@@ -274,12 +274,12 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                       onTap: () => _navigateToDetails(
                           transition.date), // Pass widget-specific ID
                       child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 5.0),
-                        padding: EdgeInsets.all(15.0),
+                        margin: const EdgeInsets.symmetric(vertical: 5.0),
+                        padding: const EdgeInsets.all(15.0),
                         decoration: BoxDecoration(
                           color: kOnPrimaryContainer,
                           borderRadius: BorderRadius.circular(10.0),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: kBlack,
                             ),
@@ -302,7 +302,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                         vertical: 8.0, horizontal: 10.0),
                                     child: Text(
                                       transition.date,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         fontSize: 10,
                                         color: kWhite,
                                       ),
@@ -311,7 +311,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                 ),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -319,7 +319,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                 labelText(transition.totalIn.toString()),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -327,7 +327,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                 labelText(transition.totalWin.toString()),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -335,7 +335,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                 labelText(transition.totalBet.toString()),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -344,7 +344,7 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                     "- ${transition.totalOut.toString()}"),
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -355,14 +355,14 @@ class _UserPaymentHistoryState extends State<UserPaymentHistory> {
                                     .toString())
                               ],
                             ),
-                            SizedBox(height: 5.0),
+                            const SizedBox(height: 5.0),
                             Text(
                               '${transition.start} နာရီမှ - ${transition.end} နာရီအထိ',
                               // '22-2-2024' +
                               //     'နေ့လယ် ၁၂ နာရီမှ' +
                               //     '23-2-2024' +
                               //     'နေ့လယ် ၁၂ နာရီအထိ',
-                              style: TextStyle(color: kBlue, fontSize: 12),
+                              style: const TextStyle(color: kBlue, fontSize: 12),
                             )
                           ],
                         ),

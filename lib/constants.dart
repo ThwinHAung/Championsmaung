@@ -281,7 +281,7 @@ List<Map<String, String>> calculatingSigns = [
 Widget drawerListMenuText(text) {
   return Text(
     text,
-    style: TextStyle(
+    style: const TextStyle(
       color: kBlue,
       fontSize: 12,
     ),
@@ -293,7 +293,7 @@ Widget drawerListSubMenuText(text) {
     padding: const EdgeInsets.only(left: 10.0),
     child: Text(
       text,
-      style: TextStyle(
+      style: const TextStyle(
         color: kBlue,
         fontSize: 12,
       ),

@@ -374,7 +374,7 @@ class _MatchResultsState extends State<MatchResults> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: Text(
               item,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 10,
                 color: kBlue, // Change text color if selected
               ),

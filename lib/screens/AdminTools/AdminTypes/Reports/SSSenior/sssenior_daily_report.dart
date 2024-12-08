@@ -391,9 +391,9 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
             ],
           ),
         ),
-        Expanded(
+        const Expanded(
           flex: 4,
-          child: const SizedBox(), // Empty for view details column
+          child: SizedBox(), // Empty for view details column
         ),
       ],
     );
@@ -503,7 +503,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     final DateTimeRange? selectedRange = await showDateRangePicker(
       context: context,
       initialDateRange: DateTimeRange(
-        start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
+        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
         end: endDate ?? DateTime.now(),
       ),
       firstDate: DateTime(2021),
