@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_report_details.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/common_daily_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +15,9 @@ class AgentReport {
   final double adjustedWinLoss;
   final double master;
   final double agent;
-  final int betId;
+  final DateTime startDate; // New field
+  final DateTime endDate;
+  // final String createdAt;
 
   AgentReport({
     required this.username,
@@ -25,30 +27,35 @@ class AgentReport {
     required this.adjustedWinLoss,
     required this.master,
     required this.agent,
-    required this.betId,
+    required this.startDate,
+    required this.endDate,
+    // required this.createdAt,
   });
 
   factory AgentReport.fromJson(Map<String, dynamic> json) {
     return AgentReport(
-      username: json['username'],
-      realname: json['realname'],
-      turnover: double.parse(json['turnover']),
-      validAmount: double.parse(json['valid_amount']),
-      adjustedWinLoss: double.parse(json['adjusted_win_loss']),
-      master: double.parse(json['master']),
-      agent: double.parse(json['agent']),
-      betId: json['bet_id'],
-    );
+        username: json['username'] ?? '', // Default to an empty string if null
+        realname: json['realname'] ?? '',
+        turnover: double.tryParse(json['total_turnover'] ?? '0') ?? 0.0,
+        validAmount: double.tryParse(json['total_valid_amount'] ?? '0') ?? 0.0,
+        adjustedWinLoss:
+            double.tryParse(json['total_adjusted_win_loss'] ?? '0') ?? 0.0,
+        master: double.tryParse(json['total_master'] ?? '0') ?? 0.0,
+        agent: double.tryParse(json['total_agent'] ?? '0') ?? 0.0,
+        startDate: DateTime.parse(json['start_date']),
+        endDate: DateTime.parse(json['end_date'])
+        // createdAt: json['created_at'] ?? '',
+        );
   }
 }
 
-class CommonDailyReport extends StatefulWidget {
-  static const String id = 'common_daily_report';
+class Master_agent_report extends StatefulWidget {
+  static const String id = 'agent_daily_report';
   final String name;
   final DateTime startDate;
   final DateTime endDate;
 
-  const CommonDailyReport({
+  const Master_agent_report({
     super.key,
     required this.name,
     required this.startDate,
@@ -56,10 +63,10 @@ class CommonDailyReport extends StatefulWidget {
   });
 
   @override
-  State<CommonDailyReport> createState() => _AgentDailyReportState();
+  State<Master_agent_report> createState() => _AgentDailyReportState();
 }
 
-class _AgentDailyReportState extends State<CommonDailyReport>
+class _AgentDailyReportState extends State<Master_agent_report>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   final storage = const FlutterSecureStorage();
   String? _token;
@@ -74,25 +81,27 @@ class _AgentDailyReportState extends State<CommonDailyReport>
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     if (_token != null) {
-      _fetchAgentReport(widget.name, widget.startDate, widget.endDate);
+      await _fetchAgentReportWithDate(
+          widget.name, widget.startDate, widget.endDate);
     }
   }
 
-  Future<void> _fetchAgentReport(
+  Future<void> _fetchAgentReportWithDate(
       String name, DateTime? start, DateTime? end) async {
+    if (start == null || end == null || _token == null) {
+      return; // Ensure the dates and token are set before making the request
+    }
     var url = Uri.parse(
-        '${Config.apiUrl}/agentReport/$name?start_date=${start!.toIso8601String()}&end_date=${end!.toIso8601String()}');
+        '${Config.apiUrl}/master_agentReportWithDate/$name?start_date=${start!.toIso8601String()}&end_date=${end!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
         'Authorization': 'Bearer $_token',
-        'Accept': 'Application/json'
       },
     );
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> reportsData = jsonResponse['data'];
-
       setState(() {
         _reports =
             reportsData.map((json) => AgentReport.fromJson(json)).toList();
@@ -105,6 +114,41 @@ class _AgentDailyReportState extends State<CommonDailyReport>
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Container(
+              color: kPrimary,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: kOnPrimaryContainer,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: view(),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget view() {
     double totalTurnover = _reports.fold(0, (sum, item) => sum + item.turnover);
     double totalValidAmount =
         _reports.fold(0, (sum, item) => sum + item.validAmount);
@@ -112,56 +156,7 @@ class _AgentDailyReportState extends State<CommonDailyReport>
         _reports.fold(0, (sum, item) => sum + item.adjustedWinLoss);
     double totalMasterCom = _reports.fold(0, (sum, item) => sum + item.master);
     double totalAgentCom = _reports.fold(0, (sum, item) => sum + item.agent);
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-        ),
-        body: Stack(
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                    color: kPrimary,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: kOnPrimaryContainer,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: view(),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: TotalRow(
-                totalTurnover: totalTurnover,
-                totalValidAmount: totalValidAmount,
-                totalAdjustedWinLoss: totalAdjustedWinLoss,
-                totalMasterCom: totalMasterCom,
-                totalAgentCom: totalAgentCom,
-              ),
-            ),
-          ],
-        ));
-  }
 
-  Widget view() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -234,73 +229,17 @@ class _AgentDailyReportState extends State<CommonDailyReport>
                         );
                       },
                     )
-                  : const Center(
-                      child: Text("No data available"),
-                    ),
+                  : const Center(child: Text("No data available")),
             ),
+            TotalRow(
+                totalTurnover: totalTurnover,
+                totalValidAmount: totalValidAmount,
+                totalAdjustedWinLoss: totalAdjustedWinLoss,
+                totalMasterCom: totalMasterCom,
+                totalAgentCom: totalAgentCom),
           ],
         ),
       ),
-    );
-  }
-
-  Widget ListCard(AgentReport report) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Expanded(flex: 5, child: detailsListText(report.username)),
-        Expanded(flex: 5, child: detailsListText(report.realname)),
-        Expanded(
-            flex: 5,
-            child: detailsListText(report.turnover.toStringAsFixed(2))),
-        Expanded(
-            flex: 5,
-            child: detailsListText(report.validAmount.toStringAsFixed(2))),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              Expanded(
-                  child: detailsListText(
-                      report.adjustedWinLoss.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(report.master.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(
-                      (report.adjustedWinLoss + report.master)
-                          .toStringAsFixed(2))),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              Expanded(
-                  child: detailsListText(
-                      report.adjustedWinLoss.toStringAsFixed(2))),
-              Expanded(child: detailsListText(report.agent.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText((report.agent + report.adjustedWinLoss)
-                      .toStringAsFixed(2))),
-            ],
-          ),
-        ),
-        Expanded(
-          flex: 4,
-          child: IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => UserReportDetails(betId: report.betId),
-                ),
-              );
-            },
-            icon: Icon(Icons.remove_red_eye_outlined, size: 15),
-          ),
-        ),
-      ],
     );
   }
 
@@ -367,6 +306,70 @@ class _AgentDailyReportState extends State<CommonDailyReport>
         Expanded(
           flex: 4,
           child: const SizedBox(), // Empty for view details column
+        ),
+      ],
+    );
+  }
+
+  Widget ListCard(AgentReport report) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(flex: 5, child: detailsListText(report.username)),
+        Expanded(flex: 5, child: detailsListText(report.realname)),
+        Expanded(
+            flex: 5,
+            child: detailsListText(report.turnover.toStringAsFixed(2))),
+        Expanded(
+            flex: 5,
+            child: detailsListText(report.validAmount.toStringAsFixed(2))),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child: detailsListText(
+                      report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(report.master.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(
+                      (report.adjustedWinLoss + report.master)
+                          .toStringAsFixed(2))),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child: detailsListText(
+                      report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(child: detailsListText(report.agent.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText((report.agent + report.adjustedWinLoss)
+                      .toStringAsFixed(2))),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CommonDailyReport(
+                    name: report.username,
+                    startDate: report.startDate,
+                    endDate: report.endDate,
+                  ),
+                ),
+              );
+            },
+            icon: Icon(Icons.remove_red_eye_outlined, size: 15),
+          ),
         ),
       ],
     );

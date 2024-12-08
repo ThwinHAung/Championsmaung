@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSSenior/sssenior_ssenior_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
@@ -15,6 +16,8 @@ class SSSeniorReport {
   final double validAmount;
   final double adjustedWinLoss;
   final double ssenior_com;
+  final DateTime startDate; // New field
+  final DateTime endDate;
 
   SSSeniorReport({
     required this.SSeniorId,
@@ -24,6 +27,8 @@ class SSSeniorReport {
     required this.validAmount,
     required this.adjustedWinLoss,
     required this.ssenior_com,
+    required this.startDate,
+    required this.endDate,
   });
 
   factory SSSeniorReport.fromJson(Map<String, dynamic> json) {
@@ -34,7 +39,9 @@ class SSSeniorReport {
         turnover: double.parse(json['total_turnover']),
         validAmount: double.parse(json['total_valid_amount']),
         adjustedWinLoss: double.parse(json['total_win_loss']),
-        ssenior_com: double.parse(json['total_ssenior_commission']));
+        ssenior_com: double.parse(json['total_ssenior_commission']),
+        startDate: DateTime.parse(json['start_date']),
+        endDate: DateTime.parse(json['end_date']));
   }
 }
 
@@ -51,7 +58,6 @@ class SSSeniorDailyReport extends StatefulWidget {
 
 class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;
 
@@ -67,14 +73,13 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchSSSeniorReport();
+    }
   }
 
-  Future<void> _fetchReport(DateTime? start, DateTime? end) async {
-    if (start == null || end == null || _token == null) {
-      return; // Ensure the dates and token are set before making the request
-    }
-    var url = Uri.parse(
-        '${Config.apiUrl}/ssseniorReport?start_date=${start.toIso8601String()}&end_date=${end.toIso8601String()}');
+  Future<void> _fetchSSSeniorReport() async {
+    var url = Uri.parse('${Config.apiUrl}/ssseniorReport');
 
     final response = await http.get(
       url,
@@ -86,9 +91,37 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> reportsData = jsonResponse['data'];
-      _reports =
-          reportsData.map((json) => SSSeniorReport.fromJson(json)).toList();
-      setState(() {});
+      setState(() {
+        _reports =
+            reportsData.map((json) => SSSeniorReport.fromJson(json)).toList();
+      });
+    } else {
+      print('Failed to load reports');
+    }
+  }
+
+  Future<void> _fetchSSSeniorReportWithDate(
+      DateTime? start, DateTime? end) async {
+    if (start == null || end == null || _token == null) {
+      return; // Ensure the dates and token are set before making the request
+    }
+    var url = Uri.parse(
+        '${Config.apiUrl}/ssseniorReportWithDate?start_date=${start.toIso8601String()}&end_date=${end.toIso8601String()}');
+
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> reportsData = jsonResponse['data'];
+      setState(() {
+        _reports =
+            reportsData.map((json) => SSSeniorReport.fromJson(json)).toList();
+      });
     } else {
       // Handle error
       print('Failed to load reports');
@@ -125,9 +158,8 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  if (startDate != null && endDate != null) {
-                                    _fetchReport(startDate, endDate);
-                                  }
+                                  _fetchSSSeniorReportWithDate(
+                                      startDate!, endDate!);
                                 },
                                 icon: const Icon(
                                   Icons.search_outlined,
@@ -168,6 +200,13 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   }
 
   Widget view() {
+    double totalTurnover = _reports.fold(0, (sum, item) => sum + item.turnover);
+    double totalValidAmount =
+        _reports.fold(0, (sum, item) => sum + item.validAmount);
+    double totalAdjustedWinLoss =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLoss);
+    double totalSSeniorCom =
+        _reports.fold(0, (sum, item) => sum + item.ssenior_com);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -200,34 +239,34 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                   child: detailsListTitleText('Valid Amount'),
                 ),
                 const VerticalDivider(),
-                Expanded(
-                  flex: 8,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      detailsListTitleText('SSSenior'),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Divider(),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: detailsListTitleText('W/L'),
-                          ),
-                          Expanded(
-                            child: detailsListTitleText('Com'),
-                          ),
-                          Expanded(
-                            child: detailsListTitleText('W/L + Com'),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const VerticalDivider(),
+                // Expanded(
+                //   flex: 8,
+                //   child: Column(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     crossAxisAlignment: CrossAxisAlignment.center,
+                //     children: [
+                //       detailsListTitleText('SSSenior'),
+                //       const Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 10.0),
+                //         child: Divider(),
+                //       ),
+                //       Row(
+                //         children: [
+                //           Expanded(
+                //             child: detailsListTitleText('W/L'),
+                //           ),
+                //           Expanded(
+                //             child: detailsListTitleText('Com'),
+                //           ),
+                //           Expanded(
+                //             child: detailsListTitleText('W/L + Com'),
+                //           ),
+                //         ],
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const VerticalDivider(),
                 Expanded(
                   flex: 8,
                   child: Column(
@@ -282,9 +321,81 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                     )
                   : const Center(child: Text("No data available")),
             ),
+            TotalRow(
+              totalTurnover: totalTurnover,
+              totalValidAmount: totalValidAmount,
+              totalAdjustedWinLoss: totalAdjustedWinLoss,
+              totalSSeniorCom: totalSSeniorCom,
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget TotalRow({
+    required double totalTurnover,
+    required double totalValidAmount,
+    required double totalAdjustedWinLoss,
+    required double totalSSeniorCom,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 5,
+          child: detailsListText('Total'),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(''),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(totalTurnover.toStringAsFixed(2)),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(totalValidAmount.toStringAsFixed(2)),
+        ),
+        // Expanded(
+        //   flex: 8,
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //           child:
+        //               detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
+        //       Expanded(
+        //           child: detailsListText('0')), // Placeholder for other columns
+        //       Expanded(
+        //         child: detailsListText(totalAdjustedWinLoss)
+        //             .toStringAsFixed(2)),
+        //       )
+        //     ],
+        //   ),
+        // ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child:
+                      detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(totalSSeniorCom.toStringAsFixed(2))),
+              Expanded(
+                child: detailsListText(
+                  (totalAdjustedWinLoss + totalSSeniorCom).toStringAsFixed(2),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: const SizedBox(), // Empty for view details column
+        ),
+      ],
     );
   }
 
@@ -308,16 +419,16 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
           flex: 5,
           child: detailsListText(report.validAmount.toString()),
         ),
-        Expanded(
-          flex: 8,
-          child: Row(
-            children: [
-              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
-              Expanded(child: detailsListText('0')),
-              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
-            ],
-          ),
-        ),
+        // Expanded(
+        //   flex: 8,
+        //   child: Row(
+        //     children: [
+        //       Expanded(child: detailsListText('${report.adjustedWinLoss}')),
+        //       Expanded(child: detailsListText('0')),
+        //       Expanded(child: detailsListText('${report.adjustedWinLoss}')),
+        //     ],
+        //   ),
+        // ),
         Expanded(
           flex: 8,
           child: Row(
@@ -336,7 +447,16 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
             padding: const EdgeInsets.only(left: 10.0),
             child: IconButton(
               onPressed: () {
-                // Navigator.pushNamed(context, SSeniorDailyReport.id);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Sssenior_SseniorReport(
+                      name: report.username,
+                      startDate: report.startDate,
+                      endDate: report.endDate,
+                    ),
+                  ),
+                );
               },
               icon: const Icon(
                 Icons.remove_red_eye_outlined,
@@ -382,16 +502,19 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   Future<void> _selectDateRange(BuildContext context) async {
     final DateTimeRange? selectedRange = await showDateRangePicker(
       context: context,
+      initialDateRange: DateTimeRange(
+        start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
+        end: endDate ?? DateTime.now(),
+      ),
       firstDate: DateTime(2021),
-      lastDate: DateTime.now(),
+      lastDate: DateTime(2101),
     );
+
     if (selectedRange != null) {
       setState(() {
         startDate = selectedRange.start;
         endDate = selectedRange.end;
       });
-      _fetchReport(
-          startDate, endDate); // Fetch the report with the new date range
     }
   }
 }

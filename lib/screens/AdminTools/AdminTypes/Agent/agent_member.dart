@@ -755,7 +755,7 @@ class _AgentMembersState extends State<AgentMembers>
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Mix Bet : $_maxSingleBet',
+                                  'Max Bet Amount for Mix Bet : $_maxMixBet',
                                   style: const TextStyle(fontSize: 12.0),
                                 ),
                               ],
@@ -778,7 +778,7 @@ class _AgentMembersState extends State<AgentMembers>
                                 ),
                                 const SizedBox(height: 10.0),
                                 Text(
-                                  'Max Bet Amount for Single Bet : $_maxMixBet',
+                                  'Max Bet Amount for Single Bet : $_maxSingleBet',
                                   style: const TextStyle(fontSize: 12.0),
                                 ),
                               ],

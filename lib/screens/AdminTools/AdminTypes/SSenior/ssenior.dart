@@ -1,6 +1,8 @@
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Master/master_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSenior/ssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Senior/senior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
@@ -24,6 +26,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
   String? _role;
   int _selectedIndex = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isDisposed = false; // Flag to track if the widget is disposed
 
   @override
   void initState() {
@@ -47,6 +50,13 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     }
   }
 
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _isDisposed = true; // Mark the widget as disposed
+    super.dispose();
+  }
+
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     final String? role = await storage.read(key: 'user_role');
@@ -63,13 +73,19 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
     });
 
     if (MediaQuery.of(context).size.width < 600) {
-      // Close the drawer after a short delay to ensure the widget is updated first
-      Future.delayed(Duration(milliseconds: 200), () {
-        if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
-          Navigator.of(context).pop(); // Close the drawer
-        }
-      });
+      if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+        Navigator.of(context).pop(); // Close the drawer immediately
+      }
     }
+
+    // if (MediaQuery.of(context).size.width < 600) {
+    //   // Close the drawer after a short delay to ensure the widget is updated first
+    //   Future.delayed(Duration(milliseconds: 200), () {
+    //     if (_scaffoldKey.currentState?.isDrawerOpen ?? false) {
+    //       Navigator.of(context).pop(); // Close the drawer
+    //     }
+    //   });
+    // }
   }
 
   Future<void> _logout() async {
@@ -212,8 +228,33 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
       SSSeniorDashboard(),
       SSeniorMembers(),
       SSeniorShowMembersList(),
-      SSSeniorDailyReport(),
+      _role == 'SSenior'
+          ? SSeniorDailyReport()
+          : _role == 'Senior'
+              ? SeniorDailyReport() // Replace with the correct widget for Senior
+              : _role == 'Master'
+                  ? MasterDailyReport() // Replace with the correct widget for Master
+                  : Center(
+                      child: Text(
+                        'Unauthorized Role',
+                        style: TextStyle(fontSize: 20, color: Colors.red),
+                      ),
+                    ), // here this route for condition
     ];
+
+    // final List<Widget> _widgets = [
+    //   SSSeniorDashboard(),
+    //   SSeniorMembers(),
+    //   SSeniorShowMembersList(),
+    //   _role == 'SSenior'
+    //       ? SSeniorDailyReport() // Route for SSenior role
+    //       : _role == 'Senior'
+    //           ? SeniorDailyReport() // Replace with the actual widget for Senior
+    //           : _role == 'Master'
+    //               ? MasterDailyReport() // Replace with the actual widget for Master
+    //               : Center(
+    //                   child: Text('Role not recognized')), // Fallback widget
+    // ];
 
     return Scaffold(
       key: _scaffoldKey,

@@ -124,18 +124,49 @@ class _BettingHistoryState extends State<BettingHistory> {
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
     _username = await storage.read(key: 'user_name');
+    if (_token != null && _username != null) {
+      _fetchMatchesHistory(_username!);
+    }
   }
 
-  Future<void> _fetchMatchesHistory(
+  Future<void> _fetchMatchesHistoryWithDate(
       String username, DateTime? start, DateTime? end) async {
     var url = Uri.parse(
-        '${Config.apiUrl}/getPayoutBetSlip/$username?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+        '${Config.apiUrl}/getPayoutBetSlipWithDate/$username?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(url, headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
       Map<String, dynamic> data = json.decode(response.body);
+      setState(() {
+        if (data.containsKey('singleBets')) {
+          singleSlip = {
+            'singleBets': (data['singleBets'] as List)
+                .map((betJson) => SingleBet.fromJson(betJson))
+                .toList(),
+          };
+        }
+        if (data.containsKey('accumulatorBets')) {
+          accumulatorSlip = {
+            'accumulatorBets': (data['accumulatorBets'] as List)
+                .map((betJson) => AccumulatorBet.fromJson(betJson))
+                .toList(),
+          };
+        }
+      });
+    } else {}
+  }
+
+  Future<void> _fetchMatchesHistory(String username) async {
+    var url = Uri.parse('${Config.apiUrl}/getPayoutBetSlip/$username');
+    final response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    });
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = json.decode(response.body);
+
       setState(() {
         if (data.containsKey('singleBets')) {
           singleSlip = {
@@ -202,7 +233,8 @@ class _BettingHistoryState extends State<BettingHistory> {
                 child: IconButton(
                   onPressed: () {
                     if (startDate != null && endDate != null) {
-                      _fetchMatchesHistory(_username!, startDate!, endDate!);
+                      _fetchMatchesHistoryWithDate(
+                          _username!, startDate!, endDate!);
                     }
                   },
                   icon: const Icon(

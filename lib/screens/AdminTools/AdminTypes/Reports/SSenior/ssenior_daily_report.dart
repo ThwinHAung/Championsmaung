@@ -2,33 +2,71 @@ import 'dart:convert';
 
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSenior/ssenior_senior_report.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-class MasterDailyReport extends StatefulWidget {
-  static const String id = 'master_daily_report';
+class SSeniorReport {
+  final String seniorUsername;
+  final String seniorRealname;
+  final double totalTurnover;
+  final double totalValidAmount;
+  final double totalWinLoss;
+  final double totalSeniorCommission;
+  final double totalSSeniorCommission;
+  final DateTime startDate; // New field
+  final DateTime endDate;
 
-  const MasterDailyReport({
+  SSeniorReport({
+    required this.seniorUsername,
+    required this.seniorRealname,
+    required this.totalTurnover,
+    required this.totalValidAmount,
+    required this.totalWinLoss,
+    required this.totalSeniorCommission,
+    required this.totalSSeniorCommission,
+    required this.startDate,
+    required this.endDate,
+  });
+
+  factory SSeniorReport.fromJson(Map<String, dynamic> json) {
+    return SSeniorReport(
+        seniorUsername: json['senior_username'] ?? '',
+        seniorRealname: json['senior_realname'] ?? '',
+        totalTurnover: double.tryParse(json['total_turnover'] ?? '0') ?? 0.0,
+        totalValidAmount:
+            double.tryParse(json['total_valid_amount'] ?? '0') ?? 0.0,
+        totalWinLoss: double.tryParse(json['total_win_loss'] ?? '0') ?? 0.0,
+        totalSeniorCommission:
+            double.tryParse(json['total_senior_commission'] ?? '0') ?? 0.0,
+        totalSSeniorCommission:
+            double.tryParse(json['total_ssenior_commission'] ?? '0') ?? 0.0,
+        startDate: DateTime.parse(json['start_date']),
+        endDate: DateTime.parse(json['end_date']));
+  }
+}
+
+class SSeniorDailyReport extends StatefulWidget {
+  static const String id = 'ssenior_daily_report';
+
+  const SSeniorDailyReport({
     super.key,
   });
 
   @override
-  State<MasterDailyReport> createState() => _MasterDailyReport();
+  State<SSeniorDailyReport> createState() => _SSeniorDailyReportState();
 }
 
-class _MasterDailyReport extends State<MasterDailyReport>
+class _SSeniorDailyReportState extends State<SSeniorDailyReport>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;
 
   DateTime? startDate;
   DateTime? endDate;
-  List<Transaction> transactions = [];
-  List<Transaction> filteredTransactions = [];
+  List<SSeniorReport> _reports = [];
 
   @override
   void initState() {
@@ -38,12 +76,13 @@ class _MasterDailyReport extends State<MasterDailyReport>
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token != null) {
+      _fetchSSeniorReport();
+    }
   }
 
-  Future<void> _fetchTransaction(
-      int userId, DateTime? start, DateTime? end) async {
-    var url = Uri.parse(
-        '${Config.apiUrl}/getTransaction/$userId?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+  Future<void> _fetchSSeniorReport() async {
+    var url = Uri.parse('${Config.apiUrl}/sseniorReport');
     final response = await http.get(
       url,
       headers: {
@@ -51,12 +90,33 @@ class _MasterDailyReport extends State<MasterDailyReport>
       },
     );
     if (response.statusCode == 200) {
-      List jsonResponse = json.decode(response.body);
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> reportsData = jsonResponse['data'];
       setState(() {
-        transactions = jsonResponse
-            .map((transaction) => Transaction.fromJson(transaction))
-            .toList();
-        filteredTransactions = transactions;
+        _reports =
+            reportsData.map((json) => SSeniorReport.fromJson(json)).toList();
+      });
+    } else {
+      // Handle error
+    }
+  }
+
+  Future<void> _fetchSSeniorReportWithDate(
+      DateTime? start, DateTime? end) async {
+    var url = Uri.parse(
+        '${Config.apiUrl}/sseniorReportWithDate?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> reportsData = jsonResponse['data'];
+      setState(() {
+        _reports =
+            reportsData.map((json) => SSeniorReport.fromJson(json)).toList();
       });
     } else {
       // Handle error
@@ -93,7 +153,8 @@ class _MasterDailyReport extends State<MasterDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  // _fetchTransaction(1, startDate!, endDate!);
+                                  _fetchSSeniorReportWithDate(
+                                      startDate!, endDate!);
                                 },
                                 icon: const Icon(
                                   Icons.search_outlined,
@@ -134,6 +195,16 @@ class _MasterDailyReport extends State<MasterDailyReport>
   }
 
   Widget view() {
+    double totalTurnover =
+        _reports.fold(0, (sum, item) => sum + item.totalTurnover);
+    double totalValidAmount =
+        _reports.fold(0, (sum, item) => sum + item.totalValidAmount);
+    double totalAdjustedWinLoss =
+        _reports.fold(0, (sum, item) => sum + item.totalWinLoss);
+    double totalSeniorCom =
+        _reports.fold(0, (sum, item) => sum + item.totalSeniorCommission);
+    double totalSSeniorCom =
+        _reports.fold(0, (sum, item) => sum + item.totalSSeniorCommission);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -174,7 +245,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      detailsListTitleText('Master'),
+                      detailsListTitleText('SSenior'),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
@@ -202,7 +273,7 @@ class _MasterDailyReport extends State<MasterDailyReport>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      detailsListTitleText('Agent'),
+                      detailsListTitleText('Senior'),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),
@@ -237,23 +308,102 @@ class _MasterDailyReport extends State<MasterDailyReport>
             ),
             SizedBox(
               height: 400, // Fixed height for the list view
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 3.0),
-                    child: ListCard(),
-                  );
-                },
-              ),
+              child: _reports.isNotEmpty
+                  ? ListView.builder(
+                      itemCount: _reports.length,
+                      itemBuilder: (context, index) {
+                        final report = _reports[index];
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 3.0),
+                          child: ListCard(report),
+                        );
+                      },
+                    )
+                  : const Center(
+                      child: Text("No data available"),
+                    ),
             ),
+            TotalRow(
+                totalTurnover: totalTurnover,
+                totalValidAmount: totalValidAmount,
+                totalAdjustedWinLoss: totalAdjustedWinLoss,
+                totalSSeniorCom: totalSSeniorCom,
+                totalSeniorCom: totalSeniorCom),
           ],
         ),
       ),
     );
   }
 
-  Widget ListCard() {
+  Widget TotalRow({
+    required double totalTurnover,
+    required double totalValidAmount,
+    required double totalAdjustedWinLoss,
+    required double totalSSeniorCom,
+    required double totalSeniorCom,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          flex: 5,
+          child: detailsListText('Total'),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(''),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(totalTurnover.toStringAsFixed(2)),
+        ),
+        Expanded(
+          flex: 5,
+          child: detailsListText(totalValidAmount.toStringAsFixed(2)),
+        ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child:
+                      detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(totalSSeniorCom
+                      .toStringAsFixed(2))), // Placeholder for other columns
+              Expanded(
+                child: detailsListText((totalAdjustedWinLoss + totalSSeniorCom)
+                    .toStringAsFixed(2)),
+              )
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 8,
+          child: Row(
+            children: [
+              Expanded(
+                  child:
+                      detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(totalSeniorCom.toStringAsFixed(2))),
+              Expanded(
+                child: detailsListText(
+                  (totalAdjustedWinLoss + totalSeniorCom).toStringAsFixed(2),
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          flex: 4,
+          child: const SizedBox(), // Empty for view details column
+        ),
+      ],
+    );
+  }
+
+  Widget ListCard(SSeniorReport report) {
     // String formattedDate =
     //     DateFormat('yyyy-MM-dd hh:mm a').format(transaction.date);
     return Row(
@@ -261,19 +411,19 @@ class _MasterDailyReport extends State<MasterDailyReport>
       children: [
         Expanded(
           flex: 5,
-          child: detailsListText('2.2.2024'),
+          child: detailsListText(report.seniorUsername),
         ),
         Expanded(
           flex: 5,
-          child: detailsListText('2.2.2024'),
+          child: detailsListText(report.seniorRealname),
         ),
         Expanded(
           flex: 5,
-          child: detailsListText('2.2.2024'),
+          child: detailsListText(report.totalTurnover.toStringAsFixed(2)),
         ),
         Expanded(
           flex: 5,
-          child: detailsListText('2.2.2024'),
+          child: detailsListText(report.totalValidAmount.toStringAsFixed(2)),
         ),
         Expanded(
           flex: 8,
@@ -282,13 +432,17 @@ class _MasterDailyReport extends State<MasterDailyReport>
             child: Row(
               children: [
                 Expanded(
-                  child: detailsListText('500'),
+                  child:
+                      detailsListText(report.totalWinLoss.toStringAsFixed(2)),
                 ),
                 Expanded(
-                  child: detailsListText('5'),
+                  child: detailsListText(
+                      report.totalSSeniorCommission.toStringAsFixed(2)),
                 ),
                 Expanded(
-                  child: detailsListText('W'),
+                  child: detailsListText(
+                      (report.totalWinLoss + report.totalSSeniorCommission)
+                          .toStringAsFixed(2)),
                 ),
               ],
             ),
@@ -301,13 +455,17 @@ class _MasterDailyReport extends State<MasterDailyReport>
             child: Row(
               children: [
                 Expanded(
-                  child: detailsListText('500'),
+                  child:
+                      detailsListText(report.totalWinLoss.toStringAsFixed(2)),
                 ),
                 Expanded(
-                  child: detailsListText('7'),
+                  child: detailsListText(
+                      report.totalSeniorCommission.toStringAsFixed(2)),
                 ),
                 Expanded(
-                  child: detailsListText('L'),
+                  child: detailsListText(
+                      (report.totalWinLoss + report.totalSeniorCommission)
+                          .toStringAsFixed(2)),
                 ),
               ],
             ),
@@ -319,7 +477,16 @@ class _MasterDailyReport extends State<MasterDailyReport>
             padding: const EdgeInsets.only(left: 10.0),
             child: IconButton(
                 onPressed: () {
-                  // Navigator.pushNamed(context, AgentDailyReport.id);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SseniorSeniorReport(
+                        name: report.seniorUsername,
+                        startDate: report.startDate,
+                        endDate: report.endDate,
+                      ),
+                    ),
+                  );
                 },
                 icon: Icon(
                   Icons.remove_red_eye_outlined,

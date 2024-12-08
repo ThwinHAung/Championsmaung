@@ -123,7 +123,7 @@ class _PendingMatchesState extends State<PendingMatches> {
     _token = await storage.read(key: 'token');
     _username = await storage.read(key: 'user_name');
     if (_token != null && _username != null) {
-      _fetchMatchesHistory(_username!);
+      await _fetchMatchesHistory(_username!);
     }
   }
 
@@ -134,7 +134,6 @@ class _PendingMatchesState extends State<PendingMatches> {
       'Authorization': 'Bearer $_token',
     });
     if (response.statusCode == 200) {
-      print('hello');
       Map<String, dynamic> data = json.decode(response.body);
       setState(() {
         if (data.containsKey('singleBets')) {

@@ -30,7 +30,14 @@ class _UserHomeScreenState extends State<UserHomeScreen>
   String? _token;
   String? _username = '';
   double? _balance = 0;
-  var list = ['BODY', 'MAUNG', 'MATCHES RESULTS', 'BETTING HISTORY', 'PENDING MATCHES', 'PAYMENT HISTORY'];
+  var list = [
+    'BODY',
+    'MAUNG',
+    'MATCHES HISTORY',
+    'BETTING HISTORY',
+    'PENDING MATCHES',
+    'PAYMENT HISTORY'
+  ];
   var listRoutes = [
     BodyBetting.id,
     MaungBetting.id,
@@ -229,7 +236,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
                                 title: Text(
                                   list[index],
                                   style: const TextStyle(
-                                      color: kBlue, fontSize: 14),
+                                      color: kBlue, fontSize: 15),
                                 ),
                                 leading: const Icon(
                                   Icons.arrow_right,

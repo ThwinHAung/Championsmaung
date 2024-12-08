@@ -65,8 +65,8 @@ class UserReportDetail {
       betAmount: json['bet_amount'],
       betStatus: json['bet_status'],
       winingAmount: json['wining_amount'],
-      userCommission: json['user_commission'],
-      masterCommission: json['master_commission'],
+      userCommission: json['user_commission'].toString(),
+      masterCommission: json['master_commission'].toString(),
       matches: matchesList,
     );
   }

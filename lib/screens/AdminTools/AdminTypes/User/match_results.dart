@@ -55,6 +55,8 @@ class _MatchResultsState extends State<MatchResults> {
   final storage = const FlutterSecureStorage();
   String? _token;
   List<Match> matches = [];
+  DateTime? startDate;
+  DateTime? endDate;
   final RefreshController _refreshController = RefreshController();
   Map<String, List<Match>> matchesByLeague = {};
 
@@ -118,6 +120,52 @@ class _MatchResultsState extends State<MatchResults> {
     }
   }
 
+  Future<void> _fetchMatchesHistoryWithDate(
+      DateTime? start, DateTime? end) async {
+    var url = Uri.parse(
+        '${Config.apiUrl}/retrieve_matchesHistoryWithDate?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+    final response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    });
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body);
+      List<Match> matchList =
+          jsonResponse.map((match) => Match.fromJson(match)).toList();
+      Map<String, List<Match>> groupedMatches = {};
+      for (var match in matchList) {
+        if (!groupedMatches.containsKey(match.league_name)) {
+          groupedMatches[match.league_name] = [];
+        }
+        groupedMatches[match.league_name]!.add(match);
+      }
+      setState(() {
+        matchesByLeague = groupedMatches;
+      });
+    } else {
+      // Handle the error appropriately
+    }
+  }
+
+  Future<void> _selectDateRange(BuildContext context) async {
+    final DateTimeRange? selectedRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: DateTimeRange(
+        start: startDate ?? DateTime.now().subtract(const Duration(days: 30)),
+        end: endDate ?? DateTime.now(),
+      ),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (selectedRange != null) {
+      setState(() {
+        startDate = selectedRange.start;
+        endDate = selectedRange.end;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> sortedLeagueNames = matchesByLeague.keys.toList();
@@ -127,17 +175,61 @@ class _MatchResultsState extends State<MatchResults> {
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
-        backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Match Results',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
-          ),
-        ),
-      ),
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          toolbarHeight: 100.0,
+          title: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment:
+                  CrossAxisAlignment.center, // Keeps the column compact
+              children: [
+                const Text(
+                  'Match Results',
+                  style: TextStyle(
+                    color: kBlack,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20.0,
+                  ),
+                ),
+                const SizedBox(height: 12.0),
+                Row(
+                  mainAxisAlignment:
+                      MainAxisAlignment.center, // Horizontally center content
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 5,
+                      child: materialButton(
+                        kBlue,
+                        '${startDate != null ? DateFormat("dd, MMM").format(startDate!) : ''} / ${endDate != null ? DateFormat("dd, MMM").format(endDate!) : 'Choose Date Range'}',
+                        () {
+                          _selectDateRange(context);
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 5.0),
+                    Expanded(
+                      flex: 3,
+                      child: IconButton(
+                        onPressed: () {
+                          if (startDate != null && endDate != null) {
+                            _fetchMatchesHistoryWithDate(startDate!, endDate!);
+                          }
+                        },
+                        icon: const Icon(
+                          Icons.search_outlined,
+                          color: kBlue,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          )),
       body: Container(
         color: kPrimary,
         child: AnimationLimiter(

@@ -16,6 +16,8 @@ class AgentReport {
   final double adjustedWinLoss;
   final double master;
   final double agent;
+  final DateTime startDate; // New field
+  final DateTime endDate;
   // final String createdAt;
 
   AgentReport({
@@ -26,21 +28,25 @@ class AgentReport {
     required this.adjustedWinLoss,
     required this.master,
     required this.agent,
+    required this.startDate,
+    required this.endDate,
     // required this.createdAt,
   });
 
   factory AgentReport.fromJson(Map<String, dynamic> json) {
     return AgentReport(
-      username: json['username'] ?? '', // Default to an empty string if null
-      realname: json['realname'] ?? '',
-      turnover: double.tryParse(json['total_turnover'] ?? '0') ?? 0.0,
-      validAmount: double.tryParse(json['total_valid_amount'] ?? '0') ?? 0.0,
-      adjustedWinLoss:
-          double.tryParse(json['total_adjusted_win_loss'] ?? '0') ?? 0.0,
-      master: double.tryParse(json['total_master'] ?? '0') ?? 0.0,
-      agent: double.tryParse(json['total_agent'] ?? '0') ?? 0.0,
-      // createdAt: json['created_at'] ?? '',
-    );
+        username: json['username'] ?? '', // Default to an empty string if null
+        realname: json['realname'] ?? '',
+        turnover: double.tryParse(json['total_turnover'] ?? '0') ?? 0.0,
+        validAmount: double.tryParse(json['total_valid_amount'] ?? '0') ?? 0.0,
+        adjustedWinLoss:
+            double.tryParse(json['total_adjusted_win_loss'] ?? '0') ?? 0.0,
+        master: double.tryParse(json['total_master'] ?? '0') ?? 0.0,
+        agent: double.tryParse(json['total_agent'] ?? '0') ?? 0.0,
+        startDate: DateTime.parse(json['start_date']),
+        endDate: DateTime.parse(json['end_date'])
+        // createdAt: json['created_at'] ?? '',
+        );
   }
 }
 
@@ -57,7 +63,6 @@ class AgentDailyReport extends StatefulWidget {
 
 class _AgentDailyReportState extends State<AgentDailyReport>
     with SingleTickerProviderStateMixin, WidgetsBindingObserver {
-  int? userId;
   final storage = const FlutterSecureStorage();
   String? _token;
   List<AgentReport> _reports = [];
@@ -72,15 +77,17 @@ class _AgentDailyReportState extends State<AgentDailyReport>
 
   Future<void> _getToken() async {
     _token = await storage.read(key: 'token');
+    if (_token != null) {
+      await _fetchAgentReport();
+    }
   }
 
-  Future<void> _fetchAgentReport(
-      int agentId, DateTime? start, DateTime? end) async {
+  Future<void> _fetchAgentReportWithDate(DateTime? start, DateTime? end) async {
     if (start == null || end == null || _token == null) {
       return; // Ensure the dates and token are set before making the request
     }
     var url = Uri.parse(
-        '${Config.apiUrl}/agentReportGroup?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
+        '${Config.apiUrl}/agentReportGroupWithDate?start_date=${startDate!.toIso8601String()}&end_date=${endDate!.toIso8601String()}');
     final response = await http.get(
       url,
       headers: {
@@ -90,8 +97,31 @@ class _AgentDailyReportState extends State<AgentDailyReport>
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       List<dynamic> reportsData = jsonResponse['data'];
-      _reports = reportsData.map((json) => AgentReport.fromJson(json)).toList();
-      setState(() {});
+      setState(() {
+        _reports =
+            reportsData.map((json) => AgentReport.fromJson(json)).toList();
+      });
+    } else {
+      print(response.body);
+      // Handle error
+    }
+  }
+
+  Future<void> _fetchAgentReport() async {
+    var url = Uri.parse('${Config.apiUrl}/agentReportGroup');
+    final response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_token',
+      },
+    );
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      List<dynamic> reportsData = jsonResponse['data'];
+      setState(() {
+        _reports =
+            reportsData.map((json) => AgentReport.fromJson(json)).toList();
+      });
     } else {
       print(response.body);
       // Handle error
@@ -128,7 +158,8 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                             flex: 3,
                             child: IconButton(
                                 onPressed: () {
-                                  _fetchAgentReport(1, startDate!, endDate!);
+                                  _fetchAgentReportWithDate(
+                                      startDate!, endDate!);
                                 },
                                 icon: const Icon(
                                   Icons.search_outlined,
@@ -337,17 +368,25 @@ class _AgentDailyReportState extends State<AgentDailyReport>
       children: [
         Expanded(flex: 5, child: detailsListText(report.username)),
         Expanded(flex: 5, child: detailsListText(report.realname)),
-        Expanded(flex: 5, child: detailsListText('${report.turnover}')),
-        Expanded(flex: 5, child: detailsListText('${report.validAmount}')),
+        Expanded(
+            flex: 5,
+            child: detailsListText(report.turnover.toStringAsFixed(2))),
+        Expanded(
+            flex: 5,
+            child: detailsListText(report.validAmount.toStringAsFixed(2))),
         Expanded(
           flex: 8,
           child: Row(
             children: [
-              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
-              Expanded(child: detailsListText('${report.master}')),
               Expanded(
                   child: detailsListText(
-                      '${report.adjustedWinLoss + report.master}')),
+                      report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(report.master.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(
+                      (report.adjustedWinLoss + report.master)
+                          .toStringAsFixed(2))),
             ],
           ),
         ),
@@ -355,11 +394,13 @@ class _AgentDailyReportState extends State<AgentDailyReport>
           flex: 8,
           child: Row(
             children: [
-              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
-              Expanded(child: detailsListText('${report.agent}')),
               Expanded(
                   child: detailsListText(
-                      '${report.agent + report.adjustedWinLoss}')),
+                      report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(child: detailsListText(report.agent.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText((report.agent + report.adjustedWinLoss)
+                      .toStringAsFixed(2))),
             ],
           ),
         ),
@@ -372,8 +413,8 @@ class _AgentDailyReportState extends State<AgentDailyReport>
                 MaterialPageRoute(
                   builder: (context) => CommonDailyReport(
                     name: report.username,
-                    startDate: startDate!,
-                    endDate: endDate!,
+                    startDate: report.startDate,
+                    endDate: report.endDate,
                   ),
                 ),
               );
@@ -392,7 +433,7 @@ class _AgentDailyReportState extends State<AgentDailyReport>
         start: startDate ?? DateTime.now().subtract(Duration(days: 30)),
         end: endDate ?? DateTime.now(),
       ),
-      firstDate: DateTime(2000),
+      firstDate: DateTime(2021),
       lastDate: DateTime(2101),
     );
 

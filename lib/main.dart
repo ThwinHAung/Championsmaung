@@ -1,11 +1,12 @@
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Agent/agent_member.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/agent_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/master_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/senior_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/ssenior_daily_report.dart';
-import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Agent/agent_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Master/master_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSSenior/sssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSenior/ssenior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Senior/senior_daily_report.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/common_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/user_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
@@ -203,13 +204,30 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
               page: const PendingMatches(),
               settings: settings,
             );
-            case UserPaymentHistory.id:
-            return _buildSlideTransition(page: const UserPaymentHistory(),
-            settings: settings,
+          case UserPaymentHistory.id:
+            return _buildSlideTransition(
+              page: const UserPaymentHistory(),
+              settings: settings,
             );
-            case UserPaymentHistoryDetails.id:
-            return _buildSlideTransition(page: const UserPaymentHistoryDetails(),
-            settings: settings,
+          case UserPaymentHistoryDetails.id:
+            return _buildSlideTransition(
+              page: const UserPaymentHistoryDetails(),
+              settings: settings,
+            );
+          case CommonDailyReport.id:
+            // Extract arguments from settings
+            final args = settings.arguments as Map<String, dynamic>;
+            // Pass arguments to the CommonDailyReport
+            return _buildSlideTransition(
+              page: CommonDailyReport(
+                name:
+                    args['name'] ?? '', // Default empty string if not provided
+                startDate: args['startDate'] ??
+                    DateTime.now(), // Default to current date if not provided
+                endDate: args['endDate'] ??
+                    DateTime.now(), // Default to current date if not provided
+              ),
+              settings: settings,
             );
           default:
             return MaterialPageRoute(
