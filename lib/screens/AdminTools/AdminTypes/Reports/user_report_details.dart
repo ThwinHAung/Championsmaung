@@ -216,7 +216,11 @@ class _UserReportDetailsState extends State<UserReportDetails>
           children: [
             Expanded(
               flex: 5,
-              child: detailsListText(match.homeTeam),
+              child: detailsListText(
+                match.selectedOutcome == match.homeTeam
+                    ? "${match.homeTeam} (${match.odd})"
+                    : match.homeTeam,
+              ),
             ),
             Expanded(
               flex: 4,
@@ -226,13 +230,22 @@ class _UserReportDetailsState extends State<UserReportDetails>
               flex: 5,
               child: Align(
                 alignment: Alignment.centerRight,
-                child: detailsListText(match.awayTeam),
+                child: detailsListText(
+                  match.selectedOutcome == match.awayTeam
+                      ? "${match.awayTeam} (${match.odd})"
+                      : match.awayTeam,
+                ),
               ),
             ),
             Expanded(flex: 2, child: Container()),
             Expanded(
               flex: 4,
-              child: detailsListText(match.odd),
+              child: detailsListText(
+                (match.selectedOutcome == "UPPER" ||
+                        match.selectedOutcome == "LOWER")
+                    ? match.odd
+                    : "-",
+              ),
             ),
             Expanded(
               flex: 4,

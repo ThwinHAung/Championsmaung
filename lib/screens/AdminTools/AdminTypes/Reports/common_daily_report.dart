@@ -12,32 +12,55 @@ class AgentReport {
   final String realname;
   final double turnover;
   final double validAmount;
+  final String type;
   final double adjustedWinLoss;
-  final double master;
+  final double user;
   final double agent;
   final int betId;
+  final double adjustedWinLossWithUser;
+  final double adjustedWinLossWithAgent;
 
   AgentReport({
     required this.username,
     required this.realname,
     required this.turnover,
     required this.validAmount,
+    required this.type,
     required this.adjustedWinLoss,
-    required this.master,
+    required this.user,
     required this.agent,
     required this.betId,
+    required this.adjustedWinLossWithUser,
+    required this.adjustedWinLossWithAgent,
   });
 
   factory AgentReport.fromJson(Map<String, dynamic> json) {
+    final type = json['type'] ?? '';
+    final adjustedWinLoss = double.parse(json['adjusted_win_loss']);
+    final user = double.parse(json['user']);
+    final agent = double.parse(json['agent']);
+
+    final adjustedWinLossWithUser = (type == 'Los' || type == 'Win')
+        ? adjustedWinLoss - user
+        : adjustedWinLoss;
+
+    // Compute adjustedWinLossWithAgent
+    final adjustedWinLossWithAgent = (type == 'Los' || type == 'Win')
+        ? adjustedWinLoss - agent
+        : adjustedWinLoss;
+
     return AgentReport(
       username: json['username'],
       realname: json['realname'],
       turnover: double.parse(json['turnover']),
       validAmount: double.parse(json['valid_amount']),
+      type: json['type'] ?? '',
       adjustedWinLoss: double.parse(json['adjusted_win_loss']),
-      master: double.parse(json['master']),
+      user: double.parse(json['user']),
       agent: double.parse(json['agent']),
       betId: json['bet_id'],
+      adjustedWinLossWithUser: adjustedWinLossWithUser,
+      adjustedWinLossWithAgent: adjustedWinLossWithAgent,
     );
   }
 }
@@ -110,8 +133,12 @@ class _AgentDailyReportState extends State<CommonDailyReport>
         _reports.fold(0, (sum, item) => sum + item.validAmount);
     double totalAdjustedWinLoss =
         _reports.fold(0, (sum, item) => sum + item.adjustedWinLoss);
-    double totalMasterCom = _reports.fold(0, (sum, item) => sum + item.master);
+    double totalUserCom = _reports.fold(0, (sum, item) => sum + item.user);
     double totalAgentCom = _reports.fold(0, (sum, item) => sum + item.agent);
+    double winLossWithAgent =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithAgent);
+    double winLossWithUser =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithUser);
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
@@ -153,8 +180,10 @@ class _AgentDailyReportState extends State<CommonDailyReport>
                 totalTurnover: totalTurnover,
                 totalValidAmount: totalValidAmount,
                 totalAdjustedWinLoss: totalAdjustedWinLoss,
-                totalMasterCom: totalMasterCom,
+                totalUserCom: totalUserCom,
                 totalAgentCom: totalAgentCom,
+                winLossWithAgent: winLossWithAgent,
+                winLossWithUser: winLossWithUser,
               ),
             ),
           ],
@@ -263,12 +292,12 @@ class _AgentDailyReportState extends State<CommonDailyReport>
               Expanded(
                   child: detailsListText(
                       report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(child: detailsListText(report.agent.toStringAsFixed(2))),
               Expanded(
-                  child: detailsListText(report.master.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(
-                      (report.adjustedWinLoss + report.master)
-                          .toStringAsFixed(2))),
+                child: detailsListText(
+                  report.adjustedWinLossWithAgent.toStringAsFixed(2),
+                ),
+              ),
             ],
           ),
         ),
@@ -279,10 +308,11 @@ class _AgentDailyReportState extends State<CommonDailyReport>
               Expanded(
                   child: detailsListText(
                       report.adjustedWinLoss.toStringAsFixed(2))),
-              Expanded(child: detailsListText(report.agent.toStringAsFixed(2))),
+              Expanded(child: detailsListText(report.user.toStringAsFixed(2))),
               Expanded(
-                  child: detailsListText((report.agent + report.adjustedWinLoss)
-                      .toStringAsFixed(2))),
+                child: detailsListText(
+                    report.adjustedWinLossWithUser.toStringAsFixed(2)),
+              ),
             ],
           ),
         ),
@@ -308,8 +338,10 @@ class _AgentDailyReportState extends State<CommonDailyReport>
     required double totalTurnover,
     required double totalValidAmount,
     required double totalAdjustedWinLoss,
-    required double totalMasterCom,
+    required double totalUserCom,
     required double totalAgentCom,
+    required double winLossWithAgent,
+    required double winLossWithUser,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -338,11 +370,10 @@ class _AgentDailyReportState extends State<CommonDailyReport>
                   child:
                       detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
               Expanded(
-                  child: detailsListText(totalMasterCom
+                  child: detailsListText(totalAgentCom
                       .toStringAsFixed(2))), // Placeholder for other columns
               Expanded(
-                child: detailsListText(
-                    (totalAdjustedWinLoss + totalMasterCom).toStringAsFixed(2)),
+                child: detailsListText(winLossWithAgent.toStringAsFixed(2)),
               )
             ],
           ),
@@ -354,11 +385,10 @@ class _AgentDailyReportState extends State<CommonDailyReport>
               Expanded(
                   child:
                       detailsListText(totalAdjustedWinLoss.toStringAsFixed(2))),
-              Expanded(
-                  child: detailsListText(totalAgentCom.toStringAsFixed(2))),
+              Expanded(child: detailsListText(totalUserCom.toStringAsFixed(2))),
               Expanded(
                 child: detailsListText(
-                  (totalAdjustedWinLoss + totalAgentCom).toStringAsFixed(2),
+                  winLossWithUser.toStringAsFixed(2),
                 ),
               ),
             ],

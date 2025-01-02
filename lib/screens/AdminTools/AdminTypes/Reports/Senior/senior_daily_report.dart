@@ -16,6 +16,8 @@ class SeniorReport {
   final double totalWinLoss;
   final double totalSeniorCommission;
   final double totalSSeniorCommission;
+  final double adjustedWinLossWithSSenior;
+  final double adjustedWinLossWithSenior;
   final DateTime startDate; // New field
   final DateTime endDate;
 
@@ -27,6 +29,8 @@ class SeniorReport {
     required this.totalWinLoss,
     required this.totalSeniorCommission,
     required this.totalSSeniorCommission,
+    required this.adjustedWinLossWithSSenior,
+    required this.adjustedWinLossWithSenior,
     required this.startDate,
     required this.endDate,
   });
@@ -43,6 +47,12 @@ class SeniorReport {
             double.tryParse(json['total_senior_commission'] ?? '0') ?? 0.0,
         totalSSeniorCommission:
             double.tryParse(json['total_ssenior_commission'] ?? '0') ?? 0.0,
+        adjustedWinLossWithSSenior: double.tryParse(
+                json['total_adjusted_win_loss_with_ssenior'] ?? '0') ??
+            0.0,
+        adjustedWinLossWithSenior: double.tryParse(
+                json['total_adjusted_win_loss_with_senior'] ?? '0') ??
+            0.0,
         startDate: DateTime.parse(json['start_date']),
         endDate: DateTime.parse(json['end_date']));
   }
@@ -205,6 +215,10 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
         _reports.fold(0, (sum, item) => sum + item.totalSeniorCommission);
     double totalSSeniorCom =
         _reports.fold(0, (sum, item) => sum + item.totalSSeniorCommission);
+    double winLossWithSSenior =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithSSenior);
+    double winLossWithSenior =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithSenior);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -324,11 +338,14 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                     ),
             ),
             TotalRow(
-                totalTurnover: totalTurnover,
-                totalValidAmount: totalValidAmount,
-                totalAdjustedWinLoss: totalAdjustedWinLoss,
-                totalSSeniorCom: totalSSeniorCom,
-                totalSeniorCom: totalSeniorCom),
+              totalTurnover: totalTurnover,
+              totalValidAmount: totalValidAmount,
+              totalAdjustedWinLoss: totalAdjustedWinLoss,
+              totalSSeniorCom: totalSSeniorCom,
+              totalSeniorCom: totalSeniorCom,
+              winLossWithSSenior: winLossWithSSenior,
+              winLossWithSenior: winLossWithSenior,
+            ),
           ],
         ),
       ),
@@ -341,6 +358,8 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
     required double totalAdjustedWinLoss,
     required double totalSSeniorCom,
     required double totalSeniorCom,
+    required double winLossWithSSenior,
+    required double winLossWithSenior,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -372,8 +391,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                   child: detailsListText(totalSSeniorCom
                       .toStringAsFixed(2))), // Placeholder for other columns
               Expanded(
-                child: detailsListText((totalAdjustedWinLoss + totalSSeniorCom)
-                    .toStringAsFixed(2)),
+                child: detailsListText(winLossWithSSenior.toStringAsFixed(2)),
               )
             ],
           ),
@@ -389,7 +407,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                   child: detailsListText(totalSeniorCom.toStringAsFixed(2))),
               Expanded(
                 child: detailsListText(
-                  (totalAdjustedWinLoss + totalSeniorCom).toStringAsFixed(2),
+                  winLossWithSenior.toStringAsFixed(2),
                 ),
               ),
             ],
@@ -441,8 +459,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                 ),
                 Expanded(
                   child: detailsListText(
-                      (report.totalWinLoss + report.totalSSeniorCommission)
-                          .toStringAsFixed(2)),
+                      report.adjustedWinLossWithSSenior.toStringAsFixed(2)),
                 ),
               ],
             ),
@@ -464,8 +481,7 @@ class _SeniorDailyReportState extends State<SeniorDailyReport>
                 ),
                 Expanded(
                   child: detailsListText(
-                      (report.totalWinLoss + report.totalSeniorCommission)
-                          .toStringAsFixed(2)),
+                      report.adjustedWinLossWithSenior.toStringAsFixed(2)),
                 ),
               ],
             ),

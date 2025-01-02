@@ -16,6 +16,7 @@ class SSSeniorReport {
   final double validAmount;
   final double adjustedWinLoss;
   final double ssenior_com;
+  final double adjustedWinLossWithSSenior;
   final DateTime startDate; // New field
   final DateTime endDate;
 
@@ -27,6 +28,7 @@ class SSSeniorReport {
     required this.validAmount,
     required this.adjustedWinLoss,
     required this.ssenior_com,
+    required this.adjustedWinLossWithSSenior,
     required this.startDate,
     required this.endDate,
   });
@@ -40,6 +42,9 @@ class SSSeniorReport {
         validAmount: double.parse(json['total_valid_amount']),
         adjustedWinLoss: double.parse(json['total_win_loss']),
         ssenior_com: double.parse(json['total_ssenior_commission']),
+        adjustedWinLossWithSSenior: double.tryParse(
+                json['total_adjusted_win_loss_with_ssenior'] ?? '0') ??
+            0.0,
         startDate: DateTime.parse(json['start_date']),
         endDate: DateTime.parse(json['end_date']));
   }
@@ -207,6 +212,8 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
         _reports.fold(0, (sum, item) => sum + item.adjustedWinLoss);
     double totalSSeniorCom =
         _reports.fold(0, (sum, item) => sum + item.ssenior_com);
+    double winLossWithSSenior =
+        _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithSSenior);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -326,6 +333,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
               totalValidAmount: totalValidAmount,
               totalAdjustedWinLoss: totalAdjustedWinLoss,
               totalSSeniorCom: totalSSeniorCom,
+              winLossWithSSenior: winLossWithSSenior,
             ),
           ],
         ),
@@ -338,6 +346,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     required double totalValidAmount,
     required double totalAdjustedWinLoss,
     required double totalSSeniorCom,
+    required double winLossWithSSenior,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -385,7 +394,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                   child: detailsListText(totalSSeniorCom.toStringAsFixed(2))),
               Expanded(
                 child: detailsListText(
-                  (totalAdjustedWinLoss + totalSSeniorCom).toStringAsFixed(2),
+                  winLossWithSSenior.toStringAsFixed(2),
                 ),
               ),
             ],
@@ -413,11 +422,11 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
         ),
         Expanded(
           flex: 5,
-          child: detailsListText(report.turnover.toString()),
+          child: detailsListText(report.turnover.toStringAsFixed(2)),
         ),
         Expanded(
           flex: 5,
-          child: detailsListText(report.validAmount.toString()),
+          child: detailsListText(report.validAmount.toStringAsFixed(2)),
         ),
         // Expanded(
         //   flex: 8,
@@ -433,11 +442,15 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
           flex: 8,
           child: Row(
             children: [
-              Expanded(child: detailsListText('${report.adjustedWinLoss}')),
-              Expanded(child: detailsListText('${report.ssenior_com}')),
               Expanded(
                   child: detailsListText(
-                      '${report.ssenior_com + report.adjustedWinLoss}')),
+                      report.adjustedWinLoss.toStringAsFixed(2))),
+              Expanded(
+                  child:
+                      detailsListText(report.ssenior_com.toStringAsFixed(2))),
+              Expanded(
+                  child: detailsListText(
+                      report.adjustedWinLossWithSSenior.toStringAsFixed(2))),
             ],
           ),
         ),

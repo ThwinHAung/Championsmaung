@@ -18,6 +18,7 @@ class Match {
   final String matchTime;
   final String homeGoals;
   final String awayGoals;
+  final bool IsPost;
   Match({
     required this.id,
     required this.league_name,
@@ -26,6 +27,7 @@ class Match {
     required this.matchTime,
     required this.homeGoals,
     required this.awayGoals,
+    required this.IsPost,
   });
   factory Match.fromJson(Map<String, dynamic> json) {
     return Match(
@@ -36,6 +38,7 @@ class Match {
       matchTime: json['MatchTime'],
       homeGoals: json['HomeGoal'].toString(),
       awayGoals: json['AwayGoal'].toString(),
+      IsPost: (json['IsPost'] as int) == 1,
     );
   }
 }
@@ -343,9 +346,22 @@ class _MatchResultsState extends State<MatchResults> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Expanded(flex: 1, child: goalText(match.homeGoals)),
-                      Expanded(flex: 1, child: goalText('-')),
-                      Expanded(flex: 1, child: goalText(match.awayGoals)),
+                      if (match.IsPost)
+                        Expanded(
+                          child: Text(
+                            'P - P',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12,
+                            ),
+                          ),
+                        )
+                      else ...[
+                        Expanded(flex: 1, child: goalText(match.homeGoals)),
+                        Expanded(flex: 1, child: goalText('-')),
+                        Expanded(flex: 1, child: goalText(match.awayGoals)),
+                      ],
                     ],
                   ),
                 ),
