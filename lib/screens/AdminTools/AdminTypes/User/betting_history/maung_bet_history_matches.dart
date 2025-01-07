@@ -24,6 +24,7 @@ class Maung {
   final int GpUnit;
   final int? homeGoals;
   final int? awayGoals;
+  final bool IsPost;
   Maung({
     required this.selected_outcome,
     required this.league_name,
@@ -37,6 +38,7 @@ class Maung {
     required this.GpUnit,
     this.homeGoals,
     this.awayGoals,
+    required this.IsPost,
   });
   factory Maung.fromJson(Map<String, dynamic> json) {
     return Maung(
@@ -52,6 +54,7 @@ class Maung {
       GpUnit: json['GpUnit'],
       homeGoals: json['home_goals'],
       awayGoals: json['away_goals'],
+      IsPost: (json['IsPost'] as int) == 1,
     );
   }
 }
@@ -301,6 +304,23 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
     String homeGoals = match.homeGoals?.toString() ?? "0";
     String awayGoals = match.awayGoals?.toString() ?? "0";
 
+    bool isPostMatch = match.IsPost;
+
+    String homeGoalDisplay = isPostMatch ? "P" : homeGoals;
+    String awayGoalDisplay = isPostMatch ? "P" : awayGoals;
+
+    TextStyle goalTextStyle = isPostMatch
+        ? const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: kBlack,
+          )
+        : const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: kBlack,
+          );
+
     return Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -333,12 +353,8 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '$homeGoals',
-                            style: const TextStyle(
-                              color: kBlack,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            homeGoalDisplay,
+                            style: goalTextStyle,
                           ),
                         ),
                       ),
@@ -361,12 +377,8 @@ class _MaungBetHistoryMatchesState extends State<MaungBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '$awayGoals',
-                            style: const TextStyle(
-                              color: kBlack,
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            awayGoalDisplay,
+                            style: goalTextStyle,
                           ),
                         ),
                       ),

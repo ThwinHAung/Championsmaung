@@ -28,6 +28,7 @@ class Body {
   final int? homeGoals;
   final int? awayGoals;
   final String status;
+  final bool IsPost;
 
   Body({
     required this.selectedOutcome,
@@ -45,6 +46,7 @@ class Body {
     this.homeGoals,
     this.awayGoals,
     required this.status,
+    required this.IsPost,
   });
 
   factory Body.fromJson(Map<String, dynamic> json) {
@@ -64,6 +66,7 @@ class Body {
       homeGoals: json['home_goals'],
       awayGoals: json['away_goals'],
       status: json['status'],
+      IsPost: (json['IsPost'] as int) == 1,
     );
   }
 }
@@ -263,6 +266,23 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
     String homeGoals = match.homeGoals?.toString() ?? "0";
     String awayGoals = match.awayGoals?.toString() ?? "0";
 
+    bool isPostMatch = match.IsPost;
+
+    String homeGoalDisplay = isPostMatch ? "P" : homeGoals;
+    String awayGoalDisplay = isPostMatch ? "P" : awayGoals;
+
+    TextStyle goalTextStyle = isPostMatch
+        ? const TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            color: kBlack,
+          )
+        : const TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.bold,
+            color: kBlack,
+          );
+
     return Container(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -295,12 +315,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '$homeGoals',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: kBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            homeGoalDisplay,
+                            style: goalTextStyle,
                           ),
                         ),
                       ),
@@ -323,12 +339,8 @@ class _BodyBetHistoryMatchesState extends State<BodyBetHistoryMatches> {
                         child: Container(
                           alignment: Alignment.center,
                           child: Text(
-                            '$awayGoals',
-                            style: const TextStyle(
-                              fontSize: 10,
-                              color: kBlack,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            awayGoalDisplay,
+                            style: goalTextStyle,
                           ),
                         ),
                       ),
