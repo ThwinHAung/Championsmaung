@@ -28,26 +28,26 @@ const Color kBlue = Color(0xFF0D47A1);
 const Color kGreen = Colors.green;
 
 const kTextFieldHintStyle = TextStyle(
-  fontSize: 10.0,
+  fontSize: 12.0,
   fontWeight: FontWeight.w500,
   color: konPrimary,
   letterSpacing: 2.0,
 );
 
 const kTextFieldActiveStyle = TextStyle(
-  fontSize: 10.0,
+  fontSize: 12.0,
   fontWeight: FontWeight.bold,
   color: kSecondary,
 );
 
 const kButtonTextStyle = TextStyle(
-  fontSize: 10.0,
+  fontSize: 12.0,
   fontWeight: FontWeight.bold,
   color: kPrimary,
 );
 
 const kButtonErrorStyle = TextStyle(
-  fontSize: 10.0,
+  fontSize: 12.0,
   fontWeight: FontWeight.bold,
   color: kError,
 );
@@ -153,7 +153,7 @@ Widget secondaryMaterialButton(Color buttonColor, String buttonText,
       child: Text(
         buttonText,
         style: TextStyle(
-          fontSize: 10.0,
+          fontSize: 12.0,
           fontWeight: FontWeight.bold,
           color: kButtonTextColor,
         ),
@@ -343,7 +343,7 @@ Widget rulesText(String cap, String text) {
           child: Text(
             text,
             style: const TextStyle(
-              fontSize: 10,
+              fontSize: 12,
               color: kBlack,
               fontWeight: FontWeight.w500,
             ),
@@ -411,6 +411,6 @@ Widget detailsListTitleText(String text) {
 Widget detailsListText(String text) {
   return Text(
     text,
-    style: const TextStyle(fontSize: 10),
+    style: const TextStyle(fontSize: 12),
   );
 }
