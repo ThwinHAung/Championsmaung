@@ -21,6 +21,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
   final TextEditingController _controller = TextEditingController();
   List<dynamic> _memberList = [];
   List<String> _filteredData = [];
+
   final storage = const FlutterSecureStorage();
   String? _token;
   int _currentPage = 1;
@@ -64,8 +65,10 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
     String query = _controller.text.toLowerCase();
     setState(() {
       _filteredData = _memberList
+          .where((item) =>
+              item['username'].toString().toLowerCase().contains(query) ||
+              item['realname'].toString().toLowerCase().contains(query))
           .map((item) => item['username'].toString())
-          .where((item) => item.toLowerCase().contains(query))
           .toList();
       _currentPage = 1;
       _calculateTotalPages();
@@ -104,6 +107,18 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimary,
+      appBar: AppBar(
+        backgroundColor: kPrimary,
+        centerTitle: true,
+        title: const Text(
+          'Members List',
+          style: TextStyle(
+            color: kBlack,
+            fontWeight: FontWeight.bold,
+            fontSize: 20.0,
+          ),
+        ),
+      ),
       body: Container(
         color: kPrimary,
         child: Padding(
@@ -254,7 +269,4 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
       ],
     );
   }
-
-  // Methods for reducing units, adding units, setting PP, unsetting PP, and deleting user remain unchanged.
-  // ...
 }

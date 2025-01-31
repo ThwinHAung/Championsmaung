@@ -10,6 +10,7 @@ import 'package:intl/intl.dart';
 class MatchDetail {
   final String homeTeam;
   final String awayTeam;
+  final bool HomeUp;
   final String goalScore;
   final String odd;
   final String selectedOutcome;
@@ -17,6 +18,7 @@ class MatchDetail {
   MatchDetail({
     required this.homeTeam,
     required this.awayTeam,
+    required this.HomeUp,
     required this.goalScore,
     required this.odd,
     required this.selectedOutcome,
@@ -26,6 +28,7 @@ class MatchDetail {
     return MatchDetail(
       homeTeam: json['home_team'],
       awayTeam: json['away_team'],
+      HomeUp: (json['HomeUp'] as int) == 1,
       goalScore: json['goal_score'],
       odd: json['odd'],
       selectedOutcome: json['selected_outcome'],
@@ -217,23 +220,25 @@ class _UserReportDetailsState extends State<UserReportDetails>
             Expanded(
               flex: 5,
               child: detailsListText(
-                match.selectedOutcome == match.homeTeam
+                match.HomeUp
                     ? "${match.homeTeam} (${match.odd})"
                     : match.homeTeam,
               ),
             ),
             Expanded(
               flex: 4,
-              child: detailsListText(match.goalScore),
+              child: detailsListText(
+                report.betStatus == "Refund" ? 'P-P' : match.goalScore,
+              ),
             ),
             Expanded(
               flex: 5,
               child: Align(
                 alignment: Alignment.centerRight,
                 child: detailsListText(
-                  match.selectedOutcome == match.awayTeam
-                      ? "${match.awayTeam} (${match.odd})"
-                      : match.awayTeam,
+                  match.HomeUp
+                      ? match.awayTeam
+                      : "${match.awayTeam} (${match.odd})",
                 ),
               ),
             ),

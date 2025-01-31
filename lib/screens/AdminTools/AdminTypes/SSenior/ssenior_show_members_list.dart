@@ -56,8 +56,10 @@ class _SSeniorShowMembersListState extends State<SSeniorShowMembersList>
     String query = _controller.text.toLowerCase();
     setState(() {
       _filteredData = _memberList
+          .where((item) =>
+              item['username'].toString().toLowerCase().contains(query) ||
+              item['realname'].toString().toLowerCase().contains(query))
           .map((item) => item['username'].toString())
-          .where((item) => item.toLowerCase().contains(query))
           .toList();
       _currentPage = 1;
       _calculateTotalPages();
