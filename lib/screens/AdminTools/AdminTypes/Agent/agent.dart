@@ -148,6 +148,26 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
           ],
           [3],
         ),
+      ListTile(
+        leading: const Icon(Icons.language),
+        title: drawerListMenuText(''),
+        onTap: () {
+          // Handle language change functionality here
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Change Language'),
+              content: const Text('Select your preferred language.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                )
+              ],
+            ),
+          );
+        },
+      ),
         ListTile(
           leading: const Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),

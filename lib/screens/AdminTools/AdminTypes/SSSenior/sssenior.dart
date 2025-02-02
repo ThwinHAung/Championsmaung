@@ -73,102 +73,143 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
     } else {}
   }
 
-  Widget _buildSmallDrawer() {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        const SizedBox(height: 30.0),
-        _buildIconTile(Icons.dashboard, '', 0),
-        _buildExpansionTile(
-          Icons.people,
-          '',
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.add, '', 1),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.list, '', 2),
-            ),
-          ],
-          [1, 2],
-        ),
-        _buildExpansionTile(
-          Icons.report,
-          '',
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.calendar_today, '', 3),
-            ),
-          ],
-          [3],
-        ),
-        ListTile(
-          leading: const Icon(Icons.logout),
-          title: drawerListMenuText(''),
-          onTap: () {
-            _logout();
-          },
-        ),
-      ],
-    );
-  }
-
   Widget _buildDrawer() {
-    return ListView(
-      padding: EdgeInsets.zero,
-      children: <Widget>[
-        const SizedBox(height: 30.0),
-        _buildIconTile(Icons.dashboard, 'Dashboard', 0),
-        _buildExpansionTile(
-          Icons.people,
-          'Members Management',
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.add, 'Create Member', 1),
+  return ListView(
+    padding: EdgeInsets.zero,
+    children: <Widget>[
+      const SizedBox(height: 30.0),
+      _buildIconTile(Icons.dashboard, 'Dashboard', 0),
+      _buildExpansionTile(
+        Icons.people,
+        'Members Management',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.add, 'Create Member', 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.list, 'Members List', 2),
+          ),
+        ],
+        [1, 2],
+      ),
+      _buildExpansionTile(
+        Icons.settings,
+        'Matches Management',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.access_alarm, 'View Matches', 3),
+          )
+        ],
+        [3],
+      ),
+      _buildExpansionTile(
+        Icons.report,
+        'Report',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.calendar_today, 'Daily', 4),
+          ),
+        ],
+        [4],
+      ),
+      ListTile(
+        leading: const Icon(Icons.language),
+        title: drawerListMenuText('Change Language'),
+        onTap: () {
+          // Handle language change functionality here
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Change Language'),
+              content: const Text('Select your preferred language.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.list, 'Members List', 2),
+          );
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.logout),
+        title: drawerListMenuText('Log Out'),
+        onTap: () {
+          _logout();
+        },
+      ),
+    ],
+  );
+}
+
+Widget _buildSmallDrawer() {
+  return ListView(
+    padding: EdgeInsets.zero,
+    children: <Widget>[
+      const SizedBox(height: 30.0),
+      _buildIconTile(Icons.dashboard, '', 0),
+      _buildExpansionTile(
+        Icons.people,
+        '',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.add, '', 1),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.list, '', 2),
+          ),
+        ],
+        [1, 2],
+      ),
+      _buildExpansionTile(
+        Icons.report,
+        '',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.calendar_today, '', 3),
+          ),
+        ],
+        [3],
+      ),
+      ListTile(
+        leading: const Icon(Icons.language),
+        title: drawerListMenuText(''),
+        onTap: () {
+          // Handle language change functionality here
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: const Text('Change Language'),
+              content: const Text('Select your preferred language.'),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(context),
+                  child: const Text('OK'),
+                )
+              ],
             ),
-          ],
-          [1, 2],
-        ),
-        _buildExpansionTile(
-          Icons.settings,
-          'Matches Management',
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.access_alarm, 'View Matches', 3),
-            )
-          ],
-          [3],
-        ),
-        _buildExpansionTile(
-          Icons.report,
-          'Report',
-          [
-            Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: _buildIconTile(Icons.calendar_today, 'Daily', 4),
-            ),
-          ],
-          [4],
-        ),
-        ListTile(
-          leading: const Icon(Icons.logout),
-          title: drawerListMenuText('Log Out'),
-          onTap: () {
-            _logout();
-          },
-        ),
-      ],
-    );
-  }
+          );
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.logout),
+        title: drawerListMenuText(''),
+        onTap: () {
+          _logout();
+        },
+      ),
+    ],
+  );
+}
+
 
   Widget _buildIconTile(IconData icon, String title, int index) {
     return ListTile(
