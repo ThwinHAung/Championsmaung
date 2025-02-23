@@ -347,11 +347,11 @@ class _MatchResultsState extends State<MatchResults> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       if (match.IsPost)
-                        Expanded(
+                        const Expanded(
                           child: Text(
                             'P - P',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 12,
                             ),
