@@ -111,51 +111,7 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
     return Row(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        // Fixed width Drawer
-        SizedBox(
-          width: 250, // Fixed width for all screen sizes
-          child: Drawer(
-            child: ListView(
-              padding: EdgeInsets.zero,
-              children: [
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: kPrimary,
-                  ),
-                  child: Text(
-                    'Menu',
-                    style: TextStyle(
-                      color: kBlack,
-                      fontSize: 24,
-                    ),
-                  ),
-                ),
-                ListTile(
-                  leading: const Icon(Icons.home), // Icon always visible
-                  title: isDesktop ? const Text('Home') : null, // Text only on desktop
-                  onTap: () {
-                    // Add navigation or actions here
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.settings), // Icon always visible
-                  title: isDesktop ? const Text('Settings') : null, // Text only on desktop
-                  onTap: () {
-                    // Add navigation or actions here
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.person), // Icon always visible
-                  title: isDesktop ? const Text('Profile') : null, // Text only on desktop
-                  onTap: () {
-                    // Add navigation or actions here
-                  },
-                ),
-                // Add more ListTiles as needed
-              ],
-            ),
-          ),
-        ),
+        
         // Main content
         Expanded(
           child: Scaffold(
