@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
@@ -12,8 +11,7 @@ class SSSeniorShowMembersList extends StatefulWidget {
   const SSSeniorShowMembersList({super.key});
 
   @override
-  State<SSSeniorShowMembersList> createState() =>
-      _SSSeniorShowMembersListState();
+  State<SSSeniorShowMembersList> createState() => _SSSeniorShowMembersListState();
 }
 
 class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
@@ -105,35 +103,94 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: kPrimary,
-      appBar: AppBar(
-        backgroundColor: kPrimary,
-        centerTitle: true,
-        title: const Text(
-          'Members List',
-          style: TextStyle(
-            color: kBlack,
-            fontWeight: FontWeight.bold,
-            fontSize: 20.0,
+    // Determine if the screen is desktop size (e.g., width >= 1200)
+    final double screenWidth = MediaQuery.of(context).size.width;
+    const double desktopBreakpoint = 1200; // Adjust this value as needed
+    bool isDesktop = screenWidth >= desktopBreakpoint;
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // Fixed width Drawer
+        SizedBox(
+          width: 250, // Fixed width for all screen sizes
+          child: Drawer(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: [
+                const DrawerHeader(
+                  decoration: BoxDecoration(
+                    color: kPrimary,
+                  ),
+                  child: Text(
+                    'Menu',
+                    style: TextStyle(
+                      color: kBlack,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.home), // Icon always visible
+                  title: isDesktop ? const Text('Home') : null, // Text only on desktop
+                  onTap: () {
+                    // Add navigation or actions here
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.settings), // Icon always visible
+                  title: isDesktop ? const Text('Settings') : null, // Text only on desktop
+                  onTap: () {
+                    // Add navigation or actions here
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.person), // Icon always visible
+                  title: isDesktop ? const Text('Profile') : null, // Text only on desktop
+                  onTap: () {
+                    // Add navigation or actions here
+                  },
+                ),
+                // Add more ListTiles as needed
+              ],
+            ),
           ),
         ),
-      ),
-      body: Container(
-        color: kPrimary,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Container(
-            decoration: BoxDecoration(
-                color: kOnPrimaryContainer,
-                borderRadius: BorderRadius.circular(10)),
-            child: view(),
+        // Main content
+        Expanded(
+          child: Scaffold(
+            backgroundColor: kPrimary,
+            appBar: AppBar(
+              backgroundColor: kPrimary,
+              centerTitle: true,
+              title: const Text(
+                'Members List',
+                style: TextStyle(
+                  color: kBlack,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0,
+                ),
+              ),
+            ),
+            body: Container(
+              color: kPrimary,
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: kOnPrimaryContainer,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: view(),
+                ),
+              ),
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 
+  // Rest of your methods (view, _pageItems, ListCard) remain unchanged
   Widget view() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -268,5 +325,17 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
         ),
       ],
     );
+  }
+
+  // Helper methods
+  Widget listTitleText(String text) {
+    return Text(
+      text,
+      style: const TextStyle(fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget listText(String? text) {
+    return Text(text ?? '');
   }
 }

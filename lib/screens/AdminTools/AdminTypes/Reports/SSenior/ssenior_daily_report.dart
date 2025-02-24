@@ -140,7 +140,7 @@ class _SSeniorDailyReportState extends State<SSeniorDailyReport>
         title: Padding(
           padding: const EdgeInsets.only(left: 18, bottom: 16),
           child: Material(
-            color: Colors.transparent,
+            color: kPrimary,
             child: Padding(
               padding:
                   const EdgeInsets.only(left: 8, right: 8, top: 4, bottom: 4),

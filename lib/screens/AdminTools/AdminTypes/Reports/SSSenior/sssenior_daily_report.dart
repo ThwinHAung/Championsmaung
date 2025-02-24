@@ -136,6 +136,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
         title: Padding(
           padding: const EdgeInsets.only(left: 18, bottom: 16),
