@@ -108,41 +108,34 @@ class _SSSeniorShowMembersListState extends State<SSSeniorShowMembersList>
     const double desktopBreakpoint = 1200; // Adjust this value as needed
     bool isDesktop = screenWidth >= desktopBreakpoint;
 
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        
-        // Main content
-        Expanded(
-          child: Scaffold(
-            backgroundColor: kPrimary,
-            appBar: AppBar(
-              backgroundColor: kPrimary,
-              centerTitle: true,
-              title: const Text(
-                'Members List',
-                style: TextStyle(
-                  color: kBlack,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20.0,
-                ),
-              ),
-            ),
-            body: Container(
-              color: kPrimary,
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: kOnPrimaryContainer,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: view(),
-                ),
-              ),
+    return Expanded(
+      child: Scaffold(
+        backgroundColor: kPrimary,
+        appBar: AppBar(
+          backgroundColor: kPrimary,
+          centerTitle: true,
+          title: const Text(
+            'Members List',
+            style: TextStyle(
+              color: kBlack,
+              fontWeight: FontWeight.bold,
+              fontSize: 20.0,
             ),
           ),
         ),
-      ],
+        body: Container(
+          color: kPrimary,
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: kOnPrimaryContainer,
+                  borderRadius: BorderRadius.circular(10)),
+              child: view(),
+            ),
+          ),
+        ),
+      ),
     );
   }
 

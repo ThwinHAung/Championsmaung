@@ -138,6 +138,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
     return Scaffold(
       backgroundColor: kPrimary,
       appBar: AppBar(
+        backgroundColor: kPrimary, // Changed to kPrimary here
         title: Padding(
           padding: const EdgeInsets.only(left: 18, bottom: 16),
           child: Material(
@@ -281,7 +282,7 @@ class _SSSeniorDailyReportState extends State<SSSeniorDailyReport>
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      detailsListTitleText('SSenior'),
+                      detailsListTitleText('SSSenior'),
                       const Padding(
                         padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Divider(),

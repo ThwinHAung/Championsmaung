@@ -264,7 +264,7 @@ Widget _buildSmallDrawer() {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxWidth < 600) {
+          if (constraints.maxWidth < 1200) {
             return Row(
               children: [
                 Container(

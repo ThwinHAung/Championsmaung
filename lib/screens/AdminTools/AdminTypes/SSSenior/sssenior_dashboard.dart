@@ -157,7 +157,7 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
         color: kPrimary,
         child: AnimationLimiter(
           child: ListView.builder(
-            padding: EdgeInsets.all(w / 50),
+            padding: EdgeInsets.all(10),
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
@@ -185,7 +185,7 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
                     duration: const Duration(milliseconds: 2500),
                     child: Container(
                       alignment: Alignment.topLeft,
-                      margin: EdgeInsets.only(bottom: w / 30),
+                      margin: EdgeInsets.only(bottom: 10),
                       height: h / 5.5,
                       decoration: const BoxDecoration(
                         color: kOnPrimaryContainer,
@@ -208,7 +208,7 @@ class _SSSeniorDashboardState extends State<SSSeniorDashboard>
                                     Text(
                                       displayValue,
                                       style: const TextStyle(
-                                        fontSize: 35,
+                                        fontSize: 30,
                                         color: kBlue,
                                         fontWeight: FontWeight.bold,
                                       ),
