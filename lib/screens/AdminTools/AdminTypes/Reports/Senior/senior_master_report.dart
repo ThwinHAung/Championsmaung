@@ -117,7 +117,9 @@ class _MasterDailyReport extends State<SeniorMasterReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
+        backgroundColor: kPrimary,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {

@@ -140,7 +140,9 @@ class _AgentDailyReportState extends State<CommonDailyReport>
     double winLossWithUser =
         _reports.fold(0, (sum, item) => sum + item.adjustedWinLossWithUser);
     return Scaffold(
+      backgroundColor: kPrimary,
         appBar: AppBar(
+          backgroundColor: kPrimary,
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {

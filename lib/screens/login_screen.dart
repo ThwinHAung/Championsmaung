@@ -75,127 +75,134 @@ class _LoginScreenState extends State<LoginScreen> with WidgetsBindingObserver {
       },
       child: Scaffold(
         backgroundColor: kPrimary,
-        body: Stack(
+        body: Row(
           children: [
-            // Background Image with Opacity
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0.1, // Adjust the opacity here
-                child: Image.asset(
-                  'images/logo.png', // Replace with your image path
-                  fit: BoxFit.contain,
+            // Logo on the left
+            Expanded(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.all(20.0), // Add some padding around the logo
+                child: Opacity(
+                  opacity: 1, // Keep the opacity as it was
+                  child: Image.asset(
+                    'images/logo.png', // Replace with your image path
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
             ),
-            // Main content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Hero(
-                    tag: 'championmaung',
-                    child: Container(
-                      padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-                      child: const Text(
-                        'CHAMPION MAUNG',
-                        style: TextStyle(
-                          color: konPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
+            // Login form on the right
+            Expanded(
+              flex: 2, // Give more space to the login form
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Hero(
+                      tag: 'championmaung',
+                      child: Container(
+                        padding: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+                        child: const Text(
+                          'CHAMPION MAUNG',
+                          style: TextStyle(
+                            color: konPrimary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20.0,
-                  ),
-                  TextFormField(
-                    controller: _usernameController,
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your username',
+                    const SizedBox(
+                      height: 20.0,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _passwordObsecureText,
-                    style: kTextFieldActiveStyle,
-                    decoration: kTextFieldDecoration.copyWith(
-                      hintText: 'Enter your password',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _passwordObsecureText
-                              ? Icons.visibility_off
-                              : Icons.visibility,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _passwordObsecureText = !_passwordObsecureText;
-                          });
-                        },
+                    TextFormField(
+                      controller: _usernameController,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your username',
                       ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: [
-                      Checkbox(
-                        value: _rememberMe,
-                        onChanged: (value) {
-                          setState(() {
-                            _rememberMe = value!;
-                          });
-                        },
-                      ),
-                      const Text(
-                        'Remember Me',
-                        style: TextStyle(
-                          color: konPrimary,
-                          fontSize: 10.0,
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: _passwordObsecureText,
+                      style: kTextFieldActiveStyle,
+                      decoration: kTextFieldDecoration.copyWith(
+                        hintText: 'Enter your password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _passwordObsecureText
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _passwordObsecureText = !_passwordObsecureText;
+                            });
+                          },
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: Container(),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Material(
-                            color: kBlue,
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10.0)),
-                            elevation: 5.0,
-                            child: MaterialButton(
-                              onPressed: _isLoading ? null : _login,
-                              minWidth: 200.0,
-                              height: 42.0,
-                              child: const Text(
-                                'Login',
-                                style: kButtonTextStyle,
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: _rememberMe,
+                          onChanged: (value) {
+                            setState(() {
+                              _rememberMe = value!;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Remember Me',
+                          style: TextStyle(
+                            color: konPrimary,
+                            fontSize: 10.0,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Material(
+                              color: kBlue,
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10.0)),
+                              elevation: 5.0,
+                              child: MaterialButton(
+                                onPressed: _isLoading ? null : _login,
+                                minWidth: 200.0,
+                                height: 42.0,
+                                child: const Text(
+                                  'Login',
+                                  style: kButtonTextStyle,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ],

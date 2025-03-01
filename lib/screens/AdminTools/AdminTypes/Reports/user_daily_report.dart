@@ -66,7 +66,9 @@ class _UserDailyReportState extends State<UserDailyReport>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
+        backgroundColor: kPrimary,
         title: Padding(
           padding: const EdgeInsets.only(left: 18, bottom: 16),
           child: Material(

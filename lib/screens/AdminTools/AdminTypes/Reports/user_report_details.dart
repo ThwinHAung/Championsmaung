@@ -268,7 +268,9 @@ class _UserReportDetailsState extends State<UserReportDetails>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: kPrimary,
       appBar: AppBar(
+        backgroundColor: kPrimary,
         title: Padding(
           padding: const EdgeInsets.only(left: 0, bottom: 5),
           child: Material(
