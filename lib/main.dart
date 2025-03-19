@@ -12,6 +12,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior.d
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_member_details_transcations_actionpage.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_notifications.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
@@ -94,6 +95,11 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
           case SSSeniorDailyReport.id:
             return _buildSlideTransition(
               page: const SSSeniorDailyReport(),
+              settings: settings,
+            );
+          case SSSeniorNotifications.id:
+            return _buildSlideTransition(
+              page: const SSSeniorNotifications(),
               settings: settings,
             );
           case SSeniorDailyReport.id:

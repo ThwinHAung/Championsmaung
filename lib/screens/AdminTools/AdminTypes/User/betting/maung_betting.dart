@@ -362,6 +362,7 @@ class _MaungBettingState extends State<MaungBetting> {
                 Expanded(
                   flex: 2,
                   child: materialButton(kBlue, 'Bet', () {
+                    
                     String text = _maungBettingEditingController.text;
                     double amount = double.tryParse(text) ?? 0.0;
 

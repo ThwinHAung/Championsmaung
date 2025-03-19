@@ -4,6 +4,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSSenior/ss
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_match_view.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_members.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_notifications.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -116,6 +117,7 @@ class _SSSeniorAdminScreenState extends State<SSSeniorAdminScreen>
         ],
         [4],
       ),
+      _buildIconTile(Icons.notifications, 'Notifications', 5),
       ListTile(
         leading: const Icon(Icons.language),
         title: drawerListMenuText('Change Language'),
@@ -169,16 +171,28 @@ Widget _buildSmallDrawer() {
         [1, 2],
       ),
       _buildExpansionTile(
+        Icons.settings,
+        '',
+        [
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: _buildIconTile(Icons.access_alarm, '', 3),
+          )
+        ],
+        [3],
+      ),
+      _buildExpansionTile(
         Icons.report,
         '',
         [
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
-            child: _buildIconTile(Icons.calendar_today, '', 3),
+            child: _buildIconTile(Icons.calendar_today, '', 4),
           ),
         ],
-        [3],
+        [4],
       ),
+      _buildIconTile(Icons.notifications, '', 5),
       ListTile(
         leading: const Icon(Icons.language),
         title: drawerListMenuText(''),
@@ -245,6 +259,7 @@ Widget _buildSmallDrawer() {
       const SSSeniorShowMembersList(),
       const SSSeniorMatchView(),
       const SSSeniorDailyReport(),
+      const SSSeniorNotifications(),
     ];
 
     return Scaffold(
