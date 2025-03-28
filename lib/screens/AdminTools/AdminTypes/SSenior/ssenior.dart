@@ -5,6 +5,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/SSenior/sse
 import 'package:champion_maung/screens/AdminTools/AdminTypes/Reports/Senior/senior_daily_report.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_dashboard.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_notifications.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/login_screen.dart';
 import 'package:flutter/material.dart';
@@ -205,6 +206,7 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
           ],
           [3],
         ),
+        _buildIconTile(Icons.notifications, 'Notifications', 4),
         ListTile(
           leading: const Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),
@@ -260,6 +262,8 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
                         style: TextStyle(fontSize: 20, color: Colors.red),
                       ),
                     ), // here this route for condition
+      const SSeniorNotifications(),
+
     ];
 
     // final List<Widget> _widgets = [

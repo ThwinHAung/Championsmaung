@@ -16,6 +16,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_n
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSSenior/sssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_member.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_notifications.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/SSenior/ssenior_show_members_list.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/body_betting.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting/maung_betting.dart';
@@ -140,6 +141,11 @@ class ChampionMaung extends StatelessWidget with WidgetsBindingObserver {
           case SSeniorShowMembersList.id:
             return _buildSlideTransition(
               page: const SSeniorShowMembersList(),
+              settings: settings,
+            );
+          case SSeniorNotifications.id:
+            return _buildSlideTransition(
+              page: const SSeniorNotifications(),
               settings: settings,
             );
           case TranscationsActionPage.id:

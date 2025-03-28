@@ -148,6 +148,7 @@ class _AgentAdminScreenState extends State<AgentAdminScreen>
           ],
           [3],
         ),
+        _buildIconTile(Icons.notifications, 'Notifications', 4),
       ListTile(
         leading: const Icon(Icons.language),
         title: drawerListMenuText(''),
