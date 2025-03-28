@@ -208,6 +208,13 @@ class _SSeniorAdminScreenState extends State<SSeniorAdminScreen>
         ),
         _buildIconTile(Icons.notifications, 'Notifications', 4),
         ListTile(
+        leading: const Icon(Icons.language),
+        title: drawerListMenuText('Change Language'),
+        onTap: () {
+          // Show the dialog to change the language
+        },
+      ),
+        ListTile(
           leading: const Icon(Icons.logout),
           title: drawerListMenuText('Log Out'),
           onTap: () {
