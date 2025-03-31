@@ -103,7 +103,7 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 bigCapText('Title'),
-                SizedBox(height: 5.0,),
+                const SizedBox(height: 5.0,),
                 TextFormField(
                   controller: _titlesController,
                   style: kTextFieldActiveStyle,
@@ -117,7 +117,7 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                 ),
                 const SizedBox(height: 10.0),
                 bigCapText('Content'),
-                SizedBox(height: 5.0,),
+                const SizedBox(height: 5.0,),
                 TextFormField(
                   controller: _contentsController,
                   maxLines: 5,
