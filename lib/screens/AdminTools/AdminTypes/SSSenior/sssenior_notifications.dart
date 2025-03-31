@@ -1,5 +1,30 @@
+import 'dart:convert';
+
+import 'package:champion_maung/config.dart';
 import 'package:champion_maung/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:http/http.dart' as http;
+
+class NotificationModel {
+  final int id;
+  final String title;
+  final String message;
+
+  NotificationModel({
+    required this.id,
+    required this.title,
+    required this.message,
+  });
+
+  factory NotificationModel.fromJson(Map<String, dynamic> json) {
+    return NotificationModel(
+      id: json['id'] as int,
+      title: json['title'] as String,
+      message: json['message'] as String,
+    );
+  }
+}
 
 class SSSeniorNotifications extends StatefulWidget {
   const SSSeniorNotifications({super.key});
@@ -11,21 +36,169 @@ class SSSeniorNotifications extends StatefulWidget {
 }
 
 class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
-  final List<String> _titles = [];
+  final storage = const FlutterSecureStorage();
+  List<NotificationModel> notifications = [];
+  String? _token;
   final TextEditingController _titlesController = TextEditingController();
-
-  final List<String> _contents = [];
   final TextEditingController _contentsController = TextEditingController();
+
+  @override
+  void initState() {
+    _getToken();
+    super.initState();
+  }
+
+  Future<void> _getToken() async {
+    _token = await storage.read(key: 'token');
+
+    if (_token != null) {
+      setState(() {
+        _fetchNotifications();
+      });
+    }
+  }
+
+  Future<void> _fetchNotifications() async {
+    var url = Uri.parse('${Config.apiUrl}/fetch_noti');
+    final response = await http.get(url, headers: {
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $_token',
+    });
+
+    if (response.statusCode == 200) {
+      List jsonResponse = jsonDecode(response.body)['data'];
+      setState(() {
+        notifications = jsonResponse
+            .map((notification) => NotificationModel.fromJson(notification))
+            .toList();
+      });
+    } else {
+      print("Failed to load notifications");
+    }
+  }
+
+  Future<void> _insertNotification() async {
+    if (_titlesController.text.isEmpty || _contentsController.text.isEmpty) {
+      _showErrorDialog('Title and Content cannot be empty', 'Error');
+      return;
+    }
+    try {
+      final response = await http.post(
+        Uri.parse('${Config.apiUrl}/noti_announce'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Content-Type':
+              'application/json', // ✅ Important for Laravel to detect JSON
+          'Authorization': 'Bearer $_token',
+        },
+        body: jsonEncode(<String, String>{
+          'title': _titlesController.text,
+          'message': _contentsController.text,
+        }),
+      );
+      if (response.statusCode == 200) {
+        _showErrorDialog('Successfully created', 'Success');
+        _fetchNotifications();
+      } else {
+        print(response.body);
+      }
+    } catch (e) {
+      _showErrorDialog('An error occurred. Please try again.', 'Error');
+    }
+  }
+
+  Future<void> _updateNotification(int id) async {
+    if (_titlesController.text.isEmpty || _contentsController.text.isEmpty) {
+      _showErrorDialog('Title and Content cannot be empty', 'Error');
+      return;
+    }
+
+    try {
+      final response = await http.put(
+        Uri.parse('${Config.apiUrl}/edit_noti/$id'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+        body: jsonEncode(<String, String>{
+          'title': _titlesController.text,
+          'message': _contentsController.text,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        _showErrorDialog('Successfully updated', 'Success');
+        _fetchNotifications(); // Refresh notifications list
+      } else {
+        _showErrorDialog('Failed to update. Try again.', 'Error');
+      }
+    } catch (e) {
+      _showErrorDialog('An error occurred. Please try again.', 'Error');
+    }
+    Navigator.pop(context);
+  }
+
+  Future<void> _deleteNotification(int id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('${Config.apiUrl}/delete_noti/$id'),
+        headers: <String, String>{
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $_token',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        _showErrorDialog('Successfully deleted', 'Success');
+        _fetchNotifications(); // Refresh the list after deletion
+      } else {
+        _showErrorDialog('Failed to delete. Try again.', 'Error');
+      }
+    } catch (e) {
+      _showErrorDialog('An error occurred. Please try again.', 'Error');
+    }
+  }
+
+  void _showErrorDialog(String message, String status) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(status),
+        content: Text(message),
+        actions: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Container(),
+              ),
+              const SizedBox(width: 10.0),
+              Expanded(
+                flex: 1,
+                child: materialButton(kBlue, 'OK', () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                }),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget view() {
     return Column(
       children: [
         Expanded(
-          child: _contents.isEmpty
+          child: notifications.isEmpty
               ? const Center(child: Text('No notifications added.'))
               : ListView.builder(
-                  itemCount: _contents.length,
+                  itemCount: notifications.length,
                   itemBuilder: (context, index) {
+                    final notification = notifications[index];
                     return Card(
                       color: kOnPrimaryContainer,
                       elevation: .5,
@@ -34,7 +207,7 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                         children: [
                           ListTile(
                             title: Text(
-                              _titles[index],
+                              notification.title,
                               style: const TextStyle(
                                 color: kBlue,
                                 fontSize: 14,
@@ -46,11 +219,13 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                               children: [
                                 IconButton(
                                   icon: const Icon(Icons.edit, color: kBlue),
-                                  onPressed: () => _editNotification(index),
+                                  onPressed: () =>
+                                      _editNotification(notification),
                                 ),
                                 IconButton(
                                   icon: const Icon(Icons.delete, color: kError),
-                                  onPressed: () => _removeNotification(index),
+                                  onPressed: () =>
+                                      _removeNotification(notification.id),
                                 ),
                               ],
                             ),
@@ -58,12 +233,11 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                           Padding(
                             padding: const EdgeInsets.only(left: 20.0),
                             child: Text(
-                              _contents[index],
+                              notification.message,
                               style: const TextStyle(
-                                color: kBlack,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                              ),
+                                  color: kBlack,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ),
                           const SizedBox(
@@ -80,30 +254,14 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
   }
 
   void _showAddNotificationDialog() {
-    _titlesController.clear();
-    _contentsController.clear();
-    _showNotificationDialog(isEditing: false);
-  }
-
-  void _editNotification(int index) {
-    _titlesController.text = _titles[index];
-    _contentsController.text = _contents[index];
-    _showNotificationDialog(isEditing: true, index: index);
-  }
-
-  void _showNotificationDialog({required bool isEditing, int? index}) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        content: Text(isEditing ? 'Edit your notification.' : 'Add and send notifications to users.'),
+        content: const Text('Add and send notifications to users.'),
         actions: <Widget>[
           Form(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                bigCapText('Title'),
-                const SizedBox(height: 5.0,),
                 TextFormField(
                   controller: _titlesController,
                   style: kTextFieldActiveStyle,
@@ -115,14 +273,79 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 10.0),
-                bigCapText('Content'),
-                const SizedBox(height: 5.0,),
+                const SizedBox(height: 5.0),
                 TextFormField(
                   controller: _contentsController,
                   maxLines: 5,
                   style: kTextFieldActiveStyle,
-                  decoration: kTextFieldDecoration.copyWith(hintText: 'Content'),
+                  decoration:
+                      kTextFieldDecoration.copyWith(hintText: 'Content'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Content cannot be empty';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10.0),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: materialButton(kError, 'Cancel', () {
+                        _contentsController.clear();
+                        Navigator.pop(context);
+                      }),
+                    ),
+                    const SizedBox(width: 5.0),
+                    Expanded(
+                      flex: 1,
+                      child: materialButton(kBlue, 'Add', () {
+                        _insertNotification();
+                        Navigator.pop(context);
+                        // _addNotification();
+                      }),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _editNotification(NotificationModel notification) {
+    _titlesController.text = notification.title; // Pre-fill title
+    _contentsController.text = notification.message; // Pre-fill message
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        content: const Text('Edit and update the notification.'),
+        actions: <Widget>[
+          Form(
+            child: Column(
+              children: [
+                TextFormField(
+                  controller: _titlesController,
+                  style: kTextFieldActiveStyle,
+                  decoration: kTextFieldDecoration.copyWith(hintText: 'Title'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Title cannot be empty';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 5.0),
+                TextFormField(
+                  controller: _contentsController,
+                  maxLines: 5,
+                  style: kTextFieldActiveStyle,
+                  decoration:
+                      kTextFieldDecoration.copyWith(hintText: 'Content'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Content cannot be empty';
@@ -144,12 +367,9 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
                     const SizedBox(width: 5.0),
                     Expanded(
                       flex: 1,
-                      child: materialButton(kBlue, isEditing ? 'Update' : 'Add', () {
-                        if (isEditing && index != null) {
-                          _updateNotification(index);
-                        } else {
-                          _addNotification();
-                        }
+                      child: materialButton(kBlue, 'Update', () {
+                        _updateNotification(notification.id);
+                        Navigator.pop(context);
                       }),
                     ),
                   ],
@@ -162,59 +382,33 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
     );
   }
 
-  void _addNotification() {
-    final title = _titlesController.text.trim();
-    final content = _contentsController.text.trim();
-    if (title.isNotEmpty && content.isNotEmpty) {
-      setState(() {
-        _titles.add(title);
-        _contents.add(content);
-      });
-      Navigator.pop(context);
-    }
-  }
-
-  void _updateNotification(int index) {
-    final updatedTitle = _titlesController.text.trim();
-    final updatedContent = _contentsController.text.trim();
-    if (updatedTitle.isNotEmpty && updatedContent.isNotEmpty) {
-      setState(() {
-        _titles[index] = updatedTitle;
-        _contents[index] = updatedContent;
-      });
-      Navigator.pop(context);
-    }
-  }
-
-  void _removeNotification(int index) {
+  void _removeNotification(int id) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-      backgroundColor: kPrimary, // Add background color here
-      content: const Text('Do you want to remove this notification?'),
-      actions: <Widget>[
-        Row(
-        children: [
-          Expanded(
-          flex: 1,
-          child: materialButton(kError, 'Cancel', () {
-            Navigator.pop(context);
-          }),
-          ),
-          const SizedBox(width: 5.0),
-          Expanded(
-          flex: 1,
-          child: materialButton(kBlue, 'Remove', () {
-            setState(() {
-            _titles.removeAt(index);
-            _contents.removeAt(index);
-            });
-            Navigator.pop(context);
-          }),
-          ),
+        content: const Text('Do you want to remove this notification?'),
+        actions: <Widget>[
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: materialButton(kError, 'Cancel', () {
+                  Navigator.pop(context);
+                }),
+              ),
+              const SizedBox(width: 5.0),
+              Expanded(
+                flex: 1,
+                child: materialButton(kBlue, 'Remove', () {
+                  setState(() {
+                    _deleteNotification(id);
+                  });
+                  Navigator.pop(context);
+                }),
+              ),
+            ],
+          )
         ],
-        )
-      ],
       ),
     );
   }
@@ -223,9 +417,13 @@ class _SSSeniorNotificationsState extends State<SSSeniorNotifications> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: kPrimary,
-      body: Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: view(),
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Container(
+            child: view(),
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showAddNotificationDialog,
