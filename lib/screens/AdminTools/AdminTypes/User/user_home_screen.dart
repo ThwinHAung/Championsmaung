@@ -9,6 +9,7 @@ import 'package:champion_maung/screens/AdminTools/AdminTypes/User/betting_histor
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/match_results.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/pending_matches.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/rules_page_for_route.dart';
+import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_notifications.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/User/user_payment_history.dart';
 import 'package:champion_maung/screens/AdminTools/AdminTypes/change_password_self.dart';
 import 'package:champion_maung/screens/login_screen.dart';
@@ -298,6 +299,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
 
   var userDrawerList = [
     'Rules and Regulations',
+    'Notifications',
     'Change Language',
     'Change Password',
     'Log Out',
@@ -305,6 +307,7 @@ class _UserHomeScreenState extends State<UserHomeScreen>
 
   var userDrawerRoutes = [
     RulesPageForRoute.id,
+    UserNotifications.id,
     '',
     ChangePasswordSelf.id,
     'logout',
